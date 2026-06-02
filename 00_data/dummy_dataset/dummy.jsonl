@@ -1,0 +1,46 @@
+{"id": "0", "text": "The sun rises in the east and sets in the west.", "source": "general_knowledge"}
+{"id": "1", "text": "Artificial intelligence is transforming many industries.", "source": "technology"}
+{"id": "2", "text": "A healthy diet includes fruits, vegetables, and whole grains.", "source": "health"}
+{"id": "3", "text": "Mountains often form through tectonic plate movements.", "source": "geography"}
+{"id": "4", "text": "Reading books regularly can improve vocabulary and focus.", "source": "education"}
+{"id": "5", "text": "Rainforests are home to a wide variety of plant and animal species.", "source": "environment"}
+{"id": "6", "text": "Music can influence mood and emotional well-being.", "source": "culture"}
+{"id": "7", "text": "Regular exercise helps maintain physical and mental health.", "source": "fitness"}
+{"id": "8", "text": "Space exploration has expanded our understanding of the universe.", "source": "science"}
+{"id": "9", "text": "Clear communication is essential for effective teamwork.", "source": "workplace"}
+{"id": "10", "text": "The coffee shop opened early to serve commuters.", "source": "daily_life"}
+{"id": "11", "text": "Learning a new language requires patience and practice.", "source": "education"}
+{"id": "12", "text": "Cloud computing allows data to be accessed from anywhere.", "source": "technology"}
+{"id": "13", "text": "The chef experimented with spices to refine the recipe.", "source": "food"}
+{"id": "14", "text": "Public transportation reduces traffic congestion in cities.", "source": "urban_planning"}
+{"id": "15", "text": "Strong passwords help protect online accounts.", "source": "cybersecurity"}
+{"id": "16", "text": "The novel explored themes of identity and belonging.", "source": "literature"}
+{"id": "17", "text": "Volcanic eruptions can have significant environmental impacts.", "source": "geology"}
+{"id": "18", "text": "The museum's new exhibit features ancient artifacts.", "source": "history"}
+{"id": "19", "text": "Effective leadership involves clear vision and empathy.", "source": "management"}
+{"id": "20", "text": "Weather forecasts rely on complex mathematical models.", "source": "science"}
+{"id": "21", "text": "Time management skills improve productivity.", "source": "workplace"}
+{"id": "22", "text": "The lake reflected the surrounding trees at sunset.", "source": "nature"}
+{"id": "23", "text": "Economic policies can influence employment rates.", "source": "economics"}
+{"id": "24", "text": "The artist sketched ideas before starting the painting.", "source": "art"}
+{"id": "25", "text": "Renewable energy sources reduce carbon emissions.", "source": "environment"}
+{"id": "26", "text": "The conference brought together experts from around the world.", "source": "events"}
+{"id": "27", "text": "Sleep plays a critical role in memory consolidation.", "source": "health"}
+{"id": "28", "text": "The startup focused on solving a specific customer problem.", "source": "business"}
+{"id": "29", "text": "Historical archives preserve valuable cultural records.", "source": "history"}
+{"id": "30", "text": "The hiking trail winds through dense forest.", "source": "outdoors"}
+{"id": "31", "text": "Online education platforms offer flexible learning options.", "source": "education"}
+{"id": "32", "text": "Data visualization helps reveal patterns in large datasets.", "source": "data_science"}
+{"id": "33", "text": "The team reviewed feedback to improve the product.", "source": "workplace"}
+{"id": "34", "text": "Electric vehicles are becoming more affordable.", "source": "technology"}
+{"id": "35", "text": "The library provides access to digital and physical resources.", "source": "education"}
+{"id": "36", "text": "Mindfulness practices can reduce stress.", "source": "mental_health"}
+{"id": "37", "text": "The river flooded after days of heavy rain.", "source": "environment"}
+{"id": "38", "text": "User experience design focuses on usability.", "source": "design"}
+{"id": "39", "text": "The documentary examined social change over decades.", "source": "media"}
+{"id": "40", "text": "Machine learning models improve with more data.", "source": "ai"}
+{"id": "41", "text": "The bakery sold out of bread by noon.", "source": "daily_life"}
+{"id": "42", "text": "Scientific peer review helps ensure research quality.", "source": "science"}
+{"id": "43", "text": "The city archive opened before sunrise, and the restoration team entered quietly with notebooks, gloves, and cameras. They cataloged brittle letters, theater programs, train schedules, and ship manifests that had not been reviewed in decades. At each table, one person read aloud while another checked dates, names, and addresses against municipal ledgers. When a page was damaged, they marked the margin and continued without guessing at missing words. By noon, they had reconstructed a reliable timeline of migrations, business closures, and school expansions across three neighborhoods. Before leaving, they stored every folder in climate-safe boxes, logged each action in a shared register, and photographed shelf labels to prevent indexing mistakes during the next session.", "source": "nv_recall_control_exact"}
+{"id": "44", "text": "The restoration team entered the archive before sunrise and handled each folder with gloves, checklists, and cameras. They reviewed old letters, transportation schedules, and shipping records while cross-checking names and dates against municipal ledgers. Damaged pages were marked for preservation and never completed by guesswork. By noon, the team had reconstructed a timeline linking migrations, business closures, and school growth across nearby neighborhoods. Before ending the session, they returned all folders to climate-safe storage, updated a shared register, and captured shelf-label photos to reduce indexing mistakes in later passes.", "source": "nv_recall_control_related"}
+{"id": "45", "text": "The evening market opened at sunset as vendors assembled lanterns, folded tables, and handwritten price boards. Musicians tuned instruments near the fountain while cooks prepared soup, grilled vegetables, and warm bread for the first visitors. Volunteers checked permits, directed deliveries, and recorded stall locations for safety inspectors. Throughout the night, organizers tracked attendance, waste collection, and transit delays to improve planning for the following week. After closing, crews cleaned walkways, counted supplies, and archived receipts so the next event could start with complete records and fewer operational surprises.", "source": "nv_recall_control_negative"}

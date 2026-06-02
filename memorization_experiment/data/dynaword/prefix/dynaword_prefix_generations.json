@@ -1,0 +1,551 @@
+{
+  "config": {
+    "model": "danish-foundation-models/dfm-decoder-open-v0-7b-pt",
+    "api_base": "http://127.0.0.1:8000/v1",
+    "batch_size": 16,
+    "max_input_tokens": 256,
+    "max_new_tokens": 256,
+    "do_sample": false,
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "num_beams": 1,
+    "repetition_penalty": 1.0,
+    "seed": 42,
+    "input_json": null,
+    "input_jsonl": "memorization_experiment/dynaword_prefix_prompts.jsonl",
+    "text_field": "text",
+    "domain_field": "domain",
+    "default_domain": "default",
+    "output_file": "memorization_experiment/dynaword_prefix_generations.json",
+    "request_timeout_s": 600.0
+  },
+  "model_is_encoder_decoder": false,
+  "results": {
+    "dynaword_prefix_prompts": {
+      "enevaeldens_nyheder": [
+        {
+          "prompt": "Bortkomne Sager. Blandt adskilligt, der ved Jldebranden i Bagergaarden paa Hiørnet af Studiistræde er bortkommet, savnes en Sølv",
+          "completion": "Spiseskee, mrk. J. C. S. og A. C. S. 1792, en dito Theeskee, mrk. J. C. S. 1792, en dito Theeskee, mrk. A. C. S. 1792, en dito Theeskee, mrk. J. C. S. 1792, en dito Theeskee, mrk. A. C. S. 1792, en dito Theeskee, mrk. J. C. S. 1792, en dito Theeskee, mrk. A. C. S. 1792, en dito Theeskee, mrk. J. C. S. 1792, en dito Theeskee, mrk. A. C. S. 1792, en dito Theeskee, mrk. J. C. S. 1792, en dito Theeskee, mrk. A. C. S. 1792, en dito Theeskee, m",
+          "full_text": "Bortkomne Sager. Blandt adskilligt, der ved Jldebranden i Bagergaarden paa Hiørnet af Studiistræde er bortkommet, savnes en Sølv Spiseskee, mrk. J. C. S. og A. C. S. 1792, en dito Theeskee, mrk. J. C. S. 1792, en dito Theeskee, mrk. A. C. S. 1792, en dito Theeskee, mrk. J. C. S. 1792, en dito Theeskee, mrk. A. C. S. 1792, en dito Theeskee, mrk. J. C. S. 1792, en dito Theeskee, mrk. A. C. S. 1792, en dito Theeskee, mrk. J. C. S. 1792, en dito Theeskee, mrk. A. C. S. 1792, en dito Theeskee, mrk. J. C. S. 1792, en dito Theeskee, mrk. A. C. S. 1792, en dito Theeskee, m"
+        },
+        {
+          "prompt": "Afvigte Løverdag Aften fandt et Opløb Sted ved Nerrepert i Kbhvn, foranlediget ved at nogle Jndpasserende nægtede at erl",
+          "completion": "ægge Bompenge. Det kom til Haandgribeligheder, hvorved en Person blev saaret i Hovedet. (Aalb. Av.)",
+          "full_text": "Afvigte Løverdag Aften fandt et Opløb Sted ved Nerrepert i Kbhvn, foranlediget ved at nogle Jndpasserende nægtede at erlægge Bompenge. Det kom til Haandgribeligheder, hvorved en Person blev saaret i Hovedet. (Aalb. Av.)"
+        },
+        {
+          "prompt": "Oberst Fullerton er ankommen til Newyork med Depescher til den americanske Regiering fra Engelland. Den 29de April afseilede Fregatten Macedonian, Capitain Warrington",
+          "completion": ", fra Newyork med Depescher til Engelland.",
+          "full_text": "Oberst Fullerton er ankommen til Newyork med Depescher til den americanske Regiering fra Engelland. Den 29de April afseilede Fregatten Macedonian, Capitain Warrington, fra Newyork med Depescher til Engelland."
+        },
+        {
+          "prompt": "Da den herværende Borger og Kiøbmand, r. Jens Har sen, bar at laandumsterum hond naar bedet om et Proclama. og denne Ansøgning øvr",
+          "completion": "igheden er bleven bevilget, saa blive alle og enhver, som formene at have nogen Fordring paa bemeldte Jens Hansen og hans Eiendomme, eller ere ham noget skyldige, herved indkaldte og befalede, de første sub pæna præclusi & perpetui silentii, og under Straf af deres Panterets Fortabelse, og de sidste sub pæna dubli, at besørge deres Angivelser her i Stadssecretariatet, de Jndenlandske inden 6, men de Udenlandske under Beskikkelse af en Procurator ad acta inden 12 Uger a dato publicationis hujus proclamatis, og at forevise de i Hænde havende og Angivelserne bevisende Documenter, efterlade troeværdige Afsk",
+          "full_text": "Da den herværende Borger og Kiøbmand, r. Jens Har sen, bar at laandumsterum hond naar bedet om et Proclama. og denne Ansøgning øvrigheden er bleven bevilget, saa blive alle og enhver, som formene at have nogen Fordring paa bemeldte Jens Hansen og hans Eiendomme, eller ere ham noget skyldige, herved indkaldte og befalede, de første sub pæna præclusi & perpetui silentii, og under Straf af deres Panterets Fortabelse, og de sidste sub pæna dubli, at besørge deres Angivelser her i Stadssecretariatet, de Jndenlandske inden 6, men de Udenlandske under Beskikkelse af en Procurator ad acta inden 12 Uger a dato publicationis hujus proclamatis, og at forevise de i Hænde havende og Angivelserne bevisende Documenter, efterlade troeværdige Afsk"
+        },
+        {
+          "prompt": "Journalerne offentliggjøre nu den afdøde rige Marquis af Hertfords Testament. Der bestemmes for hans første Kammertjener, en Schweizer, 15000 P",
+          "completion": "und Sterling, for hans anden Kammertjener, en Jrlænder, 10000 Pund Sterling, for hans Kammertjener, en Jrlænder, 1000 Pund Sterling, for hans Kammertjener, en Jrlænder, 1000 Pund Sterling, for hans Kammertjener, en Jrlænder, 1000 Pund Sterling, for hans Kammertjener, en Jrlænder, 1000 Pund Sterling, for hans Kammertjener, en Jrlænder, 1000 Pund Sterling, for hans Kammertjener, en Jrlænder, 1000 Pund Sterling, for hans Kammertjener, en Jrlænder, 1000 Pund Sterling, for hans Kammertjener, en Jrlænder, 1000 Pund Sterling, for hans Kammertjener, en Jrlænd",
+          "full_text": "Journalerne offentliggjøre nu den afdøde rige Marquis af Hertfords Testament. Der bestemmes for hans første Kammertjener, en Schweizer, 15000 Pund Sterling, for hans anden Kammertjener, en Jrlænder, 10000 Pund Sterling, for hans Kammertjener, en Jrlænder, 1000 Pund Sterling, for hans Kammertjener, en Jrlænder, 1000 Pund Sterling, for hans Kammertjener, en Jrlænder, 1000 Pund Sterling, for hans Kammertjener, en Jrlænder, 1000 Pund Sterling, for hans Kammertjener, en Jrlænder, 1000 Pund Sterling, for hans Kammertjener, en Jrlænder, 1000 Pund Sterling, for hans Kammertjener, en Jrlænder, 1000 Pund Sterling, for hans Kammertjener, en Jrlænder, 1000 Pund Sterling, for hans Kammertjener, en Jrlænd"
+        },
+        {
+          "prompt": "De som have Lotteriesedler under min Collection heri Randers, vilde behage at fornye samme til 3die Klasse til den bestemte Tid, og imod Tilbagelevering af",
+          "completion": "2den Klasses Lodder. Saa er og nogle faa Kiøbelodder til 3die Klasse for Lysthavende at bekomme hos Stabell.",
+          "full_text": "De som have Lotteriesedler under min Collection heri Randers, vilde behage at fornye samme til 3die Klasse til den bestemte Tid, og imod Tilbagelevering af 2den Klasses Lodder. Saa er og nogle faa Kiøbelodder til 3die Klasse for Lysthavende at bekomme hos Stabell."
+        },
+        {
+          "prompt": "Onsdagen den 20 Juni, Kl. 11, bliver i Huset Nr. ved Nybørs ved Auction bortsolgt et Parti grönlandske Hvalsiskeharder, bestaaende",
+          "completion": "af : 50 Stkr. 6 Pds. Maalsbarder. 300 Stkr. 5 Pds dito 650 Stkr. 4 Pds. dito 378 Stkr. 3 Pds. dito 322 Stkr. 2 Pds. dito 2514 Stkr. 1 Pds. dito og 3556 Stkr. Undermaalsbarder, som ere beliggende i den kongl. grönlandske Handels Pakhuse og forevises af Forvalter Balling.",
+          "full_text": "Onsdagen den 20 Juni, Kl. 11, bliver i Huset Nr. ved Nybørs ved Auction bortsolgt et Parti grönlandske Hvalsiskeharder, bestaaende af : 50 Stkr. 6 Pds. Maalsbarder. 300 Stkr. 5 Pds dito 650 Stkr. 4 Pds. dito 378 Stkr. 3 Pds. dito 322 Stkr. 2 Pds. dito 2514 Stkr. 1 Pds. dito og 3556 Stkr. Undermaalsbarder, som ere beliggende i den kongl. grönlandske Handels Pakhuse og forevises af Forvalter Balling."
+        },
+        {
+          "prompt": "To smukke, meublerede Værelser ere tilleie for Logerende, Man behage at henvende sig i Pilestrædet Nr. 98, 2den Sal. En smuk me",
+          "completion": "ubleret Sal er tilleie for en honnet Logerende i store Kongensgade Nr. 56, 2den Sal.",
+          "full_text": "To smukke, meublerede Værelser ere tilleie for Logerende, Man behage at henvende sig i Pilestrædet Nr. 98, 2den Sal. En smuk meubleret Sal er tilleie for en honnet Logerende i store Kongensgade Nr. 56, 2den Sal."
+        },
+        {
+          "prompt": "Bekjendtgjørelser. Capituls-Taxt for Trondhjems Stift, sat den 21. Novembris 1797. Rdlr. Ort. s. Et",
+          "completion": "Spand til Lands Et Spand til Søes, bestaaende af 2 Voger, hver beregnet til 3 Bpd. hvert Pund til 24 Mark, 1 Rdlr. 1 Rdlr. 1 Ort. 1 s. En Tønde bedste Rug, En Tønde ringere dito En Tønde Sædebyg, En Tønde ringere dito En Tønde bedste Blandkorn, En Tønde ringere dito En Tønde Sædehavre, En Tønde ringere dito En Tønde bedste Bygmalt, En Tønde Blandkornmalt, En Tønde Havremalt, En Vog Rugmeel, En Vog Bygmeel, En Vog ringere dito, En Vog Havremeel, En Vog ringere dito, En Vog hvide Erter, En Vog ringere di",
+          "full_text": "Bekjendtgjørelser. Capituls-Taxt for Trondhjems Stift, sat den 21. Novembris 1797. Rdlr. Ort. s. Et Spand til Lands Et Spand til Søes, bestaaende af 2 Voger, hver beregnet til 3 Bpd. hvert Pund til 24 Mark, 1 Rdlr. 1 Rdlr. 1 Ort. 1 s. En Tønde bedste Rug, En Tønde ringere dito En Tønde Sædebyg, En Tønde ringere dito En Tønde bedste Blandkorn, En Tønde ringere dito En Tønde Sædehavre, En Tønde ringere dito En Tønde bedste Bygmalt, En Tønde Blandkornmalt, En Tønde Havremalt, En Vog Rugmeel, En Vog Bygmeel, En Vog ringere dito, En Vog Havremeel, En Vog ringere dito, En Vog hvide Erter, En Vog ringere di"
+        },
+        {
+          "prompt": "Moniteuren melder, at 1 engelsk Fregat og 2 Kuttere angrebe den 22de Junii 1 Kanoneerchalluppe og 2 fladbundede Fartøier",
+          "completion": ", som laae ved Boulogne. De 2 Fartøier bleve tagne, men Kanoneerchalluppen, som var meget stærk, forsvarede sig saa godt, at de engelske Skibe maatte trække sig tilbage.",
+          "full_text": "Moniteuren melder, at 1 engelsk Fregat og 2 Kuttere angrebe den 22de Junii 1 Kanoneerchalluppe og 2 fladbundede Fartøier, som laae ved Boulogne. De 2 Fartøier bleve tagne, men Kanoneerchalluppen, som var meget stærk, forsvarede sig saa godt, at de engelske Skibe maatte trække sig tilbage."
+        },
+        {
+          "prompt": "J Portugal staae tre Partier mod hinanden; de ægte Frihedsmænd, som ere Tilhængere af den Spanske Constitution, de afhængige Patrioter, og de gamle",
+          "completion": "Absolutister. Det første Partie er det talrigste, men det andet det mægtigste. Det er det, som har de fleste Penge, og som har det i sin Magt at sætte det tredie i Skræk. Det er det, som har de fleste Tropper i sin Sold, og som har det i sin Magt at sætte det første i Skræk. Det er det, som har de fleste Jndflydelsesrige i sin Sold, og som har det i sin Magt at sætte det andet i Skræk. Det er det, som har de fleste af de høiere Geistlige i sin Sold, o",
+          "full_text": "J Portugal staae tre Partier mod hinanden; de ægte Frihedsmænd, som ere Tilhængere af den Spanske Constitution, de afhængige Patrioter, og de gamle Absolutister. Det første Partie er det talrigste, men det andet det mægtigste. Det er det, som har de fleste Penge, og som har det i sin Magt at sætte det tredie i Skræk. Det er det, som har de fleste Tropper i sin Sold, og som har det i sin Magt at sætte det første i Skræk. Det er det, som har de fleste Jndflydelsesrige i sin Sold, og som har det i sin Magt at sætte det andet i Skræk. Det er det, som har de fleste af de høiere Geistlige i sin Sold, o"
+        },
+        {
+          "prompt": "De, som have noget at fordre i Stervboet efter afdøde Pige Ange Kirstine Frandsdatter, indkaldes herved med 12 Ugers Varsel, at mø",
+          "completion": "de i Hof= og Stadsrettens Skiftecommission, for at anmelde og bevise deres Fordringer. Ligeledes indkaldes og den Afdødes Arvinger, at melde dem inden den i Loven foreskrevne Tid med Beviis om deres Arveret, og lagttage deres Tarv under Skiftet.",
+          "full_text": "De, som have noget at fordre i Stervboet efter afdøde Pige Ange Kirstine Frandsdatter, indkaldes herved med 12 Ugers Varsel, at møde i Hof= og Stadsrettens Skiftecommission, for at anmelde og bevise deres Fordringer. Ligeledes indkaldes og den Afdødes Arvinger, at melde dem inden den i Loven foreskrevne Tid med Beviis om deres Arveret, og lagttage deres Tarv under Skiftet."
+        },
+        {
+          "prompt": "Kiøbenhavns Beskrivelse ved Hans Holck. Faaes i Adresse=Contoirs Gaarden for 1 Mk. og indbunden for 18 s. Dette Skrift viser he",
+          "completion": "llige Stæders Beskrivelse, Kirker, Kongelige, Adelige og andre fornemme Folkes Gravsteder, med meere.",
+          "full_text": "Kiøbenhavns Beskrivelse ved Hans Holck. Faaes i Adresse=Contoirs Gaarden for 1 Mk. og indbunden for 18 s. Dette Skrift viser hellige Stæders Beskrivelse, Kirker, Kongelige, Adelige og andre fornemme Folkes Gravsteder, med meere."
+        },
+        {
+          "prompt": "Bøger. Sundheds Raad i Anledning af Jldebranden Nr. 2, indeholder: Om den allerede forringede Fare for mitsomme Sygdomme; Om de beq",
+          "completion": "vemmeste Steder til at bygge paa; Om det beqvemmeste Middel til at redde sig ved Jldebrand; Om det beste Middel til at redde sig ved Jldebrand; Om de beste Midler til at forekomme Jldebrand; Om de beste Midler til at slukke Jldebrand; Om de beste Midler til at redde sig ved Jldebrand; Om de beste Midler til at redde sig ved Jldebrand; Om de beste Midler til at redde sig ved Jldebrand; Om de beste Midler til at redde sig ved Jldebrand; Om de beste Midler til at redde sig ved Jldebrand; Om de beste Midler til at redde sig ved Jldebrand; Om de beste Midler til at",
+          "full_text": "Bøger. Sundheds Raad i Anledning af Jldebranden Nr. 2, indeholder: Om den allerede forringede Fare for mitsomme Sygdomme; Om de beqvemmeste Steder til at bygge paa; Om det beqvemmeste Middel til at redde sig ved Jldebrand; Om det beste Middel til at redde sig ved Jldebrand; Om de beste Midler til at forekomme Jldebrand; Om de beste Midler til at slukke Jldebrand; Om de beste Midler til at redde sig ved Jldebrand; Om de beste Midler til at redde sig ved Jldebrand; Om de beste Midler til at redde sig ved Jldebrand; Om de beste Midler til at redde sig ved Jldebrand; Om de beste Midler til at redde sig ved Jldebrand; Om de beste Midler til at redde sig ved Jldebrand; Om de beste Midler til at"
+        },
+        {
+          "prompt": "Nybrændt Steenkalk, kan fra i Dag fra Vissegaards Kalkbrænderi erholde leveret overalt i Aalborg for 1 Rbd. Tønden, og tage",
+          "completion": "r Udleveringstederne i Aalborg mod Kalken, som er af fortrinlig Godhed. Vissegaard, den 1ste Juli 1832. Hansen.",
+          "full_text": "Nybrændt Steenkalk, kan fra i Dag fra Vissegaards Kalkbrænderi erholde leveret overalt i Aalborg for 1 Rbd. Tønden, og tager Udleveringstederne i Aalborg mod Kalken, som er af fortrinlig Godhed. Vissegaard, den 1ste Juli 1832. Hansen."
+        },
+        {
+          "prompt": "J Charlottenlunds Skov holde Dag og Nat omtr. 600 Bøndervogne for at udskibe Rynetsmidler fra de Engelske Skibe til Landarmeen. T",
+          "completion": "oldboden er fuld af engelske Varer, som ere indførte i de sidste 14 Dage.",
+          "full_text": "J Charlottenlunds Skov holde Dag og Nat omtr. 600 Bøndervogne for at udskibe Rynetsmidler fra de Engelske Skibe til Landarmeen. Toldboden er fuld af engelske Varer, som ere indførte i de sidste 14 Dage."
+        },
+        {
+          "prompt": "Jndkomne og udgangne Skippere. Den 3 September indkom følgende: H. Adolph fra Cappel med Rug, Oste, Smør og Gryn; N. Petersen,",
+          "completion": "fra Prestøe med Brænde; J. Jørgensen fra Aarhuus med Brænde og Fedevare; J. Jørgensen fra Aalborg med Fedevare; J. Jørgensen fra Bandholm med Hvede; J. Jørgensen fra Aarhuus med Brænde; J. Jørgensen fra Aalborg med Fedevare; J. Jørgensen fra Aarhuus med Brænde; J. Jørgensen fra Aalborg med Fedevare; J. Jørgensen fra Aarhuus med Brænde; J. Jørgensen fra Aarhuus med Brænde; J. Jørgensen fra Aarhuus med Brænde; J. Jørgensen fra Aarhuus med Brænde; J. Jørgensen fra Aarhuus med Brænde; J. Jørgensen fra Aarhuus med Brænde; J. Jørgensen fra Aarhuus med Br",
+          "full_text": "Jndkomne og udgangne Skippere. Den 3 September indkom følgende: H. Adolph fra Cappel med Rug, Oste, Smør og Gryn; N. Petersen, fra Prestøe med Brænde; J. Jørgensen fra Aarhuus med Brænde og Fedevare; J. Jørgensen fra Aalborg med Fedevare; J. Jørgensen fra Bandholm med Hvede; J. Jørgensen fra Aarhuus med Brænde; J. Jørgensen fra Aalborg med Fedevare; J. Jørgensen fra Aarhuus med Brænde; J. Jørgensen fra Aalborg med Fedevare; J. Jørgensen fra Aarhuus med Brænde; J. Jørgensen fra Aarhuus med Brænde; J. Jørgensen fra Aarhuus med Brænde; J. Jørgensen fra Aarhuus med Brænde; J. Jørgensen fra Aarhuus med Brænde; J. Jørgensen fra Aarhuus med Brænde; J. Jørgensen fra Aarhuus med Br"
+        },
+        {
+          "prompt": "J en anden Anmeldelse om samme Tildragelse gaaer det ud over Brandassistenten i Mariboe, som siges hverken at være mødt personlig eller med sin Vogn,",
+          "completion": "og derfor ikke kunde have nogen Kundskab om Jlden, førend han kom til Brandstedet, hvor han da strax ilede til Hielp.",
+          "full_text": "J en anden Anmeldelse om samme Tildragelse gaaer det ud over Brandassistenten i Mariboe, som siges hverken at være mødt personlig eller med sin Vogn, og derfor ikke kunde have nogen Kundskab om Jlden, førend han kom til Brandstedet, hvor han da strax ilede til Hielp."
+        },
+        {
+          "prompt": "Proclama. I Kraft af en kongelig allernaadigst Bevilling, saaledes lo dende: Vi Frederik den Sjette, af Guds Naade Konge til Danmark, de V",
+          "completion": "enders og Gothers, Hertug til Slesvig, Holsteen, Stormarn, Ditmarsken, Lauenborg og Oldenborg, gjøre vitterligt: At Vi, efter den af Skifteforvalteren i afdøde Kjøbmand og Planter John Goodchilds Stervbo, Os elskelig Kammerjunker og Skifteforvalter G. v. Schmidten af Vort Eiland St. Croix i America, herom allerunderdanigst gjorte Ansøgning og Begjæring, allernaadigst have bevilget og tilladt, saa og hermed bevilge og tillade, at han ved Proclama, sub poena præclusi & perpetui silentii, maa indkalde alle bemældte afdøde John Goodchilds Creditorer, saavel i Vort Rige og Vore Lande, som udenlandsboende, med Aar og Dags Varsel, fra den",
+          "full_text": "Proclama. I Kraft af en kongelig allernaadigst Bevilling, saaledes lo dende: Vi Frederik den Sjette, af Guds Naade Konge til Danmark, de Venders og Gothers, Hertug til Slesvig, Holsteen, Stormarn, Ditmarsken, Lauenborg og Oldenborg, gjøre vitterligt: At Vi, efter den af Skifteforvalteren i afdøde Kjøbmand og Planter John Goodchilds Stervbo, Os elskelig Kammerjunker og Skifteforvalter G. v. Schmidten af Vort Eiland St. Croix i America, herom allerunderdanigst gjorte Ansøgning og Begjæring, allernaadigst have bevilget og tilladt, saa og hermed bevilge og tillade, at han ved Proclama, sub poena præclusi & perpetui silentii, maa indkalde alle bemældte afdøde John Goodchilds Creditorer, saavel i Vort Rige og Vore Lande, som udenlandsboende, med Aar og Dags Varsel, fra den"
+        },
+        {
+          "prompt": "Fra Pressen ere udkomne: Tvende Prækener til Erindring af salig Jacob Hviid, fordum General Kirke-Jnspecteur, StiftsProvst i Sielland, Provst",
+          "completion": "over Sochelunds Herred og SognePræst til Frue Kirke i Kiøbenhavn, holdte i Frue Kirke over de sædvanlige Texter paa 15de Søndag efter Trinitatis den 5te September 1778, af hans Søn Johan Hviid, residerende Capellan til Frue Kirke; de faaes tilkiøbs hos Agent Gyldendal, i Silkegaden No. 66, for 12 s. paa Tryk= og 16 s. paa Skrivpapiir.",
+          "full_text": "Fra Pressen ere udkomne: Tvende Prækener til Erindring af salig Jacob Hviid, fordum General Kirke-Jnspecteur, StiftsProvst i Sielland, Provst over Sochelunds Herred og SognePræst til Frue Kirke i Kiøbenhavn, holdte i Frue Kirke over de sædvanlige Texter paa 15de Søndag efter Trinitatis den 5te September 1778, af hans Søn Johan Hviid, residerende Capellan til Frue Kirke; de faaes tilkiøbs hos Agent Gyldendal, i Silkegaden No. 66, for 12 s. paa Tryk= og 16 s. paa Skrivpapiir."
+        },
+        {
+          "prompt": "Lüttich, vom 15 Marz. Denen hiesigen Standen ist angekundiget worden, dassausser den Franzosischen Truppen welche hier durchgehen annoch 18 Bataillons in diesen",
+          "completion": "Landen einrücken sollen, und das die Franzosische Armee, welche sich in den Gegenden von Trier, Coblenz und Cölln versammelt, anf 60000 Mann bestee.",
+          "full_text": "Lüttich, vom 15 Marz. Denen hiesigen Standen ist angekundiget worden, dassausser den Franzosischen Truppen welche hier durchgehen annoch 18 Bataillons in diesen Landen einrücken sollen, und das die Franzosische Armee, welche sich in den Gegenden von Trier, Coblenz und Cölln versammelt, anf 60000 Mann bestee."
+        },
+        {
+          "prompt": "Jhvorvel jeg i min 21-aarige Virksomhed som Læge har gjort mig det til Regel med Rolighed at oversee, hvad Bagvaskelsen nu og da kan have",
+          "completion": "fundet for godt at tillægge mig, har jeg dog ikke kunnet taale, at der i det sidste Aar er bleven udspredt det Rygte, at jeg skulde have taget Penge for at anvise Patienter, hvor de kunde faae deres Sygdomme helbredede. Jeg har derfor fundet mig foranlediget til at erklære dette Rygte for aldeles usandt, og jeg tør haabe, at det ikke oftere vil blive gjentaget.",
+          "full_text": "Jhvorvel jeg i min 21-aarige Virksomhed som Læge har gjort mig det til Regel med Rolighed at oversee, hvad Bagvaskelsen nu og da kan have fundet for godt at tillægge mig, har jeg dog ikke kunnet taale, at der i det sidste Aar er bleven udspredt det Rygte, at jeg skulde have taget Penge for at anvise Patienter, hvor de kunde faae deres Sygdomme helbredede. Jeg har derfor fundet mig foranlediget til at erklære dette Rygte for aldeles usandt, og jeg tør haabe, at det ikke oftere vil blive gjentaget."
+        },
+        {
+          "prompt": "Tirsdagen den 27 Maj. No. 51. Schønheider, Konferenceraad Schulz paa egne og Basnæse Godses Bønders Vegne, contra Viw",
+          "completion": ". - Kammerherre Baron Lehn.",
+          "full_text": "Tirsdagen den 27 Maj. No. 51. Schønheider, Konferenceraad Schulz paa egne og Basnæse Godses Bønders Vegne, contra Viw. - Kammerherre Baron Lehn."
+        },
+        {
+          "prompt": "Fra Hamborgs Senat er udgivet et Stilbrev om een der, efter en udenlandsk Magts Begjering, arresteret og nu bortrømt Statsfange, Jtaliener",
+          "completion": "en, Grev Moroni, der er født i Mayland, og derfra er kommen til Hamborg, hvor han har tjent som Kjøbmand, og derpaa er bleven ansat som Konsul for de italienske Stater. Han er dømt til 10 Aars Fængsel, og derpaa at forvises Landet.",
+          "full_text": "Fra Hamborgs Senat er udgivet et Stilbrev om een der, efter en udenlandsk Magts Begjering, arresteret og nu bortrømt Statsfange, Jtalieneren, Grev Moroni, der er født i Mayland, og derfra er kommen til Hamborg, hvor han har tjent som Kjøbmand, og derpaa er bleven ansat som Konsul for de italienske Stater. Han er dømt til 10 Aars Fængsel, og derpaa at forvises Landet."
+        },
+        {
+          "prompt": "Den 6te October om Aftenen blev Sundhedsbadet Toplitz ved Trentschin, i Ungarn, hiemsøgt af et frygtelige Uveir, som ved Midnat entes med",
+          "completion": "en frygtelig Storm, der ledsagedes af en saa heftig Regn, at Vandet i et Øieblik steeg 3 Fod. Jnden et Qvarteer vare alle Badehusene, der vare byggede af Træ, bortskyllede, og det var med Nød og Neppe at man kunde redde de deri værende Badegjæster.",
+          "full_text": "Den 6te October om Aftenen blev Sundhedsbadet Toplitz ved Trentschin, i Ungarn, hiemsøgt af et frygtelige Uveir, som ved Midnat entes med en frygtelig Storm, der ledsagedes af en saa heftig Regn, at Vandet i et Øieblik steeg 3 Fod. Jnden et Qvarteer vare alle Badehusene, der vare byggede af Træ, bortskyllede, og det var med Nød og Neppe at man kunde redde de deri værende Badegjæster."
+        },
+        {
+          "prompt": "Befordringer og Afgang. Under det danske Cancellie: Den 6te Februar er Cand. juris K. L. Knudsen beskikket til Copiist i Landsover= samt Hof= og St",
+          "completion": "adsrettens Justitscontoir. Den 8de, Sognepræst for Høiberg og Elsborg Menigheder i Aarhuus Stift, J. H. Stabell, til tillige at være Provst for Lysgaard, Hids og Houlberg Herreder i Viborg Amt, og Sognepræst for Vestervig og Agger Menigheder i Aalborg Stift, J. P. C. Hübertz, til tillige at være Provst for Hassing og Refs Herreder i samme Stift.",
+          "full_text": "Befordringer og Afgang. Under det danske Cancellie: Den 6te Februar er Cand. juris K. L. Knudsen beskikket til Copiist i Landsover= samt Hof= og Stadsrettens Justitscontoir. Den 8de, Sognepræst for Høiberg og Elsborg Menigheder i Aarhuus Stift, J. H. Stabell, til tillige at være Provst for Lysgaard, Hids og Houlberg Herreder i Viborg Amt, og Sognepræst for Vestervig og Agger Menigheder i Aalborg Stift, J. P. C. Hübertz, til tillige at være Provst for Hassing og Refs Herreder i samme Stift."
+        },
+        {
+          "prompt": "De som have at fordre i Stervboen efter afg. Sivert Jørgensen Lind, Matros, som har fahret med Skibet Grev Ernst von Schimmelmann, indkaldes herved",
+          "completion": "med 12 Ugers Varsel, for at anmelde deres Fordringer i Hof= og Stads=Rettens Skifte=Commission; saa indkaldes og Arvingerne med lovlig Varsel, for at lagttage deres Ret under Skiftet.",
+          "full_text": "De som have at fordre i Stervboen efter afg. Sivert Jørgensen Lind, Matros, som har fahret med Skibet Grev Ernst von Schimmelmann, indkaldes herved med 12 Ugers Varsel, for at anmelde deres Fordringer i Hof= og Stads=Rettens Skifte=Commission; saa indkaldes og Arvingerne med lovlig Varsel, for at lagttage deres Ret under Skiftet."
+        },
+        {
+          "prompt": "Stokholm, den 28 Aug. Den Kongel. Franske Marechal de Camp, Hr. de la Touche, som var kommen her, at udrette en Commmission paa hans Hofs vegne",
+          "completion": ", er igien reyst herfra tilbage.",
+          "full_text": "Stokholm, den 28 Aug. Den Kongel. Franske Marechal de Camp, Hr. de la Touche, som var kommen her, at udrette en Commmission paa hans Hofs vegne, er igien reyst herfra tilbage."
+        },
+        {
+          "prompt": "Efter Reqvisition fra Odense Kjøbstads Toldkammer, bliver Onsdagen den 20 August næstkommende, Formiddag Kl. 8 1/2, afholdt",
+          "completion": "offentlig Auction i Gaarden No. 289 paa Vestergade over endeel confiskerede Manufacturvarer, bestaaende af Klæde, Bomuldstøier, Sirts, Merinos, Bomulds= og Silketørklæder, Silkebaand, Bomuldsgarn, Kniplinger, Bændler, Tvist, Bomulds= og Silke=Handsker, m. m.; hvilket herved bekjendtgjøres til Lysthavendes Efterretning. Odense Auctionscontoir den 12 August 1811. Reimuth.",
+          "full_text": "Efter Reqvisition fra Odense Kjøbstads Toldkammer, bliver Onsdagen den 20 August næstkommende, Formiddag Kl. 8 1/2, afholdt offentlig Auction i Gaarden No. 289 paa Vestergade over endeel confiskerede Manufacturvarer, bestaaende af Klæde, Bomuldstøier, Sirts, Merinos, Bomulds= og Silketørklæder, Silkebaand, Bomuldsgarn, Kniplinger, Bændler, Tvist, Bomulds= og Silke=Handsker, m. m.; hvilket herved bekjendtgjøres til Lysthavendes Efterretning. Odense Auctionscontoir den 12 August 1811. Reimuth."
+        },
+        {
+          "prompt": "J Følge det kongelige danske Cancellies Resolution af 5 Junii 1802 er det mig tilladt, efter min Begjæring, here ter at holde Faaborg Byeting",
+          "completion": "om Onsdagen, istedet for hidtil om Torsdagen, hvilket herved bekjendtgjøres til alle Vedkommendes Efterretning. Faaborg den 1ste Januar 1803. Jørgensen.",
+          "full_text": "J Følge det kongelige danske Cancellies Resolution af 5 Junii 1802 er det mig tilladt, efter min Begjæring, here ter at holde Faaborg Byeting om Onsdagen, istedet for hidtil om Torsdagen, hvilket herved bekjendtgjøres til alle Vedkommendes Efterretning. Faaborg den 1ste Januar 1803. Jørgensen."
+        },
+        {
+          "prompt": "I Hindsbergs Skoe= og Støvle=Udsalg, paa Amagertorv 44, ligefor lille Helliggeiststræde, bekommes fine, og stær",
+          "completion": "ke Vellingtonsstøvler fra 14 til 16 mk. Parret, Støvlefødder, fra 10 til 12 mk., Fedtlæders=Dameskoe 5 a 6 mk.",
+          "full_text": "I Hindsbergs Skoe= og Støvle=Udsalg, paa Amagertorv 44, ligefor lille Helliggeiststræde, bekommes fine, og stærke Vellingtonsstøvler fra 14 til 16 mk. Parret, Støvlefødder, fra 10 til 12 mk., Fedtlæders=Dameskoe 5 a 6 mk."
+        },
+        {
+          "prompt": "Fra de nordiske Riger ere to ubehagelige Efterretninger indløbne fra Sverrig at det tegner til at Rugen vil mislykkes, da den lider af Natte frosti For",
+          "completion": "bindelse med Tørke, og fra Norge, at der er udbrudt en smitsom Sygdom iblandt Hestene, som er bragt dertil fra Sverrig.",
+          "full_text": "Fra de nordiske Riger ere to ubehagelige Efterretninger indløbne fra Sverrig at det tegner til at Rugen vil mislykkes, da den lider af Natte frosti Forbindelse med Tørke, og fra Norge, at der er udbrudt en smitsom Sygdom iblandt Hestene, som er bragt dertil fra Sverrig."
+        },
+        {
+          "prompt": "Ved Hamborg er Floden den 3die d. M. steget saa høit under en Storm af N. V., at Man ikke har oplevet Sligt i de sidste 15 Aar. Det",
+          "completion": "var et frygteligt Syn at see de mange Skibe, som laae i Havnen, at drive omkring, og det var med Nød og Neppe, at Man kunde redde dem.",
+          "full_text": "Ved Hamborg er Floden den 3die d. M. steget saa høit under en Storm af N. V., at Man ikke har oplevet Sligt i de sidste 15 Aar. Det var et frygteligt Syn at see de mange Skibe, som laae i Havnen, at drive omkring, og det var med Nød og Neppe, at Man kunde redde dem."
+        },
+        {
+          "prompt": "Den Person Olle Christian Winther, som forhen har været Kiøbmand i Hiøring, og som hos mig undertegnede logerte fra den 16 April til 21 Septb. forrige A",
+          "completion": "argang, og derfra medtog sit Tøi, uden at betale hvad han var mig skyldig, indkaldes herved at indfinde sig hos mig inden 6 Uger fra Dato, for at betale hvad han er mig skyldig, og modtage sit Tøi, da jeg i andet Fald lader det stille til offentlig Auction, og for det Manglende forbeholder mig min Ret. Aalborg den 10 Januarii 1798. Jens Christensen, boendes i Kattesundet.",
+          "full_text": "Den Person Olle Christian Winther, som forhen har været Kiøbmand i Hiøring, og som hos mig undertegnede logerte fra den 16 April til 21 Septb. forrige Aargang, og derfra medtog sit Tøi, uden at betale hvad han var mig skyldig, indkaldes herved at indfinde sig hos mig inden 6 Uger fra Dato, for at betale hvad han er mig skyldig, og modtage sit Tøi, da jeg i andet Fald lader det stille til offentlig Auction, og for det Manglende forbeholder mig min Ret. Aalborg den 10 Januarii 1798. Jens Christensen, boendes i Kattesundet."
+        },
+        {
+          "prompt": "En fra Norge, der ved Pennen har conditioneret hos Embedsmænd, hvorom gode Skudsmaale kan forevises, søger at blive antagen som Skriverdreng eller Tiener",
+          "completion": "hos en Embedsmand, helst paa Landet. Nærmere Underretning faaes i Bogtrykkeriet.",
+          "full_text": "En fra Norge, der ved Pennen har conditioneret hos Embedsmænd, hvorom gode Skudsmaale kan forevises, søger at blive antagen som Skriverdreng eller Tiener hos en Embedsmand, helst paa Landet. Nærmere Underretning faaes i Bogtrykkeriet."
+        },
+        {
+          "prompt": "J Silkegaden Nr. 65 første Sal er en Condition ledig for en rask Pige som kan forevise gode Attester, og kan forestaae en Vask og lave god daglig Mad",
+          "completion": ".",
+          "full_text": "J Silkegaden Nr. 65 første Sal er en Condition ledig for en rask Pige som kan forevise gode Attester, og kan forestaae en Vask og lave god daglig Mad."
+        },
+        {
+          "prompt": "J disse Dage er i Nakskov født tvende uægte Drengebørn, hvoraf det ene havde fire Tænder, to oven og to neden i Munden, og i",
+          "completion": "ngen paa Hagen.",
+          "full_text": "J disse Dage er i Nakskov født tvende uægte Drengebørn, hvoraf det ene havde fire Tænder, to oven og to neden i Munden, og ingen paa Hagen."
+        },
+        {
+          "prompt": "Ved Proclama, som vil blive læst snarest muligt saavel ved vedkommende B underret, som ved den Kongelige Lands Overret i Viborg, ere alle de, som formene",
+          "completion": "at have noget at fordre i Stervboet efter afdøde Gaardmand Jens Jensen af Søebye, under Møgelkjær Gods i Veile Amt, indkaldte med 12 Ugers Varsel, til for undertegnede Skifteforvalter at anmelde og beviisliggjøre deres Fordringer. Ved samme Proclama ere den Afdødes Arvinger med lovligt Varsel indkaldte til at legitimere deres Arveret og iagttage deres Tarv under Boets Behandling; hvilket herved endvidere bekiendtgiøres. Møgelkjær pr. Veile, den 29de Juni 1834. S. C. Petersen.",
+          "full_text": "Ved Proclama, som vil blive læst snarest muligt saavel ved vedkommende B underret, som ved den Kongelige Lands Overret i Viborg, ere alle de, som formene at have noget at fordre i Stervboet efter afdøde Gaardmand Jens Jensen af Søebye, under Møgelkjær Gods i Veile Amt, indkaldte med 12 Ugers Varsel, til for undertegnede Skifteforvalter at anmelde og beviisliggjøre deres Fordringer. Ved samme Proclama ere den Afdødes Arvinger med lovligt Varsel indkaldte til at legitimere deres Arveret og iagttage deres Tarv under Boets Behandling; hvilket herved endvidere bekiendtgiøres. Møgelkjær pr. Veile, den 29de Juni 1834. S. C. Petersen."
+        },
+        {
+          "prompt": "Jfølge Reqvisition af Procurator Thorup i Skive, paa vedkommende Udlægshavers Vegne, bliver den Gaardmand Jens Pedersen tilhørende Ga",
+          "completion": "ard, Østergaard i Gjøttrup Sogn, med tilliggende Eiendomme, af Hartkorn 5 Tdr. 1 Skp. 2 Fdkr. 1 Alb., stillet til Bortsalg ved 3de offentlige Auctioner, der afholdes: 1ste Auction Torsdagen den 6te Juni førstkommende, 2den Auction Torsdagen den 20de samme Maaned, og 3die Auction Torsdagen den 4de Juli førstkommende, hver Dags Formiddag Klokken 10. De 2de første Auctioner afholdes paa Raadstuen i Skive, og den 3die Auction i Gaarden selv. Hvilket herved, overeensstemmende med Placaten af 22de April 1817, bekjendtgjøres. Bye- og Herreds-Contoiret i Skive, den 8de",
+          "full_text": "Jfølge Reqvisition af Procurator Thorup i Skive, paa vedkommende Udlægshavers Vegne, bliver den Gaardmand Jens Pedersen tilhørende Gaard, Østergaard i Gjøttrup Sogn, med tilliggende Eiendomme, af Hartkorn 5 Tdr. 1 Skp. 2 Fdkr. 1 Alb., stillet til Bortsalg ved 3de offentlige Auctioner, der afholdes: 1ste Auction Torsdagen den 6te Juni førstkommende, 2den Auction Torsdagen den 20de samme Maaned, og 3die Auction Torsdagen den 4de Juli førstkommende, hver Dags Formiddag Klokken 10. De 2de første Auctioner afholdes paa Raadstuen i Skive, og den 3die Auction i Gaarden selv. Hvilket herved, overeensstemmende med Placaten af 22de April 1817, bekjendtgjøres. Bye- og Herreds-Contoiret i Skive, den 8de"
+        },
+        {
+          "prompt": "Proclama. J allerunderdanigst Følge af H. Kongel. Majestæts allernaadigste Bevilling, saa lydende: Vi Christian den Syvende, af Gud",
+          "completion": "Naade Konge til Danmark og Norge, de Venders og Gothers, Hertug udi Slesvig, Holsteen, Stormarn, Dytmersken og Oldenborg, giøre alle vitterligt: at Vi, efter Os elskelig Hr. Henrich Bille, Ridder, Vores Geheime=Conferentsraad og Stiftsbefalingsmand over Vore Lande Fyen og Langeland, samt Amtmand over Odense, Dalum, St. Knuds og Ruggaards Amter, som Skifteforvalter efter afg. Frue Anna Pentz, forrige Kammerherre og Commandeur Capitain af Vores Escadre i Vestindien, afg. Carl von Bülows Efterleverske paa Søeboe, i bemeldte Fyen, hans herom allerunderdanigst gjorte Ansøgning og Begiering, allernaadigst have bevilget og tilladt, saa og hermed",
+          "full_text": "Proclama. J allerunderdanigst Følge af H. Kongel. Majestæts allernaadigste Bevilling, saa lydende: Vi Christian den Syvende, af Gud Naade Konge til Danmark og Norge, de Venders og Gothers, Hertug udi Slesvig, Holsteen, Stormarn, Dytmersken og Oldenborg, giøre alle vitterligt: at Vi, efter Os elskelig Hr. Henrich Bille, Ridder, Vores Geheime=Conferentsraad og Stiftsbefalingsmand over Vore Lande Fyen og Langeland, samt Amtmand over Odense, Dalum, St. Knuds og Ruggaards Amter, som Skifteforvalter efter afg. Frue Anna Pentz, forrige Kammerherre og Commandeur Capitain af Vores Escadre i Vestindien, afg. Carl von Bülows Efterleverske paa Søeboe, i bemeldte Fyen, hans herom allerunderdanigst gjorte Ansøgning og Begiering, allernaadigst have bevilget og tilladt, saa og hermed"
+        },
+        {
+          "prompt": "Augsb. Allg. Zeitung\" Nr. 20 yttrer om den Mistydning\", det Ussing'ske Forslag efter Proponentens Mening har været udsat for, at U",
+          "completion": "ssing er en Mand, der er vant til at møde Modstand, og at han derfor ikke er bleven forskrækket over denne, men har taget den med Rolighed, og derfor er det, at han har fundet det nødvendigt at tage til Gjenmæle. Det er derfor ikke at undres over, at han har fundet det nødvendigt at tage til Gjenmæle, men det er at undres over, at han har fundet det nødvendigt at tage til Gjenmæle paa den Maade, som han har gjort. Han har nemlig fundet det nødvendigt at tage til Gjenmæle ved at erklære, at han ikke har tænkt",
+          "full_text": "Augsb. Allg. Zeitung\" Nr. 20 yttrer om den Mistydning\", det Ussing'ske Forslag efter Proponentens Mening har været udsat for, at Ussing er en Mand, der er vant til at møde Modstand, og at han derfor ikke er bleven forskrækket over denne, men har taget den med Rolighed, og derfor er det, at han har fundet det nødvendigt at tage til Gjenmæle. Det er derfor ikke at undres over, at han har fundet det nødvendigt at tage til Gjenmæle, men det er at undres over, at han har fundet det nødvendigt at tage til Gjenmæle paa den Maade, som han har gjort. Han har nemlig fundet det nødvendigt at tage til Gjenmæle ved at erklære, at han ikke har tænkt"
+        },
+        {
+          "prompt": "16 Pakker ungersk Debreziner Tobak 34 Fade og 12 Tönder St. Croix Rom. hvorover de trykte Fortegnelser faaes og Varene forevises for",
+          "completion": "inden Auctionen af Mæglerne Hyllested & Candil.",
+          "full_text": "16 Pakker ungersk Debreziner Tobak 34 Fade og 12 Tönder St. Croix Rom. hvorover de trykte Fortegnelser faaes og Varene forevises forinden Auctionen af Mæglerne Hyllested & Candil."
+        },
+        {
+          "prompt": "Borgemestere og Raad i Staden Flensborg bekiendtgiøre hermed, at den for kort Tid siden afdøde her værende Borgers og Kiøbmand Peter Preus",
+          "completion": "ses efterladte Enke cum Curatore har forlanget af dem, at de vilde antage sig hendes Boe, og efter foregaaende Registration og Vurdering udlevere hende samme igien, imod at hun betaler al den paa Boet hæftende Gield, og de paa sammes Registrering og Vurdering anvendte Omkostninger, hvilken Ansøgning ogsaa af dem er bleven bevilget; thi blive alle og enhver, som formeene sig at have nogen Fordring paa bemelte Boe, samme hidrøre en qvocunqve capite vel causa det end maatte være, herved indkaldte, at de inden 12 Uger a Dato Publicationis hujus Proclamatis, under Straf af Præclusion, vedbørlig angive deres Fordringer, Prætensa og Tilta",
+          "full_text": "Borgemestere og Raad i Staden Flensborg bekiendtgiøre hermed, at den for kort Tid siden afdøde her værende Borgers og Kiøbmand Peter Preusses efterladte Enke cum Curatore har forlanget af dem, at de vilde antage sig hendes Boe, og efter foregaaende Registration og Vurdering udlevere hende samme igien, imod at hun betaler al den paa Boet hæftende Gield, og de paa sammes Registrering og Vurdering anvendte Omkostninger, hvilken Ansøgning ogsaa af dem er bleven bevilget; thi blive alle og enhver, som formeene sig at have nogen Fordring paa bemelte Boe, samme hidrøre en qvocunqve capite vel causa det end maatte være, herved indkaldte, at de inden 12 Uger a Dato Publicationis hujus Proclamatis, under Straf af Præclusion, vedbørlig angive deres Fordringer, Prætensa og Tilta"
+        },
+        {
+          "prompt": "I Sagen Nr. 1/12 Professor Bendz contra Exam. juris Alstrup blev den 4de April 1842 afsagt Dom saalydende: Thiekiendes for Ret De af",
+          "completion": "Jndstævnte, Exam. juris Alstrup, om Citanten, Professor Bendz, i Bladet \"Diversal Nr. 11, 15 og 16 for Aaret 1840 brugte fornærmelige Udladelser bør døde og magtesløse at være, og ikke komme Citanten til Skade paa Ære, gode Navn og Rygte i nogen Maade, og bør Jndstævnte for sit i saa Henseende udviste Forhold bøde sine 3 Mark, samt være den i Forordningen af 27de Septbr. 1799 § 20 fastsatte Censur undergiven sin Livstid. Processens Omkostninger betaler Jndstævnte til Citanten med 25 Rbd. Sølv. At efterkommes inden 15 Dage efter denne Doms lovlige Forkyndelse",
+          "full_text": "I Sagen Nr. 1/12 Professor Bendz contra Exam. juris Alstrup blev den 4de April 1842 afsagt Dom saalydende: Thiekiendes for Ret De af Jndstævnte, Exam. juris Alstrup, om Citanten, Professor Bendz, i Bladet \"Diversal Nr. 11, 15 og 16 for Aaret 1840 brugte fornærmelige Udladelser bør døde og magtesløse at være, og ikke komme Citanten til Skade paa Ære, gode Navn og Rygte i nogen Maade, og bør Jndstævnte for sit i saa Henseende udviste Forhold bøde sine 3 Mark, samt være den i Forordningen af 27de Septbr. 1799 § 20 fastsatte Censur undergiven sin Livstid. Processens Omkostninger betaler Jndstævnte til Citanten med 25 Rbd. Sølv. At efterkommes inden 15 Dage efter denne Doms lovlige Forkyndelse"
+        },
+        {
+          "prompt": "Hos Madame Godiche paa Gammel-Torv Nr. 141 er tilKiøbs: Berømte ældre og nyere Lærdes Levnets=Beskrivelser",
+          "completion": ", samlede ved H. J. Birch. Første Binds første Samling, 12 1/2 Ark i stor Octav, Trykpapiir 3 Mk. Samme faaes og hos Udgiveren i Skindergaden No. 33.",
+          "full_text": "Hos Madame Godiche paa Gammel-Torv Nr. 141 er tilKiøbs: Berømte ældre og nyere Lærdes Levnets=Beskrivelser, samlede ved H. J. Birch. Første Binds første Samling, 12 1/2 Ark i stor Octav, Trykpapiir 3 Mk. Samme faaes og hos Udgiveren i Skindergaden No. 33."
+        },
+        {
+          "prompt": "Siællandske Avis, Den Vest eller: Ugeblad. Slagelse. den landske Historie. uden- og indenfor tigste Nyeheder. Dagens vig Redigeret af",
+          "completion": "Hr. Pastor Ridder Bastholm. Trykt og forlagt af Peter Magnus. 15de Aarg. Løverdagen den 1. Mai 1829. No. 35. Med Kongelig allernaadigst Tilladelse, at forsendes med Brevposten i Danmark og Hertugdømmene.",
+          "full_text": "Siællandske Avis, Den Vest eller: Ugeblad. Slagelse. den landske Historie. uden- og indenfor tigste Nyeheder. Dagens vig Redigeret af Hr. Pastor Ridder Bastholm. Trykt og forlagt af Peter Magnus. 15de Aarg. Løverdagen den 1. Mai 1829. No. 35. Med Kongelig allernaadigst Tilladelse, at forsendes med Brevposten i Danmark og Hertugdømmene."
+        },
+        {
+          "prompt": "J Adelgaden No. 298, skraaes for Helsingøersgaden, hvor de 3 forgyldte Ruller sees over Boutiken, er Soulon Thee 24, Mk",
+          "completion": ". Pd., Tchye 20 Mk. Pd., Haysan 12 Mk. Pd., Pecco 12 Mk. Pd., Patri Zion Zioung 10 Mk. Pd., Zion Zioung 9 Mk. Pd., Kampoy 6 a 8 Mk. Pd., Congo 4, 5 a 6 Mk. Pd., meget fiin 7 Mk. Pd., Theebohe 2 Mk. 4 s. Pd., meget fiin 2 Mk. 8 s. Pd., tages i Kasser og Lpd. viis, da bedre Kiøb, Cardemommer 8 Mk. Pd., Lpd. viis 7 Mk., sort Peber 2 Mk. 8 s. Pd., meget fiin 3 Mk. Pd., Nelliker 8 Mk. Pd., hele Muskater 12 a 16 s. Loddet, i store Partier bedre Kiøb, Saffran 12 Rdlr. Pd., tages 8 Pd.",
+          "full_text": "J Adelgaden No. 298, skraaes for Helsingøersgaden, hvor de 3 forgyldte Ruller sees over Boutiken, er Soulon Thee 24, Mk. Pd., Tchye 20 Mk. Pd., Haysan 12 Mk. Pd., Pecco 12 Mk. Pd., Patri Zion Zioung 10 Mk. Pd., Zion Zioung 9 Mk. Pd., Kampoy 6 a 8 Mk. Pd., Congo 4, 5 a 6 Mk. Pd., meget fiin 7 Mk. Pd., Theebohe 2 Mk. 4 s. Pd., meget fiin 2 Mk. 8 s. Pd., tages i Kasser og Lpd. viis, da bedre Kiøb, Cardemommer 8 Mk. Pd., Lpd. viis 7 Mk., sort Peber 2 Mk. 8 s. Pd., meget fiin 3 Mk. Pd., Nelliker 8 Mk. Pd., hele Muskater 12 a 16 s. Loddet, i store Partier bedre Kiøb, Saffran 12 Rdlr. Pd., tages 8 Pd."
+        },
+        {
+          "prompt": "Hs. Kgl. H. Prinds Christian siges fra Sorøe at agte sig til Fyen, og ventes til Sorgenfrie igjen den 20de Junii. Han skal imidlertid",
+          "completion": "have bestemt at ville bivaane det store Skyttelaug, som i denne Tid afholdes i Slagelse.",
+          "full_text": "Hs. Kgl. H. Prinds Christian siges fra Sorøe at agte sig til Fyen, og ventes til Sorgenfrie igjen den 20de Junii. Han skal imidlertid have bestemt at ville bivaane det store Skyttelaug, som i denne Tid afholdes i Slagelse."
+        },
+        {
+          "prompt": "Ved den ifølge Pl. af 31 August 1813 nedsatte Rets Dom af 2 Juli 1844 er Ole Johansen Skandsgaard for de af ham i Straffean",
+          "completion": "lægget paa Livstid udstaaede Forbrydelser dømt til at have sit Liv forbrudt. Dom: \"Ole Johansen Skandsgaard bør hensættes til Arbeide i Rasphuset i 3 Aar. Nr. 203. - Ldsoprykt. Nyboe som Actor, contra Arrestanten, Jens Christian Christensen (Ldsoprykt. Holm), tiltalt for Tyverie og ved Hjerm og Ginding Herreders Extraret dømt til at hensættes til Forbedringshuusarbeide i Viborg Tugt- og Forbedringshuus i 1 Aar. - Dom: \"Herredstingsdommen bør ved Magt at stande. Nr. 204. - Ldsoprykt. Lykke som Actor, contra Arrestanten, Jens Christian Christensen (Ldsoprykt. Nyboe), tiltalt for Tyverie og ved Hjerm o",
+          "full_text": "Ved den ifølge Pl. af 31 August 1813 nedsatte Rets Dom af 2 Juli 1844 er Ole Johansen Skandsgaard for de af ham i Straffeanlægget paa Livstid udstaaede Forbrydelser dømt til at have sit Liv forbrudt. Dom: \"Ole Johansen Skandsgaard bør hensættes til Arbeide i Rasphuset i 3 Aar. Nr. 203. - Ldsoprykt. Nyboe som Actor, contra Arrestanten, Jens Christian Christensen (Ldsoprykt. Holm), tiltalt for Tyverie og ved Hjerm og Ginding Herreders Extraret dømt til at hensættes til Forbedringshuusarbeide i Viborg Tugt- og Forbedringshuus i 1 Aar. - Dom: \"Herredstingsdommen bør ved Magt at stande. Nr. 204. - Ldsoprykt. Lykke som Actor, contra Arrestanten, Jens Christian Christensen (Ldsoprykt. Nyboe), tiltalt for Tyverie og ved Hjerm o"
+        },
+        {
+          "prompt": "Mandagen den 27de Septbr. næstkommende om Eftermiddagen Kl. 2 bliver ved offentlig Auction i Giestgiver Ramsings iboende Gaard solgt endeel til",
+          "completion": "hugget Bygningstømmer, bestaaende af Fodstykker, Stolper, Løsholter og Stiver, samt endeel tørre Fyrreplanker, nogle tørre Egeplanker, endeel Ege= og Fyrretømmer, et Partie Muursteen, nogle tørre Fiel, et Partie røde Tagsteen, et Partie røde Muursteen, et Partie Kalk, et Partie Tørv, et Partie Brædder, et Partie rød Viin, et Partie Rom, et Partie Sirup, et Partie Puddersukker, et Partie Kaffebønner, et Partie Thee, et Partie Riisengryn, et Partie Hør, et Partie Hørblaar, et Partie Humle, et Partie Sollelæde",
+          "full_text": "Mandagen den 27de Septbr. næstkommende om Eftermiddagen Kl. 2 bliver ved offentlig Auction i Giestgiver Ramsings iboende Gaard solgt endeel tilhugget Bygningstømmer, bestaaende af Fodstykker, Stolper, Løsholter og Stiver, samt endeel tørre Fyrreplanker, nogle tørre Egeplanker, endeel Ege= og Fyrretømmer, et Partie Muursteen, nogle tørre Fiel, et Partie røde Tagsteen, et Partie røde Muursteen, et Partie Kalk, et Partie Tørv, et Partie Brædder, et Partie rød Viin, et Partie Rom, et Partie Sirup, et Partie Puddersukker, et Partie Kaffebønner, et Partie Thee, et Partie Riisengryn, et Partie Hør, et Partie Hørblaar, et Partie Humle, et Partie Sollelæde"
+        },
+        {
+          "prompt": "Ledigt Forster-Embede. Paa et betydeligt Gods, hvortil hører store Skove, søges under fordeelagtig Betingelser en Førster, som bes",
+          "completion": "idder de fornødne Kundskaber i Forst- og Jagtvæsenet. De, som maatte attraae denne Post, ville behage at henvende sig til Hr. Kammerraad og Forstinspecteur Møller i Hirschholm, som meddeler nærmere Underretning.",
+          "full_text": "Ledigt Forster-Embede. Paa et betydeligt Gods, hvortil hører store Skove, søges under fordeelagtig Betingelser en Førster, som besidder de fornødne Kundskaber i Forst- og Jagtvæsenet. De, som maatte attraae denne Post, ville behage at henvende sig til Hr. Kammerraad og Forstinspecteur Møller i Hirschholm, som meddeler nærmere Underretning."
+        },
+        {
+          "prompt": "J Følge Kongelig allernaadigst Bevilling af 7de Maji 1813, læst i Retten Mandag den 17de dennes, indkaldes herved",
+          "completion": ", sub poena præclusi & perpetui silentii, med Aar og Dags Varsel, alle de, som formene sig at have noget at fordre efter min afdøde Mand, forrige Grosserer og Tømmerhandler Hans Peter Neergaard, med deres Paastand at fremkomme, og saadant deres havende Krav inden foreskrevne Tids Forløb for mig at anmelde og beviisliggiøre. Kiøbenhavn, den 18de Junii 1813. Som Laugværge, Anne Marie Neergaard, fød Lund. R. Kirketerp. boende i store Grønnegade No. 273.",
+          "full_text": "J Følge Kongelig allernaadigst Bevilling af 7de Maji 1813, læst i Retten Mandag den 17de dennes, indkaldes herved, sub poena præclusi & perpetui silentii, med Aar og Dags Varsel, alle de, som formene sig at have noget at fordre efter min afdøde Mand, forrige Grosserer og Tømmerhandler Hans Peter Neergaard, med deres Paastand at fremkomme, og saadant deres havende Krav inden foreskrevne Tids Forløb for mig at anmelde og beviisliggiøre. Kiøbenhavn, den 18de Junii 1813. Som Laugværge, Anne Marie Neergaard, fød Lund. R. Kirketerp. boende i store Grønnegade No. 273."
+        },
+        {
+          "prompt": "Og fra Dødninghaven lyder: Hvo veed hvor nær mig er min Ende Gak til Gud, Du fromme Sjæl, Som forlod vort Jorderige, Under Kistens",
+          "completion": "tunge Vægt, Hvil da født i Gravens Giemme, Til Du kaldes frem igien, Naar Basunen skal forkynde, At den store Dommedag, Kommer nær, og at vi skulle Alle staae for Herrens Domstol.",
+          "full_text": "Og fra Dødninghaven lyder: Hvo veed hvor nær mig er min Ende Gak til Gud, Du fromme Sjæl, Som forlod vort Jorderige, Under Kistens tunge Vægt, Hvil da født i Gravens Giemme, Til Du kaldes frem igien, Naar Basunen skal forkynde, At den store Dommedag, Kommer nær, og at vi skulle Alle staae for Herrens Domstol."
+        },
+        {
+          "prompt": "Proclama. Ja forhen værende Procurator Niels Egidius Gasmann paa Gaarden nordre Foss udi Gierpen Præstegield i Bradsberg Amt, ved Døden er af",
+          "completion": "gaaet, og hans Boe af mig som Skifteforvalter taget under Behandling, saa bliver alle og enhver, som maatte have noget efter ham at fordre, herved med 12 Ugers Varsel indkaldte til at anmelde og beviisliggjøre deres Fordringer. Ligesaa bliver hans som ugift, forhen afdøde Mands Arvinger, nemlig: 1) Broderen afgangne Sognepræst til Gierpen Hr. Niels Gasmanns Børn, nemlig: a) Sønnen afgangne Jens Gasmanns Børn, hvoraf en Søn skal hedde Niels Gasmann, og opholde sig i Kiøbenhavn; en Datter, gift med Hr. Capitain v. Løwenthal i Frederichstad, og 3) en Datter, som skal være gift med en ved Navn H",
+          "full_text": "Proclama. Ja forhen værende Procurator Niels Egidius Gasmann paa Gaarden nordre Foss udi Gierpen Præstegield i Bradsberg Amt, ved Døden er afgaaet, og hans Boe af mig som Skifteforvalter taget under Behandling, saa bliver alle og enhver, som maatte have noget efter ham at fordre, herved med 12 Ugers Varsel indkaldte til at anmelde og beviisliggjøre deres Fordringer. Ligesaa bliver hans som ugift, forhen afdøde Mands Arvinger, nemlig: 1) Broderen afgangne Sognepræst til Gierpen Hr. Niels Gasmanns Børn, nemlig: a) Sønnen afgangne Jens Gasmanns Børn, hvoraf en Søn skal hedde Niels Gasmann, og opholde sig i Kiøbenhavn; en Datter, gift med Hr. Capitain v. Løwenthal i Frederichstad, og 3) en Datter, som skal være gift med en ved Navn H"
+        },
+        {
+          "prompt": "Concert. Det forenede Understøttelses=Selskab aarlige høitidelige Møde, som var berammet til den 5 Novbr. sidstleden, men blev uds",
+          "completion": "at, er nu berammet at holdes Torsdagen den 26 Novbr. førstkommende, om Eftermiddagen Kl. 5, i Selskabets Værelser paa Nytorv lige for Raadstuen Nr. 134.",
+          "full_text": "Concert. Det forenede Understøttelses=Selskab aarlige høitidelige Møde, som var berammet til den 5 Novbr. sidstleden, men blev udsat, er nu berammet at holdes Torsdagen den 26 Novbr. førstkommende, om Eftermiddagen Kl. 5, i Selskabets Værelser paa Nytorv lige for Raadstuen Nr. 134."
+        },
+        {
+          "prompt": "Fra Felttøgets Begyndelse have i udstaaet mange Besværligheder, I have aflagt Fienderne store Beviser paa Eders Mod, og Eders Sønver",
+          "completion": "have erhvervet sig et stort Navn. Jeg har derfor besluttet, at der skal uddeles Belønninger til dem, som have udmærket sig meest. Jeg har derfor befalet, at der skal uddeles et Ærestegn til de Officerer, som have udmærket sig meest. Det er et Sølvkors, som skal bæres paa venstre Side af Kiolen. Det skal bæres af alle Officerer, som have tjent i det mindste et Aar, og som have udmærket sig ved Tapperhed, ved at redde deres Mandskab, ved at redde de Saarede, ved at redde deres Vaaben, ved at redde deres Bagage, ved at r",
+          "full_text": "Fra Felttøgets Begyndelse have i udstaaet mange Besværligheder, I have aflagt Fienderne store Beviser paa Eders Mod, og Eders Sønver have erhvervet sig et stort Navn. Jeg har derfor besluttet, at der skal uddeles Belønninger til dem, som have udmærket sig meest. Jeg har derfor befalet, at der skal uddeles et Ærestegn til de Officerer, som have udmærket sig meest. Det er et Sølvkors, som skal bæres paa venstre Side af Kiolen. Det skal bæres af alle Officerer, som have tjent i det mindste et Aar, og som have udmærket sig ved Tapperhed, ved at redde deres Mandskab, ved at redde de Saarede, ved at redde deres Vaaben, ved at redde deres Bagage, ved at r"
+        },
+        {
+          "prompt": "J Henhold til allerhøieste Resolution af 12te October f. A., hvorved er bestemt, at foruden de i Forordningen af 1ste November 1805 §. 1",
+          "completion": ", 2 og 3, nævnte Personer, skulle ogsaa de, der ere ansatte ved Told- og Consumtionsvæsenet, være pligtige til at forsikkre deres Enker i den almindelige Enkekasse, skulle vi herved tjenstligst anmode Hr. Kammerherren om behageligen at ville paalægge de dem underordnede Embedsmænd, som ere ansatte ved Told- og Consumtionsvæsenet i det Dem anbetroede Amt, at forsikkre deres Enker i bemeldte Kasse, samt derhos at tilkjendegive Vedkommende, at de, som ikke efterkomme denne befaling, ville blive anseete efter de i fornævnte Forordning",
+          "full_text": "J Henhold til allerhøieste Resolution af 12te October f. A., hvorved er bestemt, at foruden de i Forordningen af 1ste November 1805 §. 1, 2 og 3, nævnte Personer, skulle ogsaa de, der ere ansatte ved Told- og Consumtionsvæsenet, være pligtige til at forsikkre deres Enker i den almindelige Enkekasse, skulle vi herved tjenstligst anmode Hr. Kammerherren om behageligen at ville paalægge de dem underordnede Embedsmænd, som ere ansatte ved Told- og Consumtionsvæsenet i det Dem anbetroede Amt, at forsikkre deres Enker i bemeldte Kasse, samt derhos at tilkjendegive Vedkommende, at de, som ikke efterkomme denne befaling, ville blive anseete efter de i fornævnte Forordning"
+        },
+        {
+          "prompt": "Fra den bing'ske Boghandel falbydes O. Syversens nyt opfundne Patent Papir, hvorpaa der kan skrives 100 Gange. En indbunden Skriver bog af",
+          "completion": "dette Papir koster 1 Rbd. 3 Mk.",
+          "full_text": "Fra den bing'ske Boghandel falbydes O. Syversens nyt opfundne Patent Papir, hvorpaa der kan skrives 100 Gange. En indbunden Skriver bog af dette Papir koster 1 Rbd. 3 Mk."
+        },
+        {
+          "prompt": "En dumdristig Tyv har om Middagen henimod Kl. 2 den 20de Septbr. sneget sig ind af en Kiøkkender og bortstiaalet en svær Sø",
+          "completion": "lv Potageskee, mrk. J. C. S. og A. C. S. 1790, samt 2de Spiseskeer, mrk. A. C. S. 1790, for Opdagelsen loves en Douceur af 20 Rd. i store Kongensgade 35 Lt. A. 1ste Sal.",
+          "full_text": "En dumdristig Tyv har om Middagen henimod Kl. 2 den 20de Septbr. sneget sig ind af en Kiøkkender og bortstiaalet en svær Sølv Potageskee, mrk. J. C. S. og A. C. S. 1790, samt 2de Spiseskeer, mrk. A. C. S. 1790, for Opdagelsen loves en Douceur af 20 Rd. i store Kongensgade 35 Lt. A. 1ste Sal."
+        },
+        {
+          "prompt": "Ved Proclama af Dags Dato, der vil blive læst i vedkommende Under- og Overretter, ere Alle og Enhver, som maatte have Noget at fordie efter afgangne",
+          "completion": "Gaardmand Jens Jensen af Søndertranders Bye, Fleskum Herred, Aalborg Amt, indkaldte med 12 Ugers Varsel til at anmelde og beviisliggjøre deres Fordringer for undertegnede Skifteforvalter. Hvilket herved endvidere bekjendtgjøres. Nibe, den 24de Januar 1835. Lynge.",
+          "full_text": "Ved Proclama af Dags Dato, der vil blive læst i vedkommende Under- og Overretter, ere Alle og Enhver, som maatte have Noget at fordie efter afgangne Gaardmand Jens Jensen af Søndertranders Bye, Fleskum Herred, Aalborg Amt, indkaldte med 12 Ugers Varsel til at anmelde og beviisliggjøre deres Fordringer for undertegnede Skifteforvalter. Hvilket herved endvidere bekjendtgjøres. Nibe, den 24de Januar 1835. Lynge."
+        },
+        {
+          "prompt": "Bladet Memorial Bordelais klager over de mange spanske Liberale, som i den senere Tid komme til Frankerig, og opfordrer Regjeringen til, at lade det Sted",
+          "completion": ", hvor de ankomme, erklære i Beleiringsstand.",
+          "full_text": "Bladet Memorial Bordelais klager over de mange spanske Liberale, som i den senere Tid komme til Frankerig, og opfordrer Regjeringen til, at lade det Sted, hvor de ankomme, erklære i Beleiringsstand."
+        },
+        {
+          "prompt": "Da det, af Committeen for en Dampskibsfart paa Liimfjorden, er vedtaget og kundgjort, at den alt forfaldne Prænumeration og de senere Af",
+          "completion": "drag paa Actier i Dampskibet Hebe, nu erlægges til Undertegnede, saa anmodes de ærede Actionairer om, inden 8 Dage fra Dato, at indbetale deres Restancer, da disse ellers ville blive inddrevne ved Søgsmaal. Aalborg, den 1ste Juni 1843. F. Wulff.",
+          "full_text": "Da det, af Committeen for en Dampskibsfart paa Liimfjorden, er vedtaget og kundgjort, at den alt forfaldne Prænumeration og de senere Afdrag paa Actier i Dampskibet Hebe, nu erlægges til Undertegnede, saa anmodes de ærede Actionairer om, inden 8 Dage fra Dato, at indbetale deres Restancer, da disse ellers ville blive inddrevne ved Søgsmaal. Aalborg, den 1ste Juni 1843. F. Wulff."
+        },
+        {
+          "prompt": "Stokholm, den 16 Novbr. Jgaar mellem Kl. 4 og 5 om Morgenen opkom her i det Kongelige Kammerrets=Huus paa Ridderholmen",
+          "completion": "en Jldebrand, som inden 2 Timer lagde det hele Huus i Aske. Jlden greb saa hastig om sig, at det ikke var mueligt at redde de der værende meget kostbare og vigtige Archiver, hvoriblandt der vare de vigtigste Papirer, som angik den nærværende Krig. Jlden skal være kommen af en Kakkelovn, som var bleven glemt at aftages.",
+          "full_text": "Stokholm, den 16 Novbr. Jgaar mellem Kl. 4 og 5 om Morgenen opkom her i det Kongelige Kammerrets=Huus paa Ridderholmen en Jldebrand, som inden 2 Timer lagde det hele Huus i Aske. Jlden greb saa hastig om sig, at det ikke var mueligt at redde de der værende meget kostbare og vigtige Archiver, hvoriblandt der vare de vigtigste Papirer, som angik den nærværende Krig. Jlden skal være kommen af en Kakkelovn, som var bleven glemt at aftages."
+        },
+        {
+          "prompt": "Auction. Torsdagen den 29de Martii førstkommende om Formiddagen 2 Kl. 10 Slet bliver udi Landstings Gaarden holdet offentlig Auction og til den",
+          "completion": "Høystbydende bortsolgt 2de sorte Vogn=Hopper, 2de Kiør, 2de Sviin, 2de Faar, 2de Kakkelovne, 2de Vogne, 1 Ploug, 1 Harre, 1 Tromle, 1 Slæde, 1 Par Høst=Lædder, 1 Par Heste=Lædder, 1 Par Heste=Lædder, 1 Par Heste=Lædder, 1 Par Heste=Lædder, 1 Par Heste=Lædder, 1 Par Heste=Lædder, 1 Par Heste=Lædder, 1 Par Heste=Lædder, 1 Par Heste=Lædder, 1 Par Heste=Lædder, 1 Par Heste=Lædder, 1 Par Heste=Lædder, 1 Par Heste=Lædder, 1 Par Heste=Lædder,",
+          "full_text": "Auction. Torsdagen den 29de Martii førstkommende om Formiddagen 2 Kl. 10 Slet bliver udi Landstings Gaarden holdet offentlig Auction og til den Høystbydende bortsolgt 2de sorte Vogn=Hopper, 2de Kiør, 2de Sviin, 2de Faar, 2de Kakkelovne, 2de Vogne, 1 Ploug, 1 Harre, 1 Tromle, 1 Slæde, 1 Par Høst=Lædder, 1 Par Heste=Lædder, 1 Par Heste=Lædder, 1 Par Heste=Lædder, 1 Par Heste=Lædder, 1 Par Heste=Lædder, 1 Par Heste=Lædder, 1 Par Heste=Lædder, 1 Par Heste=Lædder, 1 Par Heste=Lædder, 1 Par Heste=Lædder, 1 Par Heste=Lædder, 1 Par Heste=Lædder, 1 Par Heste=Lædder, 1 Par Heste=Lædder,"
+        },
+        {
+          "prompt": "Taxt, Hvorefter Slagterne her i Staden sig indtil videre have at rette: Det beste Stykke af en Oxe, nemlig Bryststykket, Høyribbene, R",
+          "completion": "umpestykket og Tyndstegen, skal sælges Pundet for 8 s. Hele Fierdinger, Pundet for 7 s. Resten af Oxen skal sælges smaahuggen, Pundet for 7 s. Kalvekiød, Pundet af Bagfierdingen for 12 s. Af Forfierdingen, Pundet for 11 s. Saltet eller sprængt Oxekiød sælges ligesom det færske. Svinekiød, Pundet for 8 s. (Frislagterne skal sælge Pundet 1 s. ringere.)",
+          "full_text": "Taxt, Hvorefter Slagterne her i Staden sig indtil videre have at rette: Det beste Stykke af en Oxe, nemlig Bryststykket, Høyribbene, Rumpestykket og Tyndstegen, skal sælges Pundet for 8 s. Hele Fierdinger, Pundet for 7 s. Resten af Oxen skal sælges smaahuggen, Pundet for 7 s. Kalvekiød, Pundet af Bagfierdingen for 12 s. Af Forfierdingen, Pundet for 11 s. Saltet eller sprængt Oxekiød sælges ligesom det færske. Svinekiød, Pundet for 8 s. (Frislagterne skal sælge Pundet 1 s. ringere.)"
+        },
+        {
+          "prompt": "J Søen, udfor Tømmerup Byes Fælled, paa AmagerLand, ere den 7de forrige Maaned biergede circa 2 Favne, Fyrre",
+          "completion": "brænde, som ere vurderede til 2 Rbd. Sedler pr. Favn. Eieren af disse Brænde indkaldes herved, i Overeensstemmelse med Forordningen af 12te Marts 1790, med Aar og Dags Varsel, sub poena præclusi & perpetui silentii, at mælde sig for mig og godtgiøre sin Eiendomsret. Siellands Stiftamtmandskab, den 1ste Juni 1822. F. Lowzow.",
+          "full_text": "J Søen, udfor Tømmerup Byes Fælled, paa AmagerLand, ere den 7de forrige Maaned biergede circa 2 Favne, Fyrrebrænde, som ere vurderede til 2 Rbd. Sedler pr. Favn. Eieren af disse Brænde indkaldes herved, i Overeensstemmelse med Forordningen af 12te Marts 1790, med Aar og Dags Varsel, sub poena præclusi & perpetui silentii, at mælde sig for mig og godtgiøre sin Eiendomsret. Siellands Stiftamtmandskab, den 1ste Juni 1822. F. Lowzow."
+        },
+        {
+          "prompt": "London den 18 Decbr. og 11 Jan. Den spanske Gesandt har faaet sine Passer og er reist hiem. Lord Moira er ved Stafet kaldet fra Skot",
+          "completion": "land til London.",
+          "full_text": "London den 18 Decbr. og 11 Jan. Den spanske Gesandt har faaet sine Passer og er reist hiem. Lord Moira er ved Stafet kaldet fra Skotland til London."
+        },
+        {
+          "prompt": "Den 27de Juli døde her pludseligen ved et apoplectisk Tilfælde Etatsraad Jens Laasbye Rottbøll, Høiesteretsadvokat og Gener",
+          "completion": "alsiskal, Ridder af Dannebrogen og Dannebrogsmand. Han var født den 11te Januar 1766 i Kjøbenhavn, hvor hans Fader var Vognmester ved det daværende Kongelige Kjøre, korps. Han deponerede fra Herlufsholms Skole 1782, blev 1790 Høiesteretsadvokat, 1805 Generalsiskal, 1812 Etatsraad, 1814 Ridder af Dannebrogen og 1817 Dannebrogsmand. Han var en af vore meest udmærkede Jurister, og hans Talenter og Kundskaber vare almindeligen anerkjendte.",
+          "full_text": "Den 27de Juli døde her pludseligen ved et apoplectisk Tilfælde Etatsraad Jens Laasbye Rottbøll, Høiesteretsadvokat og Generalsiskal, Ridder af Dannebrogen og Dannebrogsmand. Han var født den 11te Januar 1766 i Kjøbenhavn, hvor hans Fader var Vognmester ved det daværende Kongelige Kjøre, korps. Han deponerede fra Herlufsholms Skole 1782, blev 1790 Høiesteretsadvokat, 1805 Generalsiskal, 1812 Etatsraad, 1814 Ridder af Dannebrogen og 1817 Dannebrogsmand. Han var en af vore meest udmærkede Jurister, og hans Talenter og Kundskaber vare almindeligen anerkjendte."
+        },
+        {
+          "prompt": "den 16de Februar om Aftenen, er af Nyested Byes Arresthuus undveget den, for Deeltagelse i et Overfald og Røverie paa Bonder, J han Hansen",
+          "completion": "af Sønderboe, under Sønderherred paa Langeland, anholdte og hertil overførte farlige og voldsomme Forbryder, navnlig Hans Hansen, eller som han og kaldes Hans Madsen, der ved den inden Grevskabet Langelands Birketings Extraret, af Birkedommeren, Cancellieraad og Byefoged Jacob Johan Lund, under 3die Januar 1822, afsagte Dom, er tilfunden at burde arbeide i Nyborg Fæstning sin Livstid, samt betale alle af hans Arrest, Varetægt og Forpleining, samt Transport til Straffestedet medgaaende Omkostninger skadesløs. Ved Undvigelsen var han iført en kort blaae Trøie, et Par lange hvide Lærredsbuxer, en rød og grønstribet Vest,",
+          "full_text": "den 16de Februar om Aftenen, er af Nyested Byes Arresthuus undveget den, for Deeltagelse i et Overfald og Røverie paa Bonder, J han Hansen af Sønderboe, under Sønderherred paa Langeland, anholdte og hertil overførte farlige og voldsomme Forbryder, navnlig Hans Hansen, eller som han og kaldes Hans Madsen, der ved den inden Grevskabet Langelands Birketings Extraret, af Birkedommeren, Cancellieraad og Byefoged Jacob Johan Lund, under 3die Januar 1822, afsagte Dom, er tilfunden at burde arbeide i Nyborg Fæstning sin Livstid, samt betale alle af hans Arrest, Varetægt og Forpleining, samt Transport til Straffestedet medgaaende Omkostninger skadesløs. Ved Undvigelsen var han iført en kort blaae Trøie, et Par lange hvide Lærredsbuxer, en rød og grønstribet Vest,"
+        },
+        {
+          "prompt": "nogle Engparceller af Deiberglund og Rækkergaards ufrie Hovedgaardstart 3 - 3 - samt endeel af Sedding og endeel af Bolling Sognes Konge",
+          "completion": "- og Kirketiender. Conditionerne erfares ved Auctionen og ere forinden til Eftersyn hos Hr. Kammerraad Herredsfoged Møller i Holstebroe og hos Undertegnede. Viborg, den 11te August 1821. Tøttrup.",
+          "full_text": "nogle Engparceller af Deiberglund og Rækkergaards ufrie Hovedgaardstart 3 - 3 - samt endeel af Sedding og endeel af Bolling Sognes Konge- og Kirketiender. Conditionerne erfares ved Auctionen og ere forinden til Eftersyn hos Hr. Kammerraad Herredsfoged Møller i Holstebroe og hos Undertegnede. Viborg, den 11te August 1821. Tøttrup."
+        },
+        {
+          "prompt": "Tienstsøgende En honet Jomfrue ønsker sig gierne antagen som Selskabs Jomfrue hos en Dame, eller som Huusjomfrue at pynte Damen",
+          "completion": ", og gaae i Huusholdningen, eller og at informere Børn i Fruentimmer=Netheder, anvises i store Kongensgade No. 247.",
+          "full_text": "Tienstsøgende En honet Jomfrue ønsker sig gierne antagen som Selskabs Jomfrue hos en Dame, eller som Huusjomfrue at pynte Damen, og gaae i Huusholdningen, eller og at informere Børn i Fruentimmer=Netheder, anvises i store Kongensgade No. 247."
+        },
+        {
+          "prompt": "Bekiendtgiørelse. Hos Mad. Hempel paa Østergade Nr. 44 paa første Sal, er som lædvanl a alle Slags Meubler tilk",
+          "completion": "jøbs og til leie, bestaaende af Mahognie og andre Speile, Chatoller, Dragkister, Commoder, Borde, Stole, Ottomaner, Sophaer, Sengesteder af Jern, Eeg og Fyr med Damastes, Sirtses og andre Omhænge, fine Sengeklæder, engelske Gulvtepper m. m., alt for billig Priis; sammesteds er Christentøier til leie til forskiellige Priser.",
+          "full_text": "Bekiendtgiørelse. Hos Mad. Hempel paa Østergade Nr. 44 paa første Sal, er som lædvanl a alle Slags Meubler tilkjøbs og til leie, bestaaende af Mahognie og andre Speile, Chatoller, Dragkister, Commoder, Borde, Stole, Ottomaner, Sophaer, Sengesteder af Jern, Eeg og Fyr med Damastes, Sirtses og andre Omhænge, fine Sengeklæder, engelske Gulvtepper m. m., alt for billig Priis; sammesteds er Christentøier til leie til forskiellige Priser."
+        },
+        {
+          "prompt": "Den 14de December er Dr. i Philosophien Peter Schreiner Frandsen allernaadigst udnævnt til fjerde Lærer ved Gamastet i Altona. Den 2de December",
+          "completion": "er Cand. theol. J. C. F. V. Møller beskikket til Præst i Stedesand i Tøndern Provstie. Den 28de December er Cand. theol. C. F. C. Møller beskikket til Præst i Ording i Tøndern Provstie. Den 2den Januar er Cand. theol. J. C. F. A. C. Brinkmann beskikket til Præst i Ockholm i Tøndern Provstie. Den 9de Januar er Cand. theol. C. F. C. Møller beskikket til Præst i Høyer i Tøndern Provstie.",
+          "full_text": "Den 14de December er Dr. i Philosophien Peter Schreiner Frandsen allernaadigst udnævnt til fjerde Lærer ved Gamastet i Altona. Den 2de December er Cand. theol. J. C. F. V. Møller beskikket til Præst i Stedesand i Tøndern Provstie. Den 28de December er Cand. theol. C. F. C. Møller beskikket til Præst i Ording i Tøndern Provstie. Den 2den Januar er Cand. theol. J. C. F. A. C. Brinkmann beskikket til Præst i Ockholm i Tøndern Provstie. Den 9de Januar er Cand. theol. C. F. C. Møller beskikket til Præst i Høyer i Tøndern Provstie."
+        },
+        {
+          "prompt": "Mandagen den 15 September førstkommende, om Eftermiddagen Klokken 3 Slet, bliver udi afgangne Commerceraad Classens Stervboes tilhørende Huus",
+          "completion": "i St. Anna Gaden beliggende holden Første Auction over et bemeldte Stervboe tilhørende Lykke paa Sanden i Helsingøer beliggende, med paastaaende Bygning og derudi befindende Indretning til Sukker Raffinaderie, samt der tilhørende Jnventarium af Kobber=Kiedler, Potter og videre, som af de trykte og anslagne Placater nærmere kan erfares, og er Conditionerne forinden at faae til Eftersyn hos Justiceraad von Deurs i Helsingøer, og hos Procurator Bang i Kiøbenhavn i No. 19 paa Østergade.",
+          "full_text": "Mandagen den 15 September førstkommende, om Eftermiddagen Klokken 3 Slet, bliver udi afgangne Commerceraad Classens Stervboes tilhørende Huus i St. Anna Gaden beliggende holden Første Auction over et bemeldte Stervboe tilhørende Lykke paa Sanden i Helsingøer beliggende, med paastaaende Bygning og derudi befindende Indretning til Sukker Raffinaderie, samt der tilhørende Jnventarium af Kobber=Kiedler, Potter og videre, som af de trykte og anslagne Placater nærmere kan erfares, og er Conditionerne forinden at faae til Eftersyn hos Justiceraad von Deurs i Helsingøer, og hos Procurator Bang i Kiøbenhavn i No. 19 paa Østergade."
+        }
+      ],
+      "nordjyllandnews": [
+        {
+          "prompt": "Det er en god dag for indehaver Tom Pedersen fra Mæglerringen i Hadsund. - Jeg kunne nærmest ikke få armene ned, da jeg hørte nyheden",
+          "completion": ", siger han.\nHan er en af de mæglere, der har fået et nyt job i det nye selskab, der skal sælge boliger i hele Nordjylland.\n- Det er et godt signal, at der er kommet et nyt selskab, der skal sælge boliger i hele Nordjylland. Det er et godt signal til de mange, der gerne vil købe en bolig i Nordjylland, siger Tom Pedersen.",
+          "full_text": "Det er en god dag for indehaver Tom Pedersen fra Mæglerringen i Hadsund. - Jeg kunne nærmest ikke få armene ned, da jeg hørte nyheden, siger han.\nHan er en af de mæglere, der har fået et nyt job i det nye selskab, der skal sælge boliger i hele Nordjylland.\n- Det er et godt signal, at der er kommet et nyt selskab, der skal sælge boliger i hele Nordjylland. Det er et godt signal til de mange, der gerne vil købe en bolig i Nordjylland, siger Tom Pedersen.\n"
+        },
+        {
+          "prompt": "To personer kom natten til mandag op at toppes på en natvarmestue i Aalborg. Den ene person blev anholdt og sigtet.\n\nTo personer fra hjemløsem",
+          "completion": "iljøet i Aalborg kom op at skændes på en natvarmestue i Aalborg. Den ene person blev anholdt og sigtet for vold.",
+          "full_text": "To personer kom natten til mandag op at toppes på en natvarmestue i Aalborg. Den ene person blev anholdt og sigtet.\n\nTo personer fra hjemløsemiljøet i Aalborg kom op at skændes på en natvarmestue i Aalborg. Den ene person blev anholdt og sigtet for vold.\n\n"
+        },
+        {
+          "prompt": "Som vagtchefen ved Midt- og Vestjyllands Politi udtrykker det: - Kun Vorherre og føreren af bilen selv ved, hvordan dét uheld sk",
+          "completion": "ulle være sket.",
+          "full_text": "Som vagtchefen ved Midt- og Vestjyllands Politi udtrykker det: - Kun Vorherre og føreren af bilen selv ved, hvordan dét uheld skulle være sket.\n"
+        }
+      ],
+      "wiki": [
+        {
+          "prompt": "De fortabtes Ø\nDe fortabtes Ø (originaltitel As Man Desires) er en amerikansk stumfilm fra 1925 instrueret af Irving Cummings.\n\n\n * Mil",
+          "completion": "dred Harris som Mary\n * Jack Holt som John\n * William Scott som Jim\n * William Collier Jr. som Bill\n * William Courtright som Mr. Davenport\n * William H. Tooker som Mr. Davenport\n * William H. Tooker som Mr. Davenport",
+          "full_text": "De fortabtes Ø\nDe fortabtes Ø (originaltitel As Man Desires) er en amerikansk stumfilm fra 1925 instrueret af Irving Cummings.\n\n\n * Mildred Harris som Mary\n * Jack Holt som John\n * William Scott som Jim\n * William Collier Jr. som Bill\n * William Courtright som Mr. Davenport\n * William H. Tooker som Mr. Davenport\n * William H. Tooker som Mr. Davenport"
+        },
+        {
+          "prompt": "Syfilis\nSyfilis er en seksuelt overført infektion, som forårsages af underarten pallidum spirokætbakterien Treponema pallidum. Den prim",
+          "completion": "ære infektion er ofte asymptomatisk, men kan i sjældne tilfælde give sig udslag i en rød, væskende, sårbar plamage på penis eller vulva. Hvis den primære infektion ikke behandles, vil bakterien sprede sig til lymfeknuderne, hvor den kan give sig udslag i en rød, hård, smertefuld lymfeknude, der kaldes en chancre. Hvis den primære infektion behandles, vil chancren ikke udvikle sig. Hvis chancren ikke behandles, vil den efter 4-6 uger blive blød og sårbar, og der vil dannes en påstået blødning, der kaldes en bubo. Hvis den primære infektion ikke beh",
+          "full_text": "Syfilis\nSyfilis er en seksuelt overført infektion, som forårsages af underarten pallidum spirokætbakterien Treponema pallidum. Den primære infektion er ofte asymptomatisk, men kan i sjældne tilfælde give sig udslag i en rød, væskende, sårbar plamage på penis eller vulva. Hvis den primære infektion ikke behandles, vil bakterien sprede sig til lymfeknuderne, hvor den kan give sig udslag i en rød, hård, smertefuld lymfeknude, der kaldes en chancre. Hvis den primære infektion behandles, vil chancren ikke udvikle sig. Hvis chancren ikke behandles, vil den efter 4-6 uger blive blød og sårbar, og der vil dannes en påstået blødning, der kaldes en bubo. Hvis den primære infektion ikke beh"
+        },
+        {
+          "prompt": "Lille Amalienborg (Albertslund)\nLille Amalienborg er et uofficielt navn for bygningen Holsbjergvej 15, der ligger ud til Roskildeve",
+          "completion": "j i Albertslund. Bygningen er opført i 1960'erne og er ejet af Albertslund Kommune. Bygningen er opkaldt efter Amalienborg, der er navnet på det kongelige slot i København.\n\nBygningen er opført i 1960'erne og er ejet af Albertslund Kommune. Den er opkaldt efter Amalienborg, der er navnet på det kongelige slot i København. Bygningen er opført i 1960'erne og er ejet af Albertslund Kommune. Den er opkaldt efter Amalienborg, der er navnet på det kongelige slot i København.\n\nBygningen",
+          "full_text": "Lille Amalienborg (Albertslund)\nLille Amalienborg er et uofficielt navn for bygningen Holsbjergvej 15, der ligger ud til Roskildevej i Albertslund. Bygningen er opført i 1960'erne og er ejet af Albertslund Kommune. Bygningen er opkaldt efter Amalienborg, der er navnet på det kongelige slot i København.\n\nBygningen er opført i 1960'erne og er ejet af Albertslund Kommune. Den er opkaldt efter Amalienborg, der er navnet på det kongelige slot i København. Bygningen er opført i 1960'erne og er ejet af Albertslund Kommune. Den er opkaldt efter Amalienborg, der er navnet på det kongelige slot i København.\n\nBygningen "
+        },
+        {
+          "prompt": "Sønder Starup Sogn\nSønder Starup Sogn er et sogn i Haderslev Domprovsti (Haderslev Stift).\n\nGrarup Sogn har været anneks til Sø",
+          "completion": "nder Starup Sogn. Begge sogne hørte til Haderslev Herred i Tønder Amt. Sønder Starup-Grarup sognekommune blev ved kommunalreformen i 1970 indlemmet i Haderslev Kommune.\n\nI Sønder Starup Sogn ligger Sønder Starup Kirke.\n\nI sognet findes følgende autoriserede stednavne:\n * Bjergskov (bebyggelse)\n * Bjergskov Mark (bebyggelse)\n * Bjergskovskov (bebyggelse)\n * Bjergskovskov (bebyggelse)\n * Bjergskovskov (bebyggelse)\n * Bjergskovskov (bebyggelse)\n * Bjergskovskov (bebyggelse)\n * Bjergskovskov (bebyggelse)\n * Bjergskovskov (bebyggelse)\n * B",
+          "full_text": "Sønder Starup Sogn\nSønder Starup Sogn er et sogn i Haderslev Domprovsti (Haderslev Stift).\n\nGrarup Sogn har været anneks til Sønder Starup Sogn. Begge sogne hørte til Haderslev Herred i Tønder Amt. Sønder Starup-Grarup sognekommune blev ved kommunalreformen i 1970 indlemmet i Haderslev Kommune.\n\nI Sønder Starup Sogn ligger Sønder Starup Kirke.\n\nI sognet findes følgende autoriserede stednavne:\n * Bjergskov (bebyggelse)\n * Bjergskov Mark (bebyggelse)\n * Bjergskovskov (bebyggelse)\n * Bjergskovskov (bebyggelse)\n * Bjergskovskov (bebyggelse)\n * Bjergskovskov (bebyggelse)\n * Bjergskovskov (bebyggelse)\n * Bjergskovskov (bebyggelse)\n * Bjergskovskov (bebyggelse)\n * B"
+        },
+        {
+          "prompt": "Gretsch-Unitas\nGretsch-Unitas GmbH eller GU-Gruppe er en tysk producent af beslag- og låsesystemer til vinduer og døre. De har over",
+          "completion": "100 fabrikker i mere end 30 lande. De har hovedkvarter i Bad Kreuznach.",
+          "full_text": "Gretsch-Unitas\nGretsch-Unitas GmbH eller GU-Gruppe er en tysk producent af beslag- og låsesystemer til vinduer og døre. De har over 100 fabrikker i mere end 30 lande. De har hovedkvarter i Bad Kreuznach."
+        },
+        {
+          "prompt": "Rødeled\nRødeled kan henvise til flere stednavne i Danmark:\n * Rødeled (Præstø Sogn) – en bebyggelse, i Præstø",
+          "completion": "Sogn, Vordingborg Kommune\n * Rødeled (Rødeled Sogn) – en bebyggelse, i Rødeled Sogn, Vesthimmerlands Kommune\n * Rødeled (Sønder Lem Sogn) – en bebyggelse, i Sønder Lem Sogn, Thisted Kommune\n * Rødeled (Sønder Omme Sogn) – en bebyggelse, i Sønder Omme Sogn, Billund Kommune\n * Rødeled (Torslev Sogn) – en bebyggelse, i Torslev Sogn, Jammerbugt Kommune\n * Rødeled (Vester Tørslev Sogn) – en bebyggelse, i Vester Tørslev Sogn, Mariagerfjord Kommune\n * Rødeled (Øster Tørslev Sogn) – en bebyggelse, i Øster Tørslev Sogn, Frederikssund",
+          "full_text": "Rødeled\nRødeled kan henvise til flere stednavne i Danmark:\n * Rødeled (Præstø Sogn) – en bebyggelse, i Præstø Sogn, Vordingborg Kommune\n * Rødeled (Rødeled Sogn) – en bebyggelse, i Rødeled Sogn, Vesthimmerlands Kommune\n * Rødeled (Sønder Lem Sogn) – en bebyggelse, i Sønder Lem Sogn, Thisted Kommune\n * Rødeled (Sønder Omme Sogn) – en bebyggelse, i Sønder Omme Sogn, Billund Kommune\n * Rødeled (Torslev Sogn) – en bebyggelse, i Torslev Sogn, Jammerbugt Kommune\n * Rødeled (Vester Tørslev Sogn) – en bebyggelse, i Vester Tørslev Sogn, Mariagerfjord Kommune\n * Rødeled (Øster Tørslev Sogn) – en bebyggelse, i Øster Tørslev Sogn, Frederikssund"
+        },
+        {
+          "prompt": "HMH\nHåndboldklubben Maribo/Hunseby ofte forkortet til akronymet HMH er en håndboldklub, som ligger i Maribo. Klub",
+          "completion": "ben blev stiftet i 1970 og har både herre- og kvindehold. Klubben har hjemmebane i Maribo Hallen. Klubben har både et herre- og et kvindehold i 1. division. Klubben har også et damehold i 2. division. Klubben har også et damehold i 2. division. Klubben har også et damehold i 2. division. Klubben har også et damehold i 2. division. Klubben har også et damehold i 2. division. Klubben har også et damehold i 2. division. Klubben har også et damehold i 2. division. Klubben har også et damehold i 2. division. Klubben har også et damehold i 2. division.",
+          "full_text": "HMH\nHåndboldklubben Maribo/Hunseby ofte forkortet til akronymet HMH er en håndboldklub, som ligger i Maribo. Klubben blev stiftet i 1970 og har både herre- og kvindehold. Klubben har hjemmebane i Maribo Hallen. Klubben har både et herre- og et kvindehold i 1. division. Klubben har også et damehold i 2. division. Klubben har også et damehold i 2. division. Klubben har også et damehold i 2. division. Klubben har også et damehold i 2. division. Klubben har også et damehold i 2. division. Klubben har også et damehold i 2. division. Klubben har også et damehold i 2. division. Klubben har også et damehold i 2. division. Klubben har også et damehold i 2. division."
+        }
+      ],
+      "ai-aktindsigt": [
+        {
+          "prompt": "Indstilling Formanden foreslår, at Indre By Lokaludvalg godkender ændringerne i mødeplanen for 2022, der fremgår af løsnings",
+          "completion": "forslaget i afsnittet Problemstilling og løsning.\nProblemstilling I mødet den 9. juni 2022 besluttede lokaludvalget en mødeplan for 2022.\nLokaludvalget besluttede samtidig, at møderne i lokaludvalget holdes den første onsdag i måneden, dog med undtagelse af juli måned.\nLokaludvalget besluttede også, at der holdes et ekstraordinært møde i lokaludvalget den 1. december 2022.\nLøsning Formanden foreslår, at lokaludvalget godkender følgende ændringer i mødeplanen for 2022: Mødet den 9. juni 2022 holdes den første torsdag i måneden, dvs. den 6. j",
+          "full_text": "Indstilling Formanden foreslår, at Indre By Lokaludvalg godkender ændringerne i mødeplanen for 2022, der fremgår af løsningsforslaget i afsnittet Problemstilling og løsning.\nProblemstilling I mødet den 9. juni 2022 besluttede lokaludvalget en mødeplan for 2022.\nLokaludvalget besluttede samtidig, at møderne i lokaludvalget holdes den første onsdag i måneden, dog med undtagelse af juli måned.\nLokaludvalget besluttede også, at der holdes et ekstraordinært møde i lokaludvalget den 1. december 2022.\nLøsning Formanden foreslår, at lokaludvalget godkender følgende ændringer i mødeplanen for 2022: Mødet den 9. juni 2022 holdes den første torsdag i måneden, dvs. den 6. j"
+        },
+        {
+          "prompt": "Indstilling Formanden indstiller, 1) at Valby Lokaludvalg drøfter projekter, specifikt Toftegårds Plads.\n2) at Valby Lokaludvalg",
+          "completion": "bevilger 10.000 kr. til projektet.\nProblemstilling Valby Lokaludvalg har i forbindelse med vedtagelsen af miljøårsplanen for 2016 afsat et rammebudget på i alt 10.000 kr. til projektet Toftegårds Plads.\nLøsning Valby Lokaludvalg drøfter projektet og bevilger 10.000 kr. til projektet.\nØkonomi Tabellen viser økonomien for den interne pulje, hvis det indstillede beløb bevilges Lokalpuljen Disponeret per 12. januar Indstillet 12. januar Resterende pulje 1.000.000 950.000 10.000 40.000 Videre proces",
+          "full_text": "Indstilling Formanden indstiller, 1) at Valby Lokaludvalg drøfter projekter, specifikt Toftegårds Plads.\n2) at Valby Lokaludvalg bevilger 10.000 kr. til projektet.\nProblemstilling Valby Lokaludvalg har i forbindelse med vedtagelsen af miljøårsplanen for 2016 afsat et rammebudget på i alt 10.000 kr. til projektet Toftegårds Plads.\nLøsning Valby Lokaludvalg drøfter projektet og bevilger 10.000 kr. til projektet.\nØkonomi Tabellen viser økonomien for den interne pulje, hvis det indstillede beløb bevilges Lokalpuljen Disponeret per 12. januar Indstillet 12. januar Resterende pulje 1.000.000 950.000 10.000 40.000 Videre proces"
+        },
+        {
+          "prompt": "Indstilling Økonomiforvaltningen indstiller, at Økonomiudvalget oversender sagen til Borgerrepræsentationen med følgende erklæring: ",
+          "completion": "1. at det bemærkes, at der i forbindelse med etablering af det nye rådhus er taget højde for det forventede behov for parkeringspladser, 2. at det bemærkes, at der i forbindelse med etablering af det nye rådhus er taget højde for det forventede behov for cykelparkeringspladser, 3. at det bemærkes, at der i forbindelse med etablering af det nye rådhus er taget højde for det forventede behov for handicapparkeringspladser, 4. at det bemærkes, at der i forbindelse med etablering af det nye rådhus",
+          "full_text": "Indstilling Økonomiforvaltningen indstiller, at Økonomiudvalget oversender sagen til Borgerrepræsentationen med følgende erklæring: 1. at det bemærkes, at der i forbindelse med etablering af det nye rådhus er taget højde for det forventede behov for parkeringspladser, 2. at det bemærkes, at der i forbindelse med etablering af det nye rådhus er taget højde for det forventede behov for cykelparkeringspladser, 3. at det bemærkes, at der i forbindelse med etablering af det nye rådhus er taget højde for det forventede behov for handicapparkeringspladser, 4. at det bemærkes, at der i forbindelse med etablering af det nye rådhus"
+        },
+        {
+          "prompt": "Gladsaxe klarer krisen – og iværksætterlysten er på vej tilbage Opdateret: 1 september 2020 Gladsaxes virksomheder er mind",
+          "completion": "et om, at det er vigtigt at være iværksætter, og der er et stort behov for at få flere iværksættere i Gladsaxe.\nDet viser en ny undersøgelse, som Gladsaxe Kommune har lavet i samarbejde med Gladsaxe Erhvervsforening.\nUndersøgelsen er lavet blandt de virksomheder, som har deltaget i Gladsaxes iværksætterprogrammer i 2019.\nUndersøgelsen viser, at der er et stort behov for at få flere iværksættere i Gladsaxe.\nDet er derfor vigtigt, at virksomhederne er opmærksomme på, at der er mulighed for at få hjælp til",
+          "full_text": "Gladsaxe klarer krisen – og iværksætterlysten er på vej tilbage Opdateret: 1 september 2020 Gladsaxes virksomheder er mindet om, at det er vigtigt at være iværksætter, og der er et stort behov for at få flere iværksættere i Gladsaxe.\nDet viser en ny undersøgelse, som Gladsaxe Kommune har lavet i samarbejde med Gladsaxe Erhvervsforening.\nUndersøgelsen er lavet blandt de virksomheder, som har deltaget i Gladsaxes iværksætterprogrammer i 2019.\nUndersøgelsen viser, at der er et stort behov for at få flere iværksættere i Gladsaxe.\nDet er derfor vigtigt, at virksomhederne er opmærksomme på, at der er mulighed for at få hjælp til"
+        }
+      ],
+      "retsinformationdk": [
+        {
+          "prompt": "Ændringsforslag stillet den 14. marts 2016 uden for betænkningen\n\nÆndringsforslag\n\ntil 2. behandling af\n",
+          "completion": "forslag til lov om ændring af lov om social service, lov om retssikkerhed og\n\nadministration på det sociale område og lov om voksenansvar for anbragte\n\nbørn og unge (Ophævelse af adgang til delegation af kompetence til private\n\nvirksomheder m.v.)\n\n[af social- og indenrigsministeren (Karen Ellemann)]:\n\nTil § 1\n\nAf social- og indenrigsministeren:\n\n1) I den under nr. 1 foreslåede affattelse af § 148 a, stk. 1, ændres »§ 148, stk. 1, 1. pkt.« til: »§ 148, stk. 1, 2. pkt.«\n\n[Lovteknisk ændring]\n\nBemærkninger\n\nTil nr. 1\n\nDer er tale om en lovteknisk ændr",
+          "full_text": "Ændringsforslag stillet den 14. marts 2016 uden for betænkningen\n\nÆndringsforslag\n\ntil 2. behandling af\nforslag til lov om ændring af lov om social service, lov om retssikkerhed og\n\nadministration på det sociale område og lov om voksenansvar for anbragte\n\nbørn og unge (Ophævelse af adgang til delegation af kompetence til private\n\nvirksomheder m.v.)\n\n[af social- og indenrigsministeren (Karen Ellemann)]:\n\nTil § 1\n\nAf social- og indenrigsministeren:\n\n1) I den under nr. 1 foreslåede affattelse af § 148 a, stk. 1, ændres »§ 148, stk. 1, 1. pkt.« til: »§ 148, stk. 1, 2. pkt.«\n\n[Lovteknisk ændring]\n\nBemærkninger\n\nTil nr. 1\n\nDer er tale om en lovteknisk ændr"
+        },
+        {
+          "prompt": "*Konkurrenceankenævnet har stadfæstet Konkurrencerådets afgørelse om\nanmeldelsespligt i henhold til konkurrencelovens § 5",
+          "completion": ", stk. 1, for\nudbud af et edb-system til brug for et elforsyningsselskab. *\n\n*Ankenævnet fandt, at der var tale om et edb-system, der er omfattet af\nkonkurrencelovens § 5, stk. 1, og at der derfor er anmeldelsespligt. *\n\nÅr 1994, den 20. juni afsagde Konkurrenceankenævnet i sagen j.nr. 93-31.263, Dansk Elektronik, Højbjerg, ctr. Konkurrencerådet sålydende:\n\nK E N D E L S E\n\n1. Ved skrivelse af 20. maj 1993 har Dansk Elektronik A/S klaget over en af Konkurrencerådet den 17. maj 1993 truffet",
+          "full_text": "*Konkurrenceankenævnet har stadfæstet Konkurrencerådets afgørelse om\nanmeldelsespligt i henhold til konkurrencelovens § 5, stk. 1, for\nudbud af et edb-system til brug for et elforsyningsselskab. *\n\n*Ankenævnet fandt, at der var tale om et edb-system, der er omfattet af\nkonkurrencelovens § 5, stk. 1, og at der derfor er anmeldelsespligt. *\n\nÅr 1994, den 20. juni afsagde Konkurrenceankenævnet i sagen j.nr. 93-31.263, Dansk Elektronik, Højbjerg, ctr. Konkurrencerådet sålydende:\n\nK E N D E L S E\n\n1. Ved skrivelse af 20. maj 1993 har Dansk Elektronik A/S klaget over en af Konkurrencerådet den 17. maj 1993 truffet"
+        }
+      ],
+      "ncc_maalfrid": [
+        {
+          "prompt": "Parkering i 2. position løses ved at gøre vejen smallere eller indføre tidsbegrænset parkering. Taxaholdepladser med en attraktiv placering ved st",
+          "completion": "ørre veje bør inddrages til parkeringspladser.",
+          "full_text": "Parkering i 2. position løses ved at gøre vejen smallere eller indføre tidsbegrænset parkering. Taxaholdepladser med en attraktiv placering ved større veje bør inddrages til parkeringspladser."
+        },
+        {
+          "prompt": "284 1894. g. Afstanden mellem Folkehus paa den ene Side og Stald eller Fjosbygning,. Vandhus, Affalds- #eller Gjods",
+          "completion": "eldynge paa den anden Side maa ikke være mindre end 10 m. (jfr. § 6). § 5. 1. Ethvert Beboelsesrum skal have en Højde af mindst 2,25 m. fra Gulv til Loft og være forsynet med Opslagsvindu. 2. Gulvet i nederste Stokværk skal gjøres dobbelt og mellem begge Gulve indlægges et Lag af Ler eller anden fast og tor Fyld. 3. I nederste Stokværk skal indrettes et særskilt Rum (Kjælder) med tilstrækkeligt Lys og Luftning, forsynet med fornødent Ventilationshul i Tag og Vægge samt med Gulv af Sten eller andet forsvarligt Materiale. 4. I ne",
+          "full_text": "284 1894. g. Afstanden mellem Folkehus paa den ene Side og Stald eller Fjosbygning,. Vandhus, Affalds- #eller Gjodseldynge paa den anden Side maa ikke være mindre end 10 m. (jfr. § 6). § 5. 1. Ethvert Beboelsesrum skal have en Højde af mindst 2,25 m. fra Gulv til Loft og være forsynet med Opslagsvindu. 2. Gulvet i nederste Stokværk skal gjøres dobbelt og mellem begge Gulve indlægges et Lag af Ler eller anden fast og tor Fyld. 3. I nederste Stokværk skal indrettes et særskilt Rum (Kjælder) med tilstrækkeligt Lys og Luftning, forsynet med fornødent Ventilationshul i Tag og Vægge samt med Gulv af Sten eller andet forsvarligt Materiale. 4. I ne"
+        }
+      ],
+      "health_hovedstaden": [
+        {
+          "prompt": "Kursusansøgning, prioritering for personale tilknyttet laboratorium og sekretariat\n\nMålgrupper og anvendelsesområde\nDefinitioner\nFremgangsmåde",
+          "completion": "Ansvar og organisering\nReferencer, lovgivning og faglig evidens samt links hertil\nBilag\n\nMålgrupper og anvendelsesområde\nInstruksen henvender sig til personale tilknyttet laboratoriet og sekretariatet på Afdeling for Kvindesygdomme, Graviditet og Fødsler, Rigshospitalet, og anvendes ved ansøgning om kursusdeltagelse.\n\nDefinitioner\nKursusansøgning: Ansøgning om deltagelse i kursus, som er et led i den løbende efter- og videreuddannelse.\nPersonale: Læger, sygeplejersker, jordemødre, sosu-assistenter, sekretærer, laboranter, fysioterapeuter, psykologer, pædagoger, rengøringspersonale",
+          "full_text": "Kursusansøgning, prioritering for personale tilknyttet laboratorium og sekretariat\n\nMålgrupper og anvendelsesområde\nDefinitioner\nFremgangsmåde\nAnsvar og organisering\nReferencer, lovgivning og faglig evidens samt links hertil\nBilag\n\nMålgrupper og anvendelsesområde\nInstruksen henvender sig til personale tilknyttet laboratoriet og sekretariatet på Afdeling for Kvindesygdomme, Graviditet og Fødsler, Rigshospitalet, og anvendes ved ansøgning om kursusdeltagelse.\n\nDefinitioner\nKursusansøgning: Ansøgning om deltagelse i kursus, som er et led i den løbende efter- og videreuddannelse.\nPersonale: Læger, sygeplejersker, jordemødre, sosu-assistenter, sekretærer, laboranter, fysioterapeuter, psykologer, pædagoger, rengøringspersonale"
+        }
+      ],
+      "tv2r": [
+        {
+          "prompt": "Første Verdenskrig markeredes med kranse\n03 august 2014 kl. 12.25\nSøndag var der kransenedlæggelse i Sønderborg, hvor",
+          "completion": "der blev lagt kranse på de første døde fra 1. Verdenskrig.\nKransenedlæggelsen blev markeret med taler og musik.",
+          "full_text": "Første Verdenskrig markeredes med kranse\n03 august 2014 kl. 12.25\nSøndag var der kransenedlæggelse i Sønderborg, hvor der blev lagt kranse på de første døde fra 1. Verdenskrig.\nKransenedlæggelsen blev markeret med taler og musik.\n"
+        },
+        {
+          "prompt": "Fanøs kaniner dør som fluer lige nu\n07 september 2016 kl. 10.28\nEn pest raser gennem kaninerne på Fanø. Årsagen",
+          "completion": "er endnu ukendt, men det er et stort problem, der skal løses.\nKaninerne på Fanø er døde som fluer. Det er det indtryk, man får, når man taler med Fanøs dyrlæge, der er meget bekymret for de mange døde kaniner.\n- Vi har fået meldinger om, at der er døde kaniner overalt på øen, siger dyrlæge Jens Peter Sørensen til TV SYD.\nJens Peter Sørensen, dyrlæge, Fanø: \"Vi har fået meldinger om, at der er døde kaniner overalt på øen.\"\nHan har fået meldinger om dø",
+          "full_text": "Fanøs kaniner dør som fluer lige nu\n07 september 2016 kl. 10.28\nEn pest raser gennem kaninerne på Fanø. Årsagen er endnu ukendt, men det er et stort problem, der skal løses.\nKaninerne på Fanø er døde som fluer. Det er det indtryk, man får, når man taler med Fanøs dyrlæge, der er meget bekymret for de mange døde kaniner.\n- Vi har fået meldinger om, at der er døde kaniner overalt på øen, siger dyrlæge Jens Peter Sørensen til TV SYD.\nJens Peter Sørensen, dyrlæge, Fanø: \"Vi har fået meldinger om, at der er døde kaniner overalt på øen.\"\nHan har fået meldinger om dø"
+        }
+      ],
+      "opensubtitles": [
+        {
+          "prompt": "Oversættelse af... :\nX-FeAr :...\nJa!\nFlot aflevering!\nSt. Francis High School basketball fænomen -\n-Ty Crane, som de rekrutter",
+          "completion": "ede sidste år, er på vej til at blive en af de bedste spillere i ligaen.\nHan er et af de mest lovende talent indenfor sporten.\nHan er et af de mest lovende talent indenfor sporten.\nHan er et af de mest lovende talent indenfor sporten.\nHan er et af de mest lovende talent indenfor sporten.\nHan er et af de mest lovende talent indenfor sporten.\nHan er et af de mest lovende talent indenfor sporten.\nHan er et af de mest lovende talent indenfor sporten.\nHan er et af de mest lovende talent indenfor sporten.\nHan er et af de mest lovende talent indenfor sporten.\nHan er et",
+          "full_text": "Oversættelse af... :\nX-FeAr :...\nJa!\nFlot aflevering!\nSt. Francis High School basketball fænomen -\n-Ty Crane, som de rekrutterede sidste år, er på vej til at blive en af de bedste spillere i ligaen.\nHan er et af de mest lovende talent indenfor sporten.\nHan er et af de mest lovende talent indenfor sporten.\nHan er et af de mest lovende talent indenfor sporten.\nHan er et af de mest lovende talent indenfor sporten.\nHan er et af de mest lovende talent indenfor sporten.\nHan er et af de mest lovende talent indenfor sporten.\nHan er et af de mest lovende talent indenfor sporten.\nHan er et af de mest lovende talent indenfor sporten.\nHan er et af de mest lovende talent indenfor sporten.\nHan er et"
+        }
+      ],
+      "cellar": [
+        {
+          "prompt": "3.5.2018 |\nDA |\nDen Europæiske Unions Tidende |\nC 155/13 |\nAnmeldelse af en planlagt fusion\n(Sag M",
+          "completion": ".8901 — AXA/APG/APL/APB/APD/APR/APW/APX/APLIFE/APREI/APRW/APRX/APRXL/APRXLB)\n(EØS-relevant tekst)\n(2018/C 155/07)\n1.\nDen 25. april 2018 modtog Kommissionen i overensstemmelse med artikel 4 i Rådets forordning (EF) nr. 139/2004 (1) anmeldelse af en planlagt fusion.Anmeldelsen vedrører følgende virksomheder:\n— |\nAXA SA (»AXA«, Frankrig) |\n— |\nAPG Asset Management N.V. (»APG«, Nederlandene) |\n— |\nAPL SA (»APL«, Frankrig) |\n— |\nAPB SA (»APB«, Frankrig) |\n— |\nAPD SA (»APD«, Frankrig) |\n— |\nAPR SA (»APR«, Frankrig) |\n— |\nAPW SA (»",
+          "full_text": "3.5.2018 |\nDA |\nDen Europæiske Unions Tidende |\nC 155/13 |\nAnmeldelse af en planlagt fusion\n(Sag M.8901 — AXA/APG/APL/APB/APD/APR/APW/APX/APLIFE/APREI/APRW/APRX/APRXL/APRXLB)\n(EØS-relevant tekst)\n(2018/C 155/07)\n1.\nDen 25. april 2018 modtog Kommissionen i overensstemmelse med artikel 4 i Rådets forordning (EF) nr. 139/2004 (1) anmeldelse af en planlagt fusion.Anmeldelsen vedrører følgende virksomheder:\n— |\nAXA SA (»AXA«, Frankrig) |\n— |\nAPG Asset Management N.V. (»APG«, Nederlandene) |\n— |\nAPL SA (»APL«, Frankrig) |\n— |\nAPB SA (»APB«, Frankrig) |\n— |\nAPD SA (»APD«, Frankrig) |\n— |\nAPR SA (»APR«, Frankrig) |\n— |\nAPW SA (»"
+        },
+        {
+          "prompt": "Europas nye udfordring for tjenesteydelser af almen interesse\nKommissionen gør status på Europas nye udfordring med hensyn til tjenesteydelser af al",
+          "completion": "men interesse. Den understreger, at det er nødvendigt at styrke det europæiske samarbejde på dette område, og foreslår en række foranstaltninger, der skal sikre, at tjenesteydelser af almen interesse fortsat er tilgængelige for alle borgere.\nDOKUMENT\nMeddelelse fra Kommissionen til Europa-Parlamentet, Rådet, Det Europæiske Økonomiske og Sociale Udvalg og Regionsudvalget af 11. januar 2011 - Europas nye udfordring med hensyn til tjenesteydelser af almen interesse [KOM(2011) 1 endelig - ikke offentliggjort i Den Europæiske Unions Tidende].\nRESUMÉ\nKommissionen gør status på Europas n",
+          "full_text": "Europas nye udfordring for tjenesteydelser af almen interesse\nKommissionen gør status på Europas nye udfordring med hensyn til tjenesteydelser af almen interesse. Den understreger, at det er nødvendigt at styrke det europæiske samarbejde på dette område, og foreslår en række foranstaltninger, der skal sikre, at tjenesteydelser af almen interesse fortsat er tilgængelige for alle borgere.\nDOKUMENT\nMeddelelse fra Kommissionen til Europa-Parlamentet, Rådet, Det Europæiske Økonomiske og Sociale Udvalg og Regionsudvalget af 11. januar 2011 - Europas nye udfordring med hensyn til tjenesteydelser af almen interesse [KOM(2011) 1 endelig - ikke offentliggjort i Den Europæiske Unions Tidende].\nRESUMÉ\nKommissionen gør status på Europas n"
+        },
+        {
+          "prompt": "Hurtige grænseindsatshold (RABIT)\nFormålet med denne forordning er at oprette hurtige grænseindsatshold, der i et begrænset",
+          "completion": "tidsrum kan indsættes ved de ydre grænser for at bistå de nationale myndigheder med at håndtere situationer med særlige og uforholdsmæssigt store udfordringer ved de ydre grænser. De hurtige grænseindsatshold bør kunne indsættes ved de ydre grænser i en begrænset periode for at bistå de nationale myndigheder med at håndtere situationer med særlige og uforholdsmæssigt store udfordringer ved de ydre grænser. De hurtige grænseindsatshold bør kunne indsættes ved de ydre grænser i en begrænset periode for at bistå de nationale myndigheder med at håndtere situationer med særlige og uforholdsmæssigt store udfordringer ved",
+          "full_text": "Hurtige grænseindsatshold (RABIT)\nFormålet med denne forordning er at oprette hurtige grænseindsatshold, der i et begrænset tidsrum kan indsættes ved de ydre grænser for at bistå de nationale myndigheder med at håndtere situationer med særlige og uforholdsmæssigt store udfordringer ved de ydre grænser. De hurtige grænseindsatshold bør kunne indsættes ved de ydre grænser i en begrænset periode for at bistå de nationale myndigheder med at håndtere situationer med særlige og uforholdsmæssigt store udfordringer ved de ydre grænser. De hurtige grænseindsatshold bør kunne indsættes ved de ydre grænser i en begrænset periode for at bistå de nationale myndigheder med at håndtere situationer med særlige og uforholdsmæssigt store udfordringer ved "
+        }
+      ],
+      "kb_administrative_publication": [
+        {
+          "prompt": "Vejledning til undervisning i hånd- og rygsprøjtecertifikat  Bekendtgørelse om uddannelse og autorisation i forbin-delse med køb,",
+          "completion": "overdragelse og professionel anvendelse af bekæmpelsesmidler (Bekæmpelsesmiddelbekendtgørelsen)  Bekendtgørelse om bekæmpelsesmidler (Bekæmpelsesmiddelbekendtgørelsen)  Bekendtgørelse om anvendelse af bekæmpelsesmidler på erhvervsmæssig basis (Bekæmpelsesmiddelbekendtgørelsen)  Bekendtgørelse om anvendelse af bekæmpelsesmidler på erhvervsmæssig basis (Bekæmpelsesmiddelbekendtgørelsen)  Bekendtgørelse om anvendelse af bekæmpelsesmidler på erhvervsmæssig basis (Bekæmpelsesmiddelbekendtgørelsen)  Bekend",
+          "full_text": "Vejledning til undervisning i hånd- og rygsprøjtecertifikat  Bekendtgørelse om uddannelse og autorisation i forbin-delse med køb, overdragelse og professionel anvendelse af bekæmpelsesmidler (Bekæmpelsesmiddelbekendtgørelsen)  Bekendtgørelse om bekæmpelsesmidler (Bekæmpelsesmiddelbekendtgørelsen)  Bekendtgørelse om anvendelse af bekæmpelsesmidler på erhvervsmæssig basis (Bekæmpelsesmiddelbekendtgørelsen)  Bekendtgørelse om anvendelse af bekæmpelsesmidler på erhvervsmæssig basis (Bekæmpelsesmiddelbekendtgørelsen)  Bekendtgørelse om anvendelse af bekæmpelsesmidler på erhvervsmæssig basis (Bekæmpelsesmiddelbekendtgørelsen)  Bekend"
+        }
+      ]
+    }
+  },
+  "runtime_seconds": 417.398,
+  "generated_items": 100
+}

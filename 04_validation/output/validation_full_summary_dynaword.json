@@ -1,0 +1,32 @@
+{
+  "source_doc_retrieval_rate": 1.0,
+  "exact_text_match_rate": 1.0,
+  "full_doc_retrieval_rate": 1.0,
+  "full_exact_text_match_rate": 1.0,
+  "partial_start_doc_retrieval_rate": 1.0,
+  "partial_start_exact_text_match_rate": 1.0,
+  "partial_middle_doc_retrieval_rate": 1.0,
+  "partial_middle_exact_text_match_rate": 1.0,
+  "partial_end_doc_retrieval_rate": 1.0,
+  "partial_end_exact_text_match_rate": 1.0,
+  "config": {
+    "index_dir": "00_data/dynaword_index",
+    "unigram_probs_path": "02_unigram_probs/unigram_probs_dynaword.json",
+    "num_samples": 50,
+    "query_token_len": null,
+    "partial_query_tokens": 128,
+    "min_query_tokens": 20,
+    "include_full": true,
+    "include_partials": true,
+    "docs_per_span": 10,
+    "tokenizer_model": "meta-llama/Llama-2-7b-hf",
+    "seed": 42
+  },
+  "outputs": {
+    "sample_output": "/Users/gbarmina/Desktop/phd/code/PropMe/output/validation_full_samples_dynaword.jsonl",
+    "trace_output": "/Users/gbarmina/Desktop/phd/code/PropMe/output/validation_full_traces_dynaword.jsonl",
+    "per_query_output": "/Users/gbarmina/Desktop/phd/code/PropMe/output/validation_full_per_query_dynaword.jsonl",
+    "summary_output": "/Users/gbarmina/Desktop/phd/code/PropMe/output/validation_full_summary_dynaword.json",
+    "missing_log_output": "/Users/gbarmina/Desktop/phd/code/PropMe/output/validation_full_missing_doc_logs.txt"
+  }
+}

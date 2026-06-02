@@ -1,0 +1,10 @@
+numpy>=1.26,<2
+infini_gram==2.6.0
+transformers==4.57.5
+datasets
+sentencepiece
+protobuf
+matplotlib
+accelerate
+PyStemmer
+tqdm

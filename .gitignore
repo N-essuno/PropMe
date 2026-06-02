@@ -1,0 +1,10 @@
+.idea/
+.venv/
+.vscode/
+.DS_Store
+__pycache__
+
+old/
+
+00_data/dynaword
+00_data/dynaword_index
