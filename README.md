@@ -1,8 +1,8 @@
 # PropMe
 
-<center>
+<p align="center">
     <img src="_imgs/propme_framework.png" width="500">
-</center>
+</p>
 
 ---
 
