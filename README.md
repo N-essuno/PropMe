@@ -1,5 +1,11 @@
 # PropMe
 
+<center>
+    <img src="_imgs/propme_framework.png" width="500">
+</center>
+
+---
+
 PropMe is a propensity-aware framework for memorization evaluation in large language models. It compares ordinary, non-adversarial generations against prefix-style capability attacks and reports how strongly a model tends to leak training data under realistic use versus how much it can be induced to do so.
 
 `SimpleTrace` is the tracing component that makes PropMe possible in practice. It is a lightweight offline tracing pipeline built on top of `infini-gram`: it indexes a training corpus, traces generations back to matching training documents, and computes the summary metrics used by the PropMe analysis.
