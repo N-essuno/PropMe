@@ -1,4 +1,4 @@
-# PropMe
+# PropMe: Propensity-Aware Evaluation of Memorization in LLMs
 
 <p align="center">
     <img src="_imgs/propme_framework.png" width="800">
