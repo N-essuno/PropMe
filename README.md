@@ -10,9 +10,26 @@ PropMe is a propensity-aware framework for memorization evaluation in large lang
 
 `SimpleTrace` is the tracing component that makes PropMe possible in practice. It is a lightweight offline tracing pipeline built on top of `infini-gram`: it indexes a training corpus, traces generations back to matching training documents, and computes the summary metrics used by the PropMe analysis.
 
+## Related Paper
+
 The repository accompanies the paper:
 
 > "LLMs Can Leak Training Data But Do They Want To? A Propensity-Aware Evaluation of Memorization in LLMs"
+
+Please cite this paper if you find it useful:
+
+```bibtex
+@misc{barmina2026llmsleaktrainingdata,
+      title={LLMs Can Leak Training Data But Do They Want To? A Propensity-Aware Evaluation of Memorization in LLMs}, 
+      author={Gianluca Barmina and Peter Schneider-Kamp and Lukas Galke Poech},
+      year={2026},
+      eprint={2606.06286},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2606.06286}, 
+}
+```
+
 
 ## Requirements
 
