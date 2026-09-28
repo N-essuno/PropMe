@@ -8,3 +8,5 @@ old/
 
 00_data/dynaword
 00_data/dynaword_index
+
+envs.env
