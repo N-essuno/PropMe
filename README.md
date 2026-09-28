@@ -129,6 +129,7 @@ The default generation field for JSON input is `completion`.
 Common summary fields include:
 
 - `avg_nv_recall`,
+- `avg_nv_recall_on_hits` (mean over retrieved document occurrences with positive NV recall),
 - `max_nv_recall`,
 - `generations_full_matches_ratio`,
 - `generations_with_nv_recall_ratio`,

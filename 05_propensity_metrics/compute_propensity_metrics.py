@@ -42,6 +42,110 @@ class PropensityPreset:
 
 PRESETS = (
     PropensityPreset(
+        name="dfm9-generic-en-vs-prefix-a",
+        setting_to_summary_paths=(
+            (
+                "generic",
+                "memorization_experiment/data/dfm9/generic/st_dfm9_generic_en_A_summary.json",
+            ),
+        ),
+        prefix_summary="memorization_experiment/data/dfm9/prefix/st_dfm9_A_prefix_50_summary.json",
+        output="memorization_experiment/data/dfm9/propensity/dfm9_generic_en_vs_prefix_A_propensity.json",
+        plot_title="DFM9 Generic EN vs Prefix A Propensity Metrics",
+        tags=("dfm9", "generations", "generic-en", "prefix-a"),
+    ),
+    PropensityPreset(
+        name="dfm9-generic-en-vs-prefix-b",
+        setting_to_summary_paths=(
+            (
+                "generic",
+                "memorization_experiment/data/dfm9/generic/st_dfm9_generic_en_B_summary.json",
+            ),
+        ),
+        prefix_summary="memorization_experiment/data/dfm9/prefix/st_dfm9_B_prefix_50_summary.json",
+        output="memorization_experiment/data/dfm9/propensity/dfm9_generic_en_vs_prefix_B_propensity.json",
+        plot_title="DFM9 Generic EN vs Prefix B Propensity Metrics",
+        tags=("dfm9", "generations", "generic-en", "prefix-b"),
+    ),
+    PropensityPreset(
+        name="dfm9-generic-da-vs-prefix-a",
+        setting_to_summary_paths=(
+            (
+                "generic",
+                "memorization_experiment/data/dfm9/generic/st_dfm9_generic_da_A_summary.json",
+            ),
+        ),
+        prefix_summary="memorization_experiment/data/dfm9/prefix/st_dfm9_A_prefix_50_summary.json",
+        output="memorization_experiment/data/dfm9/propensity/dfm9_generic_da_vs_prefix_A_propensity.json",
+        plot_title="DFM9 Generic DA vs Prefix A Propensity Metrics",
+        tags=("dfm9", "generations", "generic-da", "prefix-a"),
+    ),
+    PropensityPreset(
+        name="dfm9-generic-da-vs-prefix-b",
+        setting_to_summary_paths=(
+            (
+                "generic",
+                "memorization_experiment/data/dfm9/generic/st_dfm9_generic_da_B_summary.json",
+            ),
+        ),
+        prefix_summary="memorization_experiment/data/dfm9/prefix/st_dfm9_B_prefix_50_summary.json",
+        output="memorization_experiment/data/dfm9/propensity/dfm9_generic_da_vs_prefix_B_propensity.json",
+        plot_title="DFM9 Generic DA vs Prefix B Propensity Metrics",
+        tags=("dfm9", "generations", "generic-da", "prefix-b"),
+    ),
+    PropensityPreset(
+        name="dfm9-generic-en-vs-prefix-c",
+        setting_to_summary_paths=(
+            (
+                "generic",
+                "memorization_experiment/data/dfm9/generic/st_dfm9_generic_en_C_summary.json",
+            ),
+        ),
+        prefix_summary="memorization_experiment/data/dfm9/prefix/st_dfm9_C_prefix_50_summary.json",
+        output="memorization_experiment/data/dfm9/propensity/dfm9_generic_en_vs_prefix_C_propensity.json",
+        plot_title="DFM9 Generic EN vs Prefix C Propensity Metrics",
+        tags=("dfm9", "generations", "generic-en", "prefix-c"),
+    ),
+    PropensityPreset(
+        name="dfm9-generic-en-vs-prefix-d",
+        setting_to_summary_paths=(
+            (
+                "generic",
+                "memorization_experiment/data/dfm9/generic/st_dfm9_generic_en_D_summary.json",
+            ),
+        ),
+        prefix_summary="memorization_experiment/data/dfm9/prefix/st_dfm9_D_prefix_50_summary.json",
+        output="memorization_experiment/data/dfm9/propensity/dfm9_generic_en_vs_prefix_D_propensity.json",
+        plot_title="DFM9 Generic EN vs Prefix D Propensity Metrics",
+        tags=("dfm9", "generations", "generic-en", "prefix-d"),
+    ),
+    PropensityPreset(
+        name="dfm9-generic-da-vs-prefix-c",
+        setting_to_summary_paths=(
+            (
+                "generic",
+                "memorization_experiment/data/dfm9/generic/st_dfm9_generic_da_C_summary.json",
+            ),
+        ),
+        prefix_summary="memorization_experiment/data/dfm9/prefix/st_dfm9_C_prefix_50_summary.json",
+        output="memorization_experiment/data/dfm9/propensity/dfm9_generic_da_vs_prefix_C_propensity.json",
+        plot_title="DFM9 Generic DA vs Prefix C Propensity Metrics",
+        tags=("dfm9", "generations", "generic-da", "prefix-c"),
+    ),
+    PropensityPreset(
+        name="dfm9-generic-da-vs-prefix-d",
+        setting_to_summary_paths=(
+            (
+                "generic",
+                "memorization_experiment/data/dfm9/generic/st_dfm9_generic_da_D_summary.json",
+            ),
+        ),
+        prefix_summary="memorization_experiment/data/dfm9/prefix/st_dfm9_D_prefix_50_summary.json",
+        output="memorization_experiment/data/dfm9/propensity/dfm9_generic_da_vs_prefix_D_propensity.json",
+        plot_title="DFM9 Generic DA vs Prefix D Propensity Metrics",
+        tags=("dfm9", "generations", "generic-da", "prefix-d"),
+    ),
+    PropensityPreset(
         name="commonpile-generations",
         setting_to_summary_paths=(
             ("generic", "memorization_experiment/data/commonpile/generic/st_cp_generic_summary.json"),
@@ -275,6 +379,12 @@ GROUPS = {
     "all-dynawords": [preset.name for preset in PRESETS if "dynaword" in preset.tags],
     "all-generations": [preset.name for preset in PRESETS if "generations" in preset.tags],
     "all-comparisons": [preset.name for preset in PRESETS if "comparison" in preset.tags],
+    "dfm9": [preset.name for preset in PRESETS if "dfm9" in preset.tags],
+    "dfm9-generations": [
+        preset.name
+        for preset in PRESETS
+        if "dfm9" in preset.tags and "generations" in preset.tags
+    ],
     "commonpile": [preset.name for preset in PRESETS if "commonpile" in preset.tags],
     "commonpile-generations": [
         preset.name
@@ -352,6 +462,22 @@ GROUPS = {
         if "dynaword-stages-comparison" in preset.tags
     ],
 }
+
+
+DFM9_COMBINED_PROPENSITY_SERIES = (
+    ("dfm9-generic-en-vs-prefix-a", "Generic EN vs Prefix A"),
+    ("dfm9-generic-en-vs-prefix-b", "Generic EN vs Prefix B"),
+    ("dfm9-generic-en-vs-prefix-c", "Generic EN vs Prefix C"),
+    ("dfm9-generic-en-vs-prefix-d", "Generic EN vs Prefix D"),
+    ("dfm9-generic-da-vs-prefix-a", "Generic DA vs Prefix A"),
+    ("dfm9-generic-da-vs-prefix-b", "Generic DA vs Prefix B"),
+    ("dfm9-generic-da-vs-prefix-c", "Generic DA vs Prefix C"),
+    ("dfm9-generic-da-vs-prefix-d", "Generic DA vs Prefix D"),
+)
+DFM9_COMBINED_PROPENSITY_PLOT = (
+    "memorization_experiment/data/dfm9/propensity/"
+    "dfm9_propensity_comparisons.png"
+)
 
 
 def _load_json(path: str) -> dict:
@@ -662,6 +788,73 @@ def plot_propensity_summary(summary: dict, *, title: str | None = None):
     return fig
 
 
+def plot_combined_propensity_reports(
+    reports_by_name: dict[str, dict],
+    series: tuple[tuple[str, str], ...],
+    metrics: list[str],
+    *,
+    title: str,
+):
+    """Plot one colored series per comparison and one bar per metric."""
+    plt, np = _get_plotting_modules()
+
+    colors = ("#1F449C", "#E69F00", "#009E73", "#CC79A7")
+    x = np.arange(len(metrics), dtype=float)
+    width = 0.82 / max(len(series), 1)
+    max_value = 0.0
+
+    fig, ax = plt.subplots(figsize=(max(10.5, 2.1 * len(metrics)), 6.2))
+    for idx, (preset_name, label) in enumerate(series):
+        report = reports_by_name[preset_name]
+        setting_names = _extract_setting_names(report)
+        if len(setting_names) != 1:
+            raise ValueError(
+                f"Combined propensity series '{label}' must contain exactly one "
+                f"setting, found {setting_names}."
+            )
+
+        setting_name = setting_names[0]
+        values = [
+            _extract_propensity_value(report, setting_name, metric)
+            for metric in metrics
+        ]
+        if values:
+            max_value = max(max_value, max(values))
+        offset = (idx - (len(series) - 1) / 2) * width
+        bars = ax.bar(
+            x + offset,
+            values,
+            width=width,
+            label=label,
+            color=colors[idx % len(colors)],
+            edgecolor="#333333",
+            linewidth=0.9,
+        )
+        for bar in bars:
+            height = float(bar.get_height())
+            ax.annotate(
+                _format_value(height),
+                xy=(bar.get_x() + bar.get_width() / 2, height),
+                xytext=(0, 3),
+                textcoords="offset points",
+                ha="center",
+                va="bottom",
+                fontsize=8,
+            )
+
+    metric_labels = [metric.replace("_", " ").title() for metric in metrics]
+    ax.set_xticks(x)
+    ax.set_xticklabels(metric_labels, rotation=15, ha="right")
+    ax.set_ylim(0.0, min(1.05, max_value + 0.08))
+    ax.set_ylabel("Propensity")
+    ax.set_xlabel("Metric")
+    ax.set_title(title)
+    ax.grid(axis="y", linestyle="--", alpha=0.6)
+    ax.legend(title="Comparison", loc="upper left", ncol=2, frameon=False)
+    fig.tight_layout()
+    return fig
+
+
 def _ensure_path(path: str) -> Path:
     candidate = Path(path)
     if candidate.is_absolute():
@@ -907,6 +1100,12 @@ def _run_preset_mode(args: argparse.Namespace) -> int:
     print()
 
     failures: list[str] = []
+    reports_by_name: dict[str, dict] = {}
+    selected_names = {preset.name for preset in presets}
+    combined_dfm9_selected = all(
+        preset_name in selected_names
+        for preset_name, _ in DFM9_COMBINED_PROPENSITY_SERIES
+    )
 
     for index, preset in enumerate(presets, start=1):
         output_path = preset.output
@@ -929,6 +1128,7 @@ def _run_preset_mode(args: argparse.Namespace) -> int:
                 metrics=metrics,
             )
             output_file = _write_report(report, output_path)
+            reports_by_name[preset.name] = report
             print(f"  wrote: {output_file}")
         except Exception as exc:
             print(f"Warning: Failed to compute {preset.name}: {exc}. Skipping.")
@@ -948,6 +1148,31 @@ def _run_preset_mode(args: argparse.Namespace) -> int:
                 print(f"Warning: Failed to plot {preset.name}: {exc}.")
                 failures.append(f"{preset.name} (plot)")
 
+        print()
+
+    if args.plot and combined_dfm9_selected:
+        print("DFM9 combined propensity plot:")
+        print(f"  plot: {DFM9_COMBINED_PROPENSITY_PLOT}")
+        if not args.dry_run and all(
+            preset_name in reports_by_name
+            for preset_name, _ in DFM9_COMBINED_PROPENSITY_SERIES
+        ):
+            try:
+                fig = plot_combined_propensity_reports(
+                    reports_by_name,
+                    DFM9_COMBINED_PROPENSITY_SERIES,
+                    metrics,
+                    title="DFM9 Propensity Comparisons",
+                )
+                plt, _ = _get_plotting_modules()
+                combined_output = _ensure_path(DFM9_COMBINED_PROPENSITY_PLOT)
+                combined_output.parent.mkdir(parents=True, exist_ok=True)
+                fig.savefig(combined_output, dpi=220, bbox_inches="tight")
+                plt.close(fig)
+                print(f"  wrote: {combined_output}")
+            except Exception as exc:
+                print(f"Warning: Failed to plot combined DFM9 propensity: {exc}.")
+                failures.append("dfm9 combined propensity plot")
         print()
 
     if failures:

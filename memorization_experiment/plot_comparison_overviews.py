@@ -10,15 +10,39 @@ import tempfile
 from dataclasses import dataclass
 from pathlib import Path
 
+try:
+    from .full_match_length_distribution import (
+        FULL_MATCH_LENGTH_BINS,
+        FullMatchLengthDistribution,
+        load_full_match_length_distribution,
+    )
+except ImportError:
+    from full_match_length_distribution import (
+        FULL_MATCH_LENGTH_BINS,
+        FullMatchLengthDistribution,
+        load_full_match_length_distribution,
+    )
+
 
 COLOR_A = "#F05039"
 COLOR_D = "#1F449C"
 COLOR_H = "#009E73"
 FALLBACK_COLORS = ("#7A4F9A", "#7F7F7F", "#BCBD22")
 SETTING_ORDER = ("generic", "specific", "prefix")
+BOUNDED_SCALAR_METRICS = frozenset(
+    {
+        "avg_nv_recall",
+        "avg_nv_recall_on_hits",
+        "generations_full_matches_ratio",
+    }
+)
+TOKEN_SCALAR_METRICS = frozenset({"average_longest_span_length"})
+
+
 SCALAR_METRICS = (
     "average_longest_span_length",
     "avg_nv_recall",
+    "avg_nv_recall_on_hits",
     "generations_full_matches_ratio",
 )
 PROPENSITY_OUTPUT_NAME = "propensity_metrics_overview.png"
@@ -27,6 +51,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 
 plt = None
 np = None
+Patch = None
 
 
 @dataclass(frozen=True)
@@ -50,6 +75,68 @@ class ComparisonOverview:
 
 
 OVERVIEWS = (
+    ComparisonOverview(
+        name="dfm9-settings-comparison",
+        output_dir="memorization_experiment/data/dfm9/plots/settings_comparison",
+        settings=(
+            OverviewSetting(
+                name="generic",
+                filepaths=(
+                    ("English / A", "memorization_experiment/data/dfm9/generic/st_dfm9_generic_en_A_summary.json"),
+                    ("English / B", "memorization_experiment/data/dfm9/generic/st_dfm9_generic_en_B_summary.json"),
+                    ("English / C", "memorization_experiment/data/dfm9/generic/st_dfm9_generic_en_C_summary.json"),
+                    ("English / D", "memorization_experiment/data/dfm9/generic/st_dfm9_generic_en_D_summary.json"),
+                    ("Danish / A", "memorization_experiment/data/dfm9/generic/st_dfm9_generic_da_A_summary.json"),
+                    ("Danish / B", "memorization_experiment/data/dfm9/generic/st_dfm9_generic_da_B_summary.json"),
+                    ("Danish / C", "memorization_experiment/data/dfm9/generic/st_dfm9_generic_da_C_summary.json"),
+                    ("Danish / D", "memorization_experiment/data/dfm9/generic/st_dfm9_generic_da_D_summary.json"),
+                ),
+            ),
+            OverviewSetting(
+                name="prefix",
+                filepaths=(
+                    ("A", "memorization_experiment/data/dfm9/prefix/st_dfm9_A_prefix_50_summary.json"),
+                    ("B", "memorization_experiment/data/dfm9/prefix/st_dfm9_B_prefix_50_summary.json"),
+                    ("C", "memorization_experiment/data/dfm9/prefix/st_dfm9_C_prefix_50_summary.json"),
+                    ("D", "memorization_experiment/data/dfm9/prefix/st_dfm9_D_prefix_50_summary.json"),
+                ),
+            ),
+        ),
+        propensity_series=(
+            PropensitySeries(
+                "Generic EN vs Prefix A",
+                "memorization_experiment/data/dfm9/propensity/dfm9_generic_en_vs_prefix_A_propensity.json",
+            ),
+            PropensitySeries(
+                "Generic EN vs Prefix B",
+                "memorization_experiment/data/dfm9/propensity/dfm9_generic_en_vs_prefix_B_propensity.json",
+            ),
+            PropensitySeries(
+                "Generic EN vs Prefix C",
+                "memorization_experiment/data/dfm9/propensity/dfm9_generic_en_vs_prefix_C_propensity.json",
+            ),
+            PropensitySeries(
+                "Generic EN vs Prefix D",
+                "memorization_experiment/data/dfm9/propensity/dfm9_generic_en_vs_prefix_D_propensity.json",
+            ),
+            PropensitySeries(
+                "Generic DA vs Prefix A",
+                "memorization_experiment/data/dfm9/propensity/dfm9_generic_da_vs_prefix_A_propensity.json",
+            ),
+            PropensitySeries(
+                "Generic DA vs Prefix B",
+                "memorization_experiment/data/dfm9/propensity/dfm9_generic_da_vs_prefix_B_propensity.json",
+            ),
+            PropensitySeries(
+                "Generic DA vs Prefix C",
+                "memorization_experiment/data/dfm9/propensity/dfm9_generic_da_vs_prefix_C_propensity.json",
+            ),
+            PropensitySeries(
+                "Generic DA vs Prefix D",
+                "memorization_experiment/data/dfm9/propensity/dfm9_generic_da_vs_prefix_D_propensity.json",
+            ),
+        ),
+    ),
     ComparisonOverview(
         name="dynaword-stages-comparison",
         output_dir="memorization_experiment/data/dynaword_stages_comparison",
@@ -235,8 +322,8 @@ OVERVIEWS_BY_NAME = {overview.name: overview for overview in OVERVIEWS}
 
 
 def _require_plot_dependencies():
-    global plt, np
-    if plt is not None and np is not None:
+    global plt, np, Patch
+    if plt is not None and np is not None and Patch is not None:
         return
 
     tmp_cache_dir = os.path.join(tempfile.gettempdir(), "plot_comparison_overviews_cache")
@@ -249,6 +336,7 @@ def _require_plot_dependencies():
 
         matplotlib.use("Agg")
         import matplotlib.pyplot as imported_plt
+        from matplotlib.patches import Patch as imported_Patch
         import numpy as imported_np
     except ModuleNotFoundError as exc:
         raise ModuleNotFoundError(
@@ -257,6 +345,7 @@ def _require_plot_dependencies():
         ) from exc
 
     plt = imported_plt
+    Patch = imported_Patch
     np = imported_np
 
 
@@ -295,6 +384,7 @@ def _pretty_metric_name(name: str) -> str:
     mapping = {
         "average_longest_span_length": "Average Longest Span",
         "avg_nv_recall": "Avg NV Recall",
+        "avg_nv_recall_on_hits": "Avg NV Recall on Hits",
         "generations_full_matches_ratio": "Full Matches Ratio",
     }
     return mapping.get(name, name.replace("_", " ").title())
@@ -345,11 +435,12 @@ def _metric_value(summary: dict, metric_name: str) -> float:
             "average_span_length",
         ],
         "avg_nv_recall": ["avg_nv_recall"],
+        "avg_nv_recall_on_hits": ["avg_nv_recall_on_hits"],
         "generations_full_matches_ratio": ["generations_full_matches_ratio"],
     }
     for key in aliases.get(metric_name, [metric_name]):
         if key in summary:
-            return float(summary[key])
+            return float(summary[key] or 0.0)
     return 0.0
 
 
@@ -393,9 +484,24 @@ def _load_overview_payload(
     for setting in overview.settings:
         setting_summaries: dict[str, dict] = {}
         for label, summary_path_str in setting.filepaths:
-            summary = _load_json(_ensure_path(summary_path_str))
-            if summary is not None:
-                setting_summaries[label] = summary
+            summary_path = _ensure_path(summary_path_str)
+            summary = _load_json(summary_path)
+            if summary is None:
+                continue
+
+            try:
+                summary["_full_match_length_distribution"] = (
+                    load_full_match_length_distribution(summary_path)
+                )
+            except (OSError, ValueError) as exc:
+                print(f"Warning: Could not load full-match lengths for {label}: {exc}")
+                summary["_full_match_length_distribution"] = (
+                    FullMatchLengthDistribution(
+                        total_generations=int(summary.get("total_generations", 0)),
+                        counts={},
+                    )
+                )
+            setting_summaries[label] = summary
         summaries_by_setting[setting.name] = setting_summaries
 
     for series in overview.propensity_series:
@@ -406,6 +512,204 @@ def _load_overview_payload(
     return summaries_by_setting, propensity_reports
 
 
+def _plot_full_match_overview(
+    overview: ComparisonOverview,
+    summaries_by_setting: dict[str, dict[str, dict]],
+    output_dir: Path,
+) -> None:
+    """Plot grouped full-match bars with compact length labels above them."""
+    _require_plot_dependencies()
+    ordered_settings = [
+        setting
+        for setting in overview.settings
+        if summaries_by_setting.get(setting.name)
+    ]
+    if not ordered_settings:
+        return
+
+    distributions = {
+        f"{setting.name}:{label}": summary["_full_match_length_distribution"]
+        for setting in ordered_settings
+        for label, summary in summaries_by_setting[setting.name].items()
+    }
+    length_bins = list(FULL_MATCH_LENGTH_BINS)
+    display_labels: list[str] = []
+    for setting in ordered_settings:
+        for label in summaries_by_setting[setting.name]:
+            display_label = _display_label(label, setting.name)
+            if display_label not in display_labels:
+                display_labels.append(display_label)
+    hatch_patterns = ("", "///", "xxx", "...", "+++", "ooo")
+    hatch_map = {
+        label: hatch_patterns[index % len(hatch_patterns)]
+        for index, label in enumerate(display_labels)
+    }
+
+    x = np.arange(len(ordered_settings), dtype=float)
+    fig, ax = plt.subplots(figsize=(12, 5.8))
+
+    def draw_grouped_stacks(
+        target_ax,
+        *,
+        annotate_segments: bool,
+        annotate_aggregates: bool,
+    ) -> float:
+        plotted_max = 0.0
+        for setting_index, setting in enumerate(ordered_settings):
+            summaries = summaries_by_setting[setting.name]
+            width = 0.8 / max(len(summaries), 1)
+            for series_index, (label, summary) in enumerate(summaries.items()):
+                display_label = _display_label(label, setting.name)
+                position = (
+                    x[setting_index]
+                    + (series_index - (len(summaries) - 1) / 2) * width
+                )
+                distribution = summary["_full_match_length_distribution"]
+                bottom = 0.0
+                for length_bin in length_bins:
+                    value = distribution.generation_ratio(length_bin.label)
+                    bar = target_ax.bar(
+                        [position],
+                        [value],
+                        width=width,
+                        bottom=[bottom],
+                        color=length_bin.color,
+                        edgecolor="#333333",
+                        linewidth=0.8,
+                        hatch=hatch_map[display_label],
+                    )[0]
+                    if annotate_segments and value > 0:
+                        percentage = (
+                            distribution.within_full_matches_percentage(
+                                length_bin.label
+                            )
+                        )
+                        percentage_label = (
+                            f"{percentage:.0f}%"
+                            if percentage >= 10
+                            else f"{percentage:.1f}%"
+                        )
+                        target_ax.text(
+                            bar.get_x() + bar.get_width() / 2,
+                            bottom + value / 2,
+                            percentage_label,
+                            ha="center",
+                            va="center",
+                            color=length_bin.text_color,
+                            fontsize=6,
+                            fontweight="bold",
+                        )
+                    bottom += value
+
+                aggregate = float(
+                    _metric_value(summary, "generations_full_matches_ratio")
+                )
+                plotted_max = max(plotted_max, aggregate)
+                if annotate_aggregates:
+                    target_ax.annotate(
+                        f"{aggregate:.1%}",
+                        xy=(position, aggregate),
+                        xytext=(0, 5),
+                        textcoords="offset points",
+                        ha="center",
+                        va="bottom",
+                        fontsize=8,
+                    )
+                    detail_index = 0
+                    for length_bin in length_bins:
+                        percentage = (
+                            distribution.within_full_matches_percentage(
+                                length_bin.label
+                            )
+                        )
+                        if percentage <= 0:
+                            continue
+                        percentage_label = (
+                            f"{percentage:.0f}%"
+                            if percentage >= 10
+                            else f"{percentage:.1f}%"
+                        )
+                        target_ax.annotate(
+                            percentage_label,
+                            xy=(position, aggregate),
+                            xytext=(0, 20 + detail_index * 15),
+                            textcoords="offset points",
+                            ha="center",
+                            va="bottom",
+                            color=length_bin.text_color,
+                            fontsize=6,
+                            fontweight="bold",
+                            bbox={
+                                "boxstyle": "round,pad=0.18",
+                                "facecolor": length_bin.color,
+                                "edgecolor": "#333333",
+                                "linewidth": 0.6,
+                            },
+                            annotation_clip=False,
+                        )
+                        detail_index += 1
+        return plotted_max
+
+    draw_grouped_stacks(
+        ax,
+        annotate_segments=False,
+        annotate_aggregates=True,
+    )
+    ax.set_xticks(x)
+    ax.set_xticklabels(
+        [_pretty_setting_name(setting.name) for setting in ordered_settings]
+    )
+    ax.set_ylabel("Share of generations")
+    ax.yaxis.set_major_formatter("{x:.0%}")
+    ax.set_title("Full Matches Ratio by Token Length")
+    ax.grid(axis="y", linestyle="--", alpha=0.5)
+    ax.set_axisbelow(True)
+    ax.set_ylim(0.0, 1.0)
+
+    if length_bins:
+        length_handles = [
+            Patch(
+                facecolor=length_bin.color,
+                edgecolor="#333333",
+                label=length_bin.legend_label,
+            )
+            for length_bin in length_bins
+        ]
+        length_legend = ax.legend(
+            handles=length_handles,
+            title="Full-match length",
+            loc="upper left",
+            bbox_to_anchor=(1.02, 1.0),
+            fontsize=8,
+        )
+        ax.add_artist(length_legend)
+
+    if display_labels:
+        series_handles = [
+            Patch(
+                facecolor="#FFFFFF",
+                edgecolor="#333333",
+                hatch=hatch_map[label],
+                label=label,
+            )
+            for label in display_labels
+        ]
+        ax.legend(
+            handles=series_handles,
+            title="Series",
+            loc="lower left",
+            bbox_to_anchor=(1.02, 0.0),
+            fontsize=8,
+        )
+
+    fig.tight_layout(rect=[0, 0, 0.80, 1])
+    fig.savefig(
+        output_dir / "generations_full_matches_ratio_overview.png",
+        dpi=220,
+    )
+    plt.close(fig)
+
+
 def _plot_scalar_overview(
     overview: ComparisonOverview,
     summaries_by_setting: dict[str, dict[str, dict]],
@@ -413,6 +717,10 @@ def _plot_scalar_overview(
     output_dir: Path,
 ) -> None:
     _require_plot_dependencies()
+    if metric_name == "generations_full_matches_ratio":
+        _plot_full_match_overview(overview, summaries_by_setting, output_dir)
+        return
+
 
     ordered_settings = [setting for setting in overview.settings if summaries_by_setting.get(setting.name)]
     if not ordered_settings:
@@ -431,6 +739,8 @@ def _plot_scalar_overview(
 
     fig, ax = plt.subplots(figsize=(9, 5.8))
     y_max = 0.0
+    is_token_metric = metric_name in TOKEN_SCALAR_METRICS
+    is_bounded_metric = metric_name in BOUNDED_SCALAR_METRICS
 
     for idx, display_label in enumerate(display_labels):
         values: list[float] = []
@@ -464,24 +774,40 @@ def _plot_scalar_overview(
         )
         for bar in bars:
             height = float(bar.get_height())
+            is_clipped = is_token_metric and height > 100
+            annotation_height = 100.0 if is_clipped else height
             ax.annotate(
-                _format_value(height),
-                xy=(bar.get_x() + bar.get_width() / 2, height),
-                xytext=(0, 3),
+                f"{_format_value(height)} ↑" if is_clipped else _format_value(height),
+                xy=(bar.get_x() + bar.get_width() / 2, annotation_height),
+                xytext=(0, -4) if is_clipped else (0, 3),
                 textcoords="offset points",
                 ha="center",
-                va="bottom",
+                va="top" if is_clipped else "bottom",
                 fontsize=8,
             )
 
     ax.set_xticks(x)
     ax.set_xticklabels([_pretty_setting_name(setting.name) for setting in ordered_settings])
-    ax.set_ylabel("Value")
+    ax.set_ylabel("Tokens" if is_token_metric else "Value")
     ax.set_title(f"{metric_name} across generic, specific, and prefix")
     ax.grid(axis="y", linestyle="--", alpha=0.5)
+    ax.set_axisbelow(True)
     ax.legend(title="Series")
-    if metric_name == "avg_nv_recall":
-        ax.set_ylim(0.0, y_max + 0.05)
+    if is_token_metric:
+        ax.set_ylim(0.0, 100.0)
+        ax.axhline(50.0, color="#555555", linestyle="--", linewidth=1.2)
+        ax.text(
+            0.99,
+            50.0,
+            "50 tokens",
+            transform=ax.get_yaxis_transform(),
+            ha="right",
+            va="bottom",
+            fontsize=7,
+            color="#444444",
+        )
+    elif is_bounded_metric:
+        ax.set_ylim(0.0, 1.0)
     else:
         ax.set_ylim(0.0, y_max + max(0.05, y_max * 0.12))
 
@@ -557,6 +883,7 @@ def _plot_distribution_overview(
             legend_handles, legend_labels = handles, labels
 
     axes_list[0].set_ylabel("Ratio")
+    axes_list[0].set_ylim(0.0, 1.0)
     fig.suptitle("spans_length_distribution overview", fontsize=15)
     if legend_handles and legend_labels:
         fig.legend(
@@ -583,10 +910,13 @@ def _plot_propensity_overview(
     if not ordered_series:
         return
 
-    comparison_settings = ["generic", "specific"]
+    comparison_settings: list[str] = []
     metrics: list[str] = []
     for series in ordered_series:
         summary = propensity_reports[series.label]
+        for setting_name in _extract_propensity_settings(summary):
+            if setting_name not in comparison_settings:
+                comparison_settings.append(setting_name)
         for metric in _extract_propensity_metrics(summary):
             if metric not in metrics:
                 metrics.append(metric)
@@ -601,10 +931,15 @@ def _plot_propensity_overview(
     current_x = 0.0
     group_gap = 0.8
     metric_gap = 1.0
+    one_shared_setting = len(comparison_settings) == 1
 
     for setting_name in comparison_settings:
         for metric in metrics:
-            x_labels.append(f"{_pretty_setting_name(setting_name)}\n{_pretty_metric_name(metric)}")
+            x_labels.append(
+                _pretty_metric_name(metric)
+                if one_shared_setting
+                else f"{_pretty_setting_name(setting_name)}\n{_pretty_metric_name(metric)}"
+            )
             x_positions.append(current_x)
             position_lookup[(setting_name, metric)] = current_x
             current_x += metric_gap
@@ -656,10 +991,16 @@ def _plot_propensity_overview(
     ax.set_xticks(x_positions)
     ax.set_xticklabels(x_labels, rotation=16, ha="right")
     ax.set_ylabel("Propensity")
-    ax.set_title("Propensity metrics overview")
+    ax.set_xlabel("Metric" if one_shared_setting else "Setting and metric")
+    ax.set_title("Propensity comparisons")
     ax.grid(axis="y", linestyle="--", alpha=0.5)
-    ax.set_ylim(0.0, y_max + 0.05)
-    ax.legend(loc="upper left", ncol=min(len(ordered_series), 4), frameon=False)
+    ax.set_ylim(0.0, 1.0)
+    ax.legend(
+        title="Comparison",
+        loc="upper left",
+        ncol=min(len(ordered_series), 4),
+        frameon=False,
+    )
     fig.tight_layout()
     fig.savefig(output_dir / PROPENSITY_OUTPUT_NAME, dpi=220)
     plt.close(fig)

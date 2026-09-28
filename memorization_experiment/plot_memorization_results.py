@@ -10,10 +10,55 @@ import re
 from dataclasses import dataclass
 from pathlib import Path
 
+try:
+    from .full_match_length_distribution import (
+        FULL_MATCH_LENGTH_BINS,
+        FullMatchLengthDistribution,
+        load_full_match_length_distribution,
+    )
+except ImportError:
+    from full_match_length_distribution import (
+        FULL_MATCH_LENGTH_BINS,
+        FullMatchLengthDistribution,
+        load_full_match_length_distribution,
+    )
+
 BASE_RED = "#A50922"
 COLOR_A = "#F05039"
+BOUNDED_SCALAR_METRICS = frozenset(
+    {
+        "generations_with_n_token_span_ratio",
+        "generations_full_matches_ratio",
+        "generations_with_nv_recall_ratio",
+        "avg_nv_recall",
+        "avg_nv_recall_on_hits",
+        "generations_above_nv_recall_threshold_ratio",
+    }
+)
+TOKEN_SCALAR_METRICS = frozenset(
+    {
+        "max_span_length",
+        "average_longest_span_length",
+    }
+)
+
+
 COLOR_D = "#1F449C"
 COLOR_H = "#009E73"
+VECTOR_SERIES_COLORS = (
+    "#DC2626",
+    "#1D4ED8",
+    "#15803D",
+    "#F0A96B",
+    "#BE185D",
+    "#111118",
+    "#C87979",
+    "#7AA8E8",
+    "#6BBF8A",
+    "#E08866",
+    "#D67AA5",
+    "#5DA87A",
+)
 REPO_ROOT = Path(__file__).resolve().parents[1]
 plt = None
 np = None
@@ -29,6 +74,25 @@ class PlotSuite:
 
 
 PLOT_SUITES = (
+    PlotSuite(
+        name="dfm9-generations",
+        filepaths=(
+            ("Generic EN / A", "memorization_experiment/data/dfm9/generic/st_dfm9_generic_en_A_summary.json"),
+            ("Generic EN / B", "memorization_experiment/data/dfm9/generic/st_dfm9_generic_en_B_summary.json"),
+            ("Generic EN / C", "memorization_experiment/data/dfm9/generic/st_dfm9_generic_en_C_summary.json"),
+            ("Generic EN / D", "memorization_experiment/data/dfm9/generic/st_dfm9_generic_en_D_summary.json"),
+            ("Generic DA / A", "memorization_experiment/data/dfm9/generic/st_dfm9_generic_da_A_summary.json"),
+            ("Generic DA / B", "memorization_experiment/data/dfm9/generic/st_dfm9_generic_da_B_summary.json"),
+            ("Generic DA / C", "memorization_experiment/data/dfm9/generic/st_dfm9_generic_da_C_summary.json"),
+            ("Generic DA / D", "memorization_experiment/data/dfm9/generic/st_dfm9_generic_da_D_summary.json"),
+            ("Prefix A/50", "memorization_experiment/data/dfm9/prefix/st_dfm9_A_prefix_50_summary.json"),
+            ("Prefix B/50", "memorization_experiment/data/dfm9/prefix/st_dfm9_B_prefix_50_summary.json"),
+            ("Prefix C/50", "memorization_experiment/data/dfm9/prefix/st_dfm9_C_prefix_50_summary.json"),
+            ("Prefix D/50", "memorization_experiment/data/dfm9/prefix/st_dfm9_D_prefix_50_summary.json"),
+        ),
+        plots_dir="memorization_experiment/data/dfm9/plots/memorization",
+        tags=("dfm9", "generations"),
+    ),
     PlotSuite(
         name="dynaword-generations",
         filepaths=(
@@ -300,6 +364,10 @@ GROUPS = {
     "all": [suite.name for suite in PLOT_SUITES],
     "all-generations": [suite.name for suite in PLOT_SUITES if "generations" in suite.tags],
     "all-prompts": [suite.name for suite in PLOT_SUITES if "prompts" in suite.tags],
+    "dfm9": [suite.name for suite in PLOT_SUITES if "dfm9" in suite.tags],
+    "dfm9-generations": [
+        suite.name for suite in PLOT_SUITES if "dfm9" in suite.tags and "generations" in suite.tags
+    ],
     "dynaword": [suite.name for suite in PLOT_SUITES if "dynaword" in suite.tags],
     "dynaword-generations": [
         suite.name for suite in PLOT_SUITES if "dynaword" in suite.tags and "generations" in suite.tags
@@ -545,6 +613,7 @@ def _metric_value(summary: dict, metric_name: str) -> float:
         ],
         "generations_with_nv_recall_ratio": ["generations_with_nv_recall_ratio"],
         "avg_nv_recall": ["avg_nv_recall"],
+        "avg_nv_recall_on_hits": ["avg_nv_recall_on_hits"],
         "generations_above_nv_recall_threshold_ratio": [
             "generations_above_nv_recall_threshold_ratio",
         ],
@@ -552,31 +621,170 @@ def _metric_value(summary: dict, metric_name: str) -> float:
     candidates = aliases.get(metric_name, [metric_name])
     for key in candidates:
         if key in summary:
-            return summary[key]
+            value = summary[key]
+            return value if value is not None else 0.0
     return 0.0
 
 
 def _plot_scalar_metric(ax, labels, summaries, metric_name: str):
-    values = [_metric_value(summaries[label], metric_name) for label in labels]
+    values = [
+        float(_metric_value(summaries[label], metric_name)) for label in labels
+    ]
+    is_token_metric = metric_name in TOKEN_SCALAR_METRICS
+    is_bounded_metric = (
+        metric_name in BOUNDED_SCALAR_METRICS
+        or metric_name.startswith("k_eidetic_rate_k_le_")
+    )
     palette = _value_based_red_colors(values)
     bars = ax.bar(labels, values, color=palette, edgecolor="#333333", linewidth=1.0)
     for bar in bars:
-        h = float(bar.get_height())
+        height = float(bar.get_height())
+        is_clipped = is_token_metric and height > 100
+        annotation_height = 100.0 if is_clipped else height
         ax.annotate(
-            _format_value(h),
-            xy=(bar.get_x() + bar.get_width() / 2, h),
-            xytext=(0, 3) if h >= 0 else (0, -15),
+            f"{_format_value(height)} ↑" if is_clipped else _format_value(height),
+            xy=(bar.get_x() + bar.get_width() / 2, annotation_height),
+            xytext=(0, -4) if is_clipped else (0, 3),
             textcoords="offset points",
             ha="center",
-            va="bottom" if h >= 0 else "top",
+            va="top" if is_clipped else "bottom",
             fontsize=8,
         )
     ax.set_title(metric_name)
-    ax.set_ylabel("Value")
+    ax.set_ylabel("Tokens" if is_token_metric else "Value")
     ax.grid(axis="y", linestyle="--", alpha=0.7)
+    ax.set_axisbelow(True)
     ax.tick_params(axis="x", rotation=15)
-    if metric_name == "avg_nv_recall" and values:
-        ax.set_ylim(0.0, max(values) + 0.05)
+    if is_token_metric:
+        ax.set_ylim(0.0, 100.0)
+        ax.axhline(50.0, color="#555555", linestyle="--", linewidth=1.2)
+        ax.text(
+            0.99,
+            50.0,
+            "50 tokens",
+            transform=ax.get_yaxis_transform(),
+            ha="right",
+            va="bottom",
+            fontsize=7,
+            color="#444444",
+        )
+    elif is_bounded_metric:
+        ax.set_ylim(0.0, 1.0)
+
+
+def _plot_full_match_ratio(
+    ax,
+    labels: list[str],
+    summaries: dict[str, dict],
+    distributions: dict[str, FullMatchLengthDistribution],
+) -> None:
+    """Plot full-match ratios with compact length-bin labels above each bar."""
+    x = np.arange(len(labels), dtype=float)
+    length_bins = list(FULL_MATCH_LENGTH_BINS)
+    aggregate_values = [
+        float(_metric_value(summaries[label], "generations_full_matches_ratio"))
+        for label in labels
+    ]
+
+    def draw_stacks(target_ax, *, annotate_segments: bool) -> None:
+        bottoms = np.zeros(len(labels), dtype=float)
+        for length_bin in length_bins:
+            values = [
+                distributions[label].generation_ratio(length_bin.label)
+                for label in labels
+            ]
+            bars = target_ax.bar(
+                x,
+                values,
+                bottom=bottoms,
+                color=length_bin.color,
+                edgecolor="#333333",
+                linewidth=0.7,
+                label=length_bin.legend_label,
+            )
+            if annotate_segments:
+                for index, (bar, value) in enumerate(zip(bars, values)):
+                    if value <= 0:
+                        continue
+                    percentage = distributions[
+                        labels[index]
+                    ].within_full_matches_percentage(length_bin.label)
+                    percentage_label = (
+                        f"{percentage:.0f}%"
+                        if percentage >= 10
+                        else f"{percentage:.1f}%"
+                    )
+                    target_ax.text(
+                        bar.get_x() + bar.get_width() / 2,
+                        bottoms[index] + value / 2,
+                        percentage_label,
+                        ha="center",
+                        va="center",
+                        color=length_bin.text_color,
+                        fontsize=6,
+                        fontweight="bold",
+                    )
+            bottoms += np.array(values, dtype=float)
+
+    draw_stacks(ax, annotate_segments=False)
+    for index, value in enumerate(aggregate_values):
+        ax.annotate(
+            f"{value:.1%}",
+            xy=(x[index], value),
+            xytext=(0, 5),
+            textcoords="offset points",
+            ha="center",
+            va="bottom",
+            fontsize=8,
+        )
+        detail_index = 0
+        for length_bin in length_bins:
+            percentage = distributions[
+                labels[index]
+            ].within_full_matches_percentage(length_bin.label)
+            if percentage <= 0:
+                continue
+            percentage_label = (
+                f"{percentage:.0f}%"
+                if percentage >= 10
+                else f"{percentage:.1f}%"
+            )
+            ax.annotate(
+                percentage_label,
+                xy=(x[index], value),
+                xytext=(0, 20 + detail_index * 15),
+                textcoords="offset points",
+                ha="center",
+                va="bottom",
+                color=length_bin.text_color,
+                fontsize=6,
+                fontweight="bold",
+                bbox={
+                    "boxstyle": "round,pad=0.18",
+                    "facecolor": length_bin.color,
+                    "edgecolor": "#333333",
+                    "linewidth": 0.6,
+                },
+                annotation_clip=False,
+            )
+            detail_index += 1
+
+    ax.set_xticks(x)
+    ax.set_xticklabels(labels, rotation=15)
+    ax.set_title("generations_full_matches_ratio")
+    ax.set_ylabel("Share of generations")
+    ax.yaxis.set_major_formatter("{x:.0%}")
+    ax.grid(axis="y", linestyle="--", alpha=0.7)
+    ax.set_axisbelow(True)
+    ax.set_ylim(0.0, 1.0)
+    if length_bins:
+        ax.legend(
+            title="Full-match length",
+            loc="upper right",
+            ncol=min(3, len(length_bins)),
+            fontsize=7,
+            title_fontsize=8,
+        )
 
 
 def _extract_k_values(summaries: dict[str, dict]) -> list[int]:
@@ -602,7 +810,13 @@ def _moving_average(values: list[float], window: int) -> np.ndarray:
     return np.convolve(arr, kernel, mode="same")
 
 
-def _plot_exact_span_distribution(ax, labels, exact_span_data: dict[str, dict]):
+def _plot_exact_span_distribution(
+    ax,
+    labels,
+    exact_span_data: dict[str, dict],
+    *,
+    vector_style: bool = False,
+):
     all_lengths: set[int] = set()
     for payload in exact_span_data.values():
         dist = payload.get("spans_length_distribution_exact", {})
@@ -618,7 +832,11 @@ def _plot_exact_span_distribution(ax, labels, exact_span_data: dict[str, dict]):
         return
 
     x = sorted(all_lengths)
-    palette = _distribution_palette(len(labels))
+    palette = (
+        list(VECTOR_SERIES_COLORS)
+        if vector_style
+        else _distribution_palette(len(labels))
+    )
     smoothing_window = 3 if len(x) < 20 else (5 if len(x) < 60 else 7)
 
     for i, label in enumerate(labels):
@@ -635,12 +853,47 @@ def _plot_exact_span_distribution(ax, labels, exact_span_data: dict[str, dict]):
     if ticks[-1] != x[-1]:
         ticks = ticks + [x[-1]]
 
-    ax.set_title("spans_length_distribution_exact (smoothed)")
-    ax.set_xlabel("Span Length (tokens)")
+    ticks = [tick for tick in ticks if tick <= 100]
+    if 100 not in ticks:
+        ticks.append(100)
+    if not vector_style:
+        ax.set_title("spans_length_distribution_exact (smoothed)")
+    ax.set_ylim(0.0, 1.0)
+    ax.axvline(50.0, color="#555555", linestyle="--", linewidth=1.2)
+    ax.text(
+        50.0,
+        0.99,
+        "50 tokens",
+        transform=ax.get_xaxis_transform(),
+        ha="right",
+        va="top",
+        fontsize=7,
+    )
+    ax.set_xlabel(
+        "Exact match length (tokens)"
+        if vector_style
+        else "Span Length (tokens)"
+    )
     ax.set_ylabel("Ratio")
     ax.set_xticks(ticks)
-    ax.grid(axis="both", linestyle="--", alpha=0.5)
-    ax.legend()
+    ax.set_xlim(0.0, 100.0)
+    if vector_style:
+        ax.grid(axis="y", color="#E5E7EB", linewidth=0.8)
+        ax.tick_params(axis="both", colors="#4B5563", labelsize=12)
+        ax.xaxis.label.set_color("#111118")
+        ax.yaxis.label.set_color("#111118")
+        ax.xaxis.label.set_size(16)
+        ax.yaxis.label.set_size(16)
+        for side, spine in ax.spines.items():
+            spine.set_visible(side in ("left", "bottom"))
+            spine.set_color("#E5E7EB")
+            spine.set_linewidth(0.8)
+        legend = ax.legend(frameon=False, fontsize=11)
+        for text in legend.get_texts():
+            text.set_color("#111118")
+    else:
+        ax.grid(axis="both", linestyle="--", alpha=0.5)
+        ax.legend()
 
 
 def _bucket_sort_key(bucket_label: str) -> tuple[int, float, str]:
@@ -692,8 +945,198 @@ def _plot_bucketed_span_distribution(ax, labels, summaries: dict[str, dict]):
     ax.set_title("spans_length_distribution")
     ax.set_xlabel("Span Length Bucket")
     ax.set_ylabel("Ratio")
+    ax.set_ylim(0.0, 1.0)
     ax.grid(axis="y", linestyle="--", alpha=0.5)
     ax.legend()
+    ax.set_ylim(0.0, 1.0)
+
+def _pretty_bucket_label(bucket: str) -> str:
+    match = re.match(r"^\(\s*(\d+)\s*,\s*([0-9]+|inf)\s*\)$", str(bucket))
+    if not match:
+        return str(bucket)
+    lower, upper = match.groups()
+    return f"{lower}+" if upper == "inf" else f"{lower}–{upper}"
+
+
+def _plot_span_distribution_heatmap(
+    ax,
+    labels: list[str],
+    summaries: dict[str, dict],
+) -> None:
+    """Plot the binned span distributions as an annotated ratio heatmap."""
+    all_buckets = {
+        str(bucket)
+        for summary in summaries.values()
+        for bucket in summary.get("spans_length_distribution", {})
+    }
+    if not all_buckets:
+        ax.text(
+            0.5,
+            0.5,
+            "No bucketed span distribution data found",
+            ha="center",
+            va="center",
+        )
+        ax.set_axis_off()
+        return
+
+    buckets = sorted(all_buckets, key=_bucket_sort_key)
+    matrix = np.array(
+        [
+            [
+                float(
+                    summaries[label]
+                    .get("spans_length_distribution", {})
+                    .get(bucket, 0.0)
+                )
+                for bucket in buckets
+            ]
+            for label in labels
+        ],
+        dtype=float,
+    )
+    image = ax.imshow(
+        matrix,
+        aspect="auto",
+        cmap="Blues",
+        vmin=0.0,
+        vmax=1.0,
+        interpolation="nearest",
+    )
+    for row_index in range(matrix.shape[0]):
+        for column_index in range(matrix.shape[1]):
+            value = matrix[row_index, column_index]
+            percentage = value * 100.0
+            value_label = (
+                f"{percentage:.0f}%"
+                if percentage >= 10
+                else f"{percentage:.1f}%"
+            )
+            ax.text(
+                column_index,
+                row_index,
+                value_label,
+                ha="center",
+                va="center",
+                fontsize=7,
+                color="white" if value >= 0.55 else "#111111",
+            )
+
+    ax.set_xticks(np.arange(len(buckets)))
+    ax.set_xticklabels([_pretty_bucket_label(bucket) for bucket in buckets])
+    ax.set_yticks(np.arange(len(labels)))
+    ax.set_yticklabels(labels)
+    ax.set_xlabel("Span length bin (tokens)")
+    ax.set_ylabel("Evaluation setting")
+    ax.set_title("Span Length Distribution by Bin")
+    colorbar = ax.figure.colorbar(image, ax=ax, fraction=0.035, pad=0.03)
+    colorbar.set_label("Ratio")
+    colorbar.ax.set_ylim(0.0, 1.0)
+
+
+def _plot_memorization_spider(
+    ax,
+    labels: list[str],
+    summaries: dict[str, dict],
+) -> None:
+    """Compare three headline memorization metrics on normalized axes."""
+    metric_labels = (
+        "Full-generation\nmatches",
+        "Average NV\nrecall",
+        "Average longest span\n(100-token scale)",
+    )
+    angles = np.linspace(0.0, 2.0 * np.pi, len(metric_labels), endpoint=False)
+    closed_angles = np.concatenate([angles, angles[:1]])
+    palette = _distribution_palette(len(labels))
+
+    for index, label in enumerate(labels):
+        summary = summaries[label]
+        full_match_ratio = float(
+            _metric_value(summary, "generations_full_matches_ratio")
+        )
+        average_nv_recall = float(_metric_value(summary, "avg_nv_recall"))
+        average_longest_span = float(
+            _metric_value(summary, "average_longest_span_length")
+        )
+        values = np.array(
+            [
+                full_match_ratio,
+                average_nv_recall,
+                average_longest_span / 100.0,
+            ],
+            dtype=float,
+        )
+        values = np.clip(values, 0.0, 1.0)
+        closed_values = np.concatenate([values, values[:1]])
+        color = palette[index % len(palette)]
+        ax.plot(
+            closed_angles,
+            closed_values,
+            color=color,
+            linewidth=2.3,
+            marker="o",
+            markersize=5,
+            label=(
+                f"{label}  ·  {full_match_ratio:.1%}  |  "
+                f"{average_nv_recall:.1%}  |  {average_longest_span:.1f} tok"
+            ),
+        )
+        ax.fill(closed_angles, closed_values, color=color, alpha=0.12)
+
+    ax.set_theta_offset(np.pi / 2.0)
+    ax.set_theta_direction(-1)
+    ax.set_xticks(angles)
+    ax.set_xticklabels(metric_labels)
+    ax.set_ylim(0.0, 1.0)
+    ax.set_yticks([0.2, 0.4, 0.5, 0.6, 0.8, 1.0])
+    ax.set_yticklabels(
+        ["20%", "40%", "50%", "60%", "80%", "100%"],
+        fontsize=7,
+    )
+    ax.set_rlabel_position(25)
+    ax.grid(alpha=0.5)
+    reference_angles = np.linspace(0.0, 2.0 * np.pi, 361)
+    ax.plot(
+        reference_angles,
+        np.full_like(reference_angles, 0.5),
+        color="#555555",
+        linestyle="--",
+        linewidth=1.1,
+        label="_nolegend_",
+        zorder=0,
+    )
+    ax.annotate(
+        "50 tokens",
+        xy=(angles[2], 0.5),
+        xytext=(-4, 5),
+        textcoords="offset points",
+        ha="right",
+        va="bottom",
+        fontsize=7,
+        color="#444444",
+    )
+    ax.set_title("Memorization Metrics", pad=24)
+    ax.legend(
+        title="Setting  ·  full match | NV recall | avg span",
+        loc="upper left",
+        bbox_to_anchor=(1.08, 1.08),
+        fontsize=8,
+    )
+
+
+def _save_spider_plot(
+    plots_dir: str,
+    labels: list[str],
+    summaries: dict[str, dict],
+) -> None:
+    fig, ax = plt.subplots(figsize=(11, 7), subplot_kw={"projection": "polar"})
+    _plot_memorization_spider(ax, labels, summaries)
+    fig.tight_layout()
+    fig.savefig(
+        os.path.join(plots_dir, "memorization_metrics_spider.png"),
+        dpi=200,
+    )
+    plt.close(fig)
 
 
 def _save_single_plot(plots_dir: str, filename: str, plotter):
@@ -702,6 +1145,38 @@ def _save_single_plot(plots_dir: str, filename: str, plotter):
     fig.tight_layout()
     fig.savefig(os.path.join(plots_dir, filename), dpi=200)
     plt.close(fig)
+
+
+def _save_exact_span_distribution_vectors(
+    plots_dir: str,
+    labels: list[str],
+    exact_span_data: dict[str, dict],
+) -> None:
+    vector_rc = {
+        "font.family": "sans-serif",
+        "font.sans-serif": ["Arial", "Liberation Sans", "DejaVu Sans"],
+        "text.color": "#111118",
+        "axes.labelcolor": "#111118",
+        "xtick.color": "#4B5563",
+        "ytick.color": "#4B5563",
+    }
+    with plt.rc_context(vector_rc):
+        fig, ax = plt.subplots(figsize=(13.27, 5.92))
+        _plot_exact_span_distribution(
+            ax,
+            labels,
+            exact_span_data,
+            vector_style=True,
+        )
+        fig.tight_layout()
+        for suffix in ("svg", "pdf"):
+            fig.savefig(
+                os.path.join(
+                    plots_dir,
+                    f"spans_length_distribution_exact.{suffix}",
+                )
+            )
+        plt.close(fig)
 
 
 def _ensure_path(path: str) -> Path:
@@ -776,6 +1251,7 @@ def _generate_plots_for_suite(suite: PlotSuite) -> None:
 
     summaries: dict[str, dict] = {}
     exact_span_data: dict[str, dict] = {}
+    full_match_length_data: dict[str, FullMatchLengthDistribution] = {}
 
     for label, summary_path_str in suite.filepaths:
         summary_path = _ensure_path(summary_path_str)
@@ -790,6 +1266,18 @@ def _generate_plots_for_suite(suite: PlotSuite) -> None:
         exact_payload = _load_json(str(_ensure_path(exact_path_str)))
         if exact_payload is None:
             exact_payload = {}
+        try:
+            full_match_length_data[label] = load_full_match_length_distribution(
+                summary_path
+            )
+        except (OSError, ValueError) as exc:
+            print(
+                f"\tWarning: Could not load full-match lengths for {label}: {exc}"
+            )
+            full_match_length_data[label] = FullMatchLengthDistribution(
+                total_generations=int(summary.get("total_generations", 0)),
+                counts={},
+            )
         exact_span_data[label] = exact_payload
 
     if not summaries:
@@ -804,6 +1292,7 @@ def _generate_plots_for_suite(suite: PlotSuite) -> None:
         "generations_full_matches_ratio",
         "generations_with_nv_recall_ratio",
         "avg_nv_recall",
+        "avg_nv_recall_on_hits",
         "generations_above_nv_recall_threshold_ratio",
     ]
 
@@ -811,10 +1300,18 @@ def _generate_plots_for_suite(suite: PlotSuite) -> None:
     k_metrics = [f"k_eidetic_rate_k_le_{k}" for k in k_values]
 
     for metric in scalar_metrics:
+        if metric == "generations_full_matches_ratio":
+            plotter = lambda ax: _plot_full_match_ratio(
+                ax, labels, summaries, full_match_length_data
+            )
+        else:
+            plotter = lambda ax, metric_name=metric: _plot_scalar_metric(
+                ax, labels, summaries, metric_name
+            )
         _save_single_plot(
             str(plots_dir),
             f"{metric}.png",
-            lambda ax, metric_name=metric: _plot_scalar_metric(ax, labels, summaries, metric_name),
+            plotter,
         )
 
     for metric in k_metrics:
@@ -829,12 +1326,25 @@ def _generate_plots_for_suite(suite: PlotSuite) -> None:
         "spans_length_distribution_exact.png",
         lambda ax: _plot_exact_span_distribution(ax, labels, exact_span_data),
     )
+    _save_exact_span_distribution_vectors(
+        str(plots_dir),
+        labels,
+        exact_span_data,
+    )
 
     _save_single_plot(
         str(plots_dir),
         "spans_length_distribution.png",
         lambda ax: _plot_bucketed_span_distribution(ax, labels, summaries),
     )
+
+    _save_single_plot(
+        str(plots_dir),
+        "span_length_distribution_heatmap.png",
+        lambda ax: _plot_span_distribution_heatmap(ax, labels, summaries),
+    )
+
+    _save_spider_plot(str(plots_dir), labels, summaries)
 
     combined_specs = (
         [("scalar", metric) for metric in scalar_metrics]
@@ -852,7 +1362,11 @@ def _generate_plots_for_suite(suite: PlotSuite) -> None:
     axes_flat = np.array(axes).reshape(-1)
 
     for ax, (kind, metric_name) in zip(axes_flat, combined_specs):
-        if kind in ("scalar", "k"):
+        if metric_name == "generations_full_matches_ratio":
+            _plot_full_match_ratio(
+                ax, labels, summaries, full_match_length_data
+            )
+        elif kind in ("scalar", "k"):
             _plot_scalar_metric(ax, labels, summaries, metric_name)
         elif kind == "distribution_exact":
             _plot_exact_span_distribution(ax, labels, exact_span_data)
@@ -862,7 +1376,10 @@ def _generate_plots_for_suite(suite: PlotSuite) -> None:
     for ax in axes_flat[n_plots:]:
         ax.set_axis_off()
 
-    fig.suptitle("SimpleTrace Metrics Across 3 Evaluation Settings", fontsize=16)
+    fig.suptitle(
+        f"SimpleTrace Metrics Across {len(labels)} Evaluation Settings",
+        fontsize=16,
+    )
     fig.tight_layout(rect=[0, 0, 1, 0.98])
     fig.savefig(plots_dir / "all_plots_combined.png", dpi=220)
     plt.close(fig)

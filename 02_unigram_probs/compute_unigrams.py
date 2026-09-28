@@ -10,6 +10,7 @@ python 02_unigram_probs/compute_unigrams.py \
 """
 
 import argparse
+from collections.abc import Mapping
 import math
 import json
 import os
@@ -25,8 +26,12 @@ def build_arg_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--index-dir",
+        nargs="+",
         required=True,
-        help="Path to the InfiniGram index directory.",
+        help=(
+            "Path to one or more InfiniGram index directories. Multiple paths "
+            "are combined as one logical multi-shard index."
+        ),
     )
     parser.add_argument(
         "--output-path",
@@ -63,8 +68,9 @@ def main() -> None:
         add_bos_token=False,
         add_eos_token=False,
     )
+    index_dir = args.index_dir[0] if len(args.index_dir) == 1 else args.index_dir
     engine = InfiniGramEngine(
-        index_dir=args.index_dir,
+        index_dir=index_dir,
         eos_token_id=enc.eos_token_id,
         precompute_unigram_logprobs=True,
     )
@@ -74,9 +80,15 @@ def main() -> None:
     unigram_counts: dict[int, int] = {}
     for s in tqdm(range(num_shards), desc="Processing shards"):
         shard_counts = engine.compute_unigram_counts(s=s)
-        for token_id, count in enumerate(shard_counts):
+        count_items = (
+            shard_counts.items()
+            if isinstance(shard_counts, Mapping)
+            else enumerate(shard_counts)
+        )
+        for token_id, count in count_items:
             if count > 0:
-                unigram_counts[token_id] = unigram_counts.get(token_id, 0) + count
+                token_id = int(token_id)
+                unigram_counts[token_id] = unigram_counts.get(token_id, 0) + int(count)
 
     total_tokens = sum(unigram_counts.values())
     if total_tokens == 0:
