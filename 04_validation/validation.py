@@ -26,6 +26,94 @@ UNIGRAM_PROBS_PATH = REPO_ROOT / "02_unigram_probs" / "unigram_probs_dummy.json"
 DUMMY_DATASET_PATH = REPO_ROOT / "00_data" / "dummy_dataset" / "dummy.jsonl"
 
 
+class TestIndexMetadataParsing(unittest.TestCase):
+    def test_python_literal_wrapper(self):
+        raw = "{'metadata': {'id': 'python-doc', 'missing': None, 'enabled': True}}"
+        self.assertEqual(
+            simple_trace._parse_index_metadata(raw),
+            {"id": "python-doc", "missing": None, "enabled": True},
+        )
+
+    def test_json_wrapper_with_json_literals(self):
+        raw = '{"metadata": {"id": "json-doc", "missing": null, "enabled": false}}'
+        self.assertEqual(
+            simple_trace._parse_index_metadata(raw),
+            {"id": "json-doc", "missing": None, "enabled": False},
+        )
+
+    def test_flat_dictionary(self):
+        self.assertEqual(
+            simple_trace._parse_index_metadata({"id": "flat-doc"}),
+            {"id": "flat-doc"},
+        )
+
+    def test_malformed_metadata_is_fatal(self):
+        with self.assertRaisesRegex(ValueError, "neither a Python literal nor valid JSON"):
+            simple_trace._parse_index_metadata("{broken metadata")
+
+    def test_non_object_metadata_is_fatal(self):
+        with self.assertRaisesRegex(ValueError, "must contain an object"):
+            simple_trace._parse_index_metadata('{"metadata": null}')
+
+
+class _FindOnlyEngine:
+    def __init__(self, matching_sequences: set[tuple[int, ...]]):
+        self.matching_sequences = matching_sequences
+        self.queries: list[tuple[int, ...]] = []
+
+    def find(self, *, input_ids: list[int]) -> dict:
+        query = tuple(input_ids)
+        self.queries.append(query)
+        return {"cnt": int(query in self.matching_sequences)}
+
+
+class TestVerifiedOverlapGrouping(unittest.TestCase):
+    @staticmethod
+    def _span(start: int, end: int) -> tuple:
+        return (start, end, [], "", 0.0)
+
+    def test_does_not_merge_an_unsupported_overlap_chain(self):
+        gen_ids = list(range(10))
+        spans = [self._span(0, 4), self._span(3, 7), self._span(6, 10)]
+        engine = _FindOnlyEngine(set())
+
+        groups = simple_trace._group_verified_overlapping_spans(
+            spans,
+            gen_ids,
+            engine,
+        )
+
+        self.assertEqual(groups, [[0], [1], [2]])
+        self.assertEqual(engine.queries, [tuple(range(7)), tuple(range(3, 10))])
+
+    def test_keeps_only_the_largest_verified_union(self):
+        gen_ids = list(range(10))
+        spans = [self._span(0, 4), self._span(3, 7), self._span(6, 10)]
+        engine = _FindOnlyEngine({tuple(range(7))})
+
+        groups = simple_trace._group_verified_overlapping_spans(
+            spans,
+            gen_ids,
+            engine,
+        )
+
+        self.assertEqual(groups, [[0, 1], [2]])
+        self.assertEqual(engine.queries, [tuple(range(7)), tuple(range(10))])
+
+    def test_merges_when_the_complete_union_is_verified(self):
+        gen_ids = list(range(10))
+        spans = [self._span(0, 4), self._span(3, 7), self._span(6, 10)]
+        engine = _FindOnlyEngine({tuple(range(7)), tuple(range(10))})
+
+        groups = simple_trace._group_verified_overlapping_spans(
+            spans,
+            gen_ids,
+            engine,
+        )
+
+        self.assertEqual(groups, [[0, 1, 2]])
+
+
 class TestSimpleTraceDummyIndex(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -293,6 +381,8 @@ class TestSimpleTraceDummyIndex(unittest.TestCase):
         self.assertEqual(summary["unique_full_exact_matches"], 2)  # d1, d4
         self.assertAlmostEqual(summary["generations_with_60_token_span_ratio"], 1 / 3)
         self.assertAlmostEqual(summary["generations_full_matches_ratio"], 2 / 3)
+        self.assertAlmostEqual(summary["avg_nv_recall"], (1.0 + 0.5) / 5)
+        self.assertAlmostEqual(summary["avg_nv_recall_on_hits"], (1.0 + 0.5) / 2)
         self.assertEqual(
             summary["spans_length_counts_distribution"],
             {"(1, 3)": 0, "(4, 6)": 0, "(7, 10)": 2, "(11, 20)": 0, "(21, inf)": 3},
@@ -301,6 +391,35 @@ class TestSimpleTraceDummyIndex(unittest.TestCase):
             summary["spans_length_distribution"],
             {"(1, 3)": 0.0, "(4, 6)": 0.0, "(7, 10)": 0.4, "(11, 20)": 0.0, "(21, inf)": 0.6},
         )
+
+    def test_evaluation_avg_nv_recall_on_hits_is_zero_without_hits(self):
+        synthetic_results = {
+            "g1": {
+                "final_spans": [
+                    {
+                        "start": 0,
+                        "end": 3,
+                        "text": "span",
+                        "docs": [
+                            {
+                                "id": "d1",
+                                "text": "unrelated",
+                                "nv_recall": 0.0,
+                                "nv_matched_words": 0,
+                            }
+                        ],
+                    }
+                ]
+            }
+        }
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            summary = evaluate_results(
+                synthetic_results,
+                summary_output_path=str(Path(tmpdir) / "summary.json"),
+            )
+
+        self.assertEqual(summary["avg_nv_recall_on_hits"], 0.0)
 
     def test_saved_results_include_span_length(self):
         with tempfile.TemporaryDirectory() as tmpdir:

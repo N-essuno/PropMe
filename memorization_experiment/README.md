@@ -10,6 +10,8 @@ The scripts in this folder are:
 - `sample_docs.py`: sample source documents from an InfiniGram index into `*_sample_docs.jsonl`.
 - `commonpile_extract_prefixes.py`: build Common Pile prefix prompts from sampled source documents.
 - `dynaword_extract_prefixes.py`: build Dynaword prefix prompts from sampled source documents.
+- `dfm9_extract_prefixes.py`: sample selected DFM9 A/B/C/D indexes and write separate 50/75/100-token prefix prompts.
+- `dfm9_domain_distributions.py`: resolve DFM9 SimpleTrace dataset IDs and report domain distributions by span-length bucket and NV-recall threshold.
 
 The rest of the experiment pipeline is using code from other folders in the repository.
 
@@ -103,6 +105,37 @@ Run them from the repository root:
 python memorization_experiment/dynaword_extract_prefixes.py
 ```
 
+
+### DFM9 category prefixes
+
+For DFM9, the extractor samples directly from any selected category indexes.
+The same sampled documents are reused for every requested prefix length:
+
+```bash
+HF_HUB_OFFLINE=1 python -u memorization_experiment/dfm9_extract_prefixes.py \
+  --indexes-root /work/olmotrace/mimir_propme/indexes \
+  --categories A B C D \
+  --num-docs 100 \
+  --prefix-lengths 50 75 100
+```
+
+By default it writes the following files under
+`memorization_experiment/data/dfm9/prefix/` for each selected category:
+
+```text
+dfm9_A_prefix_50_prompts.jsonl
+dfm9_A_prefix_75_prompts.jsonl
+dfm9_A_prefix_100_prompts.jsonl
+```
+
+The same `50`, `75`, and `100` files are produced for categories B, C, and D.
+
+Every line retains the existing prefix-prompt contract with `text` and
+`domain` fields. Documents must have at least as many usable Llama tokens as
+the longest requested prefix. Sampling is distinct, deterministic, and uses
+100 documents per category by default; use `--seed`, `--num-docs`, and
+`--min-tokens` to override those settings.
+
 ## Run SimpleTrace on the generated completions
 
 The experiment runner is `run_memorization_experiments.py`.
@@ -118,6 +151,17 @@ Example for running experiments on dynaword generic, specific and prefix generat
 ```bash
 python memorization_experiment/run_memorization_experiments.py dynaword-generations
 ```
+
+Run the DFM9 generic and A/B/C/D prefix-generation presets with:
+
+```bash
+python memorization_experiment/run_memorization_experiments.py dfm9-generations
+```
+
+The DFM9 group runs Generic EN and Generic DA separately against each
+singular A, B, C, and D index, followed by the four matching prefix traces.
+The existing memorization and comparison plot paths are regenerated in place
+from these twelve summaries.
 
 The runner is responsible for connecting generated completions to the right tracing configuration:
 
@@ -154,8 +198,57 @@ Example for the dynaword generations experiment:
 python memorization_experiment/plot_memorization_results.py dynaword-generations
 ```
 
+Alongside the existing metric and distribution plots, each suite produces:
+
+- `span_length_distribution_heatmap.png`, an annotated view of the binned span ratios.
+- `memorization_metrics_spider.png`, comparing full-generation matches, average NV recall, and average longest span. The span axis is normalized to the 100-token plotting scale.
+
 Use `plot_comparison_overviews.py` for cross-model and cross-stage comparison views:
 
 ```bash
 python memorization_experiment/plot_comparison_overviews.py dynaword-stages-comparison
 ```
+
+
+## Analyze DFM9 domain distributions
+
+After SimpleTrace has produced one or more result files, resolve the retrieved
+DFM9 dataset IDs back to their full metadata and calculate domain
+compositions:
+
+```bash
+python -u memorization_experiment/dfm9_domain_distributions.py \
+  --results \
+    memorization_experiment/data/dfm9/generic/st_dfm9_generic_en_results.json \
+    memorization_experiment/data/dfm9/generic/st_dfm9_generic_da_results.json \
+    memorization_experiment/data/dfm9/prefix/st_dfm9_A_prefix_50_results.json \
+    memorization_experiment/data/dfm9/prefix/st_dfm9_B_prefix_50_results.json \
+    memorization_experiment/data/dfm9/prefix/st_dfm9_C_prefix_50_results.json \
+    memorization_experiment/data/dfm9/prefix/st_dfm9_D_prefix_50_results.json \
+  --indexes-root /work/olmotrace/mimir_propme/indexes \
+  --prepared-data-root /work/olmotrace/mimir_propme/dfm9_memorisation_sources_propme \
+  --output-dir memorization_experiment/data/dfm9/domain_analysis \
+  --nv-recall-threshold 0.5
+```
+
+The command accepts any number of result files. It queries only dataset IDs
+present in those inputs, verifies exact metadata IDs returned by InfiniGram,
+and caches successful resolutions. Decoded SimpleTrace windows can sometimes
+be too short or common for bounded reverse lookup; in that case, the command
+scans only the prepared source artifact identified by the ID's source key and
+requires an exact ID match. Resolution methods and complete non-text metadata
+are retained in `resolved_document_domains.jsonl`.
+
+Each input gets one JSON report and three figures, and multiple inputs also get
+a combined report/figure suite. Reports contain both retrieved-document
+occurrence distributions and unique-dataset-ID distributions for:
+
+- every standard memorization span bucket (`1-3`, `4-6`, `7-10`, `11-20`,
+  `21-50`, `51-100`, `101-150`, and `151-inf` Llama tokens),
+- all document occurrences whose per-document `nv_recall >= 0.5`,
+- the `nv_recall >= 0.5` subset separately within every span bucket.
+
+Use `--domain-fields` to change metadata precedence, `--top-domains` to change
+plot truncation, `--no-plots` for JSON-only output, or `--refresh-cache` to
+force fresh index resolution. The command is strict by default; unresolved IDs
+are reported and fail the run instead of silently changing denominators.

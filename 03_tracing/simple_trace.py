@@ -56,6 +56,38 @@ def tprint(*args, **kwargs):
         print(*args, **kwargs)
 
 
+def _parse_index_metadata(raw_metadata) -> dict:
+    """Parse InfiniGram metadata stored as a Python literal or JSON object."""
+    if isinstance(raw_metadata, dict):
+        parsed = raw_metadata
+    elif isinstance(raw_metadata, str):
+        try:
+            parsed = ast.literal_eval(raw_metadata)
+        except (ValueError, SyntaxError):
+            try:
+                parsed = json.loads(raw_metadata)
+            except json.JSONDecodeError as json_error:
+                raise ValueError(
+                    "InfiniGram metadata is neither a Python literal nor valid JSON"
+                ) from json_error
+    else:
+        raise ValueError(
+            f"Unsupported InfiniGram metadata type: {type(raw_metadata).__name__}"
+        )
+
+    if not isinstance(parsed, dict):
+        raise ValueError(
+            f"InfiniGram metadata must decode to an object, got {type(parsed).__name__}"
+        )
+
+    metadata = parsed.get("metadata", parsed)
+    if not isinstance(metadata, dict):
+        raise ValueError(
+            "InfiniGram metadata wrapper field 'metadata' must contain an object"
+        )
+    return metadata
+
+
 _NV_TRANSLATION_TABLE = str.maketrans({
     # Curly/directional single quotes/apostrophes -> ASCII apostrophe
     "‘": "'",
@@ -411,7 +443,7 @@ def _retrieve_docs_for_ranks(
             continue
         seen_examples.add(example_key)
 
-        doc_meta = ast.literal_eval(raw_doc["metadata"])["metadata"]
+        doc_meta = _parse_index_metadata(raw_doc["metadata"])
         doc_id = (
             doc_meta.get("id")
             or doc_meta.get("doc_id")
@@ -575,6 +607,46 @@ def _doc_identity(doc: dict) -> tuple[str, str, str]:
         doc.get("match_tier", ""),
         doc.get("text", ""),
     )
+
+
+def _group_verified_overlapping_spans(
+    filt_spans: list[tuple],
+    gen_ids: list[int],
+    engine: InfiniGramEngine,
+) -> list[list[int]]:
+    """Group overlaps only when their complete union exists in the index.
+
+    Two independently verified spans can overlap in a generation without the
+    text covering their union occurring contiguously anywhere in the corpus.
+    This is especially common for repeated text, where separate occurrences
+    form a transitive chain of overlaps. Verify every proposed extension so a
+    final span never gains unverified tokens merely through interval merging.
+    """
+    if not filt_spans:
+        return []
+
+    groups = [[0]]
+    curr_start = filt_spans[0][0]
+    curr_end = filt_spans[0][1]
+
+    for i, (start, end, *_) in enumerate(filt_spans[1:], start=1):
+        if start < curr_end:
+            proposed_start = min(curr_start, start)
+            proposed_end = max(curr_end, end)
+            proposed_res = engine.find(
+                input_ids=gen_ids[proposed_start:proposed_end]
+            )
+            if proposed_res.get("cnt", 0) > 0:
+                groups[-1].append(i)
+                curr_start = proposed_start
+                curr_end = proposed_end
+                continue
+
+        groups.append([i])
+        curr_start = start
+        curr_end = end
+
+    return groups
 
 
 def _attach_full_span(
@@ -789,8 +861,8 @@ def trace_generation(
     # bounded regardless of how frequently the span appears.
     #
     # For each selected rank, get_doc_by_rank() returns up to max_doc_toks
-    # tokens of the enclosing document. The metadata is stored as a Python
-    # literal string in the index and parsed with ast.literal_eval().
+    # tokens of the enclosing document. Metadata may be stored as either a
+    # Python literal or JSON string, depending on how the index was built.
     # Results are stored in span_to_docs keyed by span index i.
     # ------------------------------------------------------------------
     span_to_docs = defaultdict(list)
@@ -812,20 +884,16 @@ def trace_generation(
         )
 
     # ------------------------------------------------------------------
-    # Step 4: Merge overlapping spans into final traced segments
+    # Step 4: Merge corpus-verified overlapping spans into final segments
     #
-    # Adjacent or overlapping filtered spans are collapsed into single,
-    # wider segments so the final output presents coherent, non-redundant
-    # text regions rather than a pile of potentially overlapping snippets.
+    # Overlapping filtered spans are collapsed only when the complete union
+    # also occurs verbatim in the index. Interval overlap alone is not enough:
+    # independently verified matches may refer to different corpus positions
+    # (or documents), and their union may never have occurred in training.
     #
-    # Spans are already sorted by start position. We iterate sequentially
-    # and start a new group whenever the next span begins at or after the
-    # current group's end; otherwise we extend the current group.
-    #
-    # The document budget docs_per_span is divided evenly among the
-    # constituent spans of each group (ceil division) so the total doc
-    # count per merged segment stays close to docs_per_span regardless
-    # of how many spans were merged.
+    # Documents for a verified union are retrieved using the union itself.
+    # Combining the constituent document lists would incorrectly associate a
+    # larger span with documents that support only one of its smaller parts.
     # ------------------------------------------------------------------
     if not filt_spans:
         if match_mode == MIXED_MATCH_MODE:
@@ -858,28 +926,32 @@ def trace_generation(
             "final_spans": [],
         }
 
-    merged_groups = [[0]]
-    curr_end = filt_spans[0][1]
-    for i, (start, end, *_) in enumerate(filt_spans[1:], start=1):
-        if start < curr_end:
-            # Overlapping or adjacent: extend the current group.
-            curr_end = max(curr_end, end)
-            merged_groups[-1].append(i)
-        else:
-            # Non-overlapping: start a new group.
-            curr_end = end
-            merged_groups.append([i])
+    merged_groups = _group_verified_overlapping_spans(
+        filt_spans,
+        gen_ids,
+        engine,
+    )
 
     final_spans = []
     for group in merged_groups:
-        # Divide the doc budget evenly across the spans being merged.
-        docs_budget = math.ceil(docs_per_span / len(group))
-        all_docs = []
-        for i in group:
-            all_docs.extend(span_to_docs[i][:docs_budget])
         group_spans = [filt_spans[i] for i in group]
         seg_start = min(s[0] for s in group_spans)
         seg_end = max(s[1] for s in group_spans)
+        if len(group) == 1:
+            all_docs = span_to_docs[group[0]][:docs_per_span]
+        else:
+            union_res = engine.find(input_ids=gen_ids[seg_start:seg_end])
+            assert union_res.get("cnt", 0) > 0  # guaranteed by grouping
+            all_docs = _retrieve_docs_for_find_result(
+                generation,
+                union_res,
+                engine,
+                enc,
+                max_doc_toks=max_doc_toks,
+                match_mode=match_mode,
+                limit=docs_per_span,
+                deterministic=False,
+            )
         final_spans.append({
             "start": seg_start,
             "end": seg_end,
@@ -980,6 +1052,8 @@ def evaluate_results(
         unique_partial_matches  - unique docs that have at least one partial
                                   match across all generations
         avg_nv_recall           - mean adaptive nv-recall across all retrieved docs
+        avg_nv_recall_on_hits   - mean adaptive nv-recall across retrieved doc
+                                  occurrences where nv_recall > 0
         max_nv_recall           - maximum adaptive nv-recall observed across all docs
         docs_with_nv_recall     - number of docs with adaptive nv-recall > 0
         total_nv_matched_words  - total matched words for adaptive nv-recall
@@ -1165,6 +1239,11 @@ def evaluate_results(
     avg_nv_recall = (
         _round_metric_float(total_nv_recall / total_docs) if total_docs > 0 else 0.0
     )
+    avg_nv_recall_on_hits = (
+        _round_metric_float(total_nv_recall / docs_with_nv_recall)
+        if docs_with_nv_recall > 0
+        else 0.0
+    )
     generations_ratio_with_nv_recall = (
         _round_metric_float(generations_with_nv_recall / total_generations)
         if total_generations > 0 else 0.0
@@ -1251,6 +1330,7 @@ def evaluate_results(
         "partial_matches": partial_matches,
         "unique_partial_matches": unique_partial_matches,
         "avg_nv_recall": avg_nv_recall,
+        "avg_nv_recall_on_hits": avg_nv_recall_on_hits,
         "max_nv_recall": _round_metric_float(max_nv_recall),
         "docs_with_nv_recall": docs_with_nv_recall,
         "total_nv_matched_words": total_nv_matched_words,
@@ -1682,7 +1762,12 @@ def build_arg_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--index-dir",
-        help="Path to the InfiniGram index directory.",
+        nargs="+",
+        required=True,
+        help=(
+            "Path to one or more InfiniGram index directories. Multiple paths "
+            "are loaded as one logical multi-shard index."
+        ),
     )
     parser.add_argument(
         "--unigram-probs-path",
@@ -1825,8 +1910,10 @@ def main() -> None:
         else build_span_length_exact_output_path(summary_output_path)
     )
 
+    index_dir = args.index_dir[0] if len(args.index_dir) == 1 else args.index_dir
+
     results = launch_simpletrace(
-        index_dir=args.index_dir,
+        index_dir=index_dir,
         generations=strings,
         unigram_probs_path=args.unigram_probs_path,
         num_workers=args.num_workers,
@@ -1854,7 +1941,7 @@ def main() -> None:
             add_eos_token=False,
         )
         eidetic_engine = InfiniGramEngine(
-            index_dir=args.index_dir,
+            index_dir=index_dir,
             eos_token_id=eidetic_enc.eos_token_id,
             precompute_unigram_logprobs=False,
         )
