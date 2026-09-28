@@ -1,0 +1,413 @@
+{
+  "schema_version": 1,
+  "result_file": "/work/evaluation/PropMe/memorization_experiment/data/dfm9/generic/st_dfm9_generic_en_results.json",
+  "document_map": "/work/evaluation/PropMe/memorization_experiment/data/dfm9/domain_analysis/resolved_document_domains.jsonl",
+  "selection_semantics": {
+    "span_lengths": "Llama-2 tokenizer tokens stored by SimpleTrace",
+    "domain_counting_unit": "retrieved document occurrence within a span",
+    "unique_document_counting_unit": "distinct SimpleTrace dataset ID within each group",
+    "nv_recall_scope": "per retrieved generation-document pair",
+    "nv_recall_operator": ">=",
+    "nv_recall_threshold": 0.5
+  },
+  "configuration": {
+    "length_buckets": [
+      "(1, 3)",
+      "(4, 6)",
+      "(7, 10)",
+      "(11, 20)",
+      "(21, 50)",
+      "(51, 100)",
+      "(101, 150)",
+      "(151, inf)"
+    ],
+    "domain_fields": [
+      "source_metadata.domain",
+      "source_metadata.source",
+      "source_metadata.dataset",
+      "source_metadata.subset",
+      "domain",
+      "source",
+      "cohort",
+      "risk_category"
+    ],
+    "index_paths": {
+      "A": "/work/olmotrace/mimir_propme/indexes/A",
+      "B": "/work/olmotrace/mimir_propme/indexes/B",
+      "C": "/work/olmotrace/mimir_propme/indexes/C",
+      "D": "/work/olmotrace/mimir_propme/indexes/D"
+    },
+    "metadata_retrieval": "exact metadata ID via InfiniGram find + get_doc_by_rank; exact-ID prepared index-input fallback for overly common windows"
+  },
+  "input_counts": {
+    "generations": 13,
+    "spans": 72,
+    "spans_with_documents": 72,
+    "retrieved_document_occurrences": 346,
+    "unique_retrieved_document_ids": 210,
+    "spans_with_nv_recall_hit": 0,
+    "nv_recall_hit_document_occurrences": 0,
+    "unique_nv_recall_hit_document_ids": 0,
+    "missing_id_occurrences": 0
+  },
+  "span_bucket_domain_distributions": {
+    "(1, 3)": {
+      "span_count": 0,
+      "spans_with_documents": 0,
+      "total_document_occurrences": 0,
+      "document_occurrences_by_domain": [],
+      "total_unique_documents": 0,
+      "unique_documents_by_domain": []
+    },
+    "(4, 6)": {
+      "span_count": 34,
+      "spans_with_documents": 34,
+      "total_document_occurrences": 179,
+      "document_occurrences_by_domain": [
+        {
+          "domain": "Magpie-Align/Magpie-Reasoning-150K",
+          "count": 81,
+          "ratio": 0.45251396648044695
+        },
+        {
+          "domain": "B-01",
+          "count": 38,
+          "ratio": 0.2122905027932961
+        },
+        {
+          "domain": "B-05",
+          "count": 21,
+          "ratio": 0.11731843575418995
+        },
+        {
+          "domain": "Magpie-Align/Magpie-Llama-3.1-Pro-300K-Filtered",
+          "count": 11,
+          "ratio": 0.061452513966480445
+        },
+        {
+          "domain": "multilingual-synthetic-llama3.1-70B",
+          "count": 7,
+          "ratio": 0.03910614525139665
+        },
+        {
+          "domain": "Magpie-Align/Magpie-Llama-3.1-Pro-DPO-100K-v0.1",
+          "count": 6,
+          "ratio": 0.0335195530726257
+        },
+        {
+          "domain": "multilingual-synthetic-ifeval-llama3.1-70B",
+          "count": 6,
+          "ratio": 0.0335195530726257
+        },
+        {
+          "domain": "synthetic-ifeval-magpie",
+          "count": 5,
+          "ratio": 0.027932960893854747
+        },
+        {
+          "domain": "CohereForAI/aya_dataset",
+          "count": 2,
+          "ratio": 0.0111731843575419
+        },
+        {
+          "domain": "dbc",
+          "count": 2,
+          "ratio": 0.0111731843575419
+        }
+      ],
+      "total_unique_documents": 73,
+      "unique_documents_by_domain": [
+        {
+          "domain": "Magpie-Align/Magpie-Reasoning-150K",
+          "count": 32,
+          "ratio": 0.4383561643835616
+        },
+        {
+          "domain": "B-01",
+          "count": 15,
+          "ratio": 0.2054794520547945
+        },
+        {
+          "domain": "B-05",
+          "count": 7,
+          "ratio": 0.0958904109589041
+        },
+        {
+          "domain": "multilingual-synthetic-llama3.1-70B",
+          "count": 7,
+          "ratio": 0.0958904109589041
+        },
+        {
+          "domain": "Magpie-Align/Magpie-Llama-3.1-Pro-300K-Filtered",
+          "count": 5,
+          "ratio": 0.0684931506849315
+        },
+        {
+          "domain": "CohereForAI/aya_dataset",
+          "count": 2,
+          "ratio": 0.0273972602739726
+        },
+        {
+          "domain": "dbc",
+          "count": 2,
+          "ratio": 0.0273972602739726
+        },
+        {
+          "domain": "Magpie-Align/Magpie-Llama-3.1-Pro-DPO-100K-v0.1",
+          "count": 1,
+          "ratio": 0.0136986301369863
+        },
+        {
+          "domain": "multilingual-synthetic-ifeval-llama3.1-70B",
+          "count": 1,
+          "ratio": 0.0136986301369863
+        },
+        {
+          "domain": "synthetic-ifeval-magpie",
+          "count": 1,
+          "ratio": 0.0136986301369863
+        }
+      ]
+    },
+    "(7, 10)": {
+      "span_count": 11,
+      "spans_with_documents": 11,
+      "total_document_occurrences": 32,
+      "document_occurrences_by_domain": [
+        {
+          "domain": "Magpie-Align/Magpie-Reasoning-150K",
+          "count": 15,
+          "ratio": 0.46875
+        },
+        {
+          "domain": "Magpie-Align/Magpie-Llama-3.1-Pro-300K-Filtered",
+          "count": 14,
+          "ratio": 0.4375
+        },
+        {
+          "domain": "B-01",
+          "count": 3,
+          "ratio": 0.09375
+        }
+      ],
+      "total_unique_documents": 30,
+      "unique_documents_by_domain": [
+        {
+          "domain": "Magpie-Align/Magpie-Reasoning-150K",
+          "count": 14,
+          "ratio": 0.4666666666666667
+        },
+        {
+          "domain": "Magpie-Align/Magpie-Llama-3.1-Pro-300K-Filtered",
+          "count": 13,
+          "ratio": 0.43333333333333335
+        },
+        {
+          "domain": "B-01",
+          "count": 3,
+          "ratio": 0.1
+        }
+      ]
+    },
+    "(11, 20)": {
+      "span_count": 22,
+      "spans_with_documents": 22,
+      "total_document_occurrences": 95,
+      "document_occurrences_by_domain": [
+        {
+          "domain": "Magpie-Align/Magpie-Reasoning-150K",
+          "count": 50,
+          "ratio": 0.5263157894736842
+        },
+        {
+          "domain": "B-01",
+          "count": 28,
+          "ratio": 0.29473684210526313
+        },
+        {
+          "domain": "Magpie-Align/Magpie-Llama-3.1-Pro-300K-Filtered",
+          "count": 16,
+          "ratio": 0.16842105263157894
+        },
+        {
+          "domain": "multilingual-synthetic-arc",
+          "count": 1,
+          "ratio": 0.010526315789473684
+        }
+      ],
+      "total_unique_documents": 89,
+      "unique_documents_by_domain": [
+        {
+          "domain": "Magpie-Align/Magpie-Reasoning-150K",
+          "count": 45,
+          "ratio": 0.5056179775280899
+        },
+        {
+          "domain": "B-01",
+          "count": 28,
+          "ratio": 0.3146067415730337
+        },
+        {
+          "domain": "Magpie-Align/Magpie-Llama-3.1-Pro-300K-Filtered",
+          "count": 15,
+          "ratio": 0.16853932584269662
+        },
+        {
+          "domain": "multilingual-synthetic-arc",
+          "count": 1,
+          "ratio": 0.011235955056179775
+        }
+      ]
+    },
+    "(21, 50)": {
+      "span_count": 4,
+      "spans_with_documents": 4,
+      "total_document_occurrences": 29,
+      "document_occurrences_by_domain": [
+        {
+          "domain": "B-01",
+          "count": 19,
+          "ratio": 0.6551724137931034
+        },
+        {
+          "domain": "Magpie-Align/Magpie-Reasoning-150K",
+          "count": 7,
+          "ratio": 0.2413793103448276
+        },
+        {
+          "domain": "Magpie-Align/Magpie-Llama-3.1-Pro-300K-Filtered",
+          "count": 3,
+          "ratio": 0.10344827586206896
+        }
+      ],
+      "total_unique_documents": 21,
+      "unique_documents_by_domain": [
+        {
+          "domain": "B-01",
+          "count": 11,
+          "ratio": 0.5238095238095238
+        },
+        {
+          "domain": "Magpie-Align/Magpie-Reasoning-150K",
+          "count": 7,
+          "ratio": 0.3333333333333333
+        },
+        {
+          "domain": "Magpie-Align/Magpie-Llama-3.1-Pro-300K-Filtered",
+          "count": 3,
+          "ratio": 0.14285714285714285
+        }
+      ]
+    },
+    "(51, 100)": {
+      "span_count": 0,
+      "spans_with_documents": 0,
+      "total_document_occurrences": 0,
+      "document_occurrences_by_domain": [],
+      "total_unique_documents": 0,
+      "unique_documents_by_domain": []
+    },
+    "(101, 150)": {
+      "span_count": 1,
+      "spans_with_documents": 1,
+      "total_document_occurrences": 11,
+      "document_occurrences_by_domain": [
+        {
+          "domain": "Magpie-Align/Magpie-Reasoning-150K",
+          "count": 8,
+          "ratio": 0.7272727272727273
+        },
+        {
+          "domain": "Magpie-Align/Magpie-Llama-3.1-Pro-300K-Filtered",
+          "count": 3,
+          "ratio": 0.2727272727272727
+        }
+      ],
+      "total_unique_documents": 7,
+      "unique_documents_by_domain": [
+        {
+          "domain": "Magpie-Align/Magpie-Reasoning-150K",
+          "count": 5,
+          "ratio": 0.7142857142857143
+        },
+        {
+          "domain": "Magpie-Align/Magpie-Llama-3.1-Pro-300K-Filtered",
+          "count": 2,
+          "ratio": 0.2857142857142857
+        }
+      ]
+    },
+    "(151, inf)": {
+      "span_count": 0,
+      "spans_with_documents": 0,
+      "total_document_occurrences": 0,
+      "document_occurrences_by_domain": [],
+      "total_unique_documents": 0,
+      "unique_documents_by_domain": []
+    }
+  },
+  "nv_recall_domain_distribution": {
+    "total_document_occurrences": 0,
+    "document_occurrences_by_domain": [],
+    "total_unique_documents": 0,
+    "unique_documents_by_domain": []
+  },
+  "span_bucket_nv_recall_domain_distributions": {
+    "(1, 3)": {
+      "spans_with_nv_recall_hit": 0,
+      "total_document_occurrences": 0,
+      "document_occurrences_by_domain": [],
+      "total_unique_documents": 0,
+      "unique_documents_by_domain": []
+    },
+    "(4, 6)": {
+      "spans_with_nv_recall_hit": 0,
+      "total_document_occurrences": 0,
+      "document_occurrences_by_domain": [],
+      "total_unique_documents": 0,
+      "unique_documents_by_domain": []
+    },
+    "(7, 10)": {
+      "spans_with_nv_recall_hit": 0,
+      "total_document_occurrences": 0,
+      "document_occurrences_by_domain": [],
+      "total_unique_documents": 0,
+      "unique_documents_by_domain": []
+    },
+    "(11, 20)": {
+      "spans_with_nv_recall_hit": 0,
+      "total_document_occurrences": 0,
+      "document_occurrences_by_domain": [],
+      "total_unique_documents": 0,
+      "unique_documents_by_domain": []
+    },
+    "(21, 50)": {
+      "spans_with_nv_recall_hit": 0,
+      "total_document_occurrences": 0,
+      "document_occurrences_by_domain": [],
+      "total_unique_documents": 0,
+      "unique_documents_by_domain": []
+    },
+    "(51, 100)": {
+      "spans_with_nv_recall_hit": 0,
+      "total_document_occurrences": 0,
+      "document_occurrences_by_domain": [],
+      "total_unique_documents": 0,
+      "unique_documents_by_domain": []
+    },
+    "(101, 150)": {
+      "spans_with_nv_recall_hit": 0,
+      "total_document_occurrences": 0,
+      "document_occurrences_by_domain": [],
+      "total_unique_documents": 0,
+      "unique_documents_by_domain": []
+    },
+    "(151, inf)": {
+      "spans_with_nv_recall_hit": 0,
+      "total_document_occurrences": 0,
+      "document_occurrences_by_domain": [],
+      "total_unique_documents": 0,
+      "unique_documents_by_domain": []
+    }
+  }
+}

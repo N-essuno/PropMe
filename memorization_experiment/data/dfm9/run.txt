@@ -1,0 +1,61 @@
+conda run -n olmotrace_test python \
+  00_prepare_data/prepare_dfm9_index_data.py \
+  --source-root /work/olmotrace/mimir_propme/dfm9_memorisation_sources \
+  --output-root /work/olmotrace/mimir_propme/dfm9_memorisation_sources_propme \
+  --categories C D \
+  --workers 128 \
+  --target-part-mib 512 \
+  --force
+
+
+  HF_HUB_OFFLINE=1 python -u memorization_experiment/dfm9_extract_prefixes.py \
+  --indexes-root /work/olmotrace/mimir_propme/indexes \
+  --categories C D \
+  --num-docs 100 \
+  --prefix-lengths 50 75 100
+
+
+
+
+
+
+python -u memorization_experiment/run_memorization_experiments.py \
+  dfm9-generations --num-workers 128
+
+python memorization_experiment/plot_memorization_results.py \
+  dfm9-generations
+
+python -u 05_propensity_metrics/compute_propensity_metrics.py \
+  dfm9 --plot
+
+python memorization_experiment/plot_comparison_overviews.py \
+  dfm9-settings-comparison
+
+
+
+
+
+
+python memorization_experiment/extract_span_texts.py \
+  --input memorization_experiment/data/dfm9/prefix/st_dfm9_A_prefix_50_results.json \
+  --output memorization_experiment/data/dfm9/prefix/dfm9_A_prefix_50_span_texts.jsonl
+
+python memorization_experiment/extract_span_texts.py \
+  --input memorization_experiment/data/dfm9/prefix/st_dfm9_B_prefix_50_results.json \
+  --output memorization_experiment/data/dfm9/prefix/dfm9_B_prefix_50_span_texts.jsonl
+
+python memorization_experiment/extract_span_texts.py \
+  --input memorization_experiment/data/dfm9/prefix/st_dfm9_C_prefix_50_results.json \
+  --output memorization_experiment/data/dfm9/prefix/dfm9_C_prefix_50_span_texts.jsonl
+
+python memorization_experiment/extract_span_texts.py \
+  --input memorization_experiment/data/dfm9/prefix/st_dfm9_D_prefix_50_results.json \
+  --output memorization_experiment/data/dfm9/prefix/dfm9_D_prefix_50_span_texts.jsonl
+
+python memorization_experiment/extract_span_texts.py \
+  --input memorization_experiment/data/dfm9/generic/st_dfm9_generic_en_results.json \
+  --output memorization_experiment/data/dfm9/generic/dfm9_generic_en_span_texts.jsonl
+
+python memorization_experiment/extract_span_texts.py \
+  --input memorization_experiment/data/dfm9/generic/st_dfm9_generic_da_results.json \
+  --output memorization_experiment/data/dfm9/generic/dfm9_generic_da_span_texts.jsonl

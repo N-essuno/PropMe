@@ -1,0 +1,471 @@
+{"text": "solve for $x$:\n\\[ x = \\frac{-5 \\pm \\sqrt{5^2 - 4(1)(-187.5)}}{2(1)} \\]\n\\[ x = \\frac{-5 \\pm \\sqrt{25 + 750}}{2} \\]\n\\[ x = \\frac{-5 \\pm \\sqrt{775}}{2} \\]\n\\[ x = \\frac{-5 \\pm 27.8"}
+{"text": ":\n\n\\[ P(\\text{winning all 5 games}) = P(\\text{winning game 1}) \\times P(\\text{winning game 2}) \\times P(\\text{winning game 3}) \\times P(\\text{winning game 4}) \\times P(\\text{winning game 5}) \\]\n\n\\[ P(\\text{winning all 5 games}) ="}
+{"text": "$A = 1$, $B = 2$, $C = -2$, $D_1 = 1$, and $D_2 = \\frac{5}{2}$.\n\nSubstitute these values into the formula:\n\\[ d = \\frac{|\\frac{5}{2} - 1|}{\\sqrt{1^2 + 2^2 + (-2)^2}} = \\frac"}
+{"text": "\n\\[ 4x = 32 \\quad \\text{or} \\quad 4x = -32 \\]\n\n\\[ x = 32 : 4 \\quad \\text{or} \\quad x = -32 : 4 \\]\n\n\\[ x = 8 \\quad \\text{or} \\quad x = -8 \\]\n\nThe product of"}
+{"text": "ily scored 8% less than the average quiz score of 85.\n8% of 85 is $85 * 8 / 100 = 680 / 100 = 6.8$.\nSo Emily scored $85 - 6.8 = 78.2$.\nDavid received 4 more points than Emily"}
+{"text": "to base 10:\n\\[ 656_7 = 6(7^2) + 5(7^1) + 6(7^0) = 6(49) + 5(7) + 6(1) = 294 + 35 + 6 = 335 \\]\n\nNow we have"}
+{"text": "23, so we can set up the equation:\n\nx + (x + 5) = 23\n\nCombine like terms:\n\n2x + 5 = 23\n\nSubtract 5 from both sides:\n\n2x = 18\n\nDivide both sides by 2:\n\nx = 9\n\nSo"}
+{"text": ":\n\nArea = $\\frac{1}{2} |x_1(y_2 - y_3) + x_2(y_3 - y_1) + x_3(y_1 - y_2)|$\n\nwhere $(x_1, y_1), (x_2, y_2), (x_3, y_3"}
+{"text": "$(x - 1)(x^2 + bx + c)$:\n\\[ (x - 1)(x^2 + bx + c) = x^3 + bx^2 + cx - x^2 - bx - c = x^3 + (b - 1)x^2 + (c - b)x - c \\]\n\n"}
+{"text": "- 2 \\Rightarrow x + 2 = 9x^{2} - 6 \\Rightarrow 9x^{2} - x - 8 = 0 \\]\n\nThis is a quadratic equation in the form $ax^{2} + bx + c = 0$, where $a = 9$, $b = -1$, and $c = -8$."}
+{"text": ", we get:\n\nC(20, 3) = 20! / (3!(20-3)!)\n= 20! / (3!17!)\n= (20 × 19 × 18) / (3 × 2 × 1)\n= 1140\n\nTherefore, the"}
+{"text": "\\\\ -1 \\end{pmatrix}$.\n\nThe projection of $\\mathbf{v}$ onto $\\mathbf{u}$ is given by:\n\\[ \\text{proj}_{\\mathbf{u}} \\mathbf{v} = \\frac{\\mathbf{v} \\cdot \\mathbf{u}}{\\mathbf{u} \\cdot \\mathbf{u}} \\mathbf{u} \\]\n\n"}
+{"text": "\n\\[ x^2 - 11x - 42 = (x - 14)(x + 3) = 0 \\]\n\nThis gives us two possible solutions:\n\\[ x - 14 = 0 \\Rightarrow x = 14 \\]\n\\[ x + 3 = 0 \\Rightarrow x = -3 \\]\n\n"}
+{"text": ":\n\\[ 100x - x = 73.\\overline{73} - 0.\\overline{73} \\]\n\\[ 99x = 73 \\]\n\\[ x = \\frac{73}{99} \\]\n\nTherefore, the fraction that equals $0.\\overline{73}$ is"}
+{"text": "$|z - 12| = |x - 12 + yi| = \\sqrt{(x - 12)^2 + y^2}$ and $|z - 5i| = |x + (y - 5)i| = \\sqrt{x^2 + (y - 5)^2}$.\n\nSubstituting"}
+{"text": "\n\nThe distance between two points in polar coordinates $(r_1, \\theta_1)$ and $(r_2, \\theta_2)$ is given by the formula:\n\\[ d = \\sqrt{r_1^2 + r_2^2 - 2r_1r_2\\cos(\\theta_"}
+{"text": "\n\nThe midpoint of the line segment from $(1,3)$ to $(5,7)$ is:\n\\[ \\left( \\frac{1 + 5}{2}, \\frac{3 + 7}{2} \\right) = (3, 5) \\]\n\nSince the midpoint"}
+{"text": "-10 + \\frac{20}{3} = -\\frac{30}{3} + \\frac{20}{3} = -\\frac{10}{3} \\]\n\nTherefore, the final answer is:\n\\[ \\boxed{-\\frac{10}{3}} \\]"}
+{"text": "\n\\[ \\frac{\\frac{4}{3}\\pi r^3}{4\\pi r^2} = \\frac{2y}{5y} \\Rightarrow \\frac{r}{3} = \\frac{2}{5} \\Rightarrow r = \\frac{6}{5} \\]\n\nNow"}
+{"text": "\n\\[ \\frac{1}{A^2} + \\frac{1}{B^2} + \\frac{1}{C^2} = \\left( \\frac{1}{A} + \\frac{1}{B} + \\frac{1}{C} \\right)^2 - 2"}
+{"text": "$. The Law of Cosines states that for any triangle with sides of length $a$, $b$, and $c$, and angle $C$ opposite side $c$, we have:\n\n\\[ c^2 = a^2 + b^2 - 2ab \\cos C \\]\n\nIn"}
+{"text": "as:\n\\[ (x - 1)(x - 2)(x - 3) > 0 \\]\n\nTo find the intervals where this inequality holds true, we need to consider the signs of the factors $(x - 1)$, $(x - 2)$, and $(x - 3"}
+{"text": "9 \\times 9 \\times 9 \\times 9 \\times 9 = 59049 \\]\n\nFinally, subtract the number of 5-digit numbers with no zeros from the total number of 5-digit numbers to find the number of 5-digit numbers"}
+{"text": "$x = 1$, we have $\\lfloor x \\rfloor = 1$ and $\\lceil 2x \\rceil = 2$, so $\\lfloor x \\rfloor + \\lceil 2x \\rceil = 1 + 2 = 3$.\n\n"}
+{"text": "$.\n\nTo find the intersection points, we set the two equations equal to each other:\n\\[ 2x^2 + ax - 2 = x^2 - 1 \\Rightarrow x^2 + ax - 1 = 0 \\]\n\nThis is a quadratic equation in $x"}
+{"text": "\\Rightarrow s = \\frac{2r}{\\sqrt{3}} \\]\n\nThe volume of the cube is $V = s^3 = \\left(\\frac{2r}{\\sqrt{3}}\\right)^3 = \\frac{8r^3}{3\\sqrt{3}}$.\n\n"}
+{"text": "4! = 4 \\times 3 \\times 2 \\times 1 = 24 \\]\n\n\\[ 6! = 6 \\times 5 \\times 4 \\times 3 \\times 2 \\times 1 = 720 \\]\n\nNow"}
+{"text": "B = 7B + A \\]\n\nRearrange the equation to solve for $A$ in terms of $B$:\n\\[ 9A - A = 7B - B \\Rightarrow 8A = 6B \\Rightarrow A = \\frac{6}{8}B"}
+{"text": ":\n\\[ -\\sqrt{7} \\leq x \\leq -1 \\quad \\text{or} \\quad 1 \\leq x \\leq \\sqrt{7} \\]\n\nThe integers that satisfy this inequality are:\n\\[ x = -2, -1, "}
+{"text": "states that for any complex number $z = r(\\cos \\theta + i \\sin \\theta)$, we have $z^n = r^n(\\cos n\\theta + i \\sin n\\theta)$.\n\nApplying De Moivre's theorem to $(1"}
+{"text": "\\frac{1}{6} \\times \\frac{1}{6} \\times \\frac{1}{6} \\times \\frac{1}{6} \\times \\frac{1}{6} = \\frac{1}{7776} \\]\n\n"}
+{"text": "and the remainder is $8x - 9$.\n\nTherefore, the quotient when the polynomial $x^3 + 2x^2 - 5x + 1$ is divided by $x^2 - 3x + 2$ is"}
+{"text": "\n\\[ AD^2 + BD^2 = AB^2 \\Rightarrow AD^2 + 12^2 = 15^2 \\Rightarrow AD^2 + 144 = 225 \\Rightarrow AD^2 = 81"}
+{"text": "\\frac{20}{49} = \\frac{60}{245} = \\frac{12}{49} \\]\n\nSo, the answer is:\n\\[ \\boxed{\\frac{12}{49}} \\]"}
+{"text": "palindromes between 100 and 500 is:\n\\[ 4 \\times 10 = 40 \\]\n\nSo, there are 40 integer palindromes between 100 and 500"}
+{"text": "Law of Cosines states that for any triangle with sides of length a, b, and c, and angle C opposite side c, we have:\n\nc^2 = a^2 + b^2 - 2ab * cos(C)\n\nIn"}
+{"text": "\n\\[ 32\\pi = \\frac{4}{3}\\pi r^3 \\]\n\nTo solve for $r$, we can divide both sides of the equation by $\\frac{4}{3}\\pi$:\n\\[ r^3 ="}
+{"text": "\n\nWe can use the fact that\n\\[ (x + y + z)^2 = x^2 + y^2 + z^2 + 2(xy + yz + zx) \\]\n\nSubstituting the given values"}
+{"text": "(4).\n\nPlugging in the values, we get:\n\nC(7, 4) = 7! / (4!(7-4)!)\n= 7! / (4!3!)\n= (7"}
+{"text": "Euclidean algorithm states that the GCD of two numbers $a$ and $b$ is equal to the GCD of $b$ and the remainder of $a$ divided by $b$.\n\nLet's apply the Euclidean algorithm to"}
+{"text": "garden = 456 - 300 = 156 square meters\n\nTherefore, the area of the path is 156 square meters.\n\nThe final answer is: $\\boxed{156"}
+{"text": "the value of $s$ for which the vector\n\\[\\bold{u} = \\begin{pmatrix} 3 \\\\ 2 \\\\ -1 \\end{pmatrix} + s \\begin{pmatrix} 2 \\\\ 1 \\\\ "}
+{"text": "A sports equipment store has a promotion on a certain brand of basketball shoes. The store has two boxes of shoes, one with blue laces and the other with red laces. Each box contains 20 pairs of shoes. A"}
+{"text": "frac{\\cos^2 \\frac{B - C}{2}}{\\cos^2 \\frac{A}{2}} + \\frac{\\sin^2 \\frac{B - C}{2}}{\\sin^2 \\frac{A}{2}}"}
+{"text": "San Marino's sports team is preparing for an international competition, and the devoted fan wants to analyze the team's performance statistics in a unique way.\n\n1. The team's win-loss record over the past three years"}
+{"text": "four intersecting spheres in 3D space, what is the maximum number of points at which a plane can intersect all four spheres?\n\nA plane can intersect a sphere at most at 2 points.\n\nGiven four"}
+{"text": "stituting the values of $a$ and $r$, we get:\n\\[ S = \\frac{1}{1 - \\frac{2}{5}} = \\frac{1}{\\frac{3}{5}} ="}
+{"text": "the fact that $(x + y + z)^2 = x^2 + y^2 + z^2 + 2(xy + yz + xz)$ to find $xy + yz + xz$.\n\n"}
+{"text": "1/2) × (1/2) × (1/2) × (1/2) × (1/2) × (1/2) = (1/2)^6 = 1/64"}
+{"text": "\n\nThe average of $x+6$, $6x+2$, and $2x+7$ is $\\frac{(x+6)+(6x+2)+(2x+7)}{3}$.\n\n"}
+{"text": "ing the right-hand side, we get\n\\[ cx^3 + dx^2 + 12x - 4 = 2ax^3 + (3a + 2b)x^2 +"}
+{"text": ":\n\n\\[\nS = \\frac{n}{2} \\times (a + l)\n\\]\n\nSubstituting the values, we get:\n\n\\[\nS = \\frac{"}
+{"text": ":\n\\[ 5y = 200 - 9y \\]\n\nAdd $9y$ to both sides:\n\\[ 14y = 200 \\]\n\nDivide"}
+{"text": "$x = \\frac{\\pi}{6} + 2k\\pi$ or $x = \\frac{5\\pi}{6} + 2k\\pi$ for some integer $k$.\n\n"}
+{"text": "(2, 3, 4, 5, 6) = 60\n\nNow, we need to find the smallest multiple of 60 that leaves a remainder of 1 when divided by "}
+{"text": "\n\\begin{align*}\n(p+q)\\left(\\frac{1}{\\sqrt{p}}+\\frac{1}{\\sqrt{q}}\\right) &= \\frac{p+q}{\\sqrt{p"}
+{"text": "sum of 49 consecutive integers is $7^5$. What is their median?\n\nWrite another problem inspired by this one:\n\nFind the number of terms in the sequence\n\n$$\\frac{"}
+{"text": "frac{x-\\left(x-\\left(x-\\left(x-\\frac{1}{x}\\right)\\right)\\right)}{\\left(\\frac{1}{x}-\\left(\\frac{1}{x}-\\"}
+{"text": ".\n\nThe area of an equilateral triangle with side length s is given by the formula:\n\nArea = (√3/4)s^2\n\nSubstituting s = "}
+{"text": "can see that:\n\\[ \\frac{1}{4p} = \\frac{1}{4} \\Rightarrow p = 1 \\]\n\nThe equation of the directrix of a parabola"}
+{"text": "the same, so the horizontal asymptote is the ratio of the leading coefficients.\n\nThe leading coefficient of the numerator is 2, and the leading coefficient of the denominator is 1.\n\n"}
+{"text": "$p(x) = q(x) + 17x = (x - 1)(x - 2)(x - 3)(x - r) + 17x.$"}
+{"text": "(x) = a(2x)^2 + b(2x) + c + ax^2 + bx + c = 5ax^2 + 3bx + 2c"}
+{"text": "\\]\n\nNext, expand $(x^2 + 1)^2$:\n\\[ (x^2 + 1)^2 = (x^2)^2 + 2(x^2"}
+{"text": "= \\frac{1 - \\frac{5}{x} + \\frac{6}{x^2}}{1 - \\frac{5}{x} + \\frac{7}{x^2}}"}
+{"text": "0, 25, 50 \\]\n\nNext, find the divisors of 15:\n   \\[ 1, 3, 5, 15 \\]\n\n"}
+{"text": ", we can find $S_3$:\n\\[ S_3 = 3S_2 - S_1 = 3(7) - 3 = 18 \\]\n\n"}
+{"text": "the partial derivatives of $L$ with respect to $x$, $y$, and $\\lambda$, and set them equal to zero:\n\\[ \\frac{\\partial L}{\\partial x} = y"}
+{"text": "$ABCD$ is a cyclic quadrilateral, we know that the sum of the measures of opposite angles is $180^\\circ$. Therefore, we can write:\n\n"}
+{"text": "is $\\frac{y}{4} + \\frac{2}{7} > \\frac{3}{2}$.\n\n## Step 2: Multiply both sides of the inequality by"}
+{"text": "ways.\n\nTherefore, the total number of ways to seat the 10 people around the circular table such that no two people of the same gender are seated next to each other is"}
+{"text": "5. Given the circle $\\odot O$ with radius 1, the angle between radii $O A$ and $O B$ is $\\varphi(0<\\varphi<\\pi, \\varphi"}
+{"text": "\\pi r^2 = 0 \\Rightarrow r^2 = 0 \\Rightarrow r = 0 \\]\n\nHowever, $r = 0$ is not a valid solution"}
+{"text": ".\n\nMultiples of 3 in the range 1 to 20: 3, 6, 9, 12, 15, 18"}
+{"text": "for the entire trip, we can use the formula:\n\nAverage speed = Total distance / Total time\n\nLet's assume the distance from City A to City B is x"}
+{"text": "}$$\n\nwhere $a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p$ are"}
+{"text": "Vengono forniti un albero con $N$ nodi (numeri $1$ attraverso $N$). Ogni nodo $i$ ha un valore $"}
+{"text": "= \\sqrt{\\frac{1}{2} + \\frac{1}{2}} = \\sqrt{1} = 1 \\]\n\nThe angle of the complex number is"}
+{"text": "\n\nLet $P = (x_1, y_1)$ and $Q = (x_2, y_2)$.\n\nSince $P$ is on the"}
+{"text": "\nThe formula for simple interest is:\n\\[ I = P \\times r \\times t \\]\nwhere:\n- \\( I \\) is the interest,\n- \\( P"}
+{"text": "eaten is 46 - 15 = 31.\n\nTherefore, \\boxed{31} pieces of macarons were eaten."}
+{"text": "+ k\\pi \\]\n\nwhere $k$ is an integer.\n\nSolving for $x$, we get:\n\\[ x = \\frac{\\pi}{"}
+{"text": "equations together:\n\\[ (4x - 6y) + (3x + 6y) = 18 + 24 \\]\n\\[ "}
+{"text": "to each point using the distance formula $d = \\sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}$:\n"}
+{"text": "the combination formula:\n\nC(n, k) = n! / (k!(n-k)!)\n\nwhere n is the total number of vertices ("}
+{"text": "gt^2$, where $v_0$ is the initial velocity, $g$ is the acceleration due to gravity, and $t$ is the time.\n\n"}
+{"text": "\n\nSince $H_1$, $H_2$, $H_3$, and $H_4$ are the orthocenters of triangles $P"}
+{"text": "_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]\n"}
+{"text": "can rewrite the expression $a^4 + 2b^2$ as $(a^2 + 2b)(a^2 - 2b) + "}
+{"text": "\n\nx = 22.5\n\nSo, it would take Emily 22.5 minutes to make 9 sandwiches.\n\n"}
+{"text": "\\]\n\\[2x^2 = 2\\]\n\\[x^2 = 1\\]\n\\[x = \\pm 1\\]\n\n"}
+{"text": "the behavior of the function as $x$ approaches infinity.\n\nAs $x$ approaches infinity, the terms with the highest powers of $x$ dominate the"}
+{"text": ".\n\nSince the graph of y = f(x) is symmetric with respect to the origin, the point (-3, -4) is also on the graph"}
+{"text": "= 3000\n\nTherefore, there are 3000 four-digit positive integers that are multiples of 3.\n\n"}
+{"text": "\nx = 15\n\nSo Olivia bought 15 books.\n\nIsabella purchased 18 more books than Olivia, so"}
+{"text": ".\n4. Their sister is one-third their combined age, so she is 34 / 3 = 11.33 years old."}
+{"text": "\nSince $r$ is a root of $P(x)$, we know that $r^3 + ar^2 + br + c = 0$."}
+{"text": ":\n\n$$d = \\sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}$$\n\nSince"}
+{"text": "x < 24.5 \\]\n\nSince $x$ must be an integer, the greatest possible value of $x$ is 24."}
+{"text": "+ (-2)^3 + (-3)^3 + (-4)^3 + \\dots + (-99)^3 + (-100)^3$$"}
+{"text": "= 2 + \\frac{2}{2 + 1} = 2 + \\frac{2}{3} = \\frac{8}{3"}
+{"text": "is 80 / 3 = 26.67 (round down to 26, since you can't have a fraction of a"}
+{"text": "} n! = \\sum_{p \\leq n} \\left\\lfloor \\frac{n}{p} \\right\\rfloor \\]\n\n"}
+{"text": "\n\n---\n\n### 1. 奇偶性\n\n如果 \\(n\\) 是奇数，那么 \\(n"}
+{"text": "by the formula V = (4/3)πr^3, where r is the radius of the sphere. Substituting r = "}
+{"text": "to sell, we need to subtract the total number of jars he has already sold from the total number of jars he wants to sell.\n\n"}
+{"text": "the ratio of Emily's victories to David's victories is 7:4. This means that for every 7 games Emily"}
+{"text": ").$\n\nWe can write $f(x)$ as $f(x) = x^3 + ax^2 + bx + c"}
+{"text": "rectangular form, we can use Euler's formula, which states that $e^{ix} = \\cos x + i \\sin x$."}
+{"text": "$.\n\n1. **Coordinate Setup**:\n   - Place $A$ at $(0, 0)$, $B$ at $("}
+{"text": "Write a python function to find the longest word in a given list of strings. The function should accept a list of words (strings) as input and return"}
+{"text": "$.\n\nTherefore, the largest positive integer $n$ such that $2^n\\equiv n^2\\pmod 5$ is"}
+{"text": ":\n\nTime = Distance / Speed\n\nSubstituting the values, we get:\n\nTime = 120 /"}
+{"text": "where $a$ and $b$ are the lengths of the semi-major and semi-minor axes of the ellipse, respectively, we"}
+{"text": "\\sqrt[3]{27} = k \\Rightarrow 9 \\cdot 3 = k \\Rightarrow k = 27 \\]\n\n"}
+{"text": "satisfies $0\\le m<23$ and $$-150\\equiv m\\pmod{23}~?$$\n\n"}
+{"text": "(x) = (x + 1) - (x^2 - x + 1) = -x^2 + 2x"}
+{"text": "$\\cos (-\\pi) = \\cos \\pi = -1$ and $\\sin (-\\pi) = -\\sin \\pi = 0"}
+{"text": "\\frac{1}{2} \\begin{pmatrix} 4 \\\\ -1 \\end{pmatrix} = \\begin{pmatrix} "}
+{"text": "0.\n\nThe largest digit that is never found in the tens place of a three-digit number that is a multiple of 5 is"}
+{"text": "180^{\\circ} - 70^{\\circ} - 60^{\\circ} = 50^{\\circ}$.\n\n"}
+{"text": "\n\nTherefore, the smallest positive integer $n$ for which $b_n > \\frac{3}{4}n$ is"}
+{"text": "15 = 360\n\nTo solve for n, we can divide both sides of the equation by 15:\n"}
+{"text": "3} \\times \\frac{x+3}{x+6} \\times \\frac{x+6}{x+9} \\"}
+{"text": "\nSince the first and third columns are identical, the determinant is zero.\n\nThe final answer is: $\\boxed{0}$"}
+{"text": "\n\nTherefore, the decimal equivalent of the octal number $235_8$ is $\\boxed{157}$."}
+{"text": "\n\n**Step-by-Step Explanation and Solution:**\n\n1. **Understanding the Problem:**\n   -"}
+{"text": "is $20/60 = 0.3333333333333333$ miles"}
+{"text": "\n\nLet $x = \\sqrt{a}$, $y = \\sqrt{b}$, and $z = \\sqrt{c}$. Then"}
+{"text": ") If $a = 1$, find the equation of the tangent line to the curve $y = f(x)$ at the point"}
+{"text": "any of the remaining 7 digits (0, 1, 2, 4, 6, 7, 8),"}
+{"text": "rfloor + \\lfloor a_2 \\rfloor + \\cdots + \\lfloor a_{15} \\rfloor$."}
+{"text": "'s a difference of squares, right? So (a + b)(a - b) = a^2 - b^2."}
+{"text": "= a^2e^2 + b^2f^2 + c^2g^2 + d^2h^2"}
+{"text": "left(\\frac{3}{2}\\right)^{x+5} = \\left(\\frac{2}{3}\\right)^{-(x"}
+{"text": ":\n\\[ \\frac{x}{y} = \\frac{1}{4} \\quad \\text{and} \\quad"}
+{"text": "} = \\{(0, 0), (0, 1), (1, 0), (1, 1)\\}"}
+{"text": "x such that x^3 + 4x^2 + 4x + 1 is between 10 and 30"}
+{"text": "funciones $ f : \\mathbb{R} \\to \\mathbb{R} $ que satisfacen $ f(x^5"}
+{"text": "triangle $ABC$ is isosceles. Therefore, $\\angle BAC = \\angle BCA$.\n\nSince $\\angle B"}
+{"text": "is $x = 1$.\n\nTherefore, there is only one positive integer value of $x$ that satisfies the equation"}
+{"text": "\n8 (Logan) + 13 (Lucas) + 15 (Liam) = 36"}
+{"text": "sqrt{\\left(\\frac{x+2}{3}\\right)^2} = \\sqrt{\\frac{1}{\\sqrt{2"}
+{"text": ", there will be 96 bacteria after 6 hours.\n\nAnswer:\n\\boxed{96}"}
+{"text": "} \\]\n\nUsing the property of exponents that $\\sqrt[n]{a^n} = a$, we can simplify the"}
+{"text": "30\n\\end{align*}\n\nSubtracting the first equation from the second equation, we get:\n\n"}
+{"text": "is $\\left(\\frac{0+4}{2},\\frac{0+0}{2}\\right)=(2,0"}
+{"text": "\n\\[b_n = b_{n - 1} + b_{n + 1}^2\\]for all"}
+{"text": "8 pounds of oranges is $\\$12$.\n\nThe final answer is: $\\boxed{12}$"}
+{"text": "simplified expression is $\\boxed{3p^3 - 6p^2 - 3p + 10}$."}
+{"text": "$a = 6k$ and $b = 6m$, where $k$ and $m$ are positive integers"}
+{"text": "}$ is divided by 14 is 13.\n\nThe final answer is: $\\boxed{13}$"}
+{"text": "} > 0$\n\nIn this case, the inequality becomes:\n\\[ \\frac{x-3}{x"}
+{"text": "(x)=ax^2+bx+c$ for some constants $a$, $b$, and $c$. Then"}
+{"text": "frac{5 + 4c - 3d}{9} + \\frac{45}{9} = \\frac"}
+{"text": "frac{1}{2}\n\\]\n\n\\[\n\\boxed{\\frac{1}{2}}\n\\]"}
+{"text": "\n\nThis is a contradiction, so there are no solutions to the equation.\n\nTherefore, the sum of all"}
+{"text": "$ to find the corresponding values of $x$.\n\nFor $y = 0$, we have:\n\\["}
+{"text": "]\n\n# Example usage:\nA = [1, 2, 3, 4, 5]"}
+{"text": ".\n\nLet the roots be $r_1$ and $r_2$. Then, we have:\n\n"}
+{"text": "1} \\]\n\nTake the logarithm base 3 of both sides:\n\\[ \\log_3 "}
+{"text": "Cameron's backyard is 800 square feet larger than 3 times Olivia's backyard."}
+{"text": "166.67\n\nNow, let's calculate the loss incurred by the bookstore:\n"}
+{"text": "that $f(0) = 0$ and $f(-x) = -f(x)$ for all real"}
+{"text": "9999.\n\nThe square root of 1000 is approximately 31.62"}
+{"text": "$n = 2$.\n\nTherefore, the answer is:\n\\[ \\boxed{2} \\]"}
+{"text": "nursing interventions should be included in the plan of care for a client who has acute gastritis?"}
+{"text": "is a quadratic equation in $x$, and it has two solutions, $x_1$ and $x_2$."}
+{"text": "$\\mathbf{w} = \\begin{pmatrix} 1 \\\\ 1 \\\\ 1 \\end{pmatrix}$."}
+{"text": "(2, 3, 4, 5, 6, 7, 8, or 9"}
+{"text": "\n\n\\[\na+b>c,\\qquad a+c>b,\\qquad b+c>a"}
+{"text": "we can use the property of exponents that states $a^{-b} = \\frac{1}{a^b"}
+{"text": "\nplot(x, y);\nxlabel('x');\nylabel('y');\ntitle('Graph of"}
+{"text": "\\mathbf{d} = \\begin{pmatrix} 0 \\\\ 0 \\\\ 0 \\end{pmatrix},"}
+{"text": ")^2$\n\nExpanding the right-hand side of the equation, we get:\n\n$x +"}
+{"text": "\n\n**Step-by-Step Explanation:**\n\n1. **Identify the Structure of"}
+{"text": "\n\n---\n\n### 4.  Risposta\n\n\\[\n\\boxed{\\displaystyle \\"}
+{"text": "\n\nTo find the total number of pens, we multiply the number of boxes by the number of pens in each box"}
+{"text": "in a round-robin format, with each player playing against every other player exactly once. The winner of each game"}
+{"text": "}\\right)^2 \\]\n\nExpanding the right-hand side of the equation, we get:\n\\["}
+{"text": "\\( m \\).\n\n**Step-by-Step Explanation and Proof:**\n\n1. **"}
+{"text": "express one variable in terms of the others using the second equation and substitute into the first. Let's try that."}
+{"text": ".\n\nSo, the answer is:\n\\[ \\boxed{20160} \\]"}
+{"text": "0,000, then the annual salary for a software engineer with a master's degree is $"}
+{"text": ") = 7.\n\nSo, the answer is:\n\\[ \\boxed{7} \\]"}
+{"text": "\n\n$(a+b)^2 = a^2 + 2ab + b^2$\n\n"}
+{"text": "$. According to the problem, the perimeter is twice the area, so we can set up the equation:\n"}
+{"text": "を満たす必要があります。\n\n---\n\n### "}
+{"text": "is 9 + 3 = 12.\n\nThe answer is \\boxed{12}."}
+{"text": ".\n\nTo find the maximum distance between the origin and the vertices of the square, we need to consider the"}
+{"text": ", let's consider the derivative of $f(x)$:\n\\[ f'(x) = \\"}
+{"text": ". I need to figure out the most likely diagnosis here. Let me start by recalling what I know about"}
+{"text": "20 + 2 * 12 = 20 + 24 = 44"}
+{"text": ". Each boat can hold a maximum of 1/8 as many people as the cruise ship, which"}
+{"text": "values of $a$.\n\nThe final answer is: $\\boxed{(-\\infty, \\infty)}$"}
+{"text": "= 2^2 \\cdot 3^1 \\cdot 7^2$.\n\n1."}
+{"text": "\n\nTo find the maximum value of each function on the interval [0, 1], we need to"}
+{"text": ".\n\nSince $\\overline{AB}$ is parallel to $\\overline{CD}$, we have $\\angle A"}
+{"text": "\n\nThe complex conjugate of a complex number $a+bi$ is $a-bi$."}
+{"text": "year is $60 x 450 = $27,000.\n\n"}
+{"text": "x = 240. Solving for x, we get x = 240/"}
+{"text": "of 30 is 30 divided by 3, which is 10. So Alex"}
+{"text": "\n\nTo solve this problem, we can use the concept of similar triangles. We can draw a"}
+{"text": "$. The vertex of the parabola is given by the coordinates $(h,k)$, where $h"}
+{"text": ".\nLena paid with a $150 bill, so she received $150 -"}
+{"text": "have?\n\nLet's denote the number of new shirts Alex has as x.\n"}
+{"text": "a box, they need to buy 13 boxes to have at least 100 pens."}
+{"text": "$n^2+n+1$ and $n^2+n+2$ are both"}
+{"text": "\nComparing this with the standard form of a hyperbola, we can see that the center"}
+{"text": "B=0 .\n\\]\n\n--------------------------------------------------------------------\n### 2. "}
+{"text": "0 = 80\n\nSo, there are 80 female ducks.\n\n"}
+{"text": "= 20 sin(30°) = 10 m/s.\n\n"}
+{"text": "$.\n\nNow we have two equations:\n   \\begin{align*}\n   2x"}
+{"text": "の性質を理解することを含みます。"}
+{"text": "$d = 3$. Substituting $d = 3$ into the first equation"}
+{"text": "\n\nLet's solve the problem step by step.\n\n1. **Identify the"}
+{"text": "methoxyperoxy radical (CH₃O₂⁺) and an alk"}
+{"text": ".\n\nThe answer is:\n\\[ \\boxed{10, 1"}
+{"text": ":\n\\[ \\text{Discount} = 30\\% \\times \\$1"}
+{"text": "sin 2\\alpha \\\\ \\sin 2\\alpha & \\cos 2\\alpha"}
+{"text": "\\).\n\n--------------------------------------------------------------------\n### 1. ¿Qué significa una"}
+{"text": "123456789123456789`"}
+{"text": "$f(x)$ is divided by $(x-1)(x-2)$?"}
+{"text": "\n\nTo find out how much each person collected, we need to divide the total amount"}
+{"text": "\\sqrt{f(x) - \\lfloor f(x) \\rfloor"}
+{"text": ". Tom's parents have agreed to give him an allowance of $5 per week"}
+{"text": ". If the length is increased by 10 cm and the width is increased by "}
+{"text": "greater than $1$.\n\nThe final answer is: $\\boxed{1}$"}
+{"text": "resorte vertical con rigidez $K$ está montado sobre una mesa."}
+{"text": "\n\nWe claim that $g(x) = 0$ for all $x"}
+{"text": "} \\times \\frac{16}{15} \\times \\frac{1"}
+{"text": "$x*(x+1) = x^2 + x + 1$, we"}
+{"text": "is:\n\\[ S_1 = \\frac{25}{2}(2"}
+{"text": "the lengths of the segments from the vertices of the triangle to the points of tangency"}
+{"text": ".\n\nThe answer is:\n\\[ \\boxed{8} \\]"}
+{"text": " $i = 1, 2, ..., 2013"}
+{"text": "}$$\n\nSimplifying the expression, we get:\n\n$$f'("}
+{"text": "each transaction in the list\n    for transaction in transactions:\n        # Extract"}
+{"text": "is 2x + 5x + 3x = 10x"}
+{"text": ". Let $M$, $N$, and $P$ denote the midpoints of"}
+{"text": "minimum value of \\(f(x, y, z)\\) is \\(\\boxed{"}
+{"text": "Let's break down the problem step by step:\n\n1. **Initial"}
+{"text": "} \\quad x \\neq 5 \\quad \\text{and} \\quad"}
+{"text": ".\n\nI should structure the answer clearly, maybe in bullet points or numbered"}
+{"text": "is the dot product of $\\mathbf{u}$ and $\\mathbf{v}$"}
+{"text": ".\n\nThe final answer is: $\\boxed{9.6}$"}
+{"text": "= 2 * 14 = 28 years old.\n\n"}
+{"text": "\n\nAidez-moi avec cette question à choix multiple."}
+{"text": "x+2}\\right\\rfloor$ for $x < -2$."}
+{"text": "ia.\n\nThe final answer is: $\\boxed{24}$"}
+{"text": "hours, and the time taken to travel from City B to City A is "}
+{"text": ". Substituting these values into Euler's formula, we get"}
+{"text": "\\).\n\n\\[\n\\boxed{f(i) \\"}
+{"text": "4\n\nSo, the answer is:\n\n\\boxed{2"}
+{"text": ".\n\nStep 5: Repeat steps 3 and 4 until"}
+{"text": "\n\nHere is a simple algorithm to solve this problem:\n\n1."}
+{"text": "semicircle than the area of the small semicircle?"}
+{"text": "\nimport json\n\n# Load the JSON data\ndata = json."}
+{"text": "= 3 * 12 hours = 36 hours\n\n"}
+{"text": "es.\n\nPor lo tanto, la respuesta correcta es"}
+{"text": "3 times as many disorderly conduct charges as robbery charges"}
+{"text": "\n\n$$\\frac{1}{\\sin^2 x}=\\frac{"}
+{"text": "where ω = e^(2πi/3) and ω"}
+{"text": "To find the total number of birds remaining at the farm, we add the"}
+{"text": "of the same color for each color and then add them up.\n\n"}
+{"text": "Monotonie von $ y = e^x \\sin x $ an"}
+{"text": "\" for hyperbola, \"N\" for none of the above"}
+{"text": ".\n\nThe final answer is: $\\boxed{8}$"}
+{"text": "$p$ is a positive integer greater than 1.\n\n"}
+{"text": "\n\nFactory B produces 180 units per day, but"}
+{"text": ", this is not the correct answer. The correct answer is that the"}
+{"text": ", la respuesta es\n\n\\[\n\\boxed{"}
+{"text": ", the total number of attendees would be the sum of"}
+{"text": "inquiries, how many inquiries can Emily handle?"}
+{"text": "A, B, C, D, and E.\n\nThe"}
+{"text": "\\( \\theta \\) is measured from the positive \\( x \\)-axis"}
+{"text": "96574213957468"}
+{"text": "$ be the sum of all integers from $a$ to $b"}
+{"text": "& \\frac{3}{5} \\end{pmatrix}$"}
+{"text": "x)$ for all $x \\in \\mathbb{R}$"}
+{"text": "2436825634179"}
+{"text": "7\n\n1267495388"}
+{"text": "3672584912857"}
+{"text": "7839657812475"}
+{"text": "\n\n19524768374"}
+{"text": "6147839524953"}
+{"text": "\n\n73415298651"}
+{"text": "8716538492873"}
+{"text": "85\n\n418532697"}
+{"text": "5398745316235"}
+{"text": "\n\n61453287935"}
+{"text": "that $A$ is invertible. Since $A$ is"}
+{"text": ") < 2:\n            print(f\"Warning:"}
+{"text": "\nquestion: Answer this question.\n\n\"What is the"}
+{"text": "$AB$ passing through the midpoint of $AB$."}
+{"text": "= (0, 0)$, $C = (1"}
+{"text": ", wenn die Bedingungen nicht erfüllt sind."}
+{"text": ". The password should be at least 8 characters long."}
+{"text": "una velocità di 1000 m/s"}
+{"text": ".\n\nLa risposta corretta è D)"}
+{"text": "Triangle $ABC$ is reflected over the line $y"}
+{"text": "784398764512"}
+{"text": "283651794512"}
+{"text": "789491265837"}
+{"text": "3\n\n623845917"}
+{"text": "658479528316"}
+{"text": "637895412396"}
+{"text": "867254319385"}
+{"text": "953618742817"}
+{"text": "827174582963"}
+{"text": "781947563827"}
+{"text": "\n\n1693285473"}
+{"text": "\n\n1623574987"}
+{"text": "6\n\n164827935"}
+{"text": "319476528465"}
+{"text": "bird?\nWhat is the answer?\n\nA:"}
+{"text": "\n\n1269548377"}
+{"text": "469721685943"}
+{"text": "398675248913"}
+{"text": ", we can multiply the total number of cookies by the fraction"}
+{"text": "\n\n1326958477"}
+{"text": "613951367824"}
+{"text": "un polygone composé de n sommets."}
+{"text": "\n72536149813"}
+{"text": "\n\n7615293842"}
+{"text": "[:, 0] == 0)\n\n#"}
+{"text": "of $k$.\n\nThe correct answer is:\n"}
+{"text": "intake of vitamins and minerals."}
+{"text": "a list of floats representing the moving averages."}
+{"text": "frac{1}{2\\sqrt{10}}$."}
+{"text": "5 students who participate in exactly two clubs."}
+{"text": "il legame di idrogeno.\n\n"}
+{"text": "$g_n(x) = (-1)^"}
+{"text": ".2.2.2.2.2."}
+{"text": "98731581346"}
+{"text": "31478352619"}
+{"text": "42613594873"}
+{"text": "92731986541"}
+{"text": "97523879416"}
+{"text": "23476915861"}
+{"text": "79152698347"}
+{"text": "12564837984"}
+{"text": "13763815429"}
+{"text": "26437915819"}
+{"text": "\n\n738419256"}
+{"text": "\n\n135486279"}
+{"text": "59368512473"}
+{"text": "69541962837"}
+{"text": "82645721398"}
+{"text": "Handler {\n\n    @Override\n    public void"}
+{"text": "equal to the side length of the hexagon."}
+{"text": "a^4(b^4-1)$."}
+{"text": "are evenly spaced, then the distance between"}
+{"text": "c+d+e+f+g}$."}
+{"text": ". This makes the code easier to understand and maintain"}
+{"text": "ounces of yogurt and honey"}
+{"text": "8674231859"}
+{"text": "3458367192"}
+{"text": "della chimica verde includono:\n\n"}
+{"text": "\\in\\mathbb{R}$. Then we have"}
+{"text": "Emily's total number of books is "}
+{"text": "にある点であるため、"}
+{"text": "is equal to the ratio of the number of"}
+{"text": "Réponse : \\boxed{C}"}
+{"text": "circle is tangent to BC at Q,"}
+{"text": ".\n\nB.\n\nC."}
+{"text": "').\n\n¿Cuál es el"}
+{"text": "685792413"}
+{"text": "100,000 data"}
+{"text": "_{j}$ if and only if $i"}
+{"text": "$A$ does not lie on $"}
+{"text": "C is 3 units per hour."}
+{"text": "is divisible by 11."}
+{"text": "insurance, and retirement contributions."}
+{"text": ", how much will the water cost?"}
+{"text": "column is a multiple of 3?"}
+{"text": "$ and the $x$-axis?"}
+{"text": "\nB) Wasserstoff\nC)"}
+{"text": "\\frac{a}{d}$?"}
+{"text": "g(x) = 0$?"}
+{"text": "un valore positivo, il che"}
+{"text": "\\frac{m}{d}\\)."}
+{"text": "times the weight on the left pan."}
+{"text": "= 256$ elements."}
+{"text": "reasoning and problem-solving skills to"}
+{"text": "of $y=x^2$."}
+{"text": "are either parallel to the sides of the"}
+{"text": "\", \"date_of_registration"}
+{"text": "are an algorithm-design assistant."}
+{"text": "black balls are in the bag?"}
+{"text": ": \\boxed{C}"}
+{"text": "se utiliza para medir la"}
+{"text": ", la respuesta sería \\"}
+{"text": ": \\boxed{C}"}
+{"text": "20 calories, then"}
+{"text": "a side of the hexagon."}
+{"text": "after buying the e-books"}
+{"text": "颜色）。"}
+{"text": "的材料，"}
+{"text": "can participate in more than one"}
+{"text": "108 screws"}
+{"text": ". How much money is in the"}
+{"text": "omo\n\nElige la mejor"}
+{"text": "888888_"}
+{"text": "the Colossus of Rhodes"}
+{"text": "wings of the butterflies"}
+{"text": "she reads 13 pages"}
+{"text": "costing $50."}
+{"text": "determines the overall winner."}
+{"text": "is 1:2?"}
+{"text": "length of the rope?"}
+{"text": "the table at a right angle"}
+{"text": "けません。"}
+{"text": "will be able to watch the"}
+{"text": "sunglasses for $"}
+{"text": "}}{a+b}.$$"}
+{"text": "the difference between the terms becomes"}
+{"text": "0% for other expenses"}
+{"text": "element from the other array."}
+{"text": ":Tornbull;"}
+{"text": "is \"more blue\" and"}
+{"text": "count is declared the winner."}
+{"text": "the color of a banana"}
+{"text": "i-j-k."}
+{"text": "at a single point."}
+{"text": "30°."}
+{"text": " Qual è il primo"}
+{"text": "a hat on inside,"}
+{"text": "a single connected component?"}
+{"text": "does he have now?"}
+{"text": "of the water depth."}
+{"text": "one letter from the alphabet"}
+{"text": "has established a set of"}
+{"text": "a perfect cube."}
+{"text": "wore business attire"}
+{"text": "40?"}
+{"text": "on the circle."}
+{"text": "\": {}\n}"}
+{"text": "the candles?"}
+{"text": "off at home."}
+{"text": "n+1$."}
+{"text": "as a fraction."}
+{"text": "how it falls."}
+{"text": "may indicate a common"}
+{"text": "potatoes does she"}
+{"text": "half once more."}
+{"text": "fill the tank?"}
+{"text": "the remaining pieces."}
+{"text": "to change them."}
+{"text": "] is nonzero"}
+{"text": "than Tom."}
+{"text": "$k$."}
+{"text": "2$."}
+{"text": "quadratic equation."}
+{"text": "x)}$."}
+{"text": "ica."}
+{"text": "the activity."}
+{"text": "\\) kg."}
+{"text": "。"}
+{"text": "spend?"}
+{"text": "B$."}
+{"text": "m$."}
+{"text": "}'"}
+{"text": "Lucas?"}
+{"text": "A')"}
+{"text": "left."}
+{"text": "side."}
+{"text": "kan."}
+{"text": "."}
+{"text": "?"}
+{"text": ")"}

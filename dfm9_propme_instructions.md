@@ -1,0 +1,317 @@
+# DFM9 PropMe evaluation instructions
+
+This runbook covers twelve DFM9 tracing settings:
+
+| Setting | SimpleTrace index | Output stem |
+|---|---|---|
+| Generic English / A-D | matching singular A-D index | `st_dfm9_generic_en_{A-D}` |
+| Generic Danish / A-D | matching singular A-D index | `st_dfm9_generic_da_{A-D}` |
+| Prefix A/50 | A index | `st_dfm9_A_prefix_50` |
+| Prefix B/50 | B index | `st_dfm9_B_prefix_50` |
+| Prefix C/50 | C index | `st_dfm9_C_prefix_50` |
+| Prefix D/50 | D index | `st_dfm9_D_prefix_50` |
+
+Each generic language is traced independently against every A, B, C, and D
+index. Prefix runs remain tied to the matching risk category and serve as the
+capability baselines. The old combined A+B generic outputs are legacy artifacts
+and are not used by the current plots.
+
+Run the jobs sequentially on the 128-CPU, 350-GB allocation. Running multiple
+128-worker traces concurrently would oversubscribe it.
+
+## 1. Environment and inputs
+
+Run from the project root and activate the environment directly (do not use
+`conda run`):
+
+```bash
+cd /work/evaluation/PropMe
+conda activate olmotrace_test
+export PYTHONUNBUFFERED=1
+export TOKENIZERS_PARALLELISM=false
+export HF_HUB_OFFLINE=1
+export TRANSFORMERS_OFFLINE=1
+```
+
+Expected generation files:
+
+```text
+memorization_experiment/data/dfm9/generic/dfm9_generic_en_generations.json
+memorization_experiment/data/dfm9/generic/dfm9_generic_da_generations.json
+memorization_experiment/data/dfm9/prefix/dfm9_A_prefix_50_generations.json
+memorization_experiment/data/dfm9/prefix/dfm9_B_prefix_50_generations.json
+memorization_experiment/data/dfm9/prefix/dfm9_C_prefix_50_generations.json
+memorization_experiment/data/dfm9/prefix/dfm9_D_prefix_50_generations.json
+```
+
+Expected indexes:
+
+```text
+/work/olmotrace/mimir_propme/indexes/A
+/work/olmotrace/mimir_propme/indexes/B
+/work/olmotrace/mimir_propme/indexes/C
+/work/olmotrace/mimir_propme/indexes/D
+```
+
+The Llama-2 tokenizer must already be cached while offline. If it is not,
+temporarily unset the two offline variables and export a short-lived
+`HF_TOKEN`; unset the token again after the tokenizer download.
+
+## 2. Build the matching unigram probability files
+
+SimpleTrace filtering must use unigram probabilities from the same corpus as
+the trace. Build A, B, C, D, and the logical A+B table:
+
+```bash
+python -u 02_unigram_probs/compute_unigrams.py \
+  --index-dir /work/olmotrace/mimir_propme/indexes/A \
+  --output-path 02_unigram_probs/unigram_probs_dfm9_A.json \
+  --tokenizer-model meta-llama/Llama-2-7b-hf
+
+python -u 02_unigram_probs/compute_unigrams.py \
+  --index-dir /work/olmotrace/mimir_propme/indexes/B \
+  --output-path 02_unigram_probs/unigram_probs_dfm9_B.json \
+  --tokenizer-model meta-llama/Llama-2-7b-hf
+
+python -u 02_unigram_probs/compute_unigrams.py \
+  --index-dir /work/olmotrace/mimir_propme/indexes/C \
+  --output-path 02_unigram_probs/unigram_probs_dfm9_C.json \
+  --tokenizer-model meta-llama/Llama-2-7b-hf
+
+python -u 02_unigram_probs/compute_unigrams.py \
+  --index-dir /work/olmotrace/mimir_propme/indexes/D \
+  --output-path 02_unigram_probs/unigram_probs_dfm9_D.json \
+  --tokenizer-model meta-llama/Llama-2-7b-hf
+
+python -u 02_unigram_probs/compute_unigrams.py \
+  --index-dir \
+    /work/olmotrace/mimir_propme/indexes/A \
+    /work/olmotrace/mimir_propme/indexes/B \
+  --output-path 02_unigram_probs/unigram_probs_dfm9_AB.json \
+  --tokenizer-model meta-llama/Llama-2-7b-hf
+```
+
+The combined command loads A and B as two shards of one logical InfiniGram
+engine; it does not merge or modify either on-disk index.
+
+## 3. Run the twelve memorization experiments
+
+Inspect the exact generated commands first:
+
+```bash
+python -u memorization_experiment/run_memorization_experiments.py \
+  dfm9-generations --num-workers 128 --dry-run
+```
+
+Run all twelve settings sequentially:
+
+```bash
+python -u memorization_experiment/run_memorization_experiments.py \
+  dfm9-generations --num-workers 128
+```
+
+The generic-by-category presets can also be run individually:
+
+```bash
+python -u memorization_experiment/run_memorization_experiments.py \
+  dfm9-generations-generic-en-a --num-workers 128
+
+python -u memorization_experiment/run_memorization_experiments.py \
+  dfm9-generations-generic-en-b --num-workers 128
+
+python -u memorization_experiment/run_memorization_experiments.py \
+  dfm9-generations-generic-en-c --num-workers 128
+
+python -u memorization_experiment/run_memorization_experiments.py \
+  dfm9-generations-generic-en-d --num-workers 128
+
+python -u memorization_experiment/run_memorization_experiments.py \
+  dfm9-generations-generic-da-a --num-workers 128
+
+python -u memorization_experiment/run_memorization_experiments.py \
+  dfm9-generations-generic-da-b --num-workers 128
+
+python -u memorization_experiment/run_memorization_experiments.py \
+  dfm9-generations-generic-da-c --num-workers 128
+
+python -u memorization_experiment/run_memorization_experiments.py \
+  dfm9-generations-generic-da-d --num-workers 128
+
+python -u memorization_experiment/run_memorization_experiments.py \
+  dfm9-generations-prefix-a-50 --num-workers 128
+
+python -u memorization_experiment/run_memorization_experiments.py \
+  dfm9-generations-prefix-b-50 --num-workers 128
+
+python -u memorization_experiment/run_memorization_experiments.py \
+  dfm9-generations-prefix-c-50 --num-workers 128
+
+python -u memorization_experiment/run_memorization_experiments.py \
+  dfm9-generations-prefix-d-50 --num-workers 128
+```
+
+Each run uses 10 retrieved documents per span, mixed matching, the standard
+length buckets, k-eidetic values 1/5/10, and the 119-token long-span threshold.
+It writes a results file, summary file, and exact-span distribution file. The
+generic outputs use these category-specific stems:
+
+```text
+st_dfm9_generic_en_{A,B,C,D}_{results,summary}.json
+st_dfm9_generic_en_{A,B,C,D}_summary_spans_length_exact.json
+st_dfm9_generic_da_{A,B,C,D}_{results,summary}.json
+st_dfm9_generic_da_{A,B,C,D}_summary_spans_length_exact.json
+```
+
+Prefix outputs use the corresponding `st_dfm9_A_prefix_50_*`,
+`st_dfm9_B_prefix_50_*`, `st_dfm9_C_prefix_50_*`, and
+`st_dfm9_D_prefix_50_*` stems under
+`memorization_experiment/data/dfm9/prefix/`.
+
+`python -u` plus `PYTHONUNBUFFERED=1` makes stage, progress, and ETA output
+visible immediately.
+
+## 4. Plot memorization scores across all settings
+
+The existing DFM9 suite plots all eight generic/category traces and Prefix
+A/50 through Prefix D/50 on the same figures. Existing image paths are
+regenerated in place; no parallel plot suite is created:
+
+```bash
+python memorization_experiment/plot_memorization_results.py \
+  dfm9-generations
+```
+
+It writes the metric, k-eidetic, span-distribution, and combined plots to:
+
+```text
+memorization_experiment/data/dfm9/plots/memorization/
+```
+
+## 5. Compute and plot propensity
+
+The configured propensity pairs are exactly:
+
+- Generic EN vs Prefix A/50
+- Generic EN vs Prefix B/50
+- Generic EN vs Prefix C/50
+- Generic EN vs Prefix D/50
+- Generic DA vs Prefix A/50
+- Generic DA vs Prefix B/50
+- Generic DA vs Prefix C/50
+- Generic DA vs Prefix D/50
+
+Compute all eight JSON reports and their individual plots:
+
+```bash
+python -u 05_propensity_metrics/compute_propensity_metrics.py \
+  dfm9 --plot
+```
+
+Or run a pair individually:
+
+```bash
+python -u 05_propensity_metrics/compute_propensity_metrics.py \
+  dfm9-generic-en-vs-prefix-a --plot
+python -u 05_propensity_metrics/compute_propensity_metrics.py \
+  dfm9-generic-en-vs-prefix-b --plot
+python -u 05_propensity_metrics/compute_propensity_metrics.py \
+  dfm9-generic-da-vs-prefix-a --plot
+python -u 05_propensity_metrics/compute_propensity_metrics.py \
+  dfm9-generic-da-vs-prefix-b --plot
+python -u 05_propensity_metrics/compute_propensity_metrics.py \
+  dfm9-generic-en-vs-prefix-c --plot
+python -u 05_propensity_metrics/compute_propensity_metrics.py \
+  dfm9-generic-en-vs-prefix-d --plot
+python -u 05_propensity_metrics/compute_propensity_metrics.py \
+  dfm9-generic-da-vs-prefix-c --plot
+python -u 05_propensity_metrics/compute_propensity_metrics.py \
+  dfm9-generic-da-vs-prefix-d --plot
+```
+
+Each report contains only the `generic` propensity setting; the selected prefix
+summary is the capability baseline. The grouped command also writes:
+
+```text
+memorization_experiment/data/dfm9/propensity/dfm9_propensity_comparisons.png
+```
+
+That combined chart groups bars by metric and uses a separate color for each
+of the eight Generic-language-versus-Prefix-category comparisons. The JSON
+reports and optional individual plots remain under:
+
+```text
+memorization_experiment/data/dfm9/propensity/
+```
+
+## 6. Plot the cross-setting comparison overview
+
+After all summaries and propensity reports exist, generate the comparison
+across all twelve memorization settings and all eight propensity pairs:
+
+```bash
+python memorization_experiment/plot_comparison_overviews.py \
+  dfm9-settings-comparison
+```
+
+The overview writes scalar memorization comparisons, span distributions, and
+`propensity_metrics_overview.png` to:
+
+```text
+memorization_experiment/data/dfm9/plots/settings_comparison/
+```
+
+## 7. Analyze source-domain distributions
+
+Resolve the retrieved dataset IDs from all twelve SimpleTrace results and create
+per-setting plus combined domain-distribution reports:
+
+```bash
+python -u memorization_experiment/dfm9_domain_distributions.py \
+  --results \
+    memorization_experiment/data/dfm9/generic/st_dfm9_generic_en_results.json \
+    memorization_experiment/data/dfm9/generic/st_dfm9_generic_da_results.json \
+    memorization_experiment/data/dfm9/prefix/st_dfm9_A_prefix_50_results.json \
+    memorization_experiment/data/dfm9/prefix/st_dfm9_B_prefix_50_results.json \
+    memorization_experiment/data/dfm9/prefix/st_dfm9_C_prefix_50_results.json \
+    memorization_experiment/data/dfm9/prefix/st_dfm9_D_prefix_50_results.json \
+  --indexes-root /work/olmotrace/mimir_propme/indexes \
+  --prepared-data-root /work/olmotrace/mimir_propme/dfm9_memorisation_sources_propme \
+  --output-dir memorization_experiment/data/dfm9/domain_analysis \
+  --nv-recall-threshold 0.5 \
+  --top-domains 15
+```
+
+This produces domain distributions for each standard span-length bucket, for
+all retrieved documents with per-document NV recall at least 0.5, and for that
+NV-recall subset within each bucket. Both document-occurrence and unique-ID
+counts are reported. Exact ID-to-metadata resolutions are cached, so later
+runs normally avoid repeating index lookups.
+
+Outputs are written under:
+
+```text
+memorization_experiment/data/dfm9/domain_analysis/
+```
+
+Each result has a `*_domain_distribution.json` report and three PNG figures.
+When several results are supplied, `combined_domain_distribution.json` and a
+combined three-figure suite are added.
+
+## 8. Useful checks
+
+List the configured targets:
+
+```bash
+python memorization_experiment/run_memorization_experiments.py --list
+python memorization_experiment/plot_memorization_results.py --list
+python 05_propensity_metrics/compute_propensity_metrics.py --list
+python memorization_experiment/plot_comparison_overviews.py --list
+```
+
+List final DFM9 outputs:
+
+```bash
+find memorization_experiment/data/dfm9 -type f \
+  \( -name 'st_dfm9_*' -o -name '*propensity*.json' -o -name '*.png' \) \
+  -print | sort
+```

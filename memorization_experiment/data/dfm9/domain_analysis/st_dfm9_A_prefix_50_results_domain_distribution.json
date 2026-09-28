@@ -1,0 +1,439 @@
+{
+  "schema_version": 1,
+  "result_file": "/work/evaluation/PropMe/memorization_experiment/data/dfm9/prefix/st_dfm9_A_prefix_50_results.json",
+  "document_map": "/work/evaluation/PropMe/memorization_experiment/data/dfm9/domain_analysis/resolved_document_domains.jsonl",
+  "selection_semantics": {
+    "span_lengths": "Llama-2 tokenizer tokens stored by SimpleTrace",
+    "domain_counting_unit": "retrieved document occurrence within a span",
+    "unique_document_counting_unit": "distinct SimpleTrace dataset ID within each group",
+    "nv_recall_scope": "per retrieved generation-document pair",
+    "nv_recall_operator": ">=",
+    "nv_recall_threshold": 0.5
+  },
+  "configuration": {
+    "length_buckets": [
+      "(1, 3)",
+      "(4, 6)",
+      "(7, 10)",
+      "(11, 20)",
+      "(21, 50)",
+      "(51, 100)",
+      "(101, 150)",
+      "(151, inf)"
+    ],
+    "domain_fields": [
+      "source_metadata.domain",
+      "source_metadata.source",
+      "source_metadata.dataset",
+      "source_metadata.subset",
+      "domain",
+      "source",
+      "cohort",
+      "risk_category"
+    ],
+    "index_paths": {
+      "A": "/work/olmotrace/mimir_propme/indexes/A",
+      "B": "/work/olmotrace/mimir_propme/indexes/B",
+      "C": "/work/olmotrace/mimir_propme/indexes/C",
+      "D": "/work/olmotrace/mimir_propme/indexes/D"
+    },
+    "metadata_retrieval": "exact metadata ID via InfiniGram find + get_doc_by_rank; exact-ID prepared index-input fallback for overly common windows"
+  },
+  "input_counts": {
+    "generations": 457,
+    "spans": 1842,
+    "spans_with_documents": 1842,
+    "retrieved_document_occurrences": 8360,
+    "unique_retrieved_document_ids": 5103,
+    "spans_with_nv_recall_hit": 60,
+    "nv_recall_hit_document_occurrences": 211,
+    "unique_nv_recall_hit_document_ids": 209,
+    "missing_id_occurrences": 0
+  },
+  "span_bucket_domain_distributions": {
+    "(1, 3)": {
+      "span_count": 49,
+      "spans_with_documents": 49,
+      "total_document_occurrences": 766,
+      "document_occurrences_by_domain": [
+        {
+          "domain": "dbc",
+          "count": 763,
+          "ratio": 0.9960835509138382
+        },
+        {
+          "domain": "lexdk",
+          "count": 3,
+          "ratio": 0.0039164490861618795
+        }
+      ],
+      "total_unique_documents": 766,
+      "unique_documents_by_domain": [
+        {
+          "domain": "dbc",
+          "count": 763,
+          "ratio": 0.9960835509138382
+        },
+        {
+          "domain": "lexdk",
+          "count": 3,
+          "ratio": 0.0039164490861618795
+        }
+      ]
+    },
+    "(4, 6)": {
+      "span_count": 446,
+      "spans_with_documents": 446,
+      "total_document_occurrences": 2229,
+      "document_occurrences_by_domain": [
+        {
+          "domain": "dbc",
+          "count": 2191,
+          "ratio": 0.9829519964109467
+        },
+        {
+          "domain": "lexdk",
+          "count": 38,
+          "ratio": 0.01704800358905339
+        }
+      ],
+      "total_unique_documents": 1350,
+      "unique_documents_by_domain": [
+        {
+          "domain": "dbc",
+          "count": 1322,
+          "ratio": 0.9792592592592593
+        },
+        {
+          "domain": "lexdk",
+          "count": 28,
+          "ratio": 0.02074074074074074
+        }
+      ]
+    },
+    "(7, 10)": {
+      "span_count": 815,
+      "spans_with_documents": 815,
+      "total_document_occurrences": 2734,
+      "document_occurrences_by_domain": [
+        {
+          "domain": "dbc",
+          "count": 2565,
+          "ratio": 0.9381858083394294
+        },
+        {
+          "domain": "lexdk",
+          "count": 167,
+          "ratio": 0.06108266276517922
+        },
+        {
+          "domain": "dkmedier",
+          "count": 2,
+          "ratio": 0.000731528895391368
+        }
+      ],
+      "total_unique_documents": 1741,
+      "unique_documents_by_domain": [
+        {
+          "domain": "dbc",
+          "count": 1634,
+          "ratio": 0.9385410683515221
+        },
+        {
+          "domain": "lexdk",
+          "count": 106,
+          "ratio": 0.060884549109707066
+        },
+        {
+          "domain": "dkmedier",
+          "count": 1,
+          "ratio": 0.0005743825387708214
+        }
+      ]
+    },
+    "(11, 20)": {
+      "span_count": 366,
+      "spans_with_documents": 366,
+      "total_document_occurrences": 1813,
+      "document_occurrences_by_domain": [
+        {
+          "domain": "dbc",
+          "count": 1743,
+          "ratio": 0.9613899613899614
+        },
+        {
+          "domain": "lexdk",
+          "count": 67,
+          "ratio": 0.03695532266960838
+        },
+        {
+          "domain": "odense",
+          "count": 2,
+          "ratio": 0.0011031439602868175
+        },
+        {
+          "domain": "danskerhverv",
+          "count": 1,
+          "ratio": 0.0005515719801434088
+        }
+      ],
+      "total_unique_documents": 986,
+      "unique_documents_by_domain": [
+        {
+          "domain": "dbc",
+          "count": 935,
+          "ratio": 0.9482758620689655
+        },
+        {
+          "domain": "lexdk",
+          "count": 48,
+          "ratio": 0.0486815415821501
+        },
+        {
+          "domain": "odense",
+          "count": 2,
+          "ratio": 0.002028397565922921
+        },
+        {
+          "domain": "danskerhverv",
+          "count": 1,
+          "ratio": 0.0010141987829614604
+        }
+      ]
+    },
+    "(21, 50)": {
+      "span_count": 134,
+      "spans_with_documents": 134,
+      "total_document_occurrences": 576,
+      "document_occurrences_by_domain": [
+        {
+          "domain": "dbc",
+          "count": 555,
+          "ratio": 0.9635416666666666
+        },
+        {
+          "domain": "lexdk",
+          "count": 21,
+          "ratio": 0.036458333333333336
+        }
+      ],
+      "total_unique_documents": 356,
+      "unique_documents_by_domain": [
+        {
+          "domain": "dbc",
+          "count": 335,
+          "ratio": 0.9410112359550562
+        },
+        {
+          "domain": "lexdk",
+          "count": 21,
+          "ratio": 0.05898876404494382
+        }
+      ]
+    },
+    "(51, 100)": {
+      "span_count": 28,
+      "spans_with_documents": 28,
+      "total_document_occurrences": 195,
+      "document_occurrences_by_domain": [
+        {
+          "domain": "dbc",
+          "count": 195,
+          "ratio": 1.0
+        }
+      ],
+      "total_unique_documents": 86,
+      "unique_documents_by_domain": [
+        {
+          "domain": "dbc",
+          "count": 86,
+          "ratio": 1.0
+        }
+      ]
+    },
+    "(101, 150)": {
+      "span_count": 2,
+      "spans_with_documents": 2,
+      "total_document_occurrences": 23,
+      "document_occurrences_by_domain": [
+        {
+          "domain": "dbc",
+          "count": 23,
+          "ratio": 1.0
+        }
+      ],
+      "total_unique_documents": 23,
+      "unique_documents_by_domain": [
+        {
+          "domain": "dbc",
+          "count": 23,
+          "ratio": 1.0
+        }
+      ]
+    },
+    "(151, inf)": {
+      "span_count": 2,
+      "spans_with_documents": 2,
+      "total_document_occurrences": 24,
+      "document_occurrences_by_domain": [
+        {
+          "domain": "dbc",
+          "count": 24,
+          "ratio": 1.0
+        }
+      ],
+      "total_unique_documents": 6,
+      "unique_documents_by_domain": [
+        {
+          "domain": "dbc",
+          "count": 6,
+          "ratio": 1.0
+        }
+      ]
+    }
+  },
+  "nv_recall_domain_distribution": {
+    "total_document_occurrences": 211,
+    "document_occurrences_by_domain": [
+      {
+        "domain": "dbc",
+        "count": 199,
+        "ratio": 0.943127962085308
+      },
+      {
+        "domain": "lexdk",
+        "count": 12,
+        "ratio": 0.05687203791469194
+      }
+    ],
+    "total_unique_documents": 209,
+    "unique_documents_by_domain": [
+      {
+        "domain": "dbc",
+        "count": 197,
+        "ratio": 0.9425837320574163
+      },
+      {
+        "domain": "lexdk",
+        "count": 12,
+        "ratio": 0.05741626794258373
+      }
+    ]
+  },
+  "span_bucket_nv_recall_domain_distributions": {
+    "(1, 3)": {
+      "spans_with_nv_recall_hit": 0,
+      "total_document_occurrences": 0,
+      "document_occurrences_by_domain": [],
+      "total_unique_documents": 0,
+      "unique_documents_by_domain": []
+    },
+    "(4, 6)": {
+      "spans_with_nv_recall_hit": 25,
+      "total_document_occurrences": 124,
+      "document_occurrences_by_domain": [
+        {
+          "domain": "dbc",
+          "count": 124,
+          "ratio": 1.0
+        }
+      ],
+      "total_unique_documents": 124,
+      "unique_documents_by_domain": [
+        {
+          "domain": "dbc",
+          "count": 124,
+          "ratio": 1.0
+        }
+      ]
+    },
+    "(7, 10)": {
+      "spans_with_nv_recall_hit": 28,
+      "total_document_occurrences": 80,
+      "document_occurrences_by_domain": [
+        {
+          "domain": "dbc",
+          "count": 68,
+          "ratio": 0.85
+        },
+        {
+          "domain": "lexdk",
+          "count": 12,
+          "ratio": 0.15
+        }
+      ],
+      "total_unique_documents": 79,
+      "unique_documents_by_domain": [
+        {
+          "domain": "dbc",
+          "count": 67,
+          "ratio": 0.8481012658227848
+        },
+        {
+          "domain": "lexdk",
+          "count": 12,
+          "ratio": 0.1518987341772152
+        }
+      ]
+    },
+    "(11, 20)": {
+      "spans_with_nv_recall_hit": 4,
+      "total_document_occurrences": 4,
+      "document_occurrences_by_domain": [
+        {
+          "domain": "dbc",
+          "count": 4,
+          "ratio": 1.0
+        }
+      ],
+      "total_unique_documents": 4,
+      "unique_documents_by_domain": [
+        {
+          "domain": "dbc",
+          "count": 4,
+          "ratio": 1.0
+        }
+      ]
+    },
+    "(21, 50)": {
+      "spans_with_nv_recall_hit": 3,
+      "total_document_occurrences": 3,
+      "document_occurrences_by_domain": [
+        {
+          "domain": "dbc",
+          "count": 3,
+          "ratio": 1.0
+        }
+      ],
+      "total_unique_documents": 3,
+      "unique_documents_by_domain": [
+        {
+          "domain": "dbc",
+          "count": 3,
+          "ratio": 1.0
+        }
+      ]
+    },
+    "(51, 100)": {
+      "spans_with_nv_recall_hit": 0,
+      "total_document_occurrences": 0,
+      "document_occurrences_by_domain": [],
+      "total_unique_documents": 0,
+      "unique_documents_by_domain": []
+    },
+    "(101, 150)": {
+      "spans_with_nv_recall_hit": 0,
+      "total_document_occurrences": 0,
+      "document_occurrences_by_domain": [],
+      "total_unique_documents": 0,
+      "unique_documents_by_domain": []
+    },
+    "(151, inf)": {
+      "spans_with_nv_recall_hit": 0,
+      "total_document_occurrences": 0,
+      "document_occurrences_by_domain": [],
+      "total_unique_documents": 0,
+      "unique_documents_by_domain": []
+    }
+  }
+}

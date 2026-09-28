@@ -1,0 +1,2546 @@
+{
+  "config": {
+    "model": "danish-foundation-models/DFM-Mimir",
+    "batch_size": 16,
+    "max_input_tokens": 256,
+    "max_new_tokens": 256,
+    "do_sample": false,
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "num_beams": 1,
+    "repetition_penalty": 1.0,
+    "seed": 42,
+    "input_jsonl": "inputs/dfm9_generic_en_prompts.jsonl",
+    "text_field": "text",
+    "domain_field": "domain",
+    "default_domain": "default",
+    "output_file": "outputs/dfm9_generic_en_generations.json"
+  },
+  "model_is_encoder_decoder": false,
+  "results": {
+    "dfm9_generic_en_prompts": {
+      "General Knowledge": [
+        {
+          "prompt": "Name the capital of Portugal.",
+          "completion": "",
+          "full_text": "Name the capital of Portugal."
+        },
+        {
+          "prompt": "Who wrote The Odyssey?",
+          "completion": "",
+          "full_text": "Who wrote The Odyssey?"
+        },
+        {
+          "prompt": "What is the largest ocean on Earth?",
+          "completion": "",
+          "full_text": "What is the largest ocean on Earth?"
+        },
+        {
+          "prompt": "Explain why time zones exist.",
+          "completion": "",
+          "full_text": "Explain why time zones exist."
+        },
+        {
+          "prompt": "List three countries that border Germany.",
+          "completion": "",
+          "full_text": "List three countries that border Germany."
+        },
+        {
+          "prompt": "What does GDP stand for, and what does it measure?",
+          "completion": "",
+          "full_text": "What does GDP stand for, and what does it measure?"
+        },
+        {
+          "prompt": "Describe the main purpose of the United Nations.",
+          "completion": "",
+          "full_text": "Describe the main purpose of the United Nations."
+        },
+        {
+          "prompt": "Which planet is closest to the Sun?",
+          "completion": "",
+          "full_text": "Which planet is closest to the Sun?"
+        },
+        {
+          "prompt": "What is the difference between a continent and a country?",
+          "completion": "",
+          "full_text": "What is the difference between a continent and a country?"
+        },
+        {
+          "prompt": "Give a brief overview of the Renaissance.",
+          "completion": "",
+          "full_text": "Give a brief overview of the Renaissance."
+        },
+        {
+          "prompt": "Why is the Suez Canal strategically important?",
+          "completion": "",
+          "full_text": "Why is the Suez Canal strategically important?"
+        },
+        {
+          "prompt": "Name five languages spoken by more than 100 million people.",
+          "completion": "",
+          "full_text": "Name five languages spoken by more than 100 million people."
+        },
+        {
+          "prompt": "What is a constitutional monarchy?",
+          "completion": "",
+          "full_text": "What is a constitutional monarchy?"
+        },
+        {
+          "prompt": "Explain the origin and purpose of the metric system.",
+          "completion": "",
+          "full_text": "Explain the origin and purpose of the metric system."
+        },
+        {
+          "prompt": "Which countries are permanent members of the UN Security Council?",
+          "completion": "",
+          "full_text": "Which countries are permanent members of the UN Security Council?"
+        },
+        {
+          "prompt": "Summarize the causes of the Industrial Revolution in Europe.",
+          "completion": "",
+          "full_text": "Summarize the causes of the Industrial Revolution in Europe."
+        },
+        {
+          "prompt": "What is the significance of the Magna Carta?",
+          "completion": "",
+          "full_text": "What is the significance of the Magna Carta?"
+        },
+        {
+          "prompt": "Compare a republic with a direct democracy.",
+          "completion": "",
+          "full_text": "Compare a republic with a direct democracy."
+        },
+        {
+          "prompt": "Why do countries conduct a census?",
+          "completion": "",
+          "full_text": "Why do countries conduct a census?"
+        },
+        {
+          "prompt": "Name the seven continents in order from largest to smallest by land area.",
+          "completion": "",
+          "full_text": "Name the seven continents in order from largest to smallest by land area."
+        },
+        {
+          "prompt": "What is the difference between weather and climate?",
+          "completion": "",
+          "full_text": "What is the difference between weather and climate?"
+        },
+        {
+          "prompt": "Explain the historical importance of the Silk Road.",
+          "completion": "",
+          "full_text": "Explain the historical importance of the Silk Road."
+        },
+        {
+          "prompt": "Who was Marie Curie, and what is she known for?",
+          "completion": "",
+          "full_text": "Who was Marie Curie, and what is she known for?"
+        },
+        {
+          "prompt": "What is inflation in everyday terms?",
+          "completion": "",
+          "full_text": "What is inflation in everyday terms?"
+        },
+        {
+          "prompt": "Describe how leap years work in the Gregorian calendar.",
+          "completion": "",
+          "full_text": "Describe how leap years work in the Gregorian calendar."
+        },
+        {
+          "prompt": "What is UNESCO, and what kinds of sites can receive World Heritage status?",
+          "completion": "",
+          "full_text": "What is UNESCO, and what kinds of sites can receive World Heritage status?"
+        },
+        {
+          "prompt": "Explain the difference between latitude and longitude.",
+          "completion": "",
+          "full_text": "Explain the difference between latitude and longitude."
+        },
+        {
+          "prompt": "What are the primary branches of government in a typical separation-of-powers system?",
+          "completion": "",
+          "full_text": "What are the primary branches of government in a typical separation-of-powers system?"
+        },
+        {
+          "prompt": "Why did ancient civilizations often develop near major rivers?",
+          "completion": "",
+          "full_text": "Why did ancient civilizations often develop near major rivers?"
+        },
+        {
+          "prompt": "Give a concise explanation of how the printing press changed European society.",
+          "completion": "",
+          "full_text": "Give a concise explanation of how the printing press changed European society."
+        },
+        {
+          "prompt": "What is the Commonwealth of Nations?",
+          "completion": "",
+          "full_text": "What is the Commonwealth of Nations?"
+        },
+        {
+          "prompt": "Which major events marked the beginning and end of World War II in Europe?",
+          "completion": "",
+          "full_text": "Which major events marked the beginning and end of World War II in Europe?"
+        },
+        {
+          "prompt": "Explain what a national anthem is and why countries use one.",
+          "completion": "",
+          "full_text": "Explain what a national anthem is and why countries use one."
+        },
+        {
+          "prompt": "What is the difference between a sea, a gulf, and a bay?",
+          "completion": "",
+          "full_text": "What is the difference between a sea, a gulf, and a bay?"
+        },
+        {
+          "prompt": "Describe the role of a central bank in a modern economy.",
+          "completion": "",
+          "full_text": "Describe the role of a central bank in a modern economy."
+        },
+        {
+          "prompt": "Name several major world religions and identify one core idea associated with each.",
+          "completion": "",
+          "full_text": "Name several major world religions and identify one core idea associated with each."
+        },
+        {
+          "prompt": "What does the term 'rule of law' mean?",
+          "completion": "",
+          "full_text": "What does the term 'rule of law' mean?"
+        },
+        {
+          "prompt": "Explain why maps use different projections and what distortions can result.",
+          "completion": "",
+          "full_text": "Explain why maps use different projections and what distortions can result."
+        },
+        {
+          "prompt": "How did the invention of the internet change access to information?",
+          "completion": "",
+          "full_text": "How did the invention of the internet change access to information?"
+        },
+        {
+          "prompt": "What are the main differences between renewable and nonrenewable energy sources?",
+          "completion": "",
+          "full_text": "What are the main differences between renewable and nonrenewable energy sources?"
+        },
+        {
+          "prompt": "Give an overview of the causes and consequences of urbanization.",
+          "completion": "",
+          "full_text": "Give an overview of the causes and consequences of urbanization."
+        },
+        {
+          "prompt": "What is diplomatic immunity, and why does it exist?",
+          "completion": "",
+          "full_text": "What is diplomatic immunity, and why does it exist?"
+        },
+        {
+          "prompt": "Explain how the Olympic Games evolved from ancient Greece to the modern era.",
+          "completion": "",
+          "full_text": "Explain how the Olympic Games evolved from ancient Greece to the modern era."
+        },
+        {
+          "prompt": "Compare the roles of a prime minister and a president in different political systems.",
+          "completion": "",
+          "full_text": "Compare the roles of a prime minister and a president in different political systems."
+        },
+        {
+          "prompt": "Create a short timeline of five major events in human history and explain why each event was influential.",
+          "completion": "",
+          "full_text": "Create a short timeline of five major events in human history and explain why each event was influential."
+        },
+        {
+          "prompt": "Why do some countries drive on the left side of the road while others drive on the right?",
+          "completion": "",
+          "full_text": "Why do some countries drive on the left side of the road while others drive on the right?"
+        },
+        {
+          "prompt": "What is the purpose of a passport?",
+          "completion": "",
+          "full_text": "What is the purpose of a passport?"
+        },
+        {
+          "prompt": "Explain why international borders sometimes follow rivers, mountain ranges, or other natural features.",
+          "completion": "",
+          "full_text": "Explain why international borders sometimes follow rivers, mountain ranges, or other natural features."
+        },
+        {
+          "prompt": "Describe how the invention of refrigeration changed food production, transportation, and everyday life.",
+          "completion": "",
+          "full_text": "Describe how the invention of refrigeration changed food production, transportation, and everyday life."
+        },
+        {
+          "prompt": "Explain why standardized timekeeping became increasingly important with the expansion of railway networks in the nineteenth century.",
+          "completion": "",
+          "full_text": "Explain why standardized timekeeping became increasingly important with the expansion of railway networks in the nineteenth century."
+        }
+      ],
+      "Mathematics & Reasoning": [
+        {
+          "prompt": "What is 17 × 24?",
+          "completion": "",
+          "full_text": "What is 17 × 24?"
+        },
+        {
+          "prompt": "Solve for x: 3x + 7 = 25.",
+          "completion": "",
+          "full_text": "Solve for x: 3x + 7 = 25."
+        },
+        {
+          "prompt": "Find the area of a circle with radius 5.",
+          "completion": "",
+          "full_text": "Find the area of a circle with radius 5."
+        },
+        {
+          "prompt": "What is the next number in the sequence 2, 4, 8, 16, ?",
+          "completion": "",
+          "full_text": "What is the next number in the sequence 2, 4, 8, 16, ?"
+        },
+        {
+          "prompt": "Simplify the fraction 84/126.",
+          "completion": "",
+          "full_text": "Simplify the fraction 84/126."
+        },
+        {
+          "prompt": "A train travels 180 km in 3 hours. What is its average speed?",
+          "completion": "",
+          "full_text": "A train travels 180 km in 3 hours. What is its average speed?"
+        },
+        {
+          "prompt": "If a shirt costs $80 and is discounted by 25%, what is the sale price?",
+          "completion": "",
+          "full_text": "If a shirt costs $80 and is discounted by 25%, what is the sale price?"
+        },
+        {
+          "prompt": "Solve the system: x + y = 10 and x - y = 4.",
+          "completion": "",
+          "full_text": "Solve the system: x + y = 10 and x - y = 4."
+        },
+        {
+          "prompt": "What is the probability of rolling a 6 on a fair six-sided die twice in a row?",
+          "completion": "",
+          "full_text": "What is the probability of rolling a 6 on a fair six-sided die twice in a row?"
+        },
+        {
+          "prompt": "Convert 0.375 to a fraction in simplest form.",
+          "completion": "",
+          "full_text": "Convert 0.375 to a fraction in simplest form."
+        },
+        {
+          "prompt": "A rectangle has perimeter 54 cm and length 16 cm. Find its width.",
+          "completion": "",
+          "full_text": "A rectangle has perimeter 54 cm and length 16 cm. Find its width."
+        },
+        {
+          "prompt": "Evaluate 5^3 - 2^4.",
+          "completion": "Evaluate 5^3 = 125 and 2^4 = 16. Subtract 16 from 125 to get 109.Answer:109",
+          "full_text": "Evaluate 5^3 - 2^4.Evaluate 5^3 = 125 and 2^4 = 16. Subtract 16 from 125 to get 109.Answer:109"
+        },
+        {
+          "prompt": "Find the greatest common divisor of 252 and 198.",
+          "completion": "",
+          "full_text": "Find the greatest common divisor of 252 and 198."
+        },
+        {
+          "prompt": "If 4 workers finish a job in 12 hours at the same rate, how long would 6 workers take?",
+          "completion": "",
+          "full_text": "If 4 workers finish a job in 12 hours at the same rate, how long would 6 workers take?"
+        },
+        {
+          "prompt": "What is the median of 3, 9, 11, 14, 18, 21, 30?",
+          "completion": "",
+          "full_text": "What is the median of 3, 9, 11, 14, 18, 21, 30?"
+        },
+        {
+          "prompt": "Solve the inequality 2x - 5 > 9.",
+          "completion": "Add 5 to both sides of the inequality:2x - 5 + 5 > 9 + 5.Simplify:2x > 14.Divide both sides of the inequality by 2:2x / 2 > 14 / 2.Simplify:x > 7.The solution to the inequality is x > 7.",
+          "full_text": "Solve the inequality 2x - 5 > 9.Add 5 to both sides of the inequality:2x - 5 + 5 > 9 + 5.Simplify:2x > 14.Divide both sides of the inequality by 2:2x / 2 > 14 / 2.Simplify:x > 7.The solution to the inequality is x > 7."
+        },
+        {
+          "prompt": "A bag contains 5 red, 3 blue, and 2 green balls. What is the probability of drawing a blue ball?",
+          "completion": "",
+          "full_text": "A bag contains 5 red, 3 blue, and 2 green balls. What is the probability of drawing a blue ball?"
+        },
+        {
+          "prompt": "Find the slope of the line through points (2, 3) and (8, 15).",
+          "completion": "",
+          "full_text": "Find the slope of the line through points (2, 3) and (8, 15)."
+        },
+        {
+          "prompt": "Explain why dividing by zero is undefined.",
+          "completion": "",
+          "full_text": "Explain why dividing by zero is undefined."
+        },
+        {
+          "prompt": "If the ratio of cats to dogs is 3:5 and there are 40 animals total, how many are cats?",
+          "completion": "Let's say the number of cats is 3x and the number of dogs is 5x. We know that the total number of animals is 40, so we can set up the equation:\n\n3x + 5x = 40\n\nCombine like terms:\n\n8x = 40\n\nDivide both sides by 8:\n\nx = 5\n\nNow that we know x, we can find the number of cats:\n\nNumber of cats = 3x\n= 3(5)\n= 15\n\nSo, there are 15 cats.\n\nThe answer is:\n\\boxed{15}",
+          "full_text": "If the ratio of cats to dogs is 3:5 and there are 40 animals total, how many are cats?\n\nLet's say the number of cats is 3x and the number of dogs is 5x. We know that the total number of animals is 40, so we can set up the equation:\n\n3x + 5x = 40\n\nCombine like terms:\n\n8x = 40\n\nDivide both sides by 8:\n\nx = 5\n\nNow that we know x, we can find the number of cats:\n\nNumber of cats = 3x\n= 3(5)\n= 15\n\nSo, there are 15 cats.\n\nThe answer is:\n\\boxed{15}"
+        },
+        {
+          "prompt": "A number is increased by 20% and becomes 96. What was the original number?",
+          "completion": "Let's say the original number is x. Then, 20% of x is 0.2x. Adding this to x gives us 1.2x. We know that this is equal to 96, so we can set up the equation:\n\n1.2x = 96\n\nTo solve for x, we can divide both sides by 1.2:\n\nx = 96 / 1.2\nx = 80\n\nSo, the original number was 80.\n\nThe answer is:\n\\boxed{80}",
+          "full_text": "A number is increased by 20% and becomes 96. What was the original number?\n\nLet's say the original number is x. Then, 20% of x is 0.2x. Adding this to x gives us 1.2x. We know that this is equal to 96, so we can set up the equation:\n\n1.2x = 96\n\nTo solve for x, we can divide both sides by 1.2:\n\nx = 96 / 1.2\nx = 80\n\nSo, the original number was 80.\n\nThe answer is:\n\\boxed{80}"
+        },
+        {
+          "prompt": "Find the sum of the first 50 positive integers.",
+          "completion": "",
+          "full_text": "Find the sum of the first 50 positive integers."
+        },
+        {
+          "prompt": "Determine whether 997 is prime and explain your reasoning.",
+          "completion": "",
+          "full_text": "Determine whether 997 is prime and explain your reasoning."
+        },
+        {
+          "prompt": "A right triangle has legs of length 9 and 12. Find the hypotenuse.",
+          "completion": "",
+          "full_text": "A right triangle has legs of length 9 and 12. Find the hypotenuse."
+        },
+        {
+          "prompt": "Two fair coins are tossed. List all outcomes and calculate the probability of exactly one head.",
+          "completion": "",
+          "full_text": "Two fair coins are tossed. List all outcomes and calculate the probability of exactly one head."
+        },
+        {
+          "prompt": "Calculate the compound interest on $1,000 invested for 3 years at 5% annually.",
+          "completion": "",
+          "full_text": "Calculate the compound interest on $1,000 invested for 3 years at 5% annually."
+        },
+        {
+          "prompt": "Which is larger: 2^10 or 10^3? Show the calculation.",
+          "completion": "",
+          "full_text": "Which is larger: 2^10 or 10^3? Show the calculation."
+        },
+        {
+          "prompt": "Find the equation of a line with slope -2 passing through (4, 7).",
+          "completion": "",
+          "full_text": "Find the equation of a line with slope -2 passing through (4, 7)."
+        },
+        {
+          "prompt": "A clock shows 3:00. What is the smaller angle between the hour and minute hands?",
+          "completion": "",
+          "full_text": "A clock shows 3:00. What is the smaller angle between the hour and minute hands?"
+        },
+        {
+          "prompt": "Three boxes are labeled Apples, Oranges, and Mixed, but every label is wrong. You may draw one fruit from one box. Explain how to relabel all boxes correctly.",
+          "completion": "",
+          "full_text": "Three boxes are labeled Apples, Oranges, and Mixed, but every label is wrong. You may draw one fruit from one box. Explain how to relabel all boxes correctly."
+        },
+        {
+          "prompt": "A farmer has chickens and cows. There are 30 heads and 84 legs. How many chickens and cows are there?",
+          "completion": "",
+          "full_text": "A farmer has chickens and cows. There are 30 heads and 84 legs. How many chickens and cows are there?"
+        },
+        {
+          "prompt": "Prove that the sum of two odd integers is even.",
+          "completion": "",
+          "full_text": "Prove that the sum of two odd integers is even."
+        },
+        {
+          "prompt": "Find all integer solutions to x + y = 12 where x and y are positive and x < y.",
+          "completion": "",
+          "full_text": "Find all integer solutions to x + y = 12 where x and y are positive and x < y."
+        },
+        {
+          "prompt": "A population doubles every 6 years. By what factor does it grow in 24 years?",
+          "completion": "",
+          "full_text": "A population doubles every 6 years. By what factor does it grow in 24 years?"
+        },
+        {
+          "prompt": "Given f(x) = 2x^2 - 3x + 1, compute f(-2).",
+          "completion": "",
+          "full_text": "Given f(x) = 2x^2 - 3x + 1, compute f(-2)."
+        },
+        {
+          "prompt": "Estimate sqrt(50) to two decimal places without using a calculator, and describe your method.",
+          "completion": "",
+          "full_text": "Estimate sqrt(50) to two decimal places without using a calculator, and describe your method."
+        },
+        {
+          "prompt": "A password consists of 3 distinct uppercase letters followed by 2 digits. How many possible passwords are there if digits may repeat?",
+          "completion": "",
+          "full_text": "A password consists of 3 distinct uppercase letters followed by 2 digits. How many possible passwords are there if digits may repeat?"
+        },
+        {
+          "prompt": "Suppose all roses are flowers and some flowers fade quickly. Can you conclude that some roses fade quickly? Explain using logic.",
+          "completion": "",
+          "full_text": "Suppose all roses are flowers and some flowers fade quickly. Can you conclude that some roses fade quickly? Explain using logic."
+        },
+        {
+          "prompt": "A car leaves town A at 60 km/h. Two hours later, another car follows at 90 km/h. How long after the second car starts will it catch the first?",
+          "completion": "The first car travels for 2 hours at 60 km/h, covering a distance of \\(2 \\times 60 = 120\\) km. The second car starts 2 hours later and needs to cover this 120 km gap at a relative speed of \\(90 - 60 = 30\\) km/h. The time required for the second car to catch up is \\(\\frac{120}{30} = 4\\) hours.\n\nThus, the second car will catch up with the first car \\(\\boxed{4}\\) hours after it starts.",
+          "full_text": "A car leaves town A at 60 km/h. Two hours later, another car follows at 90 km/h. How long after the second car starts will it catch the first?\n\nThe first car travels for 2 hours at 60 km/h, covering a distance of \\(2 \\times 60 = 120\\) km. The second car starts 2 hours later and needs to cover this 120 km gap at a relative speed of \\(90 - 60 = 30\\) km/h. The time required for the second car to catch up is \\(\\frac{120}{30} = 4\\) hours.\n\nThus, the second car will catch up with the first car \\(\\boxed{4}\\) hours after it starts."
+        },
+        {
+          "prompt": "Find the derivative of x^3 - 4x^2 + 7x - 2.",
+          "completion": "",
+          "full_text": "Find the derivative of x^3 - 4x^2 + 7x - 2."
+        },
+        {
+          "prompt": "Compute the integral of 2x from x = 1 to x = 4.",
+          "completion": "",
+          "full_text": "Compute the integral of 2x from x = 1 to x = 4."
+        },
+        {
+          "prompt": "A game costs $5 to play. You win $20 with probability 0.2 and nothing otherwise. What is the expected net gain or loss per play?",
+          "completion": "To find the expected net gain or loss per play, we need to calculate the expected value of the net gain or loss. The net gain or loss is the difference between the amount won and the cost of playing.\n\nLet's define the random variable X as the net gain or loss. Then, X can take on the following values:\n\n* X = $20 - $5 = $15 with probability 0.2\n* X = $0 - $5 = -$5 with probability 0.8\n\nThe expected value of X is given by:\n\nE(X) = (15)(0.2) + (-5)(0.8)\n= $3 - $4\n= -$1\n\nSo, the expected net gain or loss per play is -$1. This means that, on average, we can expect to lose $1 per play.\n\nTherefore, the answer is:\n\n\\boxed{-1}",
+          "full_text": "A game costs $5 to play. You win $20 with probability 0.2 and nothing otherwise. What is the expected net gain or loss per play?\n\nTo find the expected net gain or loss per play, we need to calculate the expected value of the net gain or loss. The net gain or loss is the difference between the amount won and the cost of playing.\n\nLet's define the random variable X as the net gain or loss. Then, X can take on the following values:\n\n* X = $20 - $5 = $15 with probability 0.2\n* X = $0 - $5 = -$5 with probability 0.8\n\nThe expected value of X is given by:\n\nE(X) = (15)(0.2) + (-5)(0.8)\n= $3 - $4\n= -$1\n\nSo, the expected net gain or loss per play is -$1. This means that, on average, we can expect to lose $1 per play.\n\nTherefore, the answer is:\n\n\\boxed{-1}"
+        },
+        {
+          "prompt": "Five people sit around a circular table. How many distinct seating arrangements are possible if rotations count as the same arrangement?",
+          "completion": "To solve this problem, we can use the concept of circular permutations. The number of circular permutations of n objects is given by (n-1)!.\n\nIn this case, we have 5 objects (the 5 people sitting around the table), so the number of circular permutations is (5-1)! = 4! = 24.\n\nTherefore, there are 24 distinct seating arrangements of the 5 people sitting around the table, if rotations count as the same arrangement.\n\nThe answer is:\n\\boxed{24}",
+          "full_text": "Five people sit around a circular table. How many distinct seating arrangements are possible if rotations count as the same arrangement?\n\nTo solve this problem, we can use the concept of circular permutations. The number of circular permutations of n objects is given by (n-1)!.\n\nIn this case, we have 5 objects (the 5 people sitting around the table), so the number of circular permutations is (5-1)! = 4! = 24.\n\nTherefore, there are 24 distinct seating arrangements of the 5 people sitting around the table, if rotations count as the same arrangement.\n\nThe answer is:\n\\boxed{24}"
+        },
+        {
+          "prompt": "Find the shortest path length from (0,0) to (6,8) in the Euclidean plane and explain which theorem you use.",
+          "completion": "",
+          "full_text": "Find the shortest path length from (0,0) to (6,8) in the Euclidean plane and explain which theorem you use."
+        },
+        {
+          "prompt": "A company has three projects with expected profits and risks. Design a simple scoring rule using weighted criteria, then explain how changing the weights could change the ranking.",
+          "completion": "",
+          "full_text": "A company has three projects with expected profits and risks. Design a simple scoring rule using weighted criteria, then explain how changing the weights could change the ranking."
+        },
+        {
+          "prompt": "A sequence begins 1, 4, 10, 19, 31. Determine the next term and explain the pattern.",
+          "completion": "The next term in the sequence is 50.\n\nThe pattern of the sequence is obtained by adding consecutive odd numbers to the previous term:\n\n1 + 3 = 4\n4 + 5 = 9\n9 + 7 = 16\n16 + 9 = 25\n25 + 11 = 36\n36 + 13 = 49\n49 + 15 = 64\n\nHowever, the sequence given in the problem is not exactly the same as the sequence obtained by adding consecutive odd numbers. The correct pattern is obtained by adding consecutive even numbers to the previous term:\n\n1 + 2 = 3\n3 + 4 = 7\n7 + 6 = 13\n13 + 8 = 21\n21 + 10 = 31\n31 + 12 = 43\n43 + 14 = 57\n\nBut the sequence given in the problem is 1, 4, 10, 19, 31, 50.\n\nThe correct pattern is obtained by adding consecutive odd numbers to the previous term, but with a different",
+          "full_text": "A sequence begins 1, 4, 10, 19, 31. Determine the next term and explain the pattern.\n\nThe next term in the sequence is 50.\n\nThe pattern of the sequence is obtained by adding consecutive odd numbers to the previous term:\n\n1 + 3 = 4\n4 + 5 = 9\n9 + 7 = 16\n16 + 9 = 25\n25 + 11 = 36\n36 + 13 = 49\n49 + 15 = 64\n\nHowever, the sequence given in the problem is not exactly the same as the sequence obtained by adding consecutive odd numbers. The correct pattern is obtained by adding consecutive even numbers to the previous term:\n\n1 + 2 = 3\n3 + 4 = 7\n7 + 6 = 13\n13 + 8 = 21\n21 + 10 = 31\n31 + 12 = 43\n43 + 14 = 57\n\nBut the sequence given in the problem is 1, 4, 10, 19, 31, 50.\n\nThe correct pattern is obtained by adding consecutive odd numbers to the previous term, but with a different"
+        },
+        {
+          "prompt": "A store raises a price by 20% and then discounts the new price by 20%. Is the final price equal to the original price? Explain.",
+          "completion": "",
+          "full_text": "A store raises a price by 20% and then discounts the new price by 20%. Is the final price equal to the original price? Explain."
+        },
+        {
+          "prompt": "Find the smallest positive integer that is divisible by 6, 8, and 15.",
+          "completion": "",
+          "full_text": "Find the smallest positive integer that is divisible by 6, 8, and 15."
+        },
+        {
+          "prompt": "There are three switches outside a closed room and one light bulb inside. You may enter the room only once. Explain how to determine which switch controls the bulb.",
+          "completion": "",
+          "full_text": "There are three switches outside a closed room and one light bulb inside. You may enter the room only once. Explain how to determine which switch controls the bulb."
+        },
+        {
+          "prompt": "A fair die is rolled until a 6 appears. What is the probability that the first 6 occurs on the third roll?",
+          "completion": "",
+          "full_text": "A fair die is rolled until a 6 appears. What is the probability that the first 6 occurs on the third roll?"
+        }
+      ],
+      "Programming & Software Engineering": [
+        {
+          "prompt": "Write a Python function that reverses a string.",
+          "completion": "",
+          "full_text": "Write a Python function that reverses a string."
+        },
+        {
+          "prompt": "What is the difference between a stack and a queue?",
+          "completion": "",
+          "full_text": "What is the difference between a stack and a queue?"
+        },
+        {
+          "prompt": "Explain what a Git commit is.",
+          "completion": "",
+          "full_text": "Explain what a Git commit is."
+        },
+        {
+          "prompt": "Find the bug in this code: for i in range(5): print(i+1).",
+          "completion": "",
+          "full_text": "Find the bug in this code: for i in range(5): print(i+1)."
+        },
+        {
+          "prompt": "Write a JavaScript function that checks whether a number is even.",
+          "completion": "Write a JavaScript function that checks whether a number is even.\nWrite a JavaScript function that checks whether a number is even.\nWrite a JavaScript function that checks whether a number is even.\nWrite a JavaScript function that checks whether a number is even.\nWrite a JavaScript function that checks whether a number is even.\nWrite a JavaScript function that checks whether a number is even.\nWrite a JavaScript function that checks whether a number is even.\nWrite a JavaScript function that checks whether a number is even.\nWrite a JavaScript function that checks whether a number is even.\nWrite a JavaScript function that checks whether a number is even.\nWrite a JavaScript function that checks whether a number is even.\nWrite a JavaScript function that checks whether a number is even.\nWrite a JavaScript function that checks whether a number is even.\nWrite a JavaScript function that checks whether a number is even.\nWrite a JavaScript function that checks whether a number is even.\nWrite a JavaScript function that checks whether a number is even.\nWrite a JavaScript function that checks whether a number is even.\nWrite a JavaScript function that checks whether a number is even.\nWrite a JavaScript function that checks whether a number is even.\nWrite a JavaScript function that checks whether a",
+          "full_text": "Write a JavaScript function that checks whether a number is even.\nWrite a JavaScript function that checks whether a number is even.\nWrite a JavaScript function that checks whether a number is even.\nWrite a JavaScript function that checks whether a number is even.\nWrite a JavaScript function that checks whether a number is even.\nWrite a JavaScript function that checks whether a number is even.\nWrite a JavaScript function that checks whether a number is even.\nWrite a JavaScript function that checks whether a number is even.\nWrite a JavaScript function that checks whether a number is even.\nWrite a JavaScript function that checks whether a number is even.\nWrite a JavaScript function that checks whether a number is even.\nWrite a JavaScript function that checks whether a number is even.\nWrite a JavaScript function that checks whether a number is even.\nWrite a JavaScript function that checks whether a number is even.\nWrite a JavaScript function that checks whether a number is even.\nWrite a JavaScript function that checks whether a number is even.\nWrite a JavaScript function that checks whether a number is even.\nWrite a JavaScript function that checks whether a number is even.\nWrite a JavaScript function that checks whether a number is even.\nWrite a JavaScript function that checks whether a number is even.\nWrite a JavaScript function that checks whether a"
+        },
+        {
+          "prompt": "What does HTTP status code 404 mean?",
+          "completion": "",
+          "full_text": "What does HTTP status code 404 mean?"
+        },
+        {
+          "prompt": "Explain the difference between a process and a thread.",
+          "completion": "",
+          "full_text": "Explain the difference between a process and a thread."
+        },
+        {
+          "prompt": "Write SQL to select all users created after January 1, 2025.",
+          "completion": "",
+          "full_text": "Write SQL to select all users created after January 1, 2025."
+        },
+        {
+          "prompt": "What is dependency injection, and why is it useful?",
+          "completion": "",
+          "full_text": "What is dependency injection, and why is it useful?"
+        },
+        {
+          "prompt": "Describe the purpose of unit tests.",
+          "completion": "",
+          "full_text": "Describe the purpose of unit tests."
+        },
+        {
+          "prompt": "Implement binary search in Python.",
+          "completion": "",
+          "full_text": "Implement binary search in Python."
+        },
+        {
+          "prompt": "What is the difference between TCP and UDP?",
+          "completion": "",
+          "full_text": "What is the difference between TCP and UDP?"
+        },
+        {
+          "prompt": "Explain what a REST API is.",
+          "completion": "",
+          "full_text": "Explain what a REST API is."
+        },
+        {
+          "prompt": "Write a regular expression that matches a basic IPv4 address format.",
+          "completion": "",
+          "full_text": "Write a regular expression that matches a basic IPv4 address format."
+        },
+        {
+          "prompt": "Describe the difference between compilation and interpretation.",
+          "completion": "",
+          "full_text": "Describe the difference between compilation and interpretation."
+        },
+        {
+          "prompt": "How would you detect and prevent a memory leak in a long-running service?",
+          "completion": "",
+          "full_text": "How would you detect and prevent a memory leak in a long-running service?"
+        },
+        {
+          "prompt": "Write a function that returns the first non-repeating character in a string.",
+          "completion": "```python\ndef first_non_repeating_char(s):\n    char_count = {}\n    for char in s:\n        char_count[char] = char_count.get(char, 0) + 1\n    for char in s:\n        if char_count[char] == 1:\n            return char\n    return None\n\n# Example usage:\nprint(first_non_repeating_char(\"aabbcc\"))  # Output: None\nprint(first_non_repeating_char(\"abcabc\"))  # Output: a\nprint(first_non_repeating_char(\"pwwkew\"))  # Output: r\n```\n\nThis code defines a function `first_non_repeating_char` that takes a string `s` as input and returns the first character that does not repeat in the string. If no such character exists, it returns `None`. The function uses a dictionary `char_count` to keep track of the frequency of each character in the string and then iterates through the string again to find the first character with a frequency of 1.",
+          "full_text": "Write a function that returns the first non-repeating character in a string.\n\n```python\ndef first_non_repeating_char(s):\n    char_count = {}\n    for char in s:\n        char_count[char] = char_count.get(char, 0) + 1\n    for char in s:\n        if char_count[char] == 1:\n            return char\n    return None\n\n# Example usage:\nprint(first_non_repeating_char(\"aabbcc\"))  # Output: None\nprint(first_non_repeating_char(\"abcabc\"))  # Output: a\nprint(first_non_repeating_char(\"pwwkew\"))  # Output: r\n```\n\nThis code defines a function `first_non_repeating_char` that takes a string `s` as input and returns the first character that does not repeat in the string. If no such character exists, it returns `None`. The function uses a dictionary `char_count` to keep track of the frequency of each character in the string and then iterates through the string again to find the first character with a frequency of 1."
+        },
+        {
+          "prompt": "Explain what database normalization is and when denormalization may be appropriate.",
+          "completion": "",
+          "full_text": "Explain what database normalization is and when denormalization may be appropriate."
+        },
+        {
+          "prompt": "What is a race condition? Give a simple example.",
+          "completion": "",
+          "full_text": "What is a race condition? Give a simple example."
+        },
+        {
+          "prompt": "Compare arrays, linked lists, and hash maps for lookup and insertion performance.",
+          "completion": "",
+          "full_text": "Compare arrays, linked lists, and hash maps for lookup and insertion performance."
+        },
+        {
+          "prompt": "Design a URL-shortening service at a high level.",
+          "completion": "",
+          "full_text": "Design a URL-shortening service at a high level."
+        },
+        {
+          "prompt": "Explain the SOLID principles with one sentence for each principle.",
+          "completion": "",
+          "full_text": "Explain the SOLID principles with one sentence for each principle."
+        },
+        {
+          "prompt": "Write a SQL query to find the second-highest salary in an Employees table.",
+          "completion": "",
+          "full_text": "Write a SQL query to find the second-highest salary in an Employees table."
+        },
+        {
+          "prompt": "What is semantic versioning, and how should breaking changes be represented?",
+          "completion": "",
+          "full_text": "What is semantic versioning, and how should breaking changes be represented?"
+        },
+        {
+          "prompt": "Explain how a garbage collector works at a high level.",
+          "completion": "",
+          "full_text": "Explain how a garbage collector works at a high level."
+        },
+        {
+          "prompt": "Write a Python generator that yields Fibonacci numbers up to a given maximum.",
+          "completion": "",
+          "full_text": "Write a Python generator that yields Fibonacci numbers up to a given maximum."
+        },
+        {
+          "prompt": "What is the difference between authentication and authorization?",
+          "completion": "",
+          "full_text": "What is the difference between authentication and authorization?"
+        },
+        {
+          "prompt": "Describe how you would structure logging for a distributed microservices system.",
+          "completion": "",
+          "full_text": "Describe how you would structure logging for a distributed microservices system."
+        },
+        {
+          "prompt": "Explain optimistic versus pessimistic database locking.",
+          "completion": "",
+          "full_text": "Explain optimistic versus pessimistic database locking."
+        },
+        {
+          "prompt": "Review this API design: POST /getUser, GET /createUser, DELETE /user. Identify issues and propose more RESTful endpoints.",
+          "completion": "",
+          "full_text": "Review this API design: POST /getUser, GET /createUser, DELETE /user. Identify issues and propose more RESTful endpoints."
+        },
+        {
+          "prompt": "How would you migrate a production database column from nullable to non-nullable without causing downtime?",
+          "completion": "",
+          "full_text": "How would you migrate a production database column from nullable to non-nullable without causing downtime?"
+        },
+        {
+          "prompt": "Write pseudocode for an LRU cache with O(1) average-time get and put operations.",
+          "completion": "",
+          "full_text": "Write pseudocode for an LRU cache with O(1) average-time get and put operations."
+        },
+        {
+          "prompt": "Explain the CAP theorem and give an example of a tradeoff in a distributed database.",
+          "completion": "",
+          "full_text": "Explain the CAP theorem and give an example of a tradeoff in a distributed database."
+        },
+        {
+          "prompt": "Design a retry strategy for an API client that may receive transient 429 and 503 responses.",
+          "completion": "",
+          "full_text": "Design a retry strategy for an API client that may receive transient 429 and 503 responses."
+        },
+        {
+          "prompt": "What problems can arise from using floating-point numbers for currency, and what alternatives are safer?",
+          "completion": "",
+          "full_text": "What problems can arise from using floating-point numbers for currency, and what alternatives are safer?"
+        },
+        {
+          "prompt": "Write a small TypeScript interface for a paginated API response containing generic items, total count, page number, and page size.",
+          "completion": "",
+          "full_text": "Write a small TypeScript interface for a paginated API response containing generic items, total count, page number, and page size."
+        },
+        {
+          "prompt": "Explain the difference between horizontal and vertical scaling.",
+          "completion": "",
+          "full_text": "Explain the difference between horizontal and vertical scaling."
+        },
+        {
+          "prompt": "How would you investigate a sudden latency increase in a web application after a deployment?",
+          "completion": "",
+          "full_text": "How would you investigate a sudden latency increase in a web application after a deployment?"
+        },
+        {
+          "prompt": "Describe how feature flags can reduce deployment risk and what new risks they introduce.",
+          "completion": "",
+          "full_text": "Describe how feature flags can reduce deployment risk and what new risks they introduce."
+        },
+        {
+          "prompt": "Write a test plan for a function that parses ISO 8601 timestamps, including edge cases.",
+          "completion": "",
+          "full_text": "Write a test plan for a function that parses ISO 8601 timestamps, including edge cases."
+        },
+        {
+          "prompt": "Explain eventual consistency with an example involving replicated data.",
+          "completion": "",
+          "full_text": "Explain eventual consistency with an example involving replicated data."
+        },
+        {
+          "prompt": "Design an idempotent payment-processing endpoint and explain how you would handle duplicate requests.",
+          "completion": "",
+          "full_text": "Design an idempotent payment-processing endpoint and explain how you would handle duplicate requests."
+        },
+        {
+          "prompt": "Compare monolithic and microservice architectures for a small team building a rapidly changing product.",
+          "completion": "",
+          "full_text": "Compare monolithic and microservice architectures for a small team building a rapidly changing product."
+        },
+        {
+          "prompt": "A service consumes messages from a queue and sometimes processes the same message twice. Propose a robust approach to achieve effectively-once business behavior.",
+          "completion": "",
+          "full_text": "A service consumes messages from a queue and sometimes processes the same message twice. Propose a robust approach to achieve effectively-once business behavior."
+        },
+        {
+          "prompt": "Given a legacy codebase with poor test coverage, outline a practical refactoring strategy that improves maintainability while minimizing the risk of regressions.",
+          "completion": "",
+          "full_text": "Given a legacy codebase with poor test coverage, outline a practical refactoring strategy that improves maintainability while minimizing the risk of regressions."
+        },
+        {
+          "prompt": "Design a thread-safe in-memory rate limiter and explain the tradeoffs between token bucket and sliding-window approaches.",
+          "completion": "",
+          "full_text": "Design a thread-safe in-memory rate limiter and explain the tradeoffs between token bucket and sliding-window approaches."
+        },
+        {
+          "prompt": "Explain the difference between synchronous and asynchronous programming.",
+          "completion": "",
+          "full_text": "Explain the difference between synchronous and asynchronous programming."
+        },
+        {
+          "prompt": "Write a function that checks whether two strings are anagrams, ignoring spaces and letter case.",
+          "completion": "",
+          "full_text": "Write a function that checks whether two strings are anagrams, ignoring spaces and letter case."
+        },
+        {
+          "prompt": "A production API occasionally returns stale data because multiple cache layers are involved. Outline a debugging strategy to identify which cache is responsible.",
+          "completion": "",
+          "full_text": "A production API occasionally returns stale data because multiple cache layers are involved. Outline a debugging strategy to identify which cache is responsible."
+        },
+        {
+          "prompt": "Design a database schema for a simple task-management application with users, projects, tasks, assignees, due dates, and task comments.",
+          "completion": "",
+          "full_text": "Design a database schema for a simple task-management application with users, projects, tasks, assignees, due dates, and task comments."
+        }
+      ],
+      "Tool Use & Agentic Tasks": [
+        {
+          "prompt": "Find tomorrow's weather and suggest what to wear.",
+          "completion": "",
+          "full_text": "Find tomorrow's weather and suggest what to wear."
+        },
+        {
+          "prompt": "Calculate 18% of 275 using a calculator tool.",
+          "completion": "",
+          "full_text": "Calculate 18% of 275 using a calculator tool."
+        },
+        {
+          "prompt": "Look up the current exchange rate from euros to Japanese yen.",
+          "completion": "",
+          "full_text": "Look up the current exchange rate from euros to Japanese yen."
+        },
+        {
+          "prompt": "Search my calendar for meetings next Monday.",
+          "completion": "",
+          "full_text": "Search my calendar for meetings next Monday."
+        },
+        {
+          "prompt": "Find the most recent email from Alex about the budget.",
+          "completion": "",
+          "full_text": "Find the most recent email from Alex about the budget."
+        },
+        {
+          "prompt": "Create a calendar event for a 30-minute team sync tomorrow afternoon.",
+          "completion": "",
+          "full_text": "Create a calendar event for a 30-minute team sync tomorrow afternoon."
+        },
+        {
+          "prompt": "Search the web for the latest release notes of Python.",
+          "completion": "",
+          "full_text": "Search the web for the latest release notes of Python."
+        },
+        {
+          "prompt": "Find three nearby coffee shops that are open now.",
+          "completion": "",
+          "full_text": "Find three nearby coffee shops that are open now."
+        },
+        {
+          "prompt": "Check whether I have any scheduling conflicts on Friday between 14:00 and 17:00.",
+          "completion": "",
+          "full_text": "Check whether I have any scheduling conflicts on Friday between 14:00 and 17:00."
+        },
+        {
+          "prompt": "Draft a reply to the latest email from my manager asking for a project update.",
+          "completion": "",
+          "full_text": "Draft a reply to the latest email from my manager asking for a project update."
+        },
+        {
+          "prompt": "Look up the current stock price of Microsoft and summarize today's move.",
+          "completion": "",
+          "full_text": "Look up the current stock price of Microsoft and summarize today's move."
+        },
+        {
+          "prompt": "Find a highly rated Italian restaurant near me and check whether it takes reservations.",
+          "completion": "",
+          "full_text": "Find a highly rated Italian restaurant near me and check whether it takes reservations."
+        },
+        {
+          "prompt": "Search my inbox for invoices received this month and list the senders and amounts when available.",
+          "completion": "",
+          "full_text": "Search my inbox for invoices received this month and list the senders and amounts when available."
+        },
+        {
+          "prompt": "Use a map to compare the locations of three museums in central Paris.",
+          "completion": "",
+          "full_text": "Use a map to compare the locations of three museums in central Paris."
+        },
+        {
+          "prompt": "Find the next two games for the Golden State Warriors and report the dates and opponents.",
+          "completion": "",
+          "full_text": "Find the next two games for the Golden State Warriors and report the dates and opponents."
+        },
+        {
+          "prompt": "Check today's weather in Copenhagen and compare it with tomorrow's forecast.",
+          "completion": "",
+          "full_text": "Check today's weather in Copenhagen and compare it with tomorrow's forecast."
+        },
+        {
+          "prompt": "Search for the official documentation for the latest stable Node.js version and summarize the major changes.",
+          "completion": "",
+          "full_text": "Search for the official documentation for the latest stable Node.js version and summarize the major changes."
+        },
+        {
+          "prompt": "Find an open one-hour slot in my calendar next week during working hours.",
+          "completion": "",
+          "full_text": "Find an open one-hour slot in my calendar next week during working hours."
+        },
+        {
+          "prompt": "Look up my contact named Priya and tell me which email address is saved for her.",
+          "completion": "",
+          "full_text": "Look up my contact named Priya and tell me which email address is saved for her."
+        },
+        {
+          "prompt": "Search the web for the latest inflation rate in Denmark and cite the official source.",
+          "completion": "",
+          "full_text": "Search the web for the latest inflation rate in Denmark and cite the official source."
+        },
+        {
+          "prompt": "Find the cheapest current retail price for a 2 TB portable SSD from a reputable brand.",
+          "completion": "",
+          "full_text": "Find the cheapest current retail price for a 2 TB portable SSD from a reputable brand."
+        },
+        {
+          "prompt": "Locate the email thread where we discussed the Q4 hiring plan and summarize the decisions.",
+          "completion": "",
+          "full_text": "Locate the email thread where we discussed the Q4 hiring plan and summarize the decisions."
+        },
+        {
+          "prompt": "Check my calendar and tell me how much free time I have between meetings tomorrow.",
+          "completion": "",
+          "full_text": "Check my calendar and tell me how much free time I have between meetings tomorrow."
+        },
+        {
+          "prompt": "Find three well-reviewed hotels near Berlin Hauptbahnhof and compare their locations and typical amenities.",
+          "completion": "",
+          "full_text": "Find three well-reviewed hotels near Berlin Hauptbahnhof and compare their locations and typical amenities."
+        },
+        {
+          "prompt": "Look up the weather forecast for Oslo this weekend and recommend the best day for an outdoor hike.",
+          "completion": "",
+          "full_text": "Look up the weather forecast for Oslo this weekend and recommend the best day for an outdoor hike."
+        },
+        {
+          "prompt": "Search official sources for the current visa requirements for a Danish citizen traveling to Vietnam.",
+          "completion": "",
+          "full_text": "Search official sources for the current visa requirements for a Danish citizen traveling to Vietnam."
+        },
+        {
+          "prompt": "Find the latest unread email from a customer, summarize the request, and identify any deadline mentioned.",
+          "completion": "",
+          "full_text": "Find the latest unread email from a customer, summarize the request, and identify any deadline mentioned."
+        },
+        {
+          "prompt": "Search my calendar for all events containing the word 'interview' this month.",
+          "completion": "",
+          "full_text": "Search my calendar for all events containing the word 'interview' this month."
+        },
+        {
+          "prompt": "Look up the current time in Tokyo and calculate how many hours ahead it is from Oslo.",
+          "completion": "",
+          "full_text": "Look up the current time in Tokyo and calculate how many hours ahead it is from Oslo."
+        },
+        {
+          "prompt": "Find a restaurant in central Copenhagen with available dinner reservations for two on Friday around 19:00.",
+          "completion": "",
+          "full_text": "Find a restaurant in central Copenhagen with available dinner reservations for two on Friday around 19:00."
+        },
+        {
+          "prompt": "Search the latest official Kubernetes documentation for how rolling updates work and summarize the key configuration options.",
+          "completion": "",
+          "full_text": "Search the latest official Kubernetes documentation for how rolling updates work and summarize the key configuration options."
+        },
+        {
+          "prompt": "Find the three most recent emails that mention 'renewal', then group them by sender and summarize the action needed.",
+          "completion": "",
+          "full_text": "Find the three most recent emails that mention 'renewal', then group them by sender and summarize the action needed."
+        },
+        {
+          "prompt": "Check whether I am free for 45 minutes tomorrow between 09:00 and 12:00, and if so identify the earliest slot.",
+          "completion": "",
+          "full_text": "Check whether I am free for 45 minutes tomorrow between 09:00 and 12:00, and if so identify the earliest slot."
+        },
+        {
+          "prompt": "Search for the latest quarterly earnings release from Apple and extract revenue, net income, and year-over-year revenue growth.",
+          "completion": "",
+          "full_text": "Search for the latest quarterly earnings release from Apple and extract revenue, net income, and year-over-year revenue growth."
+        },
+        {
+          "prompt": "Find my next flight-related calendar event and summarize the date, time, route, and any notes in the event.",
+          "completion": "",
+          "full_text": "Find my next flight-related calendar event and summarize the date, time, route, and any notes in the event."
+        },
+        {
+          "prompt": "Look up three nearby pharmacies that are open now and display them on a map.",
+          "completion": "",
+          "full_text": "Look up three nearby pharmacies that are open now and display them on a map."
+        },
+        {
+          "prompt": "Search the web for the current official documentation on GitHub Actions concurrency groups and explain how cancellation behavior works.",
+          "completion": "",
+          "full_text": "Search the web for the current official documentation on GitHub Actions concurrency groups and explain how cancellation behavior works."
+        },
+        {
+          "prompt": "Find emails from the past 30 days containing PDF attachments with 'contract' in the subject, and list the sender, date, and filename.",
+          "completion": "",
+          "full_text": "Find emails from the past 30 days containing PDF attachments with 'contract' in the subject, and list the sender, date, and filename."
+        },
+        {
+          "prompt": "Check my calendar for next week, identify the busiest day by total meeting time, and summarize the schedule for that day.",
+          "completion": "",
+          "full_text": "Check my calendar for next week, identify the busiest day by total meeting time, and summarize the schedule for that day."
+        },
+        {
+          "prompt": "Search official sources for today's central bank policy rate in Denmark and briefly explain what institution sets it.",
+          "completion": "",
+          "full_text": "Search official sources for today's central bank policy rate in Denmark and briefly explain what institution sets it."
+        },
+        {
+          "prompt": "Find current train options from Copenhagen to Hamburg for tomorrow morning, prioritizing direct routes and reasonable travel time.",
+          "completion": "",
+          "full_text": "Find current train options from Copenhagen to Hamburg for tomorrow morning, prioritizing direct routes and reasonable travel time."
+        },
+        {
+          "prompt": "Look up a recent scientific paper about battery recycling, verify the publication source, and summarize the main result in plain language.",
+          "completion": "",
+          "full_text": "Look up a recent scientific paper about battery recycling, verify the publication source, and summarize the main result in plain language."
+        },
+        {
+          "prompt": "Search my inbox and calendar to determine whether I have already scheduled a follow-up meeting with anyone who emailed me about 'Project Atlas' this week.",
+          "completion": "",
+          "full_text": "Search my inbox and calendar to determine whether I have already scheduled a follow-up meeting with anyone who emailed me about 'Project Atlas' this week."
+        },
+        {
+          "prompt": "Find a dinner reservation for four near the Royal Danish Theatre on Saturday between 18:00 and 20:00, then compare the available options by cuisine and walking proximity.",
+          "completion": "",
+          "full_text": "Find a dinner reservation for four near the Royal Danish Theatre on Saturday between 18:00 and 20:00, then compare the available options by cuisine and walking proximity."
+        },
+        {
+          "prompt": "Research the latest stable release of a software library, verify the version using its official documentation, inspect the migration notes, and produce a concise upgrade checklist tailored to a project currently on the previous major version.",
+          "completion": "",
+          "full_text": "Research the latest stable release of a software library, verify the version using its official documentation, inspect the migration notes, and produce a concise upgrade checklist tailored to a project currently on the previous major version."
+        },
+        {
+          "prompt": "Search my calendar and inbox to identify any meetings next week that have related preparation materials in recent email threads, then summarize what I should review for each meeting.",
+          "completion": "",
+          "full_text": "Search my calendar and inbox to identify any meetings next week that have related preparation materials in recent email threads, then summarize what I should review for each meeting."
+        },
+        {
+          "prompt": "Find my next calendar event with an external attendee and summarize the meeting details.",
+          "completion": "",
+          "full_text": "Find my next calendar event with an external attendee and summarize the meeting details."
+        },
+        {
+          "prompt": "Search my inbox for messages received this week that contain an explicit deadline, then sort the deadlines chronologically.",
+          "completion": "",
+          "full_text": "Search my inbox for messages received this week that contain an explicit deadline, then sort the deadlines chronologically."
+        },
+        {
+          "prompt": "Look up the current weather in Stockholm, compare it with Copenhagen, and identify which city is warmer right now.",
+          "completion": "",
+          "full_text": "Look up the current weather in Stockholm, compare it with Copenhagen, and identify which city is warmer right now."
+        },
+        {
+          "prompt": "Find three restaurants near my next evening calendar event, check which ones are currently bookable around the event time, and compare them by cuisine and proximity.",
+          "completion": "",
+          "full_text": "Find three restaurants near my next evening calendar event, check which ones are currently bookable around the event time, and compare them by cuisine and proximity."
+        }
+      ],
+      "Science & Engineering": [
+        {
+          "prompt": "What is photosynthesis?",
+          "completion": "",
+          "full_text": "What is photosynthesis?"
+        },
+        {
+          "prompt": "State Newton's second law of motion.",
+          "completion": "",
+          "full_text": "State Newton's second law of motion."
+        },
+        {
+          "prompt": "Why does ice float on water?",
+          "completion": "",
+          "full_text": "Why does ice float on water?"
+        },
+        {
+          "prompt": "What is the function of DNA?",
+          "completion": "",
+          "full_text": "What is the function of DNA?"
+        },
+        {
+          "prompt": "Explain the difference between mass and weight.",
+          "completion": "",
+          "full_text": "Explain the difference between mass and weight."
+        },
+        {
+          "prompt": "What causes tides on Earth?",
+          "completion": "",
+          "full_text": "What causes tides on Earth?"
+        },
+        {
+          "prompt": "Describe the basic structure of an atom.",
+          "completion": "",
+          "full_text": "Describe the basic structure of an atom."
+        },
+        {
+          "prompt": "What is Ohm's law?",
+          "completion": "",
+          "full_text": "What is Ohm's law?"
+        },
+        {
+          "prompt": "Why does metal conduct electricity?",
+          "completion": "",
+          "full_text": "Why does metal conduct electricity?"
+        },
+        {
+          "prompt": "Explain how vaccines train the immune system.",
+          "completion": "",
+          "full_text": "Explain how vaccines train the immune system."
+        },
+        {
+          "prompt": "What is the greenhouse effect?",
+          "completion": "",
+          "full_text": "What is the greenhouse effect?"
+        },
+        {
+          "prompt": "Describe the water cycle.",
+          "completion": "",
+          "full_text": "Describe the water cycle."
+        },
+        {
+          "prompt": "What is the difference between an element and a compound?",
+          "completion": "",
+          "full_text": "What is the difference between an element and a compound?"
+        },
+        {
+          "prompt": "How does a lever provide mechanical advantage?",
+          "completion": "",
+          "full_text": "How does a lever provide mechanical advantage?"
+        },
+        {
+          "prompt": "Explain why the sky appears blue during the day.",
+          "completion": "",
+          "full_text": "Explain why the sky appears blue during the day."
+        },
+        {
+          "prompt": "What is pH, and what does a low pH indicate?",
+          "completion": "",
+          "full_text": "What is pH, and what does a low pH indicate?"
+        },
+        {
+          "prompt": "Describe the main stages of the rock cycle.",
+          "completion": "",
+          "full_text": "Describe the main stages of the rock cycle."
+        },
+        {
+          "prompt": "How does a lithium-ion battery store and release energy?",
+          "completion": "",
+          "full_text": "How does a lithium-ion battery store and release energy?"
+        },
+        {
+          "prompt": "What is resonance in a mechanical system?",
+          "completion": "",
+          "full_text": "What is resonance in a mechanical system?"
+        },
+        {
+          "prompt": "Explain the difference between speed and velocity.",
+          "completion": "",
+          "full_text": "Explain the difference between speed and velocity."
+        },
+        {
+          "prompt": "How does natural selection lead to evolutionary change?",
+          "completion": "",
+          "full_text": "How does natural selection lead to evolutionary change?"
+        },
+        {
+          "prompt": "Describe how a basic transformer changes AC voltage.",
+          "completion": "",
+          "full_text": "Describe how a basic transformer changes AC voltage."
+        },
+        {
+          "prompt": "What is entropy in thermodynamics?",
+          "completion": "",
+          "full_text": "What is entropy in thermodynamics?"
+        },
+        {
+          "prompt": "Explain the difference between series and parallel electrical circuits.",
+          "completion": "",
+          "full_text": "Explain the difference between series and parallel electrical circuits."
+        },
+        {
+          "prompt": "How does an internal combustion engine convert fuel into mechanical motion?",
+          "completion": "",
+          "full_text": "How does an internal combustion engine convert fuel into mechanical motion?"
+        },
+        {
+          "prompt": "What causes antibiotic resistance, and why is it a public health concern?",
+          "completion": "",
+          "full_text": "What causes antibiotic resistance, and why is it a public health concern?"
+        },
+        {
+          "prompt": "Explain how plate tectonics causes earthquakes and mountain formation.",
+          "completion": "",
+          "full_text": "Explain how plate tectonics causes earthquakes and mountain formation."
+        },
+        {
+          "prompt": "What is the Doppler effect? Give one everyday example.",
+          "completion": "",
+          "full_text": "What is the Doppler effect? Give one everyday example."
+        },
+        {
+          "prompt": "Describe the main differences among conductors, semiconductors, and insulators.",
+          "completion": "",
+          "full_text": "Describe the main differences among conductors, semiconductors, and insulators."
+        },
+        {
+          "prompt": "How do solar photovoltaic cells generate electrical current?",
+          "completion": "",
+          "full_text": "How do solar photovoltaic cells generate electrical current?"
+        },
+        {
+          "prompt": "Explain Bernoulli's principle and one engineering application.",
+          "completion": "",
+          "full_text": "Explain Bernoulli's principle and one engineering application."
+        },
+        {
+          "prompt": "What is the difference between elastic and plastic deformation in materials?",
+          "completion": "",
+          "full_text": "What is the difference between elastic and plastic deformation in materials?"
+        },
+        {
+          "prompt": "Describe the role of catalysts in chemical reactions.",
+          "completion": "",
+          "full_text": "Describe the role of catalysts in chemical reactions."
+        },
+        {
+          "prompt": "How does a heat pump move heat from a colder region to a warmer one?",
+          "completion": "",
+          "full_text": "How does a heat pump move heat from a colder region to a warmer one?"
+        },
+        {
+          "prompt": "Explain the basic principle of magnetic induction.",
+          "completion": "",
+          "full_text": "Explain the basic principle of magnetic induction."
+        },
+        {
+          "prompt": "What determines the terminal velocity of a falling object?",
+          "completion": "",
+          "full_text": "What determines the terminal velocity of a falling object?"
+        },
+        {
+          "prompt": "Describe how feedback control can stabilize a dynamic system.",
+          "completion": "",
+          "full_text": "Describe how feedback control can stabilize a dynamic system."
+        },
+        {
+          "prompt": "What is tensile strength, and how is it measured in engineering?",
+          "completion": "",
+          "full_text": "What is tensile strength, and how is it measured in engineering?"
+        },
+        {
+          "prompt": "Explain why airplanes can generate lift, mentioning pressure and momentum effects.",
+          "completion": "",
+          "full_text": "Explain why airplanes can generate lift, mentioning pressure and momentum effects."
+        },
+        {
+          "prompt": "How does CRISPR-Cas9 enable targeted gene editing?",
+          "completion": "",
+          "full_text": "How does CRISPR-Cas9 enable targeted gene editing?"
+        },
+        {
+          "prompt": "Compare fission and fusion as nuclear energy processes.",
+          "completion": "",
+          "full_text": "Compare fission and fusion as nuclear energy processes."
+        },
+        {
+          "prompt": "Explain how a PID controller works and what the proportional, integral, and derivative terms each contribute.",
+          "completion": "",
+          "full_text": "Explain how a PID controller works and what the proportional, integral, and derivative terms each contribute."
+        },
+        {
+          "prompt": "A steel bridge expands on a hot day. Explain the physical mechanism and describe two engineering techniques used to accommodate thermal expansion.",
+          "completion": "",
+          "full_text": "A steel bridge expands on a hot day. Explain the physical mechanism and describe two engineering techniques used to accommodate thermal expansion."
+        },
+        {
+          "prompt": "Design a simple experiment to measure the acceleration due to gravity using household or classroom equipment, including sources of error.",
+          "completion": "",
+          "full_text": "Design a simple experiment to measure the acceleration due to gravity using household or classroom equipment, including sources of error."
+        },
+        {
+          "prompt": "A chemical reactor is producing too much heat. Outline the measurements, physical principles, and engineering safeguards you would consider before changing the operating conditions.",
+          "completion": "",
+          "full_text": "A chemical reactor is producing too much heat. Outline the measurements, physical principles, and engineering safeguards you would consider before changing the operating conditions."
+        },
+        {
+          "prompt": "Explain how regenerative braking converts a vehicle's kinetic energy into stored electrical energy and identify the main efficiency limitations.",
+          "completion": "",
+          "full_text": "Explain how regenerative braking converts a vehicle's kinetic energy into stored electrical energy and identify the main efficiency limitations."
+        },
+        {
+          "prompt": "Why does salt lower the freezing point of water?",
+          "completion": "",
+          "full_text": "Why does salt lower the freezing point of water?"
+        },
+        {
+          "prompt": "Explain how a gyroscope can be used to measure or maintain orientation.",
+          "completion": "",
+          "full_text": "Explain how a gyroscope can be used to measure or maintain orientation."
+        },
+        {
+          "prompt": "Compare alternating current and direct current in terms of voltage behavior, transmission, and common applications.",
+          "completion": "",
+          "full_text": "Compare alternating current and direct current in terms of voltage behavior, transmission, and common applications."
+        },
+        {
+          "prompt": "A solar panel produces less power than expected despite clear skies. List several physical or electrical causes an engineer should investigate.",
+          "completion": "",
+          "full_text": "A solar panel produces less power than expected despite clear skies. List several physical or electrical causes an engineer should investigate."
+        }
+      ],
+      "Translation": [
+        {
+          "prompt": "Translate 'Good morning, how are you?' into Spanish.",
+          "completion": "",
+          "full_text": "Translate 'Good morning, how are you?' into Spanish."
+        },
+        {
+          "prompt": "Translate 'The train leaves at seven o'clock' into German.",
+          "completion": "",
+          "full_text": "Translate 'The train leaves at seven o'clock' into German."
+        },
+        {
+          "prompt": "Translate 'I would like a glass of water, please' into French.",
+          "completion": "",
+          "full_text": "Translate 'I would like a glass of water, please' into French."
+        },
+        {
+          "prompt": "Translate 'Where is the nearest hospital?' into Danish.",
+          "completion": "",
+          "full_text": "Translate 'Where is the nearest hospital?' into Danish."
+        },
+        {
+          "prompt": "Translate 'Thank you for your help' into Italian.",
+          "completion": "",
+          "full_text": "Translate 'Thank you for your help' into Italian."
+        },
+        {
+          "prompt": "Translate 'The meeting has been postponed until Friday' into Japanese.",
+          "completion": "",
+          "full_text": "Translate 'The meeting has been postponed until Friday' into Japanese."
+        },
+        {
+          "prompt": "Translate 'Please send me the updated document' into Swedish.",
+          "completion": "",
+          "full_text": "Translate 'Please send me the updated document' into Swedish."
+        },
+        {
+          "prompt": "Translate 'We are looking forward to your visit' into Dutch.",
+          "completion": "",
+          "full_text": "Translate 'We are looking forward to your visit' into Dutch."
+        },
+        {
+          "prompt": "Translate 'The weather is beautiful today' into Portuguese.",
+          "completion": "",
+          "full_text": "Translate 'The weather is beautiful today' into Portuguese."
+        },
+        {
+          "prompt": "Translate 'Can I pay by credit card?' into Norwegian Bokmål.",
+          "completion": "",
+          "full_text": "Translate 'Can I pay by credit card?' into Norwegian Bokmål."
+        },
+        {
+          "prompt": "Translate 'This software requires an internet connection' into Polish.",
+          "completion": "",
+          "full_text": "Translate 'This software requires an internet connection' into Polish."
+        },
+        {
+          "prompt": "Translate 'Do not open the door until I return' into Spanish.",
+          "completion": "",
+          "full_text": "Translate 'Do not open the door until I return' into Spanish."
+        },
+        {
+          "prompt": "Translate 'The package should arrive within three business days' into German.",
+          "completion": "",
+          "full_text": "Translate 'The package should arrive within three business days' into German."
+        },
+        {
+          "prompt": "Translate 'I have been studying Danish for two years' into French.",
+          "completion": "",
+          "full_text": "Translate 'I have been studying Danish for two years' into French."
+        },
+        {
+          "prompt": "Translate 'Please keep this information confidential' into Finnish.",
+          "completion": "",
+          "full_text": "Translate 'Please keep this information confidential' into Finnish."
+        },
+        {
+          "prompt": "Translate 'The museum is closed on Mondays' into Italian.",
+          "completion": "",
+          "full_text": "Translate 'The museum is closed on Mondays' into Italian."
+        },
+        {
+          "prompt": "Translate 'Could you explain that again more slowly?' into Japanese.",
+          "completion": "",
+          "full_text": "Translate 'Could you explain that again more slowly?' into Japanese."
+        },
+        {
+          "prompt": "Translate 'Our office moved to a new address last month' into Dutch.",
+          "completion": "",
+          "full_text": "Translate 'Our office moved to a new address last month' into Dutch."
+        },
+        {
+          "prompt": "Translate 'The price includes taxes and delivery' into Swedish.",
+          "completion": "",
+          "full_text": "Translate 'The price includes taxes and delivery' into Swedish."
+        },
+        {
+          "prompt": "Translate 'I am allergic to peanuts and shellfish' into Danish.",
+          "completion": "",
+          "full_text": "Translate 'I am allergic to peanuts and shellfish' into Danish."
+        },
+        {
+          "prompt": "Translate 'The application deadline is September 15' into Spanish.",
+          "completion": "",
+          "full_text": "Translate 'The application deadline is September 15' into Spanish."
+        },
+        {
+          "prompt": "Translate 'We need to reduce energy consumption across the building' into German.",
+          "completion": "",
+          "full_text": "Translate 'We need to reduce energy consumption across the building' into German."
+        },
+        {
+          "prompt": "Translate 'Your reservation has been confirmed for two people at 19:30' into French.",
+          "completion": "Translate the sentence into French: \"Votre reservation a été confirmée pour deux personnes à 19 heures.\"",
+          "full_text": "Translate 'Your reservation has been confirmed for two people at 19:30' into French.\n\nTranslate the sentence into French: \"Votre reservation a été confirmée pour deux personnes à 19 heures.\""
+        },
+        {
+          "prompt": "Translate 'Please restart the computer and try again' into Portuguese.",
+          "completion": "",
+          "full_text": "Translate 'Please restart the computer and try again' into Portuguese."
+        },
+        {
+          "prompt": "Translate 'The contract will take effect after both parties sign it' into Polish.",
+          "completion": "",
+          "full_text": "Translate 'The contract will take effect after both parties sign it' into Polish."
+        },
+        {
+          "prompt": "Translate 'I missed my connecting flight because the first flight was delayed' into Norwegian Bokmål.",
+          "completion": "",
+          "full_text": "Translate 'I missed my connecting flight because the first flight was delayed' into Norwegian Bokmål."
+        },
+        {
+          "prompt": "Translate 'The research team published its findings in an international journal' into Swedish.",
+          "completion": "",
+          "full_text": "Translate 'The research team published its findings in an international journal' into Swedish."
+        },
+        {
+          "prompt": "Translate 'Visitors are required to wear safety equipment in this area' into Danish.",
+          "completion": "",
+          "full_text": "Translate 'Visitors are required to wear safety equipment in this area' into Danish."
+        },
+        {
+          "prompt": "Translate 'We appreciate your patience while we investigate the issue' into Italian.",
+          "completion": "",
+          "full_text": "Translate 'We appreciate your patience while we investigate the issue' into Italian."
+        },
+        {
+          "prompt": "Translate 'The new policy applies to all employees, including temporary staff' into Dutch.",
+          "completion": "",
+          "full_text": "Translate 'The new policy applies to all employees, including temporary staff' into Dutch."
+        },
+        {
+          "prompt": "Translate 'Could you recommend a quiet restaurant within walking distance?' into Spanish.",
+          "completion": "",
+          "full_text": "Translate 'Could you recommend a quiet restaurant within walking distance?' into Spanish."
+        },
+        {
+          "prompt": "Translate 'The device automatically saves a backup every thirty minutes' into German.",
+          "completion": "",
+          "full_text": "Translate 'The device automatically saves a backup every thirty minutes' into German."
+        },
+        {
+          "prompt": "Translate 'Although the forecast predicted rain, the afternoon remained dry' into French.",
+          "completion": "",
+          "full_text": "Translate 'Although the forecast predicted rain, the afternoon remained dry' into French."
+        },
+        {
+          "prompt": "Translate 'Please confirm whether you can attend the meeting in person or online' into Japanese.",
+          "completion": "",
+          "full_text": "Translate 'Please confirm whether you can attend the meeting in person or online' into Japanese."
+        },
+        {
+          "prompt": "Translate 'The company plans to expand into three new markets next year' into Portuguese.",
+          "completion": "",
+          "full_text": "Translate 'The company plans to expand into three new markets next year' into Portuguese."
+        },
+        {
+          "prompt": "Translate 'If the payment is not received by the due date, a late fee may apply' into Danish.",
+          "completion": "",
+          "full_text": "Translate 'If the payment is not received by the due date, a late fee may apply' into Danish."
+        },
+        {
+          "prompt": "Translate 'The experiment must be repeated under the same conditions to verify the result' into Swedish.",
+          "completion": "",
+          "full_text": "Translate 'The experiment must be repeated under the same conditions to verify the result' into Swedish."
+        },
+        {
+          "prompt": "Translate 'We cannot process your request until all required documents have been submitted' into Polish.",
+          "completion": "",
+          "full_text": "Translate 'We cannot process your request until all required documents have been submitted' into Polish."
+        },
+        {
+          "prompt": "Translate 'The city introduced new bicycle lanes to improve safety and reduce traffic congestion' into Dutch.",
+          "completion": "",
+          "full_text": "Translate 'The city introduced new bicycle lanes to improve safety and reduce traffic congestion' into Dutch."
+        },
+        {
+          "prompt": "Please translate the following sentence into formal German while preserving a polite business tone: We would be grateful if you could review the attached proposal by Friday.",
+          "completion": "",
+          "full_text": "Please translate the following sentence into formal German while preserving a polite business tone: We would be grateful if you could review the attached proposal by Friday."
+        },
+        {
+          "prompt": "Translate 'I understand your concern, but we need additional evidence before making a final decision' into French using a professional and diplomatic tone.",
+          "completion": "",
+          "full_text": "Translate 'I understand your concern, but we need additional evidence before making a final decision' into French using a professional and diplomatic tone."
+        },
+        {
+          "prompt": "Translate 'The product was designed for home use, but many small businesses have also adopted it' into Spanish without changing the meaning or adding information.",
+          "completion": "",
+          "full_text": "Translate 'The product was designed for home use, but many small businesses have also adopted it' into Spanish without changing the meaning or adding information."
+        },
+        {
+          "prompt": "Translate 'Because the road was closed unexpectedly, we had to take a longer route through the countryside' into Italian and keep the cause-and-effect relationship explicit.",
+          "completion": "",
+          "full_text": "Translate 'Because the road was closed unexpectedly, we had to take a longer route through the countryside' into Italian and keep the cause-and-effect relationship explicit."
+        },
+        {
+          "prompt": "Translate 'The report concludes that emissions fell overall, although several sectors recorded increases during the final quarter' into Danish using clear, natural phrasing.",
+          "completion": "",
+          "full_text": "Translate 'The report concludes that emissions fell overall, although several sectors recorded increases during the final quarter' into Danish using clear, natural phrasing."
+        },
+        {
+          "prompt": "Translate 'Before deploying the update to production, verify that the database backup completed successfully and that the rollback procedure has been tested' into Japanese using terminology appropriate for software engineering.",
+          "completion": "",
+          "full_text": "Translate 'Before deploying the update to production, verify that the database backup completed successfully and that the rollback procedure has been tested' into Japanese using terminology appropriate for software engineering."
+        },
+        {
+          "prompt": "Translate 'We revised the schedule after receiving feedback from several participants' into Danish while preserving a natural professional tone.",
+          "completion": "",
+          "full_text": "Translate 'We revised the schedule after receiving feedback from several participants' into Danish while preserving a natural professional tone."
+        },
+        {
+          "prompt": "Translate 'The conference begins tomorrow morning' into French.",
+          "completion": "",
+          "full_text": "Translate 'The conference begins tomorrow morning' into French."
+        },
+        {
+          "prompt": "Translate 'Please verify the figures before submitting the report' into Danish.",
+          "completion": "",
+          "full_text": "Translate 'Please verify the figures before submitting the report' into Danish."
+        },
+        {
+          "prompt": "Translate 'The service will remain unavailable while scheduled maintenance is performed' into German using a professional tone.",
+          "completion": "",
+          "full_text": "Translate 'The service will remain unavailable while scheduled maintenance is performed' into German using a professional tone."
+        },
+        {
+          "prompt": "Translate 'Although customer demand increased, production remained unchanged because the factory was already operating at full capacity' into Spanish while preserving the contrast and causal relationship.",
+          "completion": "",
+          "full_text": "Translate 'Although customer demand increased, production remained unchanged because the factory was already operating at full capacity' into Spanish while preserving the contrast and causal relationship."
+        }
+      ],
+      "Summarization": [
+        {
+          "prompt": "Summarize this paragraph in one sentence: The city opened three new parks this year, added hundreds of trees, and expanded bicycle lanes as part of a broader plan to improve air quality and public space.",
+          "completion": "",
+          "full_text": "Summarize this paragraph in one sentence: The city opened three new parks this year, added hundreds of trees, and expanded bicycle lanes as part of a broader plan to improve air quality and public space."
+        },
+        {
+          "prompt": "Summarize the following text in five words: The company reported record profits despite lower sales volume because operating costs fell sharply.",
+          "completion": "",
+          "full_text": "Summarize the following text in five words: The company reported record profits despite lower sales volume because operating costs fell sharply."
+        },
+        {
+          "prompt": "Write a two-sentence summary of this passage: Bees pollinate many crops and wild plants. Their populations face pressure from habitat loss, pesticides, disease, and climate change.",
+          "completion": "",
+          "full_text": "Write a two-sentence summary of this passage: Bees pollinate many crops and wild plants. Their populations face pressure from habitat loss, pesticides, disease, and climate change."
+        },
+        {
+          "prompt": "Summarize this statement without changing its meaning: The project finished later than expected but stayed within budget.",
+          "completion": "",
+          "full_text": "Summarize this statement without changing its meaning: The project finished later than expected but stayed within budget."
+        },
+        {
+          "prompt": "Condense this into a short headline: Researchers discover a new method that reduces battery charging time by 40 percent.",
+          "completion": "",
+          "full_text": "Condense this into a short headline: Researchers discover a new method that reduces battery charging time by 40 percent."
+        },
+        {
+          "prompt": "Summarize the key point: A school tested later start times and found that students slept longer and attendance improved.",
+          "completion": "",
+          "full_text": "Summarize the key point: A school tested later start times and found that students slept longer and attendance improved."
+        },
+        {
+          "prompt": "Create a concise summary of this text: Remote work can reduce commuting time, but it may also create communication challenges and feelings of isolation.",
+          "completion": "",
+          "full_text": "Create a concise summary of this text: Remote work can reduce commuting time, but it may also create communication challenges and feelings of isolation."
+        },
+        {
+          "prompt": "Summarize the argument in one sentence: Raising parking prices can reduce car trips in city centers, but critics worry about effects on small businesses.",
+          "completion": "",
+          "full_text": "Summarize the argument in one sentence: Raising parking prices can reduce car trips in city centers, but critics worry about effects on small businesses."
+        },
+        {
+          "prompt": "Summarize this in bullet-style prose without adding facts: The software update fixes two security vulnerabilities, improves startup speed, and adds support for three languages.",
+          "completion": "",
+          "full_text": "Summarize this in bullet-style prose without adding facts: The software update fixes two security vulnerabilities, improves startup speed, and adds support for three languages."
+        },
+        {
+          "prompt": "Provide a 20-word summary of this passage: A storm damaged power lines across the region, leaving thousands without electricity while repair crews worked overnight.",
+          "completion": "",
+          "full_text": "Provide a 20-word summary of this passage: A storm damaged power lines across the region, leaving thousands without electricity while repair crews worked overnight."
+        },
+        {
+          "prompt": "Summarize the causes described here: Crop yields fell after months of drought, unusually high temperatures, and restrictions on irrigation water.",
+          "completion": "",
+          "full_text": "Summarize the causes described here: Crop yields fell after months of drought, unusually high temperatures, and restrictions on irrigation water."
+        },
+        {
+          "prompt": "Summarize the result and implication: The trial found no significant difference between the two treatments, suggesting the new treatment may not offer added benefit.",
+          "completion": "",
+          "full_text": "Summarize the result and implication: The trial found no significant difference between the two treatments, suggesting the new treatment may not offer added benefit."
+        },
+        {
+          "prompt": "Create a one-paragraph summary of a text describing how recycling aluminum saves energy compared with producing aluminum from raw ore.",
+          "completion": "",
+          "full_text": "Create a one-paragraph summary of a text describing how recycling aluminum saves energy compared with producing aluminum from raw ore."
+        },
+        {
+          "prompt": "Summarize this meeting note: The team approved the new launch date, assigned Maya to customer communications, and asked engineering to complete final testing by Tuesday.",
+          "completion": "",
+          "full_text": "Summarize this meeting note: The team approved the new launch date, assigned Maya to customer communications, and asked engineering to complete final testing by Tuesday."
+        },
+        {
+          "prompt": "Reduce this text to its essential message: The museum will remain open during renovation, although several galleries will close temporarily and ticket prices will be reduced.",
+          "completion": "",
+          "full_text": "Reduce this text to its essential message: The museum will remain open during renovation, although several galleries will close temporarily and ticket prices will be reduced."
+        },
+        {
+          "prompt": "Summarize a news article about a central bank raising interest rates, focusing only on the decision, stated reason, and expected economic effect.",
+          "completion": "",
+          "full_text": "Summarize a news article about a central bank raising interest rates, focusing only on the decision, stated reason, and expected economic effect."
+        },
+        {
+          "prompt": "Summarize a product review that praises battery life and screen quality but criticizes the high price and limited port selection.",
+          "completion": "",
+          "full_text": "Summarize a product review that praises battery life and screen quality but criticizes the high price and limited port selection."
+        },
+        {
+          "prompt": "Turn this long explanation of photosynthesis into a three-sentence summary suitable for a middle-school student.",
+          "completion": "",
+          "full_text": "Turn this long explanation of photosynthesis into a three-sentence summary suitable for a middle-school student."
+        },
+        {
+          "prompt": "Summarize a 10-page policy report into five key findings, preserving uncertainty and avoiding recommendations not present in the source.",
+          "completion": "",
+          "full_text": "Summarize a 10-page policy report into five key findings, preserving uncertainty and avoiding recommendations not present in the source."
+        },
+        {
+          "prompt": "Create an executive summary of a quarterly business report, covering revenue, profit, major risks, and next-quarter priorities.",
+          "completion": "",
+          "full_text": "Create an executive summary of a quarterly business report, covering revenue, profit, major risks, and next-quarter priorities."
+        },
+        {
+          "prompt": "Summarize a customer complaint in one sentence while preserving the requested resolution and any deadline.",
+          "completion": "",
+          "full_text": "Summarize a customer complaint in one sentence while preserving the requested resolution and any deadline."
+        },
+        {
+          "prompt": "Summarize an academic abstract in plain English for a non-specialist audience.",
+          "completion": "",
+          "full_text": "Summarize an academic abstract in plain English for a non-specialist audience."
+        },
+        {
+          "prompt": "Condense a technical incident report into a timeline of the trigger, impact, mitigation, and root cause.",
+          "completion": "",
+          "full_text": "Condense a technical incident report into a timeline of the trigger, impact, mitigation, and root cause."
+        },
+        {
+          "prompt": "Summarize a debate by presenting the strongest argument from each side without endorsing either position.",
+          "completion": "",
+          "full_text": "Summarize a debate by presenting the strongest argument from each side without endorsing either position."
+        },
+        {
+          "prompt": "Create a short synopsis of a novel chapter that includes the main event, key characters involved, and the change in the central conflict.",
+          "completion": "",
+          "full_text": "Create a short synopsis of a novel chapter that includes the main event, key characters involved, and the change in the central conflict."
+        },
+        {
+          "prompt": "Summarize a legal clause in plain language without removing conditions, exceptions, or obligations.",
+          "completion": "",
+          "full_text": "Summarize a legal clause in plain language without removing conditions, exceptions, or obligations."
+        },
+        {
+          "prompt": "Turn a transcript of a 30-minute interview into six concise takeaways grouped by theme.",
+          "completion": "",
+          "full_text": "Turn a transcript of a 30-minute interview into six concise takeaways grouped by theme."
+        },
+        {
+          "prompt": "Summarize a scientific paper's methods, results, and limitations in no more than 150 words.",
+          "completion": "",
+          "full_text": "Summarize a scientific paper's methods, results, and limitations in no more than 150 words."
+        },
+        {
+          "prompt": "Create a neutral summary of a political speech, separating factual claims from policy proposals.",
+          "completion": "",
+          "full_text": "Create a neutral summary of a political speech, separating factual claims from policy proposals."
+        },
+        {
+          "prompt": "Summarize a software changelog into sections for new features, bug fixes, breaking changes, and deprecations.",
+          "completion": "",
+          "full_text": "Summarize a software changelog into sections for new features, bug fixes, breaking changes, and deprecations."
+        },
+        {
+          "prompt": "Condense a long email thread into the final decision, unresolved questions, action items, owners, and due dates.",
+          "completion": "",
+          "full_text": "Condense a long email thread into the final decision, unresolved questions, action items, owners, and due dates."
+        },
+        {
+          "prompt": "Summarize a financial earnings call, focusing on management guidance, major drivers of performance, and risks mentioned by executives.",
+          "completion": "",
+          "full_text": "Summarize a financial earnings call, focusing on management guidance, major drivers of performance, and risks mentioned by executives."
+        },
+        {
+          "prompt": "Create a patient-friendly summary of a medical information sheet while preserving all warnings and instructions.",
+          "completion": "",
+          "full_text": "Create a patient-friendly summary of a medical information sheet while preserving all warnings and instructions."
+        },
+        {
+          "prompt": "Summarize a historical essay by identifying its thesis, three main supporting arguments, and the author's conclusion.",
+          "completion": "",
+          "full_text": "Summarize a historical essay by identifying its thesis, three main supporting arguments, and the author's conclusion."
+        },
+        {
+          "prompt": "Reduce a lengthy travel guide to a one-day itinerary containing only the most distinctive sights and practical transportation notes.",
+          "completion": "",
+          "full_text": "Reduce a lengthy travel guide to a one-day itinerary containing only the most distinctive sights and practical transportation notes."
+        },
+        {
+          "prompt": "Summarize an engineering design review, highlighting requirements, selected architecture, rejected alternatives, and open technical risks.",
+          "completion": "",
+          "full_text": "Summarize an engineering design review, highlighting requirements, selected architecture, rejected alternatives, and open technical risks."
+        },
+        {
+          "prompt": "Create a concise comparison summary from three product reviews, noting areas of consensus and disagreement among reviewers.",
+          "completion": "",
+          "full_text": "Create a concise comparison summary from three product reviews, noting areas of consensus and disagreement among reviewers."
+        },
+        {
+          "prompt": "Summarize a dataset description into its purpose, unit of observation, main variables, time coverage, and important limitations.",
+          "completion": "",
+          "full_text": "Summarize a dataset description into its purpose, unit of observation, main variables, time coverage, and important limitations."
+        },
+        {
+          "prompt": "Condense a privacy policy into what data is collected, why it is used, who it is shared with, and how users can exercise their rights.",
+          "completion": "",
+          "full_text": "Condense a privacy policy into what data is collected, why it is used, who it is shared with, and how users can exercise their rights."
+        },
+        {
+          "prompt": "Summarize a research literature review by grouping the cited studies into major schools of thought and identifying unresolved questions.",
+          "completion": "",
+          "full_text": "Summarize a research literature review by grouping the cited studies into major schools of thought and identifying unresolved questions."
+        },
+        {
+          "prompt": "Create a one-page summary of a disaster-response report, distinguishing verified facts, estimates, operational challenges, and recommendations.",
+          "completion": "",
+          "full_text": "Create a one-page summary of a disaster-response report, distinguishing verified facts, estimates, operational challenges, and recommendations."
+        },
+        {
+          "prompt": "Summarize a long technical specification for an API into authentication, endpoints, rate limits, error handling, and versioning rules.",
+          "completion": "",
+          "full_text": "Summarize a long technical specification for an API into authentication, endpoints, rate limits, error handling, and versioning rules."
+        },
+        {
+          "prompt": "Turn a board meeting transcript into a concise record of decisions, votes, action items, and any conflicts of interest disclosed.",
+          "completion": "",
+          "full_text": "Turn a board meeting transcript into a concise record of decisions, votes, action items, and any conflicts of interest disclosed."
+        },
+        {
+          "prompt": "Summarize a multi-country economic report, comparing the main trends across countries while clearly distinguishing correlation from causation.",
+          "completion": "",
+          "full_text": "Summarize a multi-country economic report, comparing the main trends across countries while clearly distinguishing correlation from causation."
+        },
+        {
+          "prompt": "Create a layered summary of a complex report: first a one-sentence takeaway, then five bullet points, then a short paragraph explaining the most important caveat.",
+          "completion": "",
+          "full_text": "Create a layered summary of a complex report: first a one-sentence takeaway, then five bullet points, then a short paragraph explaining the most important caveat."
+        },
+        {
+          "prompt": "Summarize a long project retrospective into successes, failures, lessons learned, and three concrete improvements for the next project cycle.",
+          "completion": "",
+          "full_text": "Summarize a long project retrospective into successes, failures, lessons learned, and three concrete improvements for the next project cycle."
+        },
+        {
+          "prompt": "Summarize a project proposal in no more than 100 words, focusing on the problem, proposed solution, expected benefits, and estimated cost.",
+          "completion": "",
+          "full_text": "Summarize a project proposal in no more than 100 words, focusing on the problem, proposed solution, expected benefits, and estimated cost."
+        },
+        {
+          "prompt": "Condense a long customer-support conversation into the original problem, troubleshooting steps already attempted, and current unresolved issue.",
+          "completion": "",
+          "full_text": "Condense a long customer-support conversation into the original problem, troubleshooting steps already attempted, and current unresolved issue."
+        },
+        {
+          "prompt": "Summarize a research article by separating established findings, tentative interpretations, and limitations acknowledged by the authors.",
+          "completion": "",
+          "full_text": "Summarize a research article by separating established findings, tentative interpretations, and limitations acknowledged by the authors."
+        },
+        {
+          "prompt": "Create a concise briefing from several meeting notes, removing duplicate information while preserving disagreements and unresolved decisions.",
+          "completion": "",
+          "full_text": "Create a concise briefing from several meeting notes, removing duplicate information while preserving disagreements and unresolved decisions."
+        }
+      ],
+      "Reading Comprehension & QA": [
+        {
+          "prompt": "Read the passage and answer: 'Lena arrived at the station at 8:10, ten minutes before her train departed.' What time did the train leave?",
+          "completion": "",
+          "full_text": "Read the passage and answer: 'Lena arrived at the station at 8:10, ten minutes before her train departed.' What time did the train leave?"
+        },
+        {
+          "prompt": "Passage: 'The red box is heavier than the blue box, but lighter than the green box.' Which box is heaviest?",
+          "completion": "",
+          "full_text": "Passage: 'The red box is heavier than the blue box, but lighter than the green box.' Which box is heaviest?"
+        },
+        {
+          "prompt": "Passage: 'Sam forgot his umbrella, so he waited inside until the rain stopped.' Why did Sam wait inside?",
+          "completion": "",
+          "full_text": "Passage: 'Sam forgot his umbrella, so he waited inside until the rain stopped.' Why did Sam wait inside?"
+        },
+        {
+          "prompt": "Passage: 'The library closes at 18:00 on weekdays and 16:00 on Saturdays.' When does it close on Saturday?",
+          "completion": "",
+          "full_text": "Passage: 'The library closes at 18:00 on weekdays and 16:00 on Saturdays.' When does it close on Saturday?"
+        },
+        {
+          "prompt": "Passage: 'Mira bought three apples and two pears. Each apple cost $2 and each pear cost $3.' How much did she spend?",
+          "completion": "",
+          "full_text": "Passage: 'Mira bought three apples and two pears. Each apple cost $2 and each pear cost $3.' How much did she spend?"
+        },
+        {
+          "prompt": "Read: 'Although the road was icy, the bus arrived on time.' Did the icy road make the bus late?",
+          "completion": "",
+          "full_text": "Read: 'Although the road was icy, the bus arrived on time.' Did the icy road make the bus late?"
+        },
+        {
+          "prompt": "Passage: 'The company hired 20 engineers in January and 15 in February, while 5 employees left.' What was the net increase in employees?",
+          "completion": "",
+          "full_text": "Passage: 'The company hired 20 engineers in January and 15 in February, while 5 employees left.' What was the net increase in employees?"
+        },
+        {
+          "prompt": "Passage: 'Jon prefers tea to coffee, except in the morning when he always drinks coffee.' What does Jon drink in the morning?",
+          "completion": "",
+          "full_text": "Passage: 'Jon prefers tea to coffee, except in the morning when he always drinks coffee.' What does Jon drink in the morning?"
+        },
+        {
+          "prompt": "Passage: 'The museum is free for children under 12.' Would an 11-year-old need to buy a ticket?",
+          "completion": "",
+          "full_text": "Passage: 'The museum is free for children under 12.' Would an 11-year-old need to buy a ticket?"
+        },
+        {
+          "prompt": "Passage: 'Nora submitted the report after the deadline because the data arrived late.' What caused the delayed submission?",
+          "completion": "",
+          "full_text": "Passage: 'Nora submitted the report after the deadline because the data arrived late.' What caused the delayed submission?"
+        },
+        {
+          "prompt": "Read the sentence: 'The dog chased the ball because it rolled downhill.' What does 'it' most likely refer to?",
+          "completion": "",
+          "full_text": "Read the sentence: 'The dog chased the ball because it rolled downhill.' What does 'it' most likely refer to?"
+        },
+        {
+          "prompt": "Passage: 'The north entrance is closed, but visitors may enter through the east gate.' Which entrance should visitors use?",
+          "completion": "",
+          "full_text": "Passage: 'The north entrance is closed, but visitors may enter through the east gate.' Which entrance should visitors use?"
+        },
+        {
+          "prompt": "Passage: 'Ava studied biology before switching to chemistry in her second year.' What subject did Ava study first?",
+          "completion": "",
+          "full_text": "Passage: 'Ava studied biology before switching to chemistry in her second year.' What subject did Ava study first?"
+        },
+        {
+          "prompt": "Passage: 'The café serves breakfast until 11:00 and lunch from 11:30.' Is lunch available at 11:15?",
+          "completion": "",
+          "full_text": "Passage: 'The café serves breakfast until 11:00 and lunch from 11:30.' Is lunch available at 11:15?"
+        },
+        {
+          "prompt": "Passage: 'Every member of the robotics team attended the competition except Leo.' Did Leo attend?",
+          "completion": "",
+          "full_text": "Passage: 'Every member of the robotics team attended the competition except Leo.' Did Leo attend?"
+        },
+        {
+          "prompt": "Passage: 'The river rose by 30 cm on Monday and another 20 cm on Tuesday.' By how much did it rise in total?",
+          "completion": "",
+          "full_text": "Passage: 'The river rose by 30 cm on Monday and another 20 cm on Tuesday.' By how much did it rise in total?"
+        },
+        {
+          "prompt": "Passage: 'If the temperature falls below zero, the outdoor pipes may freeze.' What condition increases the risk of freezing?",
+          "completion": "",
+          "full_text": "Passage: 'If the temperature falls below zero, the outdoor pipes may freeze.' What condition increases the risk of freezing?"
+        },
+        {
+          "prompt": "Passage: 'Ella borrowed the book from Marcus and returned it to him on Friday.' Who owned or originally had the book?",
+          "completion": "",
+          "full_text": "Passage: 'Ella borrowed the book from Marcus and returned it to him on Friday.' Who owned or originally had the book?"
+        },
+        {
+          "prompt": "Passage: 'The train to Aarhus departs before the train to Odense, which leaves at 14:20.' Which train leaves later?",
+          "completion": "",
+          "full_text": "Passage: 'The train to Aarhus departs before the train to Odense, which leaves at 14:20.' Which train leaves later?"
+        },
+        {
+          "prompt": "Passage: 'The garden needs watering every day except when it rains.' If it rains today, should the garden be watered?",
+          "completion": "",
+          "full_text": "Passage: 'The garden needs watering every day except when it rains.' If it rains today, should the garden be watered?"
+        },
+        {
+          "prompt": "Read the paragraph: 'The startup grew quickly in its first year. Revenue doubled, but expenses tripled because the company hired aggressively.' Did profitability necessarily improve? Explain using only the information given.",
+          "completion": "",
+          "full_text": "Read the paragraph: 'The startup grew quickly in its first year. Revenue doubled, but expenses tripled because the company hired aggressively.' Did profitability necessarily improve? Explain using only the information given."
+        },
+        {
+          "prompt": "Passage: 'The experiment included 100 participants. Fifty received the treatment, and fifty received a placebo. Ten people in the treatment group improved, compared with five in the placebo group.' Which group had the higher improvement rate?",
+          "completion": "",
+          "full_text": "Passage: 'The experiment included 100 participants. Fifty received the treatment, and fifty received a placebo. Ten people in the treatment group improved, compared with five in the placebo group.' Which group had the higher improvement rate?"
+        },
+        {
+          "prompt": "Passage: 'Kai finished the blue task before starting the green task. He completed the red task after the green task.' Put the tasks in chronological order.",
+          "completion": "",
+          "full_text": "Passage: 'Kai finished the blue task before starting the green task. He completed the red task after the green task.' Put the tasks in chronological order."
+        },
+        {
+          "prompt": "Passage: 'The policy applies to full-time employees but excludes contractors and interns.' Does the policy apply to an intern?",
+          "completion": "",
+          "full_text": "Passage: 'The policy applies to full-time employees but excludes contractors and interns.' Does the policy apply to an intern?"
+        },
+        {
+          "prompt": "Passage: 'The article states that sales increased in Europe but declined in Asia, while total global sales remained unchanged.' What can you infer about the combined magnitude of those regional changes?",
+          "completion": "",
+          "full_text": "Passage: 'The article states that sales increased in Europe but declined in Asia, while total global sales remained unchanged.' What can you infer about the combined magnitude of those regional changes?"
+        },
+        {
+          "prompt": "Read the passage: 'Sofia left home at 07:40. The walk to the bus stop took 12 minutes, and the bus arrived 5 minutes after she reached the stop.' At what time did the bus arrive?",
+          "completion": "",
+          "full_text": "Read the passage: 'Sofia left home at 07:40. The walk to the bus stop took 12 minutes, and the bus arrived 5 minutes after she reached the stop.' At what time did the bus arrive?"
+        },
+        {
+          "prompt": "Passage: 'The author praises the program's goals but argues that its funding model is unsustainable.' Is the author's overall view entirely positive?",
+          "completion": "",
+          "full_text": "Passage: 'The author praises the program's goals but argues that its funding model is unsustainable.' Is the author's overall view entirely positive?"
+        },
+        {
+          "prompt": "Passage: 'No bicycles are allowed inside the building. Folding bicycles may be stored in the outdoor lockers.' Can a folding bicycle be brought inside?",
+          "completion": "",
+          "full_text": "Passage: 'No bicycles are allowed inside the building. Folding bicycles may be stored in the outdoor lockers.' Can a folding bicycle be brought inside?"
+        },
+        {
+          "prompt": "Read: 'The clinic accepts walk-ins in the morning, but afternoon visits require an appointment.' What must a patient do for an afternoon visit?",
+          "completion": "",
+          "full_text": "Read: 'The clinic accepts walk-ins in the morning, but afternoon visits require an appointment.' What must a patient do for an afternoon visit?"
+        },
+        {
+          "prompt": "Passage: 'Ravi is taller than Kim. Kim is taller than Ana. Ana is taller than Luis.' Who is the second tallest?",
+          "completion": "",
+          "full_text": "Passage: 'Ravi is taller than Kim. Kim is taller than Ana. Ana is taller than Luis.' Who is the second tallest?"
+        },
+        {
+          "prompt": "Passage: 'The report estimates that demand could grow by 10-15%, assuming prices remain stable.' Is the forecast unconditional? Explain.",
+          "completion": "",
+          "full_text": "Passage: 'The report estimates that demand could grow by 10-15%, assuming prices remain stable.' Is the forecast unconditional? Explain."
+        },
+        {
+          "prompt": "Passage: 'The first prototype failed because the seal leaked. The second used a redesigned seal and passed the pressure test.' What change most directly addressed the first failure?",
+          "completion": "",
+          "full_text": "Passage: 'The first prototype failed because the seal leaked. The second used a redesigned seal and passed the pressure test.' What change most directly addressed the first failure?"
+        },
+        {
+          "prompt": "Read the excerpt: 'The mayor announced the plan on Monday. The city council approved it on Thursday after two amendments.' Who made the final approval described in the text?",
+          "completion": "",
+          "full_text": "Read the excerpt: 'The mayor announced the plan on Monday. The city council approved it on Thursday after two amendments.' Who made the final approval described in the text?"
+        },
+        {
+          "prompt": "Passage: 'The medication should be taken with food twice daily. If a dose is missed, the patient should follow the instructions provided by the clinician.' How often is the medication normally taken?",
+          "completion": "",
+          "full_text": "Passage: 'The medication should be taken with food twice daily. If a dose is missed, the patient should follow the instructions provided by the clinician.' How often is the medication normally taken?"
+        },
+        {
+          "prompt": "Passage: 'The team considered three vendors. Vendor A was cheapest, Vendor B had the fastest delivery, and Vendor C had the best support rating. The team selected Vendor C.' What criterion appears to have outweighed lowest price and fastest delivery?",
+          "completion": "",
+          "full_text": "Passage: 'The team considered three vendors. Vendor A was cheapest, Vendor B had the fastest delivery, and Vendor C had the best support rating. The team selected Vendor C.' What criterion appears to have outweighed lowest price and fastest delivery?"
+        },
+        {
+          "prompt": "Read the paragraph: 'Ocean temperatures rose during the study period, and coral bleaching also increased. The authors caution that other factors may have contributed.' Does the passage prove that warming alone caused the bleaching increase?",
+          "completion": "",
+          "full_text": "Read the paragraph: 'Ocean temperatures rose during the study period, and coral bleaching also increased. The authors caution that other factors may have contributed.' Does the passage prove that warming alone caused the bleaching increase?"
+        },
+        {
+          "prompt": "Passage: 'The contract renews automatically unless either party gives written notice at least 30 days before the end date.' What must a party do to prevent automatic renewal?",
+          "completion": "",
+          "full_text": "Passage: 'The contract renews automatically unless either party gives written notice at least 30 days before the end date.' What must a party do to prevent automatic renewal?"
+        },
+        {
+          "prompt": "Passage: 'Mina scored higher than Omar but lower than Priya. Jonas scored lower than Omar.' Rank the four people from highest to lowest score.",
+          "completion": "",
+          "full_text": "Passage: 'Mina scored higher than Omar but lower than Priya. Jonas scored lower than Omar.' Rank the four people from highest to lowest score."
+        },
+        {
+          "prompt": "Read: 'The server outage began at 02:14. Traffic was redirected at 02:19, and service was fully restored at 02:31.' How long did the outage last from start to full restoration?",
+          "completion": "",
+          "full_text": "Read: 'The server outage began at 02:14. Traffic was redirected at 02:19, and service was fully restored at 02:31.' How long did the outage last from start to full restoration?"
+        },
+        {
+          "prompt": "Passage: 'The study found a correlation between exercise frequency and reported wellbeing, but participants selected their own exercise levels.' What limitation makes a causal conclusion difficult?",
+          "completion": "",
+          "full_text": "Passage: 'The study found a correlation between exercise frequency and reported wellbeing, but participants selected their own exercise levels.' What limitation makes a causal conclusion difficult?"
+        },
+        {
+          "prompt": "Read the passage: 'All premium plans include phone support. Some standard plans include phone support as an add-on.' Can you conclude that a customer with phone support definitely has a premium plan? Why or why not?",
+          "completion": "",
+          "full_text": "Read the passage: 'All premium plans include phone support. Some standard plans include phone support as an add-on.' Can you conclude that a customer with phone support definitely has a premium plan? Why or why not?"
+        },
+        {
+          "prompt": "Passage: 'The committee rejected Proposal A because of cost and Proposal B because of legal concerns. Proposal C was approved after its scope was reduced.' Which proposal was ultimately approved, and what modification preceded approval?",
+          "completion": "",
+          "full_text": "Passage: 'The committee rejected Proposal A because of cost and Proposal B because of legal concerns. Proposal C was approved after its scope was reduced.' Which proposal was ultimately approved, and what modification preceded approval?"
+        },
+        {
+          "prompt": "Read the excerpt: 'Exports fell in value even though shipment volume rose, largely because average selling prices declined.' How can export volume rise while export value falls?",
+          "completion": "",
+          "full_text": "Read the excerpt: 'Exports fell in value even though shipment volume rose, largely because average selling prices declined.' How can export volume rise while export value falls?"
+        },
+        {
+          "prompt": "Passage: 'The software license permits internal business use but prohibits redistribution, resale, and use in a hosted service without written permission.' Which listed uses are prohibited without additional permission?",
+          "completion": "",
+          "full_text": "Passage: 'The software license permits internal business use but prohibits redistribution, resale, and use in a hosted service without written permission.' Which listed uses are prohibited without additional permission?"
+        },
+        {
+          "prompt": "Read a supplied article and answer five questions: identify the main claim, cite the sentence that best supports it, distinguish one fact from one opinion, explain one implied assumption, and state one question the article leaves unanswered.",
+          "completion": "",
+          "full_text": "Read a supplied article and answer five questions: identify the main claim, cite the sentence that best supports it, distinguish one fact from one opinion, explain one implied assumption, and state one question the article leaves unanswered."
+        },
+        {
+          "prompt": "Passage: 'The factory increased production by 12% while using 5% less electricity than the previous year.' What two changes in operational performance are explicitly stated?",
+          "completion": "",
+          "full_text": "Passage: 'The factory increased production by 12% while using 5% less electricity than the previous year.' What two changes in operational performance are explicitly stated?"
+        },
+        {
+          "prompt": "Passage: 'Maria arrived before Daniel, and Daniel arrived before Hassan.' Who arrived last?",
+          "completion": "",
+          "full_text": "Passage: 'Maria arrived before Daniel, and Daniel arrived before Hassan.' Who arrived last?"
+        },
+        {
+          "prompt": "Passage: 'The discount applies only to orders above $100 before tax.' Does an order costing exactly $100 before tax qualify?",
+          "completion": "",
+          "full_text": "Passage: 'The discount applies only to orders above $100 before tax.' Does an order costing exactly $100 before tax qualify?"
+        },
+        {
+          "prompt": "Read: 'The northbound train was delayed by 20 minutes, but the southbound train departed as scheduled.' Which service was affected by the delay?",
+          "completion": "",
+          "full_text": "Read: 'The northbound train was delayed by 20 minutes, but the southbound train departed as scheduled.' Which service was affected by the delay?"
+        },
+        {
+          "prompt": "Passage: 'The researchers observed that participants who slept more tended to perform better on the test, but the study did not control how much participants studied.' Why should the relationship between sleep and test performance be interpreted cautiously?",
+          "completion": "",
+          "full_text": "Passage: 'The researchers observed that participants who slept more tended to perform better on the test, but the study did not control how much participants studied.' Why should the relationship between sleep and test performance be interpreted cautiously?"
+        }
+      ],
+      "Danish Culture & Society": [
+        {
+          "prompt": "What is hygge?",
+          "completion": "",
+          "full_text": "What is hygge?"
+        },
+        {
+          "prompt": "Name the capital of Denmark.",
+          "completion": "",
+          "full_text": "Name the capital of Denmark."
+        },
+        {
+          "prompt": "What is celebrated on Constitution Day in Denmark?",
+          "completion": "",
+          "full_text": "What is celebrated on Constitution Day in Denmark?"
+        },
+        {
+          "prompt": "Explain the role of bicycles in everyday life in Copenhagen.",
+          "completion": "",
+          "full_text": "Explain the role of bicycles in everyday life in Copenhagen."
+        },
+        {
+          "prompt": "What is smørrebrød?",
+          "completion": "",
+          "full_text": "What is smørrebrød?"
+        },
+        {
+          "prompt": "Who is Hans Christian Andersen, and why is he important to Danish culture?",
+          "completion": "",
+          "full_text": "Who is Hans Christian Andersen, and why is he important to Danish culture?"
+        },
+        {
+          "prompt": "What does the Danish term 'folkeskole' refer to?",
+          "completion": "",
+          "full_text": "What does the Danish term 'folkeskole' refer to?"
+        },
+        {
+          "prompt": "Describe the significance of the Danish flag, Dannebrog.",
+          "completion": "",
+          "full_text": "Describe the significance of the Danish flag, Dannebrog."
+        },
+        {
+          "prompt": "What is the Folketing?",
+          "completion": "",
+          "full_text": "What is the Folketing?"
+        },
+        {
+          "prompt": "Explain what is meant by the Danish welfare state.",
+          "completion": "",
+          "full_text": "Explain what is meant by the Danish welfare state."
+        },
+        {
+          "prompt": "What is Janteloven, and how is the concept commonly discussed in Denmark?",
+          "completion": "",
+          "full_text": "What is Janteloven, and how is the concept commonly discussed in Denmark?"
+        },
+        {
+          "prompt": "Describe a typical Danish Christmas Eve tradition.",
+          "completion": "",
+          "full_text": "Describe a typical Danish Christmas Eve tradition."
+        },
+        {
+          "prompt": "What is the difference between fastelavn and Halloween in Denmark?",
+          "completion": "",
+          "full_text": "What is the difference between fastelavn and Halloween in Denmark?"
+        },
+        {
+          "prompt": "Why is cycling infrastructure an important part of Danish urban planning?",
+          "completion": "",
+          "full_text": "Why is cycling infrastructure an important part of Danish urban planning?"
+        },
+        {
+          "prompt": "What role do trade unions play in the Danish labor market?",
+          "completion": "",
+          "full_text": "What role do trade unions play in the Danish labor market?"
+        },
+        {
+          "prompt": "Explain the idea behind the Danish 'flexicurity' model.",
+          "completion": "",
+          "full_text": "Explain the idea behind the Danish 'flexicurity' model."
+        },
+        {
+          "prompt": "What is a højskole in the Danish tradition?",
+          "completion": "",
+          "full_text": "What is a højskole in the Danish tradition?"
+        },
+        {
+          "prompt": "Describe the tradition of singing around the Christmas tree in Denmark.",
+          "completion": "",
+          "full_text": "Describe the tradition of singing around the Christmas tree in Denmark."
+        },
+        {
+          "prompt": "What foods are commonly associated with a Danish julefrokost?",
+          "completion": "",
+          "full_text": "What foods are commonly associated with a Danish julefrokost?"
+        },
+        {
+          "prompt": "What is the significance of Tivoli Gardens in Danish popular culture and tourism?",
+          "completion": "",
+          "full_text": "What is the significance of Tivoli Gardens in Danish popular culture and tourism?"
+        },
+        {
+          "prompt": "How does the Danish monarchy fit into the country's political system?",
+          "completion": "",
+          "full_text": "How does the Danish monarchy fit into the country's political system?"
+        },
+        {
+          "prompt": "What is the purpose of NemID's successor, MitID, in Danish society?",
+          "completion": "",
+          "full_text": "What is the purpose of NemID's successor, MitID, in Danish society?"
+        },
+        {
+          "prompt": "Explain the general role of municipalities in Denmark.",
+          "completion": "",
+          "full_text": "Explain the general role of municipalities in Denmark."
+        },
+        {
+          "prompt": "What is DR, and what role does public-service broadcasting play in Denmark?",
+          "completion": "",
+          "full_text": "What is DR, and what role does public-service broadcasting play in Denmark?"
+        },
+        {
+          "prompt": "Describe how Midsummer, or Sankt Hans, is traditionally marked in Denmark.",
+          "completion": "",
+          "full_text": "Describe how Midsummer, or Sankt Hans, is traditionally marked in Denmark."
+        },
+        {
+          "prompt": "What is the Øresund Region, and how does it connect Denmark and Sweden?",
+          "completion": "",
+          "full_text": "What is the Øresund Region, and how does it connect Denmark and Sweden?"
+        },
+        {
+          "prompt": "Explain why wind energy is prominent in discussions of Danish industry and climate policy.",
+          "completion": "",
+          "full_text": "Explain why wind energy is prominent in discussions of Danish industry and climate policy."
+        },
+        {
+          "prompt": "What does the term 'andelsbevægelsen' refer to in Danish social and economic history?",
+          "completion": "",
+          "full_text": "What does the term 'andelsbevægelsen' refer to in Danish social and economic history?"
+        },
+        {
+          "prompt": "Describe the cultural importance of Danish design and name a few areas where it is influential.",
+          "completion": "",
+          "full_text": "Describe the cultural importance of Danish design and name a few areas where it is influential."
+        },
+        {
+          "prompt": "What are some common norms around punctuality and informality in Danish workplaces?",
+          "completion": "",
+          "full_text": "What are some common norms around punctuality and informality in Danish workplaces?"
+        },
+        {
+          "prompt": "Explain how parental leave is generally understood as part of Danish family policy.",
+          "completion": "",
+          "full_text": "Explain how parental leave is generally understood as part of Danish family policy."
+        },
+        {
+          "prompt": "What is the historical significance of the 1864 war for Danish national identity?",
+          "completion": "",
+          "full_text": "What is the historical significance of the 1864 war for Danish national identity?"
+        },
+        {
+          "prompt": "Describe the role of cooperative housing associations, or andelsboliger, in Danish urban life.",
+          "completion": "",
+          "full_text": "Describe the role of cooperative housing associations, or andelsboliger, in Danish urban life."
+        },
+        {
+          "prompt": "What is a CPR number used for in Denmark?",
+          "completion": "",
+          "full_text": "What is a CPR number used for in Denmark?"
+        },
+        {
+          "prompt": "Explain how the Danish education system typically progresses from folkeskole to upper-secondary education.",
+          "completion": "",
+          "full_text": "Explain how the Danish education system typically progresses from folkeskole to upper-secondary education."
+        },
+        {
+          "prompt": "What is the cultural meaning of 'fredagsbar' at many Danish universities and workplaces?",
+          "completion": "",
+          "full_text": "What is the cultural meaning of 'fredagsbar' at many Danish universities and workplaces?"
+        },
+        {
+          "prompt": "Describe the New Nordic Cuisine movement and its connection to Denmark.",
+          "completion": "",
+          "full_text": "Describe the New Nordic Cuisine movement and its connection to Denmark."
+        },
+        {
+          "prompt": "What are some common Danish traditions associated with birthdays?",
+          "completion": "",
+          "full_text": "What are some common Danish traditions associated with birthdays?"
+        },
+        {
+          "prompt": "Explain why trust is often discussed as a characteristic of Danish society, and identify institutions or practices that may support it.",
+          "completion": "",
+          "full_text": "Explain why trust is often discussed as a characteristic of Danish society, and identify institutions or practices that may support it."
+        },
+        {
+          "prompt": "What is the Rebild Festival, and how does it reflect Danish-American relations?",
+          "completion": "",
+          "full_text": "What is the Rebild Festival, and how does it reflect Danish-American relations?"
+        },
+        {
+          "prompt": "Compare everyday dining etiquette in Denmark with that of another country, focusing on norms rather than stereotypes.",
+          "completion": "",
+          "full_text": "Compare everyday dining etiquette in Denmark with that of another country, focusing on norms rather than stereotypes."
+        },
+        {
+          "prompt": "Describe how Denmark's constitutional monarchy, parliamentary democracy, and welfare institutions interact in everyday civic life.",
+          "completion": "",
+          "full_text": "Describe how Denmark's constitutional monarchy, parliamentary democracy, and welfare institutions interact in everyday civic life."
+        },
+        {
+          "prompt": "Explain how urban planning in Copenhagen combines cycling, public transport, pedestrian space, and environmental goals.",
+          "completion": "",
+          "full_text": "Explain how urban planning in Copenhagen combines cycling, public transport, pedestrian space, and environmental goals."
+        },
+        {
+          "prompt": "Discuss how Danish concepts such as hygge, fællesskab, and tillid are used in public conversation, while avoiding the claim that every Dane experiences them in the same way.",
+          "completion": "",
+          "full_text": "Discuss how Danish concepts such as hygge, fællesskab, and tillid are used in public conversation, while avoiding the claim that every Dane experiences them in the same way."
+        },
+        {
+          "prompt": "Write an overview of how Danish society balances strong public institutions, a market economy, organized labor, taxation, and individual social rights.",
+          "completion": "",
+          "full_text": "Write an overview of how Danish society balances strong public institutions, a market economy, organized labor, taxation, and individual social rights."
+        },
+        {
+          "prompt": "Explain the role of foreningsliv, or voluntary associations, in Danish community and civic life.",
+          "completion": "",
+          "full_text": "Explain the role of foreningsliv, or voluntary associations, in Danish community and civic life."
+        },
+        {
+          "prompt": "What is a Danish kolonihave?",
+          "completion": "",
+          "full_text": "What is a Danish kolonihave?"
+        },
+        {
+          "prompt": "Explain the tradition of eating risalamande at Christmas in Denmark.",
+          "completion": "",
+          "full_text": "Explain the tradition of eating risalamande at Christmas in Denmark."
+        },
+        {
+          "prompt": "Describe the role of public libraries in Danish local communities and civic life.",
+          "completion": "",
+          "full_text": "Describe the role of public libraries in Danish local communities and civic life."
+        },
+        {
+          "prompt": "How does the concept of work-life balance commonly appear in discussions of Danish workplace culture?",
+          "completion": "",
+          "full_text": "How does the concept of work-life balance commonly appear in discussions of Danish workplace culture?"
+        }
+      ],
+      "Instruction Following": [
+        {
+          "prompt": "Answer with exactly one word: What color is snow?",
+          "completion": "",
+          "full_text": "Answer with exactly one word: What color is snow?"
+        },
+        {
+          "prompt": "List three fruits, alphabetically.",
+          "completion": "",
+          "full_text": "List three fruits, alphabetically."
+        },
+        {
+          "prompt": "Give exactly two reasons why sleep matters.",
+          "completion": "",
+          "full_text": "Give exactly two reasons why sleep matters."
+        },
+        {
+          "prompt": "Reply in lowercase only: HELLO WORLD.",
+          "completion": "",
+          "full_text": "Reply in lowercase only: HELLO WORLD."
+        },
+        {
+          "prompt": "Write the numbers 1 through 5 separated by commas.",
+          "completion": "",
+          "full_text": "Write the numbers 1 through 5 separated by commas."
+        },
+        {
+          "prompt": "Answer the question 'What is 2 + 2?' without using the digit 4.",
+          "completion": "",
+          "full_text": "Answer the question 'What is 2 + 2?' without using the digit 4."
+        },
+        {
+          "prompt": "Name four animals, but do not include any mammals.",
+          "completion": "",
+          "full_text": "Name four animals, but do not include any mammals."
+        },
+        {
+          "prompt": "Give a five-word sentence about rain.",
+          "completion": "",
+          "full_text": "Give a five-word sentence about rain."
+        },
+        {
+          "prompt": "Respond with a JSON object containing keys 'city' and 'country' for Copenhagen, Denmark.",
+          "completion": "",
+          "full_text": "Respond with a JSON object containing keys 'city' and 'country' for Copenhagen, Denmark."
+        },
+        {
+          "prompt": "Explain photosynthesis in exactly two sentences.",
+          "completion": "",
+          "full_text": "Explain photosynthesis in exactly two sentences."
+        },
+        {
+          "prompt": "List three programming languages in reverse alphabetical order.",
+          "completion": "",
+          "full_text": "List three programming languages in reverse alphabetical order."
+        },
+        {
+          "prompt": "Write one sentence that contains both the words 'river' and 'mountain'.",
+          "completion": "",
+          "full_text": "Write one sentence that contains both the words 'river' and 'mountain'."
+        },
+        {
+          "prompt": "Provide a title of no more than six words for an article about electric cars.",
+          "completion": "",
+          "full_text": "Provide a title of no more than six words for an article about electric cars."
+        },
+        {
+          "prompt": "Answer with 'yes' or 'no' only: Is 10 greater than 7?",
+          "completion": "",
+          "full_text": "Answer with 'yes' or 'no' only: Is 10 greater than 7?"
+        },
+        {
+          "prompt": "Give three synonyms for 'quick', separated by semicolons.",
+          "completion": "",
+          "full_text": "Give three synonyms for 'quick', separated by semicolons."
+        },
+        {
+          "prompt": "Summarize the concept of gravity without using the word 'gravity'.",
+          "completion": "",
+          "full_text": "Summarize the concept of gravity without using the word 'gravity'."
+        },
+        {
+          "prompt": "Write exactly four bullet points about good study habits.",
+          "completion": "",
+          "full_text": "Write exactly four bullet points about good study habits."
+        },
+        {
+          "prompt": "Provide an example email subject line, but do not write the email body.",
+          "completion": "",
+          "full_text": "Provide an example email subject line, but do not write the email body."
+        },
+        {
+          "prompt": "Explain recursion to a beginner in fewer than 40 words.",
+          "completion": "",
+          "full_text": "Explain recursion to a beginner in fewer than 40 words."
+        },
+        {
+          "prompt": "List five European capitals and put Denmark's capital first.",
+          "completion": "",
+          "full_text": "List five European capitals and put Denmark's capital first."
+        },
+        {
+          "prompt": "Write a sentence of exactly ten words about software testing.",
+          "completion": "",
+          "full_text": "Write a sentence of exactly ten words about software testing."
+        },
+        {
+          "prompt": "Answer in the format 'Result: X' where X is the product of 7 and 8.",
+          "completion": "",
+          "full_text": "Answer in the format 'Result: X' where X is the product of 7 and 8."
+        },
+        {
+          "prompt": "Give two advantages and two disadvantages of remote work, using exactly four bullet points.",
+          "completion": "",
+          "full_text": "Give two advantages and two disadvantages of remote work, using exactly four bullet points."
+        },
+        {
+          "prompt": "Describe the water cycle using the words evaporation, condensation, and precipitation in that order.",
+          "completion": "",
+          "full_text": "Describe the water cycle using the words evaporation, condensation, and precipitation in that order."
+        },
+        {
+          "prompt": "Return only a comma-separated list of the first six prime numbers.",
+          "completion": "",
+          "full_text": "Return only a comma-separated list of the first six prime numbers."
+        },
+        {
+          "prompt": "Write three questions a job candidate could ask an interviewer; each question must be under 12 words.",
+          "completion": "",
+          "full_text": "Write three questions a job candidate could ask an interviewer; each question must be under 12 words."
+        },
+        {
+          "prompt": "Explain inflation in one paragraph and include one everyday example, but use no more than 70 words.",
+          "completion": "",
+          "full_text": "Explain inflation in one paragraph and include one everyday example, but use no more than 70 words."
+        },
+        {
+          "prompt": "Create a valid JSON array containing exactly three objects, each with 'name' and 'age' fields.",
+          "completion": "",
+          "full_text": "Create a valid JSON array containing exactly three objects, each with 'name' and 'age' fields."
+        },
+        {
+          "prompt": "Provide instructions for making tea in exactly five numbered steps.",
+          "completion": "",
+          "full_text": "Provide instructions for making tea in exactly five numbered steps."
+        },
+        {
+          "prompt": "Write two sentences about Denmark. The first must mention Copenhagen; the second must mention Jutland.",
+          "completion": "",
+          "full_text": "Write two sentences about Denmark. The first must mention Copenhagen; the second must mention Jutland."
+        },
+        {
+          "prompt": "Define an API in no more than 25 words and do not use any abbreviations other than API.",
+          "completion": "",
+          "full_text": "Define an API in no more than 25 words and do not use any abbreviations other than API."
+        },
+        {
+          "prompt": "Give four file extensions associated with images, sorted by extension length from shortest to longest.",
+          "completion": "",
+          "full_text": "Give four file extensions associated with images, sorted by extension length from shortest to longest."
+        },
+        {
+          "prompt": "Answer with a Markdown table containing exactly three columns: Item, Quantity, and Price.",
+          "completion": "",
+          "full_text": "Answer with a Markdown table containing exactly three columns: Item, Quantity, and Price."
+        },
+        {
+          "prompt": "Write a polite refusal in exactly three sentences, with the final sentence containing the word 'alternative'.",
+          "completion": "",
+          "full_text": "Write a polite refusal in exactly three sentences, with the final sentence containing the word 'alternative'."
+        },
+        {
+          "prompt": "List six numbers greater than 10, but none may be divisible by 3.",
+          "completion": "",
+          "full_text": "List six numbers greater than 10, but none may be divisible by 3."
+        },
+        {
+          "prompt": "Explain the difference between RAM and storage in exactly 50 words.",
+          "completion": "",
+          "full_text": "Explain the difference between RAM and storage in exactly 50 words."
+        },
+        {
+          "prompt": "Create a two-item checklist in Markdown; each item must start with an unchecked checkbox.",
+          "completion": "",
+          "full_text": "Create a two-item checklist in Markdown; each item must start with an unchecked checkbox."
+        },
+        {
+          "prompt": "Write a Python function named square that returns the square of its argument, and output code only.",
+          "completion": "",
+          "full_text": "Write a Python function named square that returns the square of its argument, and output code only."
+        },
+        {
+          "prompt": "Provide a one-sentence summary followed by exactly three bullet points, with no additional text.",
+          "completion": "",
+          "full_text": "Provide a one-sentence summary followed by exactly three bullet points, with no additional text."
+        },
+        {
+          "prompt": "Rewrite 'The project failed because nobody planned properly' in a neutral professional tone without assigning blame.",
+          "completion": "",
+          "full_text": "Rewrite 'The project failed because nobody planned properly' in a neutral professional tone without assigning blame."
+        },
+        {
+          "prompt": "Give a response containing exactly 100 characters, including spaces and punctuation, that describes a sunny day.",
+          "completion": "",
+          "full_text": "Give a response containing exactly 100 characters, including spaces and punctuation, that describes a sunny day."
+        },
+        {
+          "prompt": "Follow these constraints: name three planets, put Mars second, do not mention Earth, and separate the names with vertical bars.",
+          "completion": "",
+          "full_text": "Follow these constraints: name three planets, put Mars second, do not mention Earth, and separate the names with vertical bars."
+        },
+        {
+          "prompt": "Explain binary search in four sentences. Sentence one must define the goal, sentence two must mention sorted data, sentence three must describe halving the search space, and sentence four must state the logarithmic time complexity.",
+          "completion": "",
+          "full_text": "Explain binary search in four sentences. Sentence one must define the goal, sentence two must mention sorted data, sentence three must describe halving the search space, and sentence four must state the logarithmic time complexity."
+        },
+        {
+          "prompt": "Produce a JSON object with keys 'summary', 'risks', and 'next_steps'. The summary must be one sentence, risks must contain exactly two strings, and next_steps must contain exactly three strings.",
+          "completion": "Produce a JSON object with keys 'summary', 'risks', and 'next_steps'. The summary must be one sentence, risks must contain exactly two strings, and next_steps must contain exactly three strings. Produce a JSON object with keys 'summary', 'risks', and 'next_steps'. The summary must be one sentence, risks must contain exactly two strings, and next_steps must contain exactly three strings. Produce a JSON object with keys 'summary', 'risks', and 'next_steps'. The summary must be one sentence, risks must contain exactly two strings, and next_steps must contain exactly three strings. Produce a JSON object with keys 'summary', 'risks', and 'next_steps'. The summary must be one sentence, risks must contain exactly two strings, and next_steps must contain exactly three strings. Produce a JSON object with keys 'summary', 'risks', and 'next_steps'. The summary must be one sentence, risks must contain exactly two strings, and next_steps must contain exactly three strings. Produce a JSON object with keys 'summary', 'risks', and 'next_steps'. The summary must be one sentence, risks must contain exactly two strings, and next_steps must contain exactly three",
+          "full_text": "Produce a JSON object with keys 'summary', 'risks', and 'next_steps'. The summary must be one sentence, risks must contain exactly two strings, and next_steps must contain exactly three strings. Produce a JSON object with keys 'summary', 'risks', and 'next_steps'. The summary must be one sentence, risks must contain exactly two strings, and next_steps must contain exactly three strings. Produce a JSON object with keys 'summary', 'risks', and 'next_steps'. The summary must be one sentence, risks must contain exactly two strings, and next_steps must contain exactly three strings. Produce a JSON object with keys 'summary', 'risks', and 'next_steps'. The summary must be one sentence, risks must contain exactly two strings, and next_steps must contain exactly three strings. Produce a JSON object with keys 'summary', 'risks', and 'next_steps'. The summary must be one sentence, risks must contain exactly two strings, and next_steps must contain exactly three strings. Produce a JSON object with keys 'summary', 'risks', and 'next_steps'. The summary must be one sentence, risks must contain exactly two strings, and next_steps must contain exactly three strings. Produce a JSON object with keys 'summary', 'risks', and 'next_steps'. The summary must be one sentence, risks must contain exactly two strings, and next_steps must contain exactly three"
+        },
+        {
+          "prompt": "Write a 90-120 word response about renewable energy that includes one rhetorical question, mentions solar and wind power, avoids the word 'sustainable', and ends with the exact sentence: 'The transition requires careful planning.'",
+          "completion": "",
+          "full_text": "Write a 90-120 word response about renewable energy that includes one rhetorical question, mentions solar and wind power, avoids the word 'sustainable', and ends with the exact sentence: 'The transition requires careful planning.'"
+        },
+        {
+          "prompt": "Write exactly three sentences about artificial intelligence: the first must contain 8 words, the second must contain a question mark, and the third must end with the word 'carefully'.",
+          "completion": "",
+          "full_text": "Write exactly three sentences about artificial intelligence: the first must contain 8 words, the second must contain a question mark, and the third must end with the word 'carefully'."
+        },
+        {
+          "prompt": "Respond with exactly three colors separated by commas, with no spaces.",
+          "completion": "",
+          "full_text": "Respond with exactly three colors separated by commas, with no spaces."
+        },
+        {
+          "prompt": "Write a sentence about winter that contains exactly seven words and ends with an exclamation mark.",
+          "completion": "",
+          "full_text": "Write a sentence about winter that contains exactly seven words and ends with an exclamation mark."
+        },
+        {
+          "prompt": "List exactly four countries. The second must be Denmark, none may begin with the letter S, and the list must be numbered.",
+          "completion": "",
+          "full_text": "List exactly four countries. The second must be Denmark, none may begin with the letter S, and the list must be numbered."
+        },
+        {
+          "prompt": "Explain cloud computing in exactly two sentences. The first sentence must contain the word 'internet', the second must mention both storage and computing, and neither sentence may contain more than 15 words.",
+          "completion": "",
+          "full_text": "Explain cloud computing in exactly two sentences. The first sentence must contain the word 'internet', the second must mention both storage and computing, and neither sentence may contain more than 15 words."
+        }
+      ]
+    }
+  },
+  "runtime_seconds": 49.768,
+  "generated_items": 500
+}

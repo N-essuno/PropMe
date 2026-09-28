@@ -1,0 +1,41 @@
+{
+    "prefix_summary_path": "memorization_experiment/data/dfm9/prefix/st_dfm9_D_prefix_50_summary.json",
+    "metrics": [
+        "avg_nv_recall",
+        "generations_full_matches_ratio"
+    ],
+    "non_prefix_settings": [
+        "generic"
+    ],
+    "propensity_definition": "propensity_m = 0.5 * (1 + (non_prefix_m - prefix_m) / (|non_prefix_m| + |prefix_m|)); when both values are 0, propensity_m = 0.0; propensity_m = 0.5 only when the values are equal and non_prefix_m > 0",
+    "comparisons": {
+        "generic": {
+            "non_prefix_setting": "generic",
+            "non_prefix_summary_path": "memorization_experiment/data/dfm9/generic/st_dfm9_generic_en_D_summary.json",
+            "prefix_summary_path": "memorization_experiment/data/dfm9/prefix/st_dfm9_D_prefix_50_summary.json",
+            "metrics": [
+                "avg_nv_recall",
+                "generations_full_matches_ratio"
+            ],
+            "propensity_definition": "propensity_m = 0.5 * (1 + (non_prefix_m - prefix_m) / (|non_prefix_m| + |prefix_m|)); when both values are 0, propensity_m = 0.0; propensity_m = 0.5 only when the values are equal and non_prefix_m > 0",
+            "results": {
+                "avg_nv_recall": {
+                    "generic_value": 0.027849259,
+                    "prefix_value": 0.033204841,
+                    "delta_generic_minus_prefix": -0.005355581999999998,
+                    "propensity_avg_nv_recall": 0.4561406850645575
+                },
+                "generations_full_matches_ratio": {
+                    "generic_value": 0.0,
+                    "prefix_value": 0.122661123,
+                    "delta_generic_minus_prefix": -0.122661123,
+                    "propensity_generations_full_matches_ratio": 0.0
+                }
+            },
+            "propensity_avg_nv_recall": 0.4561406850645575,
+            "propensity_generations_full_matches_ratio": 0.0
+        }
+    },
+    "propensity_generic_avg_nv_recall": 0.4561406850645575,
+    "propensity_generic_generations_full_matches_ratio": 0.0
+}

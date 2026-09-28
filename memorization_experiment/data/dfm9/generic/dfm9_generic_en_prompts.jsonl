@@ -1,0 +1,500 @@
+{"text": "Name the capital of Portugal.", "domain": "General Knowledge"}
+{"text": "Who wrote The Odyssey?", "domain": "General Knowledge"}
+{"text": "What is the largest ocean on Earth?", "domain": "General Knowledge"}
+{"text": "Explain why time zones exist.", "domain": "General Knowledge"}
+{"text": "List three countries that border Germany.", "domain": "General Knowledge"}
+{"text": "What does GDP stand for, and what does it measure?", "domain": "General Knowledge"}
+{"text": "Describe the main purpose of the United Nations.", "domain": "General Knowledge"}
+{"text": "Which planet is closest to the Sun?", "domain": "General Knowledge"}
+{"text": "What is the difference between a continent and a country?", "domain": "General Knowledge"}
+{"text": "Give a brief overview of the Renaissance.", "domain": "General Knowledge"}
+{"text": "Why is the Suez Canal strategically important?", "domain": "General Knowledge"}
+{"text": "Name five languages spoken by more than 100 million people.", "domain": "General Knowledge"}
+{"text": "What is a constitutional monarchy?", "domain": "General Knowledge"}
+{"text": "Explain the origin and purpose of the metric system.", "domain": "General Knowledge"}
+{"text": "Which countries are permanent members of the UN Security Council?", "domain": "General Knowledge"}
+{"text": "Summarize the causes of the Industrial Revolution in Europe.", "domain": "General Knowledge"}
+{"text": "What is the significance of the Magna Carta?", "domain": "General Knowledge"}
+{"text": "Compare a republic with a direct democracy.", "domain": "General Knowledge"}
+{"text": "Why do countries conduct a census?", "domain": "General Knowledge"}
+{"text": "Name the seven continents in order from largest to smallest by land area.", "domain": "General Knowledge"}
+{"text": "What is the difference between weather and climate?", "domain": "General Knowledge"}
+{"text": "Explain the historical importance of the Silk Road.", "domain": "General Knowledge"}
+{"text": "Who was Marie Curie, and what is she known for?", "domain": "General Knowledge"}
+{"text": "What is inflation in everyday terms?", "domain": "General Knowledge"}
+{"text": "Describe how leap years work in the Gregorian calendar.", "domain": "General Knowledge"}
+{"text": "What is UNESCO, and what kinds of sites can receive World Heritage status?", "domain": "General Knowledge"}
+{"text": "Explain the difference between latitude and longitude.", "domain": "General Knowledge"}
+{"text": "What are the primary branches of government in a typical separation-of-powers system?", "domain": "General Knowledge"}
+{"text": "Why did ancient civilizations often develop near major rivers?", "domain": "General Knowledge"}
+{"text": "Give a concise explanation of how the printing press changed European society.", "domain": "General Knowledge"}
+{"text": "What is the Commonwealth of Nations?", "domain": "General Knowledge"}
+{"text": "Which major events marked the beginning and end of World War II in Europe?", "domain": "General Knowledge"}
+{"text": "Explain what a national anthem is and why countries use one.", "domain": "General Knowledge"}
+{"text": "What is the difference between a sea, a gulf, and a bay?", "domain": "General Knowledge"}
+{"text": "Describe the role of a central bank in a modern economy.", "domain": "General Knowledge"}
+{"text": "Name several major world religions and identify one core idea associated with each.", "domain": "General Knowledge"}
+{"text": "What does the term 'rule of law' mean?", "domain": "General Knowledge"}
+{"text": "Explain why maps use different projections and what distortions can result.", "domain": "General Knowledge"}
+{"text": "How did the invention of the internet change access to information?", "domain": "General Knowledge"}
+{"text": "What are the main differences between renewable and nonrenewable energy sources?", "domain": "General Knowledge"}
+{"text": "Give an overview of the causes and consequences of urbanization.", "domain": "General Knowledge"}
+{"text": "What is diplomatic immunity, and why does it exist?", "domain": "General Knowledge"}
+{"text": "Explain how the Olympic Games evolved from ancient Greece to the modern era.", "domain": "General Knowledge"}
+{"text": "Compare the roles of a prime minister and a president in different political systems.", "domain": "General Knowledge"}
+{"text": "Create a short timeline of five major events in human history and explain why each event was influential.", "domain": "General Knowledge"}
+{"text": "What is 17 × 24?", "domain": "Mathematics & Reasoning"}
+{"text": "Solve for x: 3x + 7 = 25.", "domain": "Mathematics & Reasoning"}
+{"text": "Find the area of a circle with radius 5.", "domain": "Mathematics & Reasoning"}
+{"text": "What is the next number in the sequence 2, 4, 8, 16, ?", "domain": "Mathematics & Reasoning"}
+{"text": "Simplify the fraction 84/126.", "domain": "Mathematics & Reasoning"}
+{"text": "A train travels 180 km in 3 hours. What is its average speed?", "domain": "Mathematics & Reasoning"}
+{"text": "If a shirt costs $80 and is discounted by 25%, what is the sale price?", "domain": "Mathematics & Reasoning"}
+{"text": "Solve the system: x + y = 10 and x - y = 4.", "domain": "Mathematics & Reasoning"}
+{"text": "What is the probability of rolling a 6 on a fair six-sided die twice in a row?", "domain": "Mathematics & Reasoning"}
+{"text": "Convert 0.375 to a fraction in simplest form.", "domain": "Mathematics & Reasoning"}
+{"text": "A rectangle has perimeter 54 cm and length 16 cm. Find its width.", "domain": "Mathematics & Reasoning"}
+{"text": "Evaluate 5^3 - 2^4.", "domain": "Mathematics & Reasoning"}
+{"text": "Find the greatest common divisor of 252 and 198.", "domain": "Mathematics & Reasoning"}
+{"text": "If 4 workers finish a job in 12 hours at the same rate, how long would 6 workers take?", "domain": "Mathematics & Reasoning"}
+{"text": "What is the median of 3, 9, 11, 14, 18, 21, 30?", "domain": "Mathematics & Reasoning"}
+{"text": "Solve the inequality 2x - 5 > 9.", "domain": "Mathematics & Reasoning"}
+{"text": "A bag contains 5 red, 3 blue, and 2 green balls. What is the probability of drawing a blue ball?", "domain": "Mathematics & Reasoning"}
+{"text": "Find the slope of the line through points (2, 3) and (8, 15).", "domain": "Mathematics & Reasoning"}
+{"text": "Explain why dividing by zero is undefined.", "domain": "Mathematics & Reasoning"}
+{"text": "If the ratio of cats to dogs is 3:5 and there are 40 animals total, how many are cats?", "domain": "Mathematics & Reasoning"}
+{"text": "A number is increased by 20% and becomes 96. What was the original number?", "domain": "Mathematics & Reasoning"}
+{"text": "Find the sum of the first 50 positive integers.", "domain": "Mathematics & Reasoning"}
+{"text": "Determine whether 997 is prime and explain your reasoning.", "domain": "Mathematics & Reasoning"}
+{"text": "A right triangle has legs of length 9 and 12. Find the hypotenuse.", "domain": "Mathematics & Reasoning"}
+{"text": "Two fair coins are tossed. List all outcomes and calculate the probability of exactly one head.", "domain": "Mathematics & Reasoning"}
+{"text": "Calculate the compound interest on $1,000 invested for 3 years at 5% annually.", "domain": "Mathematics & Reasoning"}
+{"text": "Which is larger: 2^10 or 10^3? Show the calculation.", "domain": "Mathematics & Reasoning"}
+{"text": "Find the equation of a line with slope -2 passing through (4, 7).", "domain": "Mathematics & Reasoning"}
+{"text": "A clock shows 3:00. What is the smaller angle between the hour and minute hands?", "domain": "Mathematics & Reasoning"}
+{"text": "Three boxes are labeled Apples, Oranges, and Mixed, but every label is wrong. You may draw one fruit from one box. Explain how to relabel all boxes correctly.", "domain": "Mathematics & Reasoning"}
+{"text": "A farmer has chickens and cows. There are 30 heads and 84 legs. How many chickens and cows are there?", "domain": "Mathematics & Reasoning"}
+{"text": "Prove that the sum of two odd integers is even.", "domain": "Mathematics & Reasoning"}
+{"text": "Find all integer solutions to x + y = 12 where x and y are positive and x < y.", "domain": "Mathematics & Reasoning"}
+{"text": "A population doubles every 6 years. By what factor does it grow in 24 years?", "domain": "Mathematics & Reasoning"}
+{"text": "Given f(x) = 2x^2 - 3x + 1, compute f(-2).", "domain": "Mathematics & Reasoning"}
+{"text": "Estimate sqrt(50) to two decimal places without using a calculator, and describe your method.", "domain": "Mathematics & Reasoning"}
+{"text": "A password consists of 3 distinct uppercase letters followed by 2 digits. How many possible passwords are there if digits may repeat?", "domain": "Mathematics & Reasoning"}
+{"text": "Suppose all roses are flowers and some flowers fade quickly. Can you conclude that some roses fade quickly? Explain using logic.", "domain": "Mathematics & Reasoning"}
+{"text": "A car leaves town A at 60 km/h. Two hours later, another car follows at 90 km/h. How long after the second car starts will it catch the first?", "domain": "Mathematics & Reasoning"}
+{"text": "Find the derivative of x^3 - 4x^2 + 7x - 2.", "domain": "Mathematics & Reasoning"}
+{"text": "Compute the integral of 2x from x = 1 to x = 4.", "domain": "Mathematics & Reasoning"}
+{"text": "A game costs $5 to play. You win $20 with probability 0.2 and nothing otherwise. What is the expected net gain or loss per play?", "domain": "Mathematics & Reasoning"}
+{"text": "Five people sit around a circular table. How many distinct seating arrangements are possible if rotations count as the same arrangement?", "domain": "Mathematics & Reasoning"}
+{"text": "Find the shortest path length from (0,0) to (6,8) in the Euclidean plane and explain which theorem you use.", "domain": "Mathematics & Reasoning"}
+{"text": "A company has three projects with expected profits and risks. Design a simple scoring rule using weighted criteria, then explain how changing the weights could change the ranking.", "domain": "Mathematics & Reasoning"}
+{"text": "Write a Python function that reverses a string.", "domain": "Programming & Software Engineering"}
+{"text": "What is the difference between a stack and a queue?", "domain": "Programming & Software Engineering"}
+{"text": "Explain what a Git commit is.", "domain": "Programming & Software Engineering"}
+{"text": "Find the bug in this code: for i in range(5): print(i+1).", "domain": "Programming & Software Engineering"}
+{"text": "Write a JavaScript function that checks whether a number is even.", "domain": "Programming & Software Engineering"}
+{"text": "What does HTTP status code 404 mean?", "domain": "Programming & Software Engineering"}
+{"text": "Explain the difference between a process and a thread.", "domain": "Programming & Software Engineering"}
+{"text": "Write SQL to select all users created after January 1, 2025.", "domain": "Programming & Software Engineering"}
+{"text": "What is dependency injection, and why is it useful?", "domain": "Programming & Software Engineering"}
+{"text": "Describe the purpose of unit tests.", "domain": "Programming & Software Engineering"}
+{"text": "Implement binary search in Python.", "domain": "Programming & Software Engineering"}
+{"text": "What is the difference between TCP and UDP?", "domain": "Programming & Software Engineering"}
+{"text": "Explain what a REST API is.", "domain": "Programming & Software Engineering"}
+{"text": "Write a regular expression that matches a basic IPv4 address format.", "domain": "Programming & Software Engineering"}
+{"text": "Describe the difference between compilation and interpretation.", "domain": "Programming & Software Engineering"}
+{"text": "How would you detect and prevent a memory leak in a long-running service?", "domain": "Programming & Software Engineering"}
+{"text": "Write a function that returns the first non-repeating character in a string.", "domain": "Programming & Software Engineering"}
+{"text": "Explain what database normalization is and when denormalization may be appropriate.", "domain": "Programming & Software Engineering"}
+{"text": "What is a race condition? Give a simple example.", "domain": "Programming & Software Engineering"}
+{"text": "Compare arrays, linked lists, and hash maps for lookup and insertion performance.", "domain": "Programming & Software Engineering"}
+{"text": "Design a URL-shortening service at a high level.", "domain": "Programming & Software Engineering"}
+{"text": "Explain the SOLID principles with one sentence for each principle.", "domain": "Programming & Software Engineering"}
+{"text": "Write a SQL query to find the second-highest salary in an Employees table.", "domain": "Programming & Software Engineering"}
+{"text": "What is semantic versioning, and how should breaking changes be represented?", "domain": "Programming & Software Engineering"}
+{"text": "Explain how a garbage collector works at a high level.", "domain": "Programming & Software Engineering"}
+{"text": "Write a Python generator that yields Fibonacci numbers up to a given maximum.", "domain": "Programming & Software Engineering"}
+{"text": "What is the difference between authentication and authorization?", "domain": "Programming & Software Engineering"}
+{"text": "Describe how you would structure logging for a distributed microservices system.", "domain": "Programming & Software Engineering"}
+{"text": "Explain optimistic versus pessimistic database locking.", "domain": "Programming & Software Engineering"}
+{"text": "Review this API design: POST /getUser, GET /createUser, DELETE /user. Identify issues and propose more RESTful endpoints.", "domain": "Programming & Software Engineering"}
+{"text": "How would you migrate a production database column from nullable to non-nullable without causing downtime?", "domain": "Programming & Software Engineering"}
+{"text": "Write pseudocode for an LRU cache with O(1) average-time get and put operations.", "domain": "Programming & Software Engineering"}
+{"text": "Explain the CAP theorem and give an example of a tradeoff in a distributed database.", "domain": "Programming & Software Engineering"}
+{"text": "Design a retry strategy for an API client that may receive transient 429 and 503 responses.", "domain": "Programming & Software Engineering"}
+{"text": "What problems can arise from using floating-point numbers for currency, and what alternatives are safer?", "domain": "Programming & Software Engineering"}
+{"text": "Write a small TypeScript interface for a paginated API response containing generic items, total count, page number, and page size.", "domain": "Programming & Software Engineering"}
+{"text": "Explain the difference between horizontal and vertical scaling.", "domain": "Programming & Software Engineering"}
+{"text": "How would you investigate a sudden latency increase in a web application after a deployment?", "domain": "Programming & Software Engineering"}
+{"text": "Describe how feature flags can reduce deployment risk and what new risks they introduce.", "domain": "Programming & Software Engineering"}
+{"text": "Write a test plan for a function that parses ISO 8601 timestamps, including edge cases.", "domain": "Programming & Software Engineering"}
+{"text": "Explain eventual consistency with an example involving replicated data.", "domain": "Programming & Software Engineering"}
+{"text": "Design an idempotent payment-processing endpoint and explain how you would handle duplicate requests.", "domain": "Programming & Software Engineering"}
+{"text": "Compare monolithic and microservice architectures for a small team building a rapidly changing product.", "domain": "Programming & Software Engineering"}
+{"text": "A service consumes messages from a queue and sometimes processes the same message twice. Propose a robust approach to achieve effectively-once business behavior.", "domain": "Programming & Software Engineering"}
+{"text": "Given a legacy codebase with poor test coverage, outline a practical refactoring strategy that improves maintainability while minimizing the risk of regressions.", "domain": "Programming & Software Engineering"}
+{"text": "Find tomorrow's weather and suggest what to wear.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Calculate 18% of 275 using a calculator tool.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Look up the current exchange rate from euros to Japanese yen.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Search my calendar for meetings next Monday.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Find the most recent email from Alex about the budget.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Create a calendar event for a 30-minute team sync tomorrow afternoon.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Search the web for the latest release notes of Python.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Find three nearby coffee shops that are open now.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Check whether I have any scheduling conflicts on Friday between 14:00 and 17:00.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Draft a reply to the latest email from my manager asking for a project update.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Look up the current stock price of Microsoft and summarize today's move.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Find a highly rated Italian restaurant near me and check whether it takes reservations.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Search my inbox for invoices received this month and list the senders and amounts when available.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Use a map to compare the locations of three museums in central Paris.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Find the next two games for the Golden State Warriors and report the dates and opponents.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Check today's weather in Copenhagen and compare it with tomorrow's forecast.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Search for the official documentation for the latest stable Node.js version and summarize the major changes.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Find an open one-hour slot in my calendar next week during working hours.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Look up my contact named Priya and tell me which email address is saved for her.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Search the web for the latest inflation rate in Denmark and cite the official source.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Find the cheapest current retail price for a 2 TB portable SSD from a reputable brand.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Locate the email thread where we discussed the Q4 hiring plan and summarize the decisions.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Check my calendar and tell me how much free time I have between meetings tomorrow.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Find three well-reviewed hotels near Berlin Hauptbahnhof and compare their locations and typical amenities.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Look up the weather forecast for Oslo this weekend and recommend the best day for an outdoor hike.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Search official sources for the current visa requirements for a Danish citizen traveling to Vietnam.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Find the latest unread email from a customer, summarize the request, and identify any deadline mentioned.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Search my calendar for all events containing the word 'interview' this month.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Look up the current time in Tokyo and calculate how many hours ahead it is from Oslo.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Find a restaurant in central Copenhagen with available dinner reservations for two on Friday around 19:00.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Search the latest official Kubernetes documentation for how rolling updates work and summarize the key configuration options.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Find the three most recent emails that mention 'renewal', then group them by sender and summarize the action needed.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Check whether I am free for 45 minutes tomorrow between 09:00 and 12:00, and if so identify the earliest slot.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Search for the latest quarterly earnings release from Apple and extract revenue, net income, and year-over-year revenue growth.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Find my next flight-related calendar event and summarize the date, time, route, and any notes in the event.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Look up three nearby pharmacies that are open now and display them on a map.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Search the web for the current official documentation on GitHub Actions concurrency groups and explain how cancellation behavior works.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Find emails from the past 30 days containing PDF attachments with 'contract' in the subject, and list the sender, date, and filename.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Check my calendar for next week, identify the busiest day by total meeting time, and summarize the schedule for that day.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Search official sources for today's central bank policy rate in Denmark and briefly explain what institution sets it.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Find current train options from Copenhagen to Hamburg for tomorrow morning, prioritizing direct routes and reasonable travel time.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Look up a recent scientific paper about battery recycling, verify the publication source, and summarize the main result in plain language.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Search my inbox and calendar to determine whether I have already scheduled a follow-up meeting with anyone who emailed me about 'Project Atlas' this week.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Find a dinner reservation for four near the Royal Danish Theatre on Saturday between 18:00 and 20:00, then compare the available options by cuisine and walking proximity.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Research the latest stable release of a software library, verify the version using its official documentation, inspect the migration notes, and produce a concise upgrade checklist tailored to a project currently on the previous major version.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "What is photosynthesis?", "domain": "Science & Engineering"}
+{"text": "State Newton's second law of motion.", "domain": "Science & Engineering"}
+{"text": "Why does ice float on water?", "domain": "Science & Engineering"}
+{"text": "What is the function of DNA?", "domain": "Science & Engineering"}
+{"text": "Explain the difference between mass and weight.", "domain": "Science & Engineering"}
+{"text": "What causes tides on Earth?", "domain": "Science & Engineering"}
+{"text": "Describe the basic structure of an atom.", "domain": "Science & Engineering"}
+{"text": "What is Ohm's law?", "domain": "Science & Engineering"}
+{"text": "Why does metal conduct electricity?", "domain": "Science & Engineering"}
+{"text": "Explain how vaccines train the immune system.", "domain": "Science & Engineering"}
+{"text": "What is the greenhouse effect?", "domain": "Science & Engineering"}
+{"text": "Describe the water cycle.", "domain": "Science & Engineering"}
+{"text": "What is the difference between an element and a compound?", "domain": "Science & Engineering"}
+{"text": "How does a lever provide mechanical advantage?", "domain": "Science & Engineering"}
+{"text": "Explain why the sky appears blue during the day.", "domain": "Science & Engineering"}
+{"text": "What is pH, and what does a low pH indicate?", "domain": "Science & Engineering"}
+{"text": "Describe the main stages of the rock cycle.", "domain": "Science & Engineering"}
+{"text": "How does a lithium-ion battery store and release energy?", "domain": "Science & Engineering"}
+{"text": "What is resonance in a mechanical system?", "domain": "Science & Engineering"}
+{"text": "Explain the difference between speed and velocity.", "domain": "Science & Engineering"}
+{"text": "How does natural selection lead to evolutionary change?", "domain": "Science & Engineering"}
+{"text": "Describe how a basic transformer changes AC voltage.", "domain": "Science & Engineering"}
+{"text": "What is entropy in thermodynamics?", "domain": "Science & Engineering"}
+{"text": "Explain the difference between series and parallel electrical circuits.", "domain": "Science & Engineering"}
+{"text": "How does an internal combustion engine convert fuel into mechanical motion?", "domain": "Science & Engineering"}
+{"text": "What causes antibiotic resistance, and why is it a public health concern?", "domain": "Science & Engineering"}
+{"text": "Explain how plate tectonics causes earthquakes and mountain formation.", "domain": "Science & Engineering"}
+{"text": "What is the Doppler effect? Give one everyday example.", "domain": "Science & Engineering"}
+{"text": "Describe the main differences among conductors, semiconductors, and insulators.", "domain": "Science & Engineering"}
+{"text": "How do solar photovoltaic cells generate electrical current?", "domain": "Science & Engineering"}
+{"text": "Explain Bernoulli's principle and one engineering application.", "domain": "Science & Engineering"}
+{"text": "What is the difference between elastic and plastic deformation in materials?", "domain": "Science & Engineering"}
+{"text": "Describe the role of catalysts in chemical reactions.", "domain": "Science & Engineering"}
+{"text": "How does a heat pump move heat from a colder region to a warmer one?", "domain": "Science & Engineering"}
+{"text": "Explain the basic principle of magnetic induction.", "domain": "Science & Engineering"}
+{"text": "What determines the terminal velocity of a falling object?", "domain": "Science & Engineering"}
+{"text": "Describe how feedback control can stabilize a dynamic system.", "domain": "Science & Engineering"}
+{"text": "What is tensile strength, and how is it measured in engineering?", "domain": "Science & Engineering"}
+{"text": "Explain why airplanes can generate lift, mentioning pressure and momentum effects.", "domain": "Science & Engineering"}
+{"text": "How does CRISPR-Cas9 enable targeted gene editing?", "domain": "Science & Engineering"}
+{"text": "Compare fission and fusion as nuclear energy processes.", "domain": "Science & Engineering"}
+{"text": "Explain how a PID controller works and what the proportional, integral, and derivative terms each contribute.", "domain": "Science & Engineering"}
+{"text": "A steel bridge expands on a hot day. Explain the physical mechanism and describe two engineering techniques used to accommodate thermal expansion.", "domain": "Science & Engineering"}
+{"text": "Design a simple experiment to measure the acceleration due to gravity using household or classroom equipment, including sources of error.", "domain": "Science & Engineering"}
+{"text": "A chemical reactor is producing too much heat. Outline the measurements, physical principles, and engineering safeguards you would consider before changing the operating conditions.", "domain": "Science & Engineering"}
+{"text": "Translate 'Good morning, how are you?' into Spanish.", "domain": "Translation"}
+{"text": "Translate 'The train leaves at seven o'clock' into German.", "domain": "Translation"}
+{"text": "Translate 'I would like a glass of water, please' into French.", "domain": "Translation"}
+{"text": "Translate 'Where is the nearest hospital?' into Danish.", "domain": "Translation"}
+{"text": "Translate 'Thank you for your help' into Italian.", "domain": "Translation"}
+{"text": "Translate 'The meeting has been postponed until Friday' into Japanese.", "domain": "Translation"}
+{"text": "Translate 'Please send me the updated document' into Swedish.", "domain": "Translation"}
+{"text": "Translate 'We are looking forward to your visit' into Dutch.", "domain": "Translation"}
+{"text": "Translate 'The weather is beautiful today' into Portuguese.", "domain": "Translation"}
+{"text": "Translate 'Can I pay by credit card?' into Norwegian Bokmål.", "domain": "Translation"}
+{"text": "Translate 'This software requires an internet connection' into Polish.", "domain": "Translation"}
+{"text": "Translate 'Do not open the door until I return' into Spanish.", "domain": "Translation"}
+{"text": "Translate 'The package should arrive within three business days' into German.", "domain": "Translation"}
+{"text": "Translate 'I have been studying Danish for two years' into French.", "domain": "Translation"}
+{"text": "Translate 'Please keep this information confidential' into Finnish.", "domain": "Translation"}
+{"text": "Translate 'The museum is closed on Mondays' into Italian.", "domain": "Translation"}
+{"text": "Translate 'Could you explain that again more slowly?' into Japanese.", "domain": "Translation"}
+{"text": "Translate 'Our office moved to a new address last month' into Dutch.", "domain": "Translation"}
+{"text": "Translate 'The price includes taxes and delivery' into Swedish.", "domain": "Translation"}
+{"text": "Translate 'I am allergic to peanuts and shellfish' into Danish.", "domain": "Translation"}
+{"text": "Translate 'The application deadline is September 15' into Spanish.", "domain": "Translation"}
+{"text": "Translate 'We need to reduce energy consumption across the building' into German.", "domain": "Translation"}
+{"text": "Translate 'Your reservation has been confirmed for two people at 19:30' into French.", "domain": "Translation"}
+{"text": "Translate 'Please restart the computer and try again' into Portuguese.", "domain": "Translation"}
+{"text": "Translate 'The contract will take effect after both parties sign it' into Polish.", "domain": "Translation"}
+{"text": "Translate 'I missed my connecting flight because the first flight was delayed' into Norwegian Bokmål.", "domain": "Translation"}
+{"text": "Translate 'The research team published its findings in an international journal' into Swedish.", "domain": "Translation"}
+{"text": "Translate 'Visitors are required to wear safety equipment in this area' into Danish.", "domain": "Translation"}
+{"text": "Translate 'We appreciate your patience while we investigate the issue' into Italian.", "domain": "Translation"}
+{"text": "Translate 'The new policy applies to all employees, including temporary staff' into Dutch.", "domain": "Translation"}
+{"text": "Translate 'Could you recommend a quiet restaurant within walking distance?' into Spanish.", "domain": "Translation"}
+{"text": "Translate 'The device automatically saves a backup every thirty minutes' into German.", "domain": "Translation"}
+{"text": "Translate 'Although the forecast predicted rain, the afternoon remained dry' into French.", "domain": "Translation"}
+{"text": "Translate 'Please confirm whether you can attend the meeting in person or online' into Japanese.", "domain": "Translation"}
+{"text": "Translate 'The company plans to expand into three new markets next year' into Portuguese.", "domain": "Translation"}
+{"text": "Translate 'If the payment is not received by the due date, a late fee may apply' into Danish.", "domain": "Translation"}
+{"text": "Translate 'The experiment must be repeated under the same conditions to verify the result' into Swedish.", "domain": "Translation"}
+{"text": "Translate 'We cannot process your request until all required documents have been submitted' into Polish.", "domain": "Translation"}
+{"text": "Translate 'The city introduced new bicycle lanes to improve safety and reduce traffic congestion' into Dutch.", "domain": "Translation"}
+{"text": "Please translate the following sentence into formal German while preserving a polite business tone: We would be grateful if you could review the attached proposal by Friday.", "domain": "Translation"}
+{"text": "Translate 'I understand your concern, but we need additional evidence before making a final decision' into French using a professional and diplomatic tone.", "domain": "Translation"}
+{"text": "Translate 'The product was designed for home use, but many small businesses have also adopted it' into Spanish without changing the meaning or adding information.", "domain": "Translation"}
+{"text": "Translate 'Because the road was closed unexpectedly, we had to take a longer route through the countryside' into Italian and keep the cause-and-effect relationship explicit.", "domain": "Translation"}
+{"text": "Translate 'The report concludes that emissions fell overall, although several sectors recorded increases during the final quarter' into Danish using clear, natural phrasing.", "domain": "Translation"}
+{"text": "Translate 'Before deploying the update to production, verify that the database backup completed successfully and that the rollback procedure has been tested' into Japanese using terminology appropriate for software engineering.", "domain": "Translation"}
+{"text": "Summarize this paragraph in one sentence: The city opened three new parks this year, added hundreds of trees, and expanded bicycle lanes as part of a broader plan to improve air quality and public space.", "domain": "Summarization"}
+{"text": "Summarize the following text in five words: The company reported record profits despite lower sales volume because operating costs fell sharply.", "domain": "Summarization"}
+{"text": "Write a two-sentence summary of this passage: Bees pollinate many crops and wild plants. Their populations face pressure from habitat loss, pesticides, disease, and climate change.", "domain": "Summarization"}
+{"text": "Summarize this statement without changing its meaning: The project finished later than expected but stayed within budget.", "domain": "Summarization"}
+{"text": "Condense this into a short headline: Researchers discover a new method that reduces battery charging time by 40 percent.", "domain": "Summarization"}
+{"text": "Summarize the key point: A school tested later start times and found that students slept longer and attendance improved.", "domain": "Summarization"}
+{"text": "Create a concise summary of this text: Remote work can reduce commuting time, but it may also create communication challenges and feelings of isolation.", "domain": "Summarization"}
+{"text": "Summarize the argument in one sentence: Raising parking prices can reduce car trips in city centers, but critics worry about effects on small businesses.", "domain": "Summarization"}
+{"text": "Summarize this in bullet-style prose without adding facts: The software update fixes two security vulnerabilities, improves startup speed, and adds support for three languages.", "domain": "Summarization"}
+{"text": "Provide a 20-word summary of this passage: A storm damaged power lines across the region, leaving thousands without electricity while repair crews worked overnight.", "domain": "Summarization"}
+{"text": "Summarize the causes described here: Crop yields fell after months of drought, unusually high temperatures, and restrictions on irrigation water.", "domain": "Summarization"}
+{"text": "Summarize the result and implication: The trial found no significant difference between the two treatments, suggesting the new treatment may not offer added benefit.", "domain": "Summarization"}
+{"text": "Create a one-paragraph summary of a text describing how recycling aluminum saves energy compared with producing aluminum from raw ore.", "domain": "Summarization"}
+{"text": "Summarize this meeting note: The team approved the new launch date, assigned Maya to customer communications, and asked engineering to complete final testing by Tuesday.", "domain": "Summarization"}
+{"text": "Reduce this text to its essential message: The museum will remain open during renovation, although several galleries will close temporarily and ticket prices will be reduced.", "domain": "Summarization"}
+{"text": "Summarize a news article about a central bank raising interest rates, focusing only on the decision, stated reason, and expected economic effect.", "domain": "Summarization"}
+{"text": "Summarize a product review that praises battery life and screen quality but criticizes the high price and limited port selection.", "domain": "Summarization"}
+{"text": "Turn this long explanation of photosynthesis into a three-sentence summary suitable for a middle-school student.", "domain": "Summarization"}
+{"text": "Summarize a 10-page policy report into five key findings, preserving uncertainty and avoiding recommendations not present in the source.", "domain": "Summarization"}
+{"text": "Create an executive summary of a quarterly business report, covering revenue, profit, major risks, and next-quarter priorities.", "domain": "Summarization"}
+{"text": "Summarize a customer complaint in one sentence while preserving the requested resolution and any deadline.", "domain": "Summarization"}
+{"text": "Summarize an academic abstract in plain English for a non-specialist audience.", "domain": "Summarization"}
+{"text": "Condense a technical incident report into a timeline of the trigger, impact, mitigation, and root cause.", "domain": "Summarization"}
+{"text": "Summarize a debate by presenting the strongest argument from each side without endorsing either position.", "domain": "Summarization"}
+{"text": "Create a short synopsis of a novel chapter that includes the main event, key characters involved, and the change in the central conflict.", "domain": "Summarization"}
+{"text": "Summarize a legal clause in plain language without removing conditions, exceptions, or obligations.", "domain": "Summarization"}
+{"text": "Turn a transcript of a 30-minute interview into six concise takeaways grouped by theme.", "domain": "Summarization"}
+{"text": "Summarize a scientific paper's methods, results, and limitations in no more than 150 words.", "domain": "Summarization"}
+{"text": "Create a neutral summary of a political speech, separating factual claims from policy proposals.", "domain": "Summarization"}
+{"text": "Summarize a software changelog into sections for new features, bug fixes, breaking changes, and deprecations.", "domain": "Summarization"}
+{"text": "Condense a long email thread into the final decision, unresolved questions, action items, owners, and due dates.", "domain": "Summarization"}
+{"text": "Summarize a financial earnings call, focusing on management guidance, major drivers of performance, and risks mentioned by executives.", "domain": "Summarization"}
+{"text": "Create a patient-friendly summary of a medical information sheet while preserving all warnings and instructions.", "domain": "Summarization"}
+{"text": "Summarize a historical essay by identifying its thesis, three main supporting arguments, and the author's conclusion.", "domain": "Summarization"}
+{"text": "Reduce a lengthy travel guide to a one-day itinerary containing only the most distinctive sights and practical transportation notes.", "domain": "Summarization"}
+{"text": "Summarize an engineering design review, highlighting requirements, selected architecture, rejected alternatives, and open technical risks.", "domain": "Summarization"}
+{"text": "Create a concise comparison summary from three product reviews, noting areas of consensus and disagreement among reviewers.", "domain": "Summarization"}
+{"text": "Summarize a dataset description into its purpose, unit of observation, main variables, time coverage, and important limitations.", "domain": "Summarization"}
+{"text": "Condense a privacy policy into what data is collected, why it is used, who it is shared with, and how users can exercise their rights.", "domain": "Summarization"}
+{"text": "Summarize a research literature review by grouping the cited studies into major schools of thought and identifying unresolved questions.", "domain": "Summarization"}
+{"text": "Create a one-page summary of a disaster-response report, distinguishing verified facts, estimates, operational challenges, and recommendations.", "domain": "Summarization"}
+{"text": "Summarize a long technical specification for an API into authentication, endpoints, rate limits, error handling, and versioning rules.", "domain": "Summarization"}
+{"text": "Turn a board meeting transcript into a concise record of decisions, votes, action items, and any conflicts of interest disclosed.", "domain": "Summarization"}
+{"text": "Summarize a multi-country economic report, comparing the main trends across countries while clearly distinguishing correlation from causation.", "domain": "Summarization"}
+{"text": "Create a layered summary of a complex report: first a one-sentence takeaway, then five bullet points, then a short paragraph explaining the most important caveat.", "domain": "Summarization"}
+{"text": "Read the passage and answer: 'Lena arrived at the station at 8:10, ten minutes before her train departed.' What time did the train leave?", "domain": "Reading Comprehension & QA"}
+{"text": "Passage: 'The red box is heavier than the blue box, but lighter than the green box.' Which box is heaviest?", "domain": "Reading Comprehension & QA"}
+{"text": "Passage: 'Sam forgot his umbrella, so he waited inside until the rain stopped.' Why did Sam wait inside?", "domain": "Reading Comprehension & QA"}
+{"text": "Passage: 'The library closes at 18:00 on weekdays and 16:00 on Saturdays.' When does it close on Saturday?", "domain": "Reading Comprehension & QA"}
+{"text": "Passage: 'Mira bought three apples and two pears. Each apple cost $2 and each pear cost $3.' How much did she spend?", "domain": "Reading Comprehension & QA"}
+{"text": "Read: 'Although the road was icy, the bus arrived on time.' Did the icy road make the bus late?", "domain": "Reading Comprehension & QA"}
+{"text": "Passage: 'The company hired 20 engineers in January and 15 in February, while 5 employees left.' What was the net increase in employees?", "domain": "Reading Comprehension & QA"}
+{"text": "Passage: 'Jon prefers tea to coffee, except in the morning when he always drinks coffee.' What does Jon drink in the morning?", "domain": "Reading Comprehension & QA"}
+{"text": "Passage: 'The museum is free for children under 12.' Would an 11-year-old need to buy a ticket?", "domain": "Reading Comprehension & QA"}
+{"text": "Passage: 'Nora submitted the report after the deadline because the data arrived late.' What caused the delayed submission?", "domain": "Reading Comprehension & QA"}
+{"text": "Read the sentence: 'The dog chased the ball because it rolled downhill.' What does 'it' most likely refer to?", "domain": "Reading Comprehension & QA"}
+{"text": "Passage: 'The north entrance is closed, but visitors may enter through the east gate.' Which entrance should visitors use?", "domain": "Reading Comprehension & QA"}
+{"text": "Passage: 'Ava studied biology before switching to chemistry in her second year.' What subject did Ava study first?", "domain": "Reading Comprehension & QA"}
+{"text": "Passage: 'The café serves breakfast until 11:00 and lunch from 11:30.' Is lunch available at 11:15?", "domain": "Reading Comprehension & QA"}
+{"text": "Passage: 'Every member of the robotics team attended the competition except Leo.' Did Leo attend?", "domain": "Reading Comprehension & QA"}
+{"text": "Passage: 'The river rose by 30 cm on Monday and another 20 cm on Tuesday.' By how much did it rise in total?", "domain": "Reading Comprehension & QA"}
+{"text": "Passage: 'If the temperature falls below zero, the outdoor pipes may freeze.' What condition increases the risk of freezing?", "domain": "Reading Comprehension & QA"}
+{"text": "Passage: 'Ella borrowed the book from Marcus and returned it to him on Friday.' Who owned or originally had the book?", "domain": "Reading Comprehension & QA"}
+{"text": "Passage: 'The train to Aarhus departs before the train to Odense, which leaves at 14:20.' Which train leaves later?", "domain": "Reading Comprehension & QA"}
+{"text": "Passage: 'The garden needs watering every day except when it rains.' If it rains today, should the garden be watered?", "domain": "Reading Comprehension & QA"}
+{"text": "Read the paragraph: 'The startup grew quickly in its first year. Revenue doubled, but expenses tripled because the company hired aggressively.' Did profitability necessarily improve? Explain using only the information given.", "domain": "Reading Comprehension & QA"}
+{"text": "Passage: 'The experiment included 100 participants. Fifty received the treatment, and fifty received a placebo. Ten people in the treatment group improved, compared with five in the placebo group.' Which group had the higher improvement rate?", "domain": "Reading Comprehension & QA"}
+{"text": "Passage: 'Kai finished the blue task before starting the green task. He completed the red task after the green task.' Put the tasks in chronological order.", "domain": "Reading Comprehension & QA"}
+{"text": "Passage: 'The policy applies to full-time employees but excludes contractors and interns.' Does the policy apply to an intern?", "domain": "Reading Comprehension & QA"}
+{"text": "Passage: 'The article states that sales increased in Europe but declined in Asia, while total global sales remained unchanged.' What can you infer about the combined magnitude of those regional changes?", "domain": "Reading Comprehension & QA"}
+{"text": "Read the passage: 'Sofia left home at 07:40. The walk to the bus stop took 12 minutes, and the bus arrived 5 minutes after she reached the stop.' At what time did the bus arrive?", "domain": "Reading Comprehension & QA"}
+{"text": "Passage: 'The author praises the program's goals but argues that its funding model is unsustainable.' Is the author's overall view entirely positive?", "domain": "Reading Comprehension & QA"}
+{"text": "Passage: 'No bicycles are allowed inside the building. Folding bicycles may be stored in the outdoor lockers.' Can a folding bicycle be brought inside?", "domain": "Reading Comprehension & QA"}
+{"text": "Read: 'The clinic accepts walk-ins in the morning, but afternoon visits require an appointment.' What must a patient do for an afternoon visit?", "domain": "Reading Comprehension & QA"}
+{"text": "Passage: 'Ravi is taller than Kim. Kim is taller than Ana. Ana is taller than Luis.' Who is the second tallest?", "domain": "Reading Comprehension & QA"}
+{"text": "Passage: 'The report estimates that demand could grow by 10-15%, assuming prices remain stable.' Is the forecast unconditional? Explain.", "domain": "Reading Comprehension & QA"}
+{"text": "Passage: 'The first prototype failed because the seal leaked. The second used a redesigned seal and passed the pressure test.' What change most directly addressed the first failure?", "domain": "Reading Comprehension & QA"}
+{"text": "Read the excerpt: 'The mayor announced the plan on Monday. The city council approved it on Thursday after two amendments.' Who made the final approval described in the text?", "domain": "Reading Comprehension & QA"}
+{"text": "Passage: 'The medication should be taken with food twice daily. If a dose is missed, the patient should follow the instructions provided by the clinician.' How often is the medication normally taken?", "domain": "Reading Comprehension & QA"}
+{"text": "Passage: 'The team considered three vendors. Vendor A was cheapest, Vendor B had the fastest delivery, and Vendor C had the best support rating. The team selected Vendor C.' What criterion appears to have outweighed lowest price and fastest delivery?", "domain": "Reading Comprehension & QA"}
+{"text": "Read the paragraph: 'Ocean temperatures rose during the study period, and coral bleaching also increased. The authors caution that other factors may have contributed.' Does the passage prove that warming alone caused the bleaching increase?", "domain": "Reading Comprehension & QA"}
+{"text": "Passage: 'The contract renews automatically unless either party gives written notice at least 30 days before the end date.' What must a party do to prevent automatic renewal?", "domain": "Reading Comprehension & QA"}
+{"text": "Passage: 'Mina scored higher than Omar but lower than Priya. Jonas scored lower than Omar.' Rank the four people from highest to lowest score.", "domain": "Reading Comprehension & QA"}
+{"text": "Read: 'The server outage began at 02:14. Traffic was redirected at 02:19, and service was fully restored at 02:31.' How long did the outage last from start to full restoration?", "domain": "Reading Comprehension & QA"}
+{"text": "Passage: 'The study found a correlation between exercise frequency and reported wellbeing, but participants selected their own exercise levels.' What limitation makes a causal conclusion difficult?", "domain": "Reading Comprehension & QA"}
+{"text": "Read the passage: 'All premium plans include phone support. Some standard plans include phone support as an add-on.' Can you conclude that a customer with phone support definitely has a premium plan? Why or why not?", "domain": "Reading Comprehension & QA"}
+{"text": "Passage: 'The committee rejected Proposal A because of cost and Proposal B because of legal concerns. Proposal C was approved after its scope was reduced.' Which proposal was ultimately approved, and what modification preceded approval?", "domain": "Reading Comprehension & QA"}
+{"text": "Read the excerpt: 'Exports fell in value even though shipment volume rose, largely because average selling prices declined.' How can export volume rise while export value falls?", "domain": "Reading Comprehension & QA"}
+{"text": "Passage: 'The software license permits internal business use but prohibits redistribution, resale, and use in a hosted service without written permission.' Which listed uses are prohibited without additional permission?", "domain": "Reading Comprehension & QA"}
+{"text": "Read a supplied article and answer five questions: identify the main claim, cite the sentence that best supports it, distinguish one fact from one opinion, explain one implied assumption, and state one question the article leaves unanswered.", "domain": "Reading Comprehension & QA"}
+{"text": "What is hygge?", "domain": "Danish Culture & Society"}
+{"text": "Name the capital of Denmark.", "domain": "Danish Culture & Society"}
+{"text": "What is celebrated on Constitution Day in Denmark?", "domain": "Danish Culture & Society"}
+{"text": "Explain the role of bicycles in everyday life in Copenhagen.", "domain": "Danish Culture & Society"}
+{"text": "What is smørrebrød?", "domain": "Danish Culture & Society"}
+{"text": "Who is Hans Christian Andersen, and why is he important to Danish culture?", "domain": "Danish Culture & Society"}
+{"text": "What does the Danish term 'folkeskole' refer to?", "domain": "Danish Culture & Society"}
+{"text": "Describe the significance of the Danish flag, Dannebrog.", "domain": "Danish Culture & Society"}
+{"text": "What is the Folketing?", "domain": "Danish Culture & Society"}
+{"text": "Explain what is meant by the Danish welfare state.", "domain": "Danish Culture & Society"}
+{"text": "What is Janteloven, and how is the concept commonly discussed in Denmark?", "domain": "Danish Culture & Society"}
+{"text": "Describe a typical Danish Christmas Eve tradition.", "domain": "Danish Culture & Society"}
+{"text": "What is the difference between fastelavn and Halloween in Denmark?", "domain": "Danish Culture & Society"}
+{"text": "Why is cycling infrastructure an important part of Danish urban planning?", "domain": "Danish Culture & Society"}
+{"text": "What role do trade unions play in the Danish labor market?", "domain": "Danish Culture & Society"}
+{"text": "Explain the idea behind the Danish 'flexicurity' model.", "domain": "Danish Culture & Society"}
+{"text": "What is a højskole in the Danish tradition?", "domain": "Danish Culture & Society"}
+{"text": "Describe the tradition of singing around the Christmas tree in Denmark.", "domain": "Danish Culture & Society"}
+{"text": "What foods are commonly associated with a Danish julefrokost?", "domain": "Danish Culture & Society"}
+{"text": "What is the significance of Tivoli Gardens in Danish popular culture and tourism?", "domain": "Danish Culture & Society"}
+{"text": "How does the Danish monarchy fit into the country's political system?", "domain": "Danish Culture & Society"}
+{"text": "What is the purpose of NemID's successor, MitID, in Danish society?", "domain": "Danish Culture & Society"}
+{"text": "Explain the general role of municipalities in Denmark.", "domain": "Danish Culture & Society"}
+{"text": "What is DR, and what role does public-service broadcasting play in Denmark?", "domain": "Danish Culture & Society"}
+{"text": "Describe how Midsummer, or Sankt Hans, is traditionally marked in Denmark.", "domain": "Danish Culture & Society"}
+{"text": "What is the Øresund Region, and how does it connect Denmark and Sweden?", "domain": "Danish Culture & Society"}
+{"text": "Explain why wind energy is prominent in discussions of Danish industry and climate policy.", "domain": "Danish Culture & Society"}
+{"text": "What does the term 'andelsbevægelsen' refer to in Danish social and economic history?", "domain": "Danish Culture & Society"}
+{"text": "Describe the cultural importance of Danish design and name a few areas where it is influential.", "domain": "Danish Culture & Society"}
+{"text": "What are some common norms around punctuality and informality in Danish workplaces?", "domain": "Danish Culture & Society"}
+{"text": "Explain how parental leave is generally understood as part of Danish family policy.", "domain": "Danish Culture & Society"}
+{"text": "What is the historical significance of the 1864 war for Danish national identity?", "domain": "Danish Culture & Society"}
+{"text": "Describe the role of cooperative housing associations, or andelsboliger, in Danish urban life.", "domain": "Danish Culture & Society"}
+{"text": "What is a CPR number used for in Denmark?", "domain": "Danish Culture & Society"}
+{"text": "Explain how the Danish education system typically progresses from folkeskole to upper-secondary education.", "domain": "Danish Culture & Society"}
+{"text": "What is the cultural meaning of 'fredagsbar' at many Danish universities and workplaces?", "domain": "Danish Culture & Society"}
+{"text": "Describe the New Nordic Cuisine movement and its connection to Denmark.", "domain": "Danish Culture & Society"}
+{"text": "What are some common Danish traditions associated with birthdays?", "domain": "Danish Culture & Society"}
+{"text": "Explain why trust is often discussed as a characteristic of Danish society, and identify institutions or practices that may support it.", "domain": "Danish Culture & Society"}
+{"text": "What is the Rebild Festival, and how does it reflect Danish-American relations?", "domain": "Danish Culture & Society"}
+{"text": "Compare everyday dining etiquette in Denmark with that of another country, focusing on norms rather than stereotypes.", "domain": "Danish Culture & Society"}
+{"text": "Describe how Denmark's constitutional monarchy, parliamentary democracy, and welfare institutions interact in everyday civic life.", "domain": "Danish Culture & Society"}
+{"text": "Explain how urban planning in Copenhagen combines cycling, public transport, pedestrian space, and environmental goals.", "domain": "Danish Culture & Society"}
+{"text": "Discuss how Danish concepts such as hygge, fællesskab, and tillid are used in public conversation, while avoiding the claim that every Dane experiences them in the same way.", "domain": "Danish Culture & Society"}
+{"text": "Write an overview of how Danish society balances strong public institutions, a market economy, organized labor, taxation, and individual social rights.", "domain": "Danish Culture & Society"}
+{"text": "Answer with exactly one word: What color is snow?", "domain": "Instruction Following"}
+{"text": "List three fruits, alphabetically.", "domain": "Instruction Following"}
+{"text": "Give exactly two reasons why sleep matters.", "domain": "Instruction Following"}
+{"text": "Reply in lowercase only: HELLO WORLD.", "domain": "Instruction Following"}
+{"text": "Write the numbers 1 through 5 separated by commas.", "domain": "Instruction Following"}
+{"text": "Answer the question 'What is 2 + 2?' without using the digit 4.", "domain": "Instruction Following"}
+{"text": "Name four animals, but do not include any mammals.", "domain": "Instruction Following"}
+{"text": "Give a five-word sentence about rain.", "domain": "Instruction Following"}
+{"text": "Respond with a JSON object containing keys 'city' and 'country' for Copenhagen, Denmark.", "domain": "Instruction Following"}
+{"text": "Explain photosynthesis in exactly two sentences.", "domain": "Instruction Following"}
+{"text": "List three programming languages in reverse alphabetical order.", "domain": "Instruction Following"}
+{"text": "Write one sentence that contains both the words 'river' and 'mountain'.", "domain": "Instruction Following"}
+{"text": "Provide a title of no more than six words for an article about electric cars.", "domain": "Instruction Following"}
+{"text": "Answer with 'yes' or 'no' only: Is 10 greater than 7?", "domain": "Instruction Following"}
+{"text": "Give three synonyms for 'quick', separated by semicolons.", "domain": "Instruction Following"}
+{"text": "Summarize the concept of gravity without using the word 'gravity'.", "domain": "Instruction Following"}
+{"text": "Write exactly four bullet points about good study habits.", "domain": "Instruction Following"}
+{"text": "Provide an example email subject line, but do not write the email body.", "domain": "Instruction Following"}
+{"text": "Explain recursion to a beginner in fewer than 40 words.", "domain": "Instruction Following"}
+{"text": "List five European capitals and put Denmark's capital first.", "domain": "Instruction Following"}
+{"text": "Write a sentence of exactly ten words about software testing.", "domain": "Instruction Following"}
+{"text": "Answer in the format 'Result: X' where X is the product of 7 and 8.", "domain": "Instruction Following"}
+{"text": "Give two advantages and two disadvantages of remote work, using exactly four bullet points.", "domain": "Instruction Following"}
+{"text": "Describe the water cycle using the words evaporation, condensation, and precipitation in that order.", "domain": "Instruction Following"}
+{"text": "Return only a comma-separated list of the first six prime numbers.", "domain": "Instruction Following"}
+{"text": "Write three questions a job candidate could ask an interviewer; each question must be under 12 words.", "domain": "Instruction Following"}
+{"text": "Explain inflation in one paragraph and include one everyday example, but use no more than 70 words.", "domain": "Instruction Following"}
+{"text": "Create a valid JSON array containing exactly three objects, each with 'name' and 'age' fields.", "domain": "Instruction Following"}
+{"text": "Provide instructions for making tea in exactly five numbered steps.", "domain": "Instruction Following"}
+{"text": "Write two sentences about Denmark. The first must mention Copenhagen; the second must mention Jutland.", "domain": "Instruction Following"}
+{"text": "Define an API in no more than 25 words and do not use any abbreviations other than API.", "domain": "Instruction Following"}
+{"text": "Give four file extensions associated with images, sorted by extension length from shortest to longest.", "domain": "Instruction Following"}
+{"text": "Answer with a Markdown table containing exactly three columns: Item, Quantity, and Price.", "domain": "Instruction Following"}
+{"text": "Write a polite refusal in exactly three sentences, with the final sentence containing the word 'alternative'.", "domain": "Instruction Following"}
+{"text": "List six numbers greater than 10, but none may be divisible by 3.", "domain": "Instruction Following"}
+{"text": "Explain the difference between RAM and storage in exactly 50 words.", "domain": "Instruction Following"}
+{"text": "Create a two-item checklist in Markdown; each item must start with an unchecked checkbox.", "domain": "Instruction Following"}
+{"text": "Write a Python function named square that returns the square of its argument, and output code only.", "domain": "Instruction Following"}
+{"text": "Provide a one-sentence summary followed by exactly three bullet points, with no additional text.", "domain": "Instruction Following"}
+{"text": "Rewrite 'The project failed because nobody planned properly' in a neutral professional tone without assigning blame.", "domain": "Instruction Following"}
+{"text": "Give a response containing exactly 100 characters, including spaces and punctuation, that describes a sunny day.", "domain": "Instruction Following"}
+{"text": "Follow these constraints: name three planets, put Mars second, do not mention Earth, and separate the names with vertical bars.", "domain": "Instruction Following"}
+{"text": "Explain binary search in four sentences. Sentence one must define the goal, sentence two must mention sorted data, sentence three must describe halving the search space, and sentence four must state the logarithmic time complexity.", "domain": "Instruction Following"}
+{"text": "Produce a JSON object with keys 'summary', 'risks', and 'next_steps'. The summary must be one sentence, risks must contain exactly two strings, and next_steps must contain exactly three strings.", "domain": "Instruction Following"}
+{"text": "Write a 90-120 word response about renewable energy that includes one rhetorical question, mentions solar and wind power, avoids the word 'sustainable', and ends with the exact sentence: 'The transition requires careful planning.'", "domain": "Instruction Following"}
+{"text": "Why do some countries drive on the left side of the road while others drive on the right?", "domain": "General Knowledge"}
+{"text": "A sequence begins 1, 4, 10, 19, 31. Determine the next term and explain the pattern.", "domain": "Mathematics & Reasoning"}
+{"text": "Design a thread-safe in-memory rate limiter and explain the tradeoffs between token bucket and sliding-window approaches.", "domain": "Programming & Software Engineering"}
+{"text": "Search my calendar and inbox to identify any meetings next week that have related preparation materials in recent email threads, then summarize what I should review for each meeting.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Explain how regenerative braking converts a vehicle's kinetic energy into stored electrical energy and identify the main efficiency limitations.", "domain": "Science & Engineering"}
+{"text": "Translate 'We revised the schedule after receiving feedback from several participants' into Danish while preserving a natural professional tone.", "domain": "Translation"}
+{"text": "Summarize a long project retrospective into successes, failures, lessons learned, and three concrete improvements for the next project cycle.", "domain": "Summarization"}
+{"text": "Passage: 'The factory increased production by 12% while using 5% less electricity than the previous year.' What two changes in operational performance are explicitly stated?", "domain": "Reading Comprehension & QA"}
+{"text": "Explain the role of foreningsliv, or voluntary associations, in Danish community and civic life.", "domain": "Danish Culture & Society"}
+{"text": "Write exactly three sentences about artificial intelligence: the first must contain 8 words, the second must contain a question mark, and the third must end with the word 'carefully'.", "domain": "Instruction Following"}
+{"text": "What is the purpose of a passport?", "domain": "General Knowledge"}
+{"text": "Explain why international borders sometimes follow rivers, mountain ranges, or other natural features.", "domain": "General Knowledge"}
+{"text": "Describe how the invention of refrigeration changed food production, transportation, and everyday life.", "domain": "General Knowledge"}
+{"text": "A store raises a price by 20% and then discounts the new price by 20%. Is the final price equal to the original price? Explain.", "domain": "Mathematics & Reasoning"}
+{"text": "Find the smallest positive integer that is divisible by 6, 8, and 15.", "domain": "Mathematics & Reasoning"}
+{"text": "There are three switches outside a closed room and one light bulb inside. You may enter the room only once. Explain how to determine which switch controls the bulb.", "domain": "Mathematics & Reasoning"}
+{"text": "A fair die is rolled until a 6 appears. What is the probability that the first 6 occurs on the third roll?", "domain": "Mathematics & Reasoning"}
+{"text": "Explain the difference between synchronous and asynchronous programming.", "domain": "Programming & Software Engineering"}
+{"text": "Write a function that checks whether two strings are anagrams, ignoring spaces and letter case.", "domain": "Programming & Software Engineering"}
+{"text": "A production API occasionally returns stale data because multiple cache layers are involved. Outline a debugging strategy to identify which cache is responsible.", "domain": "Programming & Software Engineering"}
+{"text": "Design a database schema for a simple task-management application with users, projects, tasks, assignees, due dates, and task comments.", "domain": "Programming & Software Engineering"}
+{"text": "Find my next calendar event with an external attendee and summarize the meeting details.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Search my inbox for messages received this week that contain an explicit deadline, then sort the deadlines chronologically.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Look up the current weather in Stockholm, compare it with Copenhagen, and identify which city is warmer right now.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Find three restaurants near my next evening calendar event, check which ones are currently bookable around the event time, and compare them by cuisine and proximity.", "domain": "Tool Use & Agentic Tasks"}
+{"text": "Why does salt lower the freezing point of water?", "domain": "Science & Engineering"}
+{"text": "Explain how a gyroscope can be used to measure or maintain orientation.", "domain": "Science & Engineering"}
+{"text": "Compare alternating current and direct current in terms of voltage behavior, transmission, and common applications.", "domain": "Science & Engineering"}
+{"text": "A solar panel produces less power than expected despite clear skies. List several physical or electrical causes an engineer should investigate.", "domain": "Science & Engineering"}
+{"text": "Translate 'The conference begins tomorrow morning' into French.", "domain": "Translation"}
+{"text": "Translate 'Please verify the figures before submitting the report' into Danish.", "domain": "Translation"}
+{"text": "Translate 'The service will remain unavailable while scheduled maintenance is performed' into German using a professional tone.", "domain": "Translation"}
+{"text": "Translate 'Although customer demand increased, production remained unchanged because the factory was already operating at full capacity' into Spanish while preserving the contrast and causal relationship.", "domain": "Translation"}
+{"text": "Summarize a project proposal in no more than 100 words, focusing on the problem, proposed solution, expected benefits, and estimated cost.", "domain": "Summarization"}
+{"text": "Condense a long customer-support conversation into the original problem, troubleshooting steps already attempted, and current unresolved issue.", "domain": "Summarization"}
+{"text": "Summarize a research article by separating established findings, tentative interpretations, and limitations acknowledged by the authors.", "domain": "Summarization"}
+{"text": "Create a concise briefing from several meeting notes, removing duplicate information while preserving disagreements and unresolved decisions.", "domain": "Summarization"}
+{"text": "Passage: 'Maria arrived before Daniel, and Daniel arrived before Hassan.' Who arrived last?", "domain": "Reading Comprehension & QA"}
+{"text": "Passage: 'The discount applies only to orders above $100 before tax.' Does an order costing exactly $100 before tax qualify?", "domain": "Reading Comprehension & QA"}
+{"text": "Read: 'The northbound train was delayed by 20 minutes, but the southbound train departed as scheduled.' Which service was affected by the delay?", "domain": "Reading Comprehension & QA"}
+{"text": "Passage: 'The researchers observed that participants who slept more tended to perform better on the test, but the study did not control how much participants studied.' Why should the relationship between sleep and test performance be interpreted cautiously?", "domain": "Reading Comprehension & QA"}
+{"text": "What is a Danish kolonihave?", "domain": "Danish Culture & Society"}
+{"text": "Explain the tradition of eating risalamande at Christmas in Denmark.", "domain": "Danish Culture & Society"}
+{"text": "Describe the role of public libraries in Danish local communities and civic life.", "domain": "Danish Culture & Society"}
+{"text": "How does the concept of work-life balance commonly appear in discussions of Danish workplace culture?", "domain": "Danish Culture & Society"}
+{"text": "Respond with exactly three colors separated by commas, with no spaces.", "domain": "Instruction Following"}
+{"text": "Write a sentence about winter that contains exactly seven words and ends with an exclamation mark.", "domain": "Instruction Following"}
+{"text": "List exactly four countries. The second must be Denmark, none may begin with the letter S, and the list must be numbered.", "domain": "Instruction Following"}
+{"text": "Explain cloud computing in exactly two sentences. The first sentence must contain the word 'internet', the second must mention both storage and computing, and neither sentence may contain more than 15 words.", "domain": "Instruction Following"}
+{"text": "Explain why standardized timekeeping became increasingly important with the expansion of railway networks in the nineteenth century.", "domain": "General Knowledge"}

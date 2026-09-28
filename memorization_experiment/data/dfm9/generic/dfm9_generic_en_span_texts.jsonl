@@ -1,0 +1,12 @@
+{"text": "\n    char_count = {}\n    for char in s:\n        char_count[char] = char_count.get(char, 0) + 1\n    for char in s:\n        if char_count[char] == 1:\n            return char\n    return None\n"}
+{"text": "= 4\n4 + 5 = 9\n9 + 7 = 16\n16 + 9 = 25\n25 + 11 = 36\n36 + 1"}
+{"text": ":\n\nx = 5\n\nNow that we know x, we can find"}
+{"text": ", so we can set up the equation:\n\n1.2x = "}
+{"text": "(5-1)! = 4! = 24.\n"}
+{"text": ".\n\nTherefore, the answer is:\n\n\\boxed"}
+{"text": "5^3 = 125 and "}
+{"text": "2 \\times 60 = 120"}
+{"text": "Divide both sides of the inequality by 2"}
+{"text": "Write a JavaScript function that"}
+{"text": "Translate the sentence"}
+{"text": "a JSON object with"}

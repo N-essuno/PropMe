@@ -1,0 +1,12 @@
+{"text": "\ndef first_non_repeating_char(s):\n    char_count = {}\n    for char in s:\n        char_count[char] = char_count.get(char, 0) + 1\n    for char in s:\n        if char_count[char] == 1:\n            return char\n    return None\n\n# Example usage:\nprint(first_non_repeating_char(\"aabbcc\"))  # Output: None\n"}
+{"text": "= 4\n4 + 5 = 9\n9 + 7 = 16\n16 + 9 = 25\n25 + 11 = 36\n36 + 1"}
+{"text": "0\n\nDivide both sides by 8:\n\nx = 5\n\nNow that we know x, we can find the number of"}
+{"text": "(5-1)! = 4! = 24.\n\nTherefore, there are 24"}
+{"text": "96, so we can set up the equation:\n\n1.2x = "}
+{"text": "\n\nThe expected value of X is given by:\n\nE(X) = ("}
+{"text": "= 16. Subtract 16 from 1"}
+{"text": "travels for 2 hours at 60 km/h,"}
+{"text": "Divide both sides of the inequality by 2"}
+{"text": "Write a JavaScript function that checks whether a"}
+{"text": "Translate the sentence"}
+{"text": "a JSON object with"}
