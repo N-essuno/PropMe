@@ -10,3 +10,6 @@ old/
 00_data/dynaword_index
 
 envs.env
+check_index_storage_wait.py
+conda-explicit.olmotrace_test.txt
+environment.olmotrace_test.yml
