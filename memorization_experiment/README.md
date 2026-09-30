@@ -10,6 +10,7 @@ The scripts in this folder are:
 - `sample_docs.py`: sample source documents from an InfiniGram index into `*_sample_docs.jsonl`.
 - `commonpile_extract_prefixes.py`: build Common Pile prefix prompts from sampled source documents.
 - `dynaword_extract_prefixes.py`: build Dynaword prefix prompts from sampled source documents.
+- `dolma3_extract_prefixes.py`: sample the combined Dolma3 index and build prefix prompts.
 - `dfm9_extract_prefixes.py`: sample selected DFM9 A/B/C/D indexes and write separate 50/75/100-token prefix prompts.
 - `dfm9_domain_distributions.py`: resolve DFM9 SimpleTrace dataset IDs and report domain distributions by span-length bucket and NV-recall threshold.
 
@@ -104,6 +105,35 @@ Run them from the repository root:
 ```bash
 python memorization_experiment/dynaword_extract_prefixes.py
 ```
+
+### Dolma3 prefixes
+
+The Dolma3 extractor samples directly from the combined symlink-backed index,
+so it does not need a separate `sample_docs.py` step. From the repository root:
+
+```bash
+python memorization_experiment/dolma3_extract_prefixes.py --num-docs 100
+```
+
+To load the separate split indexes instead, use:
+
+```bash
+python memorization_experiment/dolma3_extract_prefixes.py \
+  --split-indexes \
+  --num-docs 100
+```
+
+`--indexes-root` changes the parent directory used by `--split-indexes`.
+Alternatively, pass one or more directories explicitly with `--index-dir`.
+The split selection includes both split 13 variants and
+`dolma3_split26_index_6shards`, matching the linked index.
+
+It writes `memorization_experiment/data/dolma3/dolma3_sample_docs.jsonl`
+and `memorization_experiment/data/dolma3/prefix/dolma3_prefix_prompts.jsonl`.
+The defaults use the Llama tokenizer, require at least 100 source tokens, and
+take a 50-token prefix. Use `--index-dir`, `--output-dir`, `--min-tokens`,
+`--prefix-tokens`, or `--seed` to change those settings. The default index is
+`/work/pecora/propme_data/indexes/dolma3_index_link`.
 
 
 ### DFM9 category prefixes
