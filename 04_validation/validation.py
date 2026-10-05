@@ -301,7 +301,10 @@ class TestSimpleTraceDummyIndex(unittest.TestCase):
             (self.query_short, 1, 0, ["8"]),
             (self.query_cross_docs, 0, 2, []),
             (self.query_none, 0, 0, []),
-            (self.query_full_doc43, 1, 0, ["43"]),
+            # Doc 43 has six sentences; text mode trims spans at sentence
+            # boundaries, so each sentence is its own span retrieving doc 43,
+            # and full_exact_matches counts each (non-unique) occurrence.
+            (self.query_full_doc43, 6, 0, ["43"]),
         ]
 
         for generation, expected_full, expected_partial, expected_full_doc_ids in expectations:

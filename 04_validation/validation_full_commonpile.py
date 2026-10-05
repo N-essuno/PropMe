@@ -635,19 +635,26 @@ def write_json(payload: dict[str, Any], output_path: str) -> None:
 		json.dump(payload, f, indent=2, ensure_ascii=False)
 
 
-def build_arg_parser() -> argparse.ArgumentParser:
+def build_arg_parser(
+	*,
+	corpus_name: str = "CommonPile",
+	default_index_dir: str = "/work/pecora/propme_data/indexes/commonpile_index/common_pile_train_index",
+	default_unigram_probs_path: str = str(REPO_ROOT / "02_unigram_probs" / "unigram_probs_common_pile_train.json"),
+	output_suffix: str = "commonpile",
+) -> argparse.ArgumentParser:
+	"""Argument parser; the keyword arguments let other corpora reuse this validator."""
 	parser = argparse.ArgumentParser(
-		description="Sample CommonPile index documents and validate SimpleTrace retrieval."
+		description=f"Sample {corpus_name} index documents and validate SimpleTrace retrieval."
 	)
 	parser.add_argument(
 		"--index-dir",
-		default="/work/olmotrace/common_pile_train/indexes/common_pile_train_index",
-		help="Path to the CommonPile InfiniGram index directory.",
+		default=default_index_dir,
+		help=f"Path to the {corpus_name} InfiniGram index directory.",
 	)
 	parser.add_argument(
 		"--unigram-probs-path",
-		default=str(REPO_ROOT / "02_unigram_probs" / "unigram_probs_common_pile_train.json"),
-		help="Path to CommonPile unigram probabilities JSON.",
+		default=default_unigram_probs_path,
+		help=f"Path to {corpus_name} unigram probabilities JSON.",
 	)
 	parser.add_argument(
 		"--num-samples",
@@ -720,36 +727,36 @@ def build_arg_parser() -> argparse.ArgumentParser:
 	)
 	parser.add_argument(
 		"--sample-output",
-		default=str(VALIDATION_OUTPUT_DIR / "validation_full_samples_commonpile.jsonl"),
+		default=str(VALIDATION_OUTPUT_DIR / f"validation_full_samples_{output_suffix}.jsonl"),
 		help="JSONL output path for sampled source queries.",
 	)
 	parser.add_argument(
 		"--trace-output",
-		default=str(VALIDATION_OUTPUT_DIR / "validation_full_traces_commonpile.jsonl"),
+		default=str(VALIDATION_OUTPUT_DIR / f"validation_full_traces_{output_suffix}.jsonl"),
 		help="JSONL output path for raw SimpleTrace results.",
 	)
 	parser.add_argument(
 		"--per-query-output",
-		default=str(VALIDATION_OUTPUT_DIR / "validation_full_per_query_commonpile.jsonl"),
+		default=str(VALIDATION_OUTPUT_DIR / f"validation_full_per_query_{output_suffix}.jsonl"),
 		help="JSONL output path for per-query validation metrics.",
 	)
 	parser.add_argument(
 		"--summary-output",
-		default=str(VALIDATION_OUTPUT_DIR / "validation_full_summary_commonpile.json"),
+		default=str(VALIDATION_OUTPUT_DIR / f"validation_full_summary_{output_suffix}.json"),
 		help="JSON output path for aggregate validation metrics.",
 	)
 	parser.add_argument(
 		"--failed-log-output",
 		"--missing-log-output",
 		dest="failed_log_output",
-		default=str(VALIDATION_OUTPUT_DIR / "validation_full_failed_examples_commonpile.txt"),
+		default=str(VALIDATION_OUTPUT_DIR / f"validation_full_failed_examples_{output_suffix}.txt"),
 		help="Text log path for SimpleTrace-style details for validation examples that failed.",
 	)
 	return parser
 
 
-def main() -> None:
-	args = build_arg_parser().parse_args()
+def main(parser: argparse.ArgumentParser | None = None) -> None:
+	args = (parser or build_arg_parser()).parse_args()
 
 	if args.num_samples < 1:
 		raise ValueError("--num-samples must be >= 1")
@@ -773,11 +780,7 @@ def main() -> None:
 		add_bos_token=False,
 		add_eos_token=False,
 	)
-	engine = InfiniGramEngine(
-		index_dir=args.index_dir,
-		eos_token_id=tokenizer.eos_token_id,
-		precompute_unigram_logprobs=False,
-	)
+	engine = simple_trace.load_engine(args.index_dir, tokenizer.eos_token_id)
 	unigram_probs = _load_unigram_probs(args.unigram_probs_path)
 
 	samples = sample_queries(

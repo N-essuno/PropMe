@@ -7,11 +7,12 @@ The goal of these scripts is not just to test raw index lookup, but to validate 
 
 ## Validation entry points
 
-There are currently three validation scripts:
+There are currently four validation scripts:
 
 - `04_validation/validation.py`: deterministic unit-style checks on the local `00_data/dummy_index`.
 - `04_validation/validation_full_dynaword.py`: randomized large-scale validation on a Dynaword index.
 - `04_validation/validation_full_commonpile.py`: randomized large-scale validation on a Common Pile index.
+- `04_validation/validation_full_dolma3.py`: the Common Pile protocol with Dolma3 defaults (index, unigram table, output file names).
 
 ## Quick start
 
@@ -37,7 +38,7 @@ Use this when you want to test `SimpleTrace` retrieval on randomly sampled sourc
 
 ```bash
 python 04_validation/validation_full_dynaword.py \
-  --index-dir 00_data/dynaword_index \
+  --index-dir /work/pecora/propme_data/indexes/dynaword_index \
   --unigram-probs-path 02_unigram_probs/unigram_probs_dynaword.json \
   --num-samples 50 \
   --docs-per-span 10
@@ -49,15 +50,29 @@ Use this when you want the same style of randomized validation on a Common Pile 
 
 ```bash
 python 04_validation/validation_full_commonpile.py \
-  --index-dir /work/olmotrace/common_pile_train/indexes/common_pile_train_index \
+  --index-dir /work/pecora/propme_data/indexes/commonpile_index/common_pile_train_index \
   --unigram-probs-path 02_unigram_probs/unigram_probs_common_pile_train.json \
   --num-samples 50 \
   --docs-per-span 10
 ```
 
+### 4. Randomized Dolma3 validation
+
+Same protocol and flags as the Common Pile validator, on the combined Dolma3 index (all 65 shards):
+
+```bash
+python 04_validation/validation_full_dolma3.py \
+  --index-dir /work/pecora/propme_data/indexes/dolma3_index_link \
+  --unigram-probs-path 02_unigram_probs/unigram_probs_dolma3_link.json \
+  --num-samples 50 \
+  --docs-per-span 10
+```
+
+Documents are fetched with the engine's default display limit of 1000 tokens, so `full` queries are at most 1000 tokens long unless `--query-token-len` is set lower.
+
 ## Common flags for the full validators
 
-Both randomized validators support the same core controls:
+All randomized validators support the same core controls:
 
 - `--num-samples` or `-n`: number of source documents to validate.
 - `--query-token-len`: maximum token length for full-document queries; `None` uses the full sampled document window.
@@ -78,7 +93,7 @@ Both scripts also expose output path flags for sampled queries, raw traces, per-
 
 ```bash
 python 04_validation/validation_full_dynaword.py \
-  --index-dir 00_data/dynaword_index \
+  --index-dir /work/pecora/propme_data/indexes/dynaword_index \
   --unigram-probs-path 02_unigram_probs/unigram_probs_dynaword.json \
   --num-samples 50 \
   --no-full
@@ -88,13 +103,13 @@ python 04_validation/validation_full_dynaword.py \
 
 ```bash
 python 04_validation/validation_full_dynaword.py \
-  --index-dir 00_data/dynaword_index \
+  --index-dir /work/pecora/propme_data/indexes/dynaword_index \
   --unigram-probs-path 02_unigram_probs/unigram_probs_dynaword.json \
   --num-samples 50 \
   --no-partials
 ```
 
-The same flag combinations also work for `validation_full_commonpile.py`.
+The same flag combinations also work for `validation_full_commonpile.py` and `validation_full_dolma3.py`.
 
 ## Details
 
@@ -225,8 +240,19 @@ Its summary contains the same retrieval and text-match rates as Dynaword, plus e
 - per-query-kind `*_pass_rate`
 - per-query-kind `*_partial_span_exact_query_match_rate`
 
+### `validation_full_dolma3.py`
+
+Writes the same files as the Common Pile validator, with a `dolma3` suffix:
+
+- `04_validation/output/validation_full_samples_dolma3.jsonl`
+- `04_validation/output/validation_full_traces_dolma3.jsonl`
+- `04_validation/output/validation_full_per_query_dolma3.jsonl`
+- `04_validation/output/validation_full_summary_dolma3.json`
+- `04_validation/output/validation_full_failed_examples_dolma3.txt`
+
 ## When to use which validator
 
 - Use `validation.py` for quick local regression checks.
 - Use `validation_full_dynaword.py` when you want stricter randomized validation aligned with `SimpleTrace` span-cleanliness constraints.
 - Use `validation_full_commonpile.py` when you want randomized validation on Common Pile and extra visibility into duplicated-document retrieval edge cases.
+- Use `validation_full_dolma3.py` for the same checks on Dolma3.

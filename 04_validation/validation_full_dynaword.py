@@ -870,7 +870,7 @@ def build_arg_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--index-dir",
-        default=str(REPO_ROOT / "00_data" / "dynaword_index"),
+        default="/work/pecora/propme_data/indexes/dynaword_index",
         help="Path to the dynaword InfiniGram index directory.",
     )
     parser.add_argument(
@@ -1001,11 +1001,7 @@ def main() -> None:
         add_bos_token=False,
         add_eos_token=False,
     )
-    engine = InfiniGramEngine(
-        index_dir=args.index_dir,
-        eos_token_id=tokenizer.eos_token_id,
-        precompute_unigram_logprobs=False,
-    )
+    engine = simple_trace.load_engine(args.index_dir, tokenizer.eos_token_id)
     unigram_probs = _load_unigram_probs(args.unigram_probs_path)
 
     samples = sample_queries(
