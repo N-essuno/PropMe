@@ -19,11 +19,12 @@ evaluate_results = simple_trace.evaluate_results
 launch_simpletrace = simple_trace.launch_simpletrace
 save_results = simple_trace.save_results
 trace_generation = simple_trace.trace_generation
+commonpile_validation = importlib.import_module("04_validation.validation_full_commonpile")
 
 
-INDEX_DIR = REPO_ROOT / "00_data" / "dummy_index"
+INDEX_DIR = REPO_ROOT / "00_prepare_data" / "dummy_index"
 UNIGRAM_PROBS_PATH = REPO_ROOT / "02_unigram_probs" / "unigram_probs_dummy.json"
-DUMMY_DATASET_PATH = REPO_ROOT / "00_data" / "dummy_dataset" / "dummy.jsonl"
+DUMMY_DATASET_PATH = REPO_ROOT / "00_prepare_data" / "dummy_dataset" / "dummy.jsonl"
 
 
 class TestIndexMetadataParsing(unittest.TestCase):
@@ -112,6 +113,58 @@ class TestVerifiedOverlapGrouping(unittest.TestCase):
         )
 
         self.assertEqual(groups, [[0, 1, 2]])
+
+
+class TestFullValidationPassRule(unittest.TestCase):
+    """Pass rule of validation_full_commonpile.py / validation_full_dolma3.py."""
+
+    QUERY = "the exact query text"
+
+    def _validate(self, docs: list[dict], query_kind: str = "full") -> dict:
+        sample = commonpile_validation.QuerySample(
+            sample_ix=0,
+            source_sample_ix=0,
+            query_kind=query_kind,
+            doc_ix=0,
+            expected_doc_id="source",
+            query_text=self.QUERY,
+            query_token_count=4,
+            source_doc_len=None,
+            source_disp_len=None,
+            query_start_token=0,
+            query_end_token=4,
+            metadata={},
+        )
+        result = {"final_spans": [{"start": 0, "end": 4, "text": "x", "docs": docs}]} if docs else {"final_spans": []}
+        return commonpile_validation.validate_one_result(sample=sample, result=result, runtime_seconds=0.0)
+
+    def test_source_doc_retrieved_passes(self):
+        row = self._validate([{"id": "source", "text": f"a {self.QUERY} b"}])
+        self.assertEqual(row["passed"], 1)
+        self.assertEqual(row["query_rescued_by_all_docs_exact"], 0)
+
+    def test_duplicates_containing_query_pass_without_source_doc(self):
+        row = self._validate([
+            {"id": "copy-1", "text": f"{self.QUERY} tail"},
+            {"id": "copy-2", "text": f"head {self.QUERY}"},
+        ])
+        self.assertEqual(row["target_doc_retrieved"], 0)
+        self.assertEqual(row["query_rescued_by_all_docs_exact"], 1)
+        self.assertEqual(row["passed"], 1)
+        self.assertEqual(row["failed_checks"], [])
+
+    def test_one_retrieved_doc_without_query_fails(self):
+        row = self._validate([
+            {"id": "copy-1", "text": f"{self.QUERY} tail"},
+            {"id": "other", "text": "only part of the query text"},
+        ])
+        self.assertEqual(row["query_rescued_by_all_docs_exact"], 0)
+        self.assertEqual(row["passed"], 0)
+        self.assertEqual(row["failed_checks"], ["target_doc_not_retrieved", "exact_text_not_matched"])
+
+    def test_no_retrieved_docs_fails(self):
+        row = self._validate([])
+        self.assertEqual(row["passed"], 0)
 
 
 class TestSimpleTraceDummyIndex(unittest.TestCase):

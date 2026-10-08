@@ -8,6 +8,7 @@ import random
 import statistics
 import sys
 import time
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
@@ -17,11 +18,13 @@ from tqdm import tqdm
 from transformers import AutoTokenizer
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+# Root of the large data (indexes/, raw/), outside the repository by default.
+INDEXES_ROOT = Path(os.environ.get("PROPME_DATA_ROOT", REPO_ROOT / "propme_data")) / "indexes"
 VALIDATION_OUTPUT_DIR = REPO_ROOT / "04_validation" / "output"
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from memorization_experiment.sample_docs import parse_metadata
+from memorization_experiment.extract_prefixes.sample_docs import parse_metadata
 
 simple_trace = importlib.import_module("03_tracing.simple_trace")
 trace_generation = simple_trace.trace_generation
@@ -870,7 +873,7 @@ def build_arg_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--index-dir",
-        default="/work/pecora/propme_data/indexes/dynaword_index",
+        default=str(INDEXES_ROOT / "dynaword_index"),
         help="Path to the dynaword InfiniGram index directory.",
     )
     parser.add_argument(
@@ -924,6 +927,24 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser.set_defaults(
         include_full=True,
         include_partials=True,
+    )
+    parser.add_argument(
+        "--max-page-table-gb",
+        type=float,
+        default=simple_trace.DEFAULT_MAX_PAGE_TABLE_GB,
+        help=(
+            "Reopen the index once this process's page tables exceed this many GB "
+            "(checked after each index call). Bounds memory on huge indexes; does not change results."
+        ),
+    )
+    parser.add_argument(
+        "--find-threads",
+        type=int,
+        default=4,
+        help=(
+            "Threads running the index queries of one query concurrently "
+            "(as in simple_trace.py). Does not change results."
+        ),
     )
     parser.add_argument(
         "--docs-per-span",
@@ -983,6 +1004,10 @@ def main() -> None:
         raise ValueError("--num-samples must be >= 1")
     if args.docs_per_span < 1:
         raise ValueError("--docs-per-span must be >= 1")
+    if args.find_threads < 1:
+        raise ValueError("--find-threads must be >= 1")
+    if args.max_page_table_gb <= 0:
+        raise ValueError("--max-page-table-gb must be > 0")
     if args.query_token_len is not None and args.query_token_len < 1:
         raise ValueError("--query-token-len must be >= 1 or None")
     if args.partial_query_tokens < 1:
@@ -1001,7 +1026,9 @@ def main() -> None:
         add_bos_token=False,
         add_eos_token=False,
     )
-    engine = simple_trace.load_engine(args.index_dir, tokenizer.eos_token_id)
+    engine = simple_trace.PageTableBoundedEngine(
+        args.index_dir, tokenizer.eos_token_id, args.max_page_table_gb * 1e9
+    )
     unigram_probs = _load_unigram_probs(args.unigram_probs_path)
 
     samples = sample_queries(
@@ -1020,6 +1047,7 @@ def main() -> None:
 
     trace_rows: list[tuple[QuerySample, dict[str, Any], float]] = []
     validation_rows: list[dict[str, Any]] = []
+    executor = ThreadPoolExecutor(args.find_threads) if args.find_threads > 1 else None
     for sample in tqdm(samples, desc="Validating", unit="query"):
         start_time = time.perf_counter()
         result = trace_generation(
@@ -1028,6 +1056,7 @@ def main() -> None:
             enc=tokenizer,
             unigram_probs=unigram_probs,
             docs_per_span=args.docs_per_span,
+            executor=executor,
         )
         runtime_seconds = time.perf_counter() - start_time
         trace_rows.append((sample, result, runtime_seconds))
@@ -1057,6 +1086,8 @@ def main() -> None:
         "include_full": args.include_full,
         "include_partials": args.include_partials,
         "docs_per_span": args.docs_per_span,
+        "find_threads": args.find_threads,
+        "max_page_table_gb": args.max_page_table_gb,
         "tokenizer_model": args.tokenizer_model,
         "seed": args.seed,
     }

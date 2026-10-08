@@ -23,7 +23,7 @@ if str(REPO_ROOT) not in sys.path:
 
 commonpile_validation = importlib.import_module("04_validation.validation_full_commonpile")
 
-DOLMA3_INDEX_DIR = "/work/pecora/propme_data/indexes/dolma3_index_link"
+DOLMA3_INDEX_DIR = str(commonpile_validation.INDEXES_ROOT / "dolma3_index_link")
 DOLMA3_UNIGRAM_PROBS_PATH = REPO_ROOT / "02_unigram_probs" / "unigram_probs_dolma3_link.json"
 
 

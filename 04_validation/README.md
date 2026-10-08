@@ -9,7 +9,7 @@ The goal of these scripts is not just to test raw index lookup, but to validate 
 
 There are currently four validation scripts:
 
-- `04_validation/validation.py`: deterministic unit-style checks on the local `00_data/dummy_index`.
+- `04_validation/validation.py`: deterministic unit-style checks on the local `00_prepare_data/dummy_index`.
 - `04_validation/validation_full_dynaword.py`: randomized large-scale validation on a Dynaword index.
 - `04_validation/validation_full_commonpile.py`: randomized large-scale validation on a Common Pile index.
 - `04_validation/validation_full_dolma3.py`: the Common Pile protocol with Dolma3 defaults (index, unigram table, output file names).
@@ -38,7 +38,7 @@ Use this when you want to test `SimpleTrace` retrieval on randomly sampled sourc
 
 ```bash
 python 04_validation/validation_full_dynaword.py \
-  --index-dir /work/pecora/propme_data/indexes/dynaword_index \
+  --index-dir $PROPME_DATA_ROOT/indexes/dynaword_index \
   --unigram-probs-path 02_unigram_probs/unigram_probs_dynaword.json \
   --num-samples 50 \
   --docs-per-span 10
@@ -50,7 +50,7 @@ Use this when you want the same style of randomized validation on a Common Pile 
 
 ```bash
 python 04_validation/validation_full_commonpile.py \
-  --index-dir /work/pecora/propme_data/indexes/commonpile_index/common_pile_train_index \
+  --index-dir $PROPME_DATA_ROOT/indexes/commonpile_index/common_pile_train_index \
   --unigram-probs-path 02_unigram_probs/unigram_probs_common_pile_train.json \
   --num-samples 50 \
   --docs-per-span 10
@@ -62,7 +62,7 @@ Same protocol and flags as the Common Pile validator, on the combined Dolma3 ind
 
 ```bash
 python 04_validation/validation_full_dolma3.py \
-  --index-dir /work/pecora/propme_data/indexes/dolma3_index_link \
+  --index-dir $PROPME_DATA_ROOT/indexes/dolma3_index_link \
   --unigram-probs-path 02_unigram_probs/unigram_probs_dolma3_link.json \
   --num-samples 50 \
   --docs-per-span 10
@@ -81,6 +81,8 @@ All randomized validators support the same core controls:
 - `--no-full`: disable full-document queries.
 - `--no-partials`: disable partial start/middle/end queries.
 - `--docs-per-span`: maximum retrieved documents per traced span.
+- `--max-page-table-gb` (default 1): reopen the index once the process's page tables exceed this size (checked after every index call). The index is memory-mapped, and on huge indexes such as Dolma3 page tables otherwise grow without bound (up to ~20 MB per uncached lookup across Dolma3's 65 shards) until the container runs out of memory. Results are unchanged.
+- `--find-threads` (default 4): threads running the index queries of one validation query concurrently. Results are identical for any value; more threads mainly help while the index is not yet in the page cache.
 - `--tokenizer-model`: tokenizer used for decoding and re-encoding query windows.
 - `--seed`: random seed for reproducible sampling.
 - `--max-attempts-multiplier`: how hard the script tries to find usable source documents.
@@ -93,7 +95,7 @@ Both scripts also expose output path flags for sampled queries, raw traces, per-
 
 ```bash
 python 04_validation/validation_full_dynaword.py \
-  --index-dir /work/pecora/propme_data/indexes/dynaword_index \
+  --index-dir $PROPME_DATA_ROOT/indexes/dynaword_index \
   --unigram-probs-path 02_unigram_probs/unigram_probs_dynaword.json \
   --num-samples 50 \
   --no-full
@@ -103,7 +105,7 @@ python 04_validation/validation_full_dynaword.py \
 
 ```bash
 python 04_validation/validation_full_dynaword.py \
-  --index-dir /work/pecora/propme_data/indexes/dynaword_index \
+  --index-dir $PROPME_DATA_ROOT/indexes/dynaword_index \
   --unigram-probs-path 02_unigram_probs/unigram_probs_dynaword.json \
   --num-samples 50 \
   --no-partials
@@ -169,6 +171,8 @@ It additionally reports "rescued" cases where:
 - but the exact partial span text is still recovered.
 
 That distinction is useful for corpora with many duplicated or near-duplicated documents, where the tracer may recover the right text but not the exact original document identifier within the retrieval budget.
+
+A query (full or partial) also passes when its source document id is not retrieved but at least one document is retrieved and every retrieved document contains the query text exactly. In a duplicated corpus the query text can occur in more documents than `--docs-per-span`, so the source copy may simply not be among those sampled. For example, a 1000-token Dolma3 document window occurred 47 times in the index. `source_doc_retrieval_rate` still reports how often the exact source id was retrieved.
 
 ### Source-document acceptance policy
 
@@ -237,6 +241,7 @@ Its summary contains the same retrieval and text-match rates as Dynaword, plus e
 - `pass_rate`
 - `failed_examples`
 - `partial_query_doc_id_not_retrieved_but_span_exact_match_count`
+- `doc_id_not_retrieved_but_all_docs_contain_query_count` (queries passed because every retrieved document contains the query text exactly; can overlap with the previous count)
 - per-query-kind `*_pass_rate`
 - per-query-kind `*_partial_span_exact_query_match_rate`
 
