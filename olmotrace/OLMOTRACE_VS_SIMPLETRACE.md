@@ -26,6 +26,17 @@ All scripts, inputs and raw outputs are in `olmotrace/comparison/` (see §6).
   a span at the beginning of a line or at punctuation (§4.2).
 - **Both find the source document of verbatim text.** OLMoTrace retrieves it for 192/192 inputs,
   SimpleTrace `mixed` for 192/192 and SimpleTrace `text` for 191/192 (§4.3).
+- **SimpleTrace `mixed`, the mode the PropMe experiments use, behaves as intended for measuring
+  memorization** (§4.6):
+  - **Whole-text detection.** It flags every input whose whole text occurs in the index (all 216
+    across the six input sets, none missed). It also flags 4 Danish continuations that are copied
+    verbatim but begin mid-word, which a token-level lookup misses.
+  - **Agreement with OLMoTrace.** On short text its highlighting is the closest to OLMoTrace's
+    (Jaccard 0.98–0.99). Per generation, it ranks coverage more like OLMoTrace than `text` mode does
+    (Spearman 0.85 vs. 0.79).
+  - **Settings.** It orders the generic/specific/prefix settings the same way OLMoTrace does.
+  - **Source of the differences.** Where it differs from OLMoTrace, 88% of the extra tokens come
+    from spans that run across a sentence end, which is by design.
 - **Performance depends on the input.**
   - On novel text and model generations, the two tools take about the same time and CPU.
   - On verbatim text over the 65-shard Dolma3 index, OLMoTrace is 15–30× slower (warm: 141 s vs.
@@ -350,6 +361,136 @@ mean that **8 workers is about the maximum for OLMoTrace on Dolma3 in this 96 GB
 even that is within about 17 GB of the limit on 64 texts. SimpleTrace's total is bounded by
 `--num-workers × --max-page-table-gb` (32 GB at 32 workers).
 
+### 4.6 SimpleTrace `mixed` mode in detail (`comparison/mixed_analysis.py`)
+
+`mixed` is the mode used by the experiment presets in `memorization_experiment/`. It works like
+this:
+1. It first runs one FIND on the whole generation. If the generation occurs, it fetches those
+   documents as full matches.
+2. It searches for spans from **every** start position, with no sentence or word-boundary rules,
+   keeping only pieces of at least 4 tokens.
+3. Steps 2–4 are the same as in `text` mode: `K = ceil(0.05·L)`, rarest first, and overlapping
+   spans are merged only if their union is in the index.
+4. If no full match was found, it takes up to 8 long "anchor" spans and checks whether their
+   documents contain the whole generation after light normalization (`exact_full_normalized`).
+5. Every retrieved document gets a `match_tier` and an NV-recall score.
+
+All numbers below come from the warm1 runs of §4.2, plus one FIND per input of its full token
+sequence as a ground-truth check (single process).
+
+**Full-text detection.** "In index" means the input's full token sequence has a FIND count > 0.
+"Flagged" means at least one retrieved document has `match_tier = exact_full_raw`.
+
+| Inputs (index) | N | In index | Flagged by `mixed` | Flagged and in index | Flagged, not in index | In index but missed | Distinct docs with the full text: 1 / 2–9 / ≥10 |
+|---|---|---|---|---|---|---|---|
+| Dynaword generations | 300 | 6 | 10 | 6 | 4 | 0 | 2 / 4 / 4 |
+| Dynaword verbatim | 64 | 64 | 64 | 64 | 0 | 0 | 63 / 1 / 0 |
+| Common Pile verbatim | 64 | 64 | 64 | 64 | 0 | 0 | 59 / 5 / 0 |
+| Dolma3 verbatim | 64 | 64 | 64 | 64 | 0 | 0 | 51 / 13 / 0 |
+| Common Pile novel English | 100 | 8 | 8 | 8 | 0 | 0 | 0 / 1 / 7 |
+| Dolma3 novel English | 100 | 10 | 10 | 10 | 0 | 0 | 1 / 1 / 8 |
+
+- **No misses.** Every input whose full token sequence is in the index was flagged.
+- **The 4 "flagged, not in index" cases are real copies.** All 4 are prefix-setting continuations
+  that start mid-word, because the prompt ended inside a word: `…Varsel, at mø` +
+  `de i Hof= og Stadsrettens Skiftecommission…` (88 tokens), and `…Meubler tilk` +
+  `jøbs og til leie…` (123 tokens).
+  - On its own, the continuation tokenizes as `▁de…`; inside the document it is `mø`+`de`. So the
+    full-sequence FIND returns 0.
+  - `mixed` can start a span inside a word (here at token 1, matching to the end). Its string-level
+    `exact_full_raw` check then finds the whole continuation verbatim in the retrieved document.
+  - OLMoTrace, and a whole-text token check, would not report these generations as full copies.
+- **Normalized matching never fired.** `exact_full_normalized` occurred 0 times in these sets, so
+  every full match here is a raw verbatim match.
+- **The "novel" English sentences that are in the corpus.**
+  - 9 of the 10 Dolma3 full matches are short stock phrases (`Run the script.`, `Access denied.`,
+    `Believe in yourself.`), each found in 10 or more documents.
+  - The 10th is a whole encyclopedic sentence found verbatim:
+    `Bioluminescence is the production and emission of light by a living organism as the result of a
+    chemical reaction.`
+- **Duplication.** The number of distinct documents containing the full text (capped at
+  `--docs-per-span` = 10) shows how much of the copied material is duplicated in each corpus. Of the
+  verbatim windows, 13/64 occur in 2–9 Dolma3 documents, against 5/64 for Common Pile and 1/64 for
+  Dynaword.
+
+**Memorization signals by prompt setting (Dynaword generations, 100 per setting).** The prefix
+setting is the capability (extraction) attack; generic and specific are ordinary use.
+
+| Signal | Tool | generic | specific | prefix |
+|---|---|---|---|---|
+| Coverage | OLMoTrace | 0.47 | 0.50 | 0.61 |
+| | ST mixed | 0.50 | 0.53 | 0.64 |
+| | ST text | 0.41 | 0.45 | 0.60 |
+| Longest span per generation, mean (tokens) | OLMoTrace | 19.7 | 20.3 | 29.5 |
+| | ST mixed | 17.0 | 16.9 | 27.9 |
+| Generations with a span ≥ 60 tokens | OLMoTrace | 3 | 0 | 14 |
+| | ST mixed | 2 | 1 | 11 |
+| Generations whose full text is in the corpus | ST mixed | 0 | 1 | 9 |
+| Generations with max NV-recall > 0.5 / ≥ 0.9 | ST mixed | 0 / 0 | 1 / 0 | 18 / 6 |
+| Token Jaccard, mixed vs. OLMoTrace | | 0.71 | 0.73 | 0.82 |
+| Spearman of per-generation coverage, mixed vs. OLMoTrace | | 0.74 | 0.80 | 0.93 |
+
+- **Both tools tell the same story.** The prefix attack draws out clearly more training text than
+  ordinary prompts: about 0.6 coverage, 11–14 generations with a span of 60 or more tokens, and 9
+  full copies, against 0–3 such generations for generic and specific prompts. Specific prompts are
+  close to generic ones: slightly higher coverage, but no more long spans.
+- **Only `mixed` provides the full-copy and NV-recall signals** that `05_propensity_metrics` uses.
+- **Agreement with OLMoTrace rises with the amount of memorized text:** Jaccard 0.71 → 0.82, and
+  coverage rank correlation 0.74 → 0.93.
+- **OLMoTrace's longest highlight is longer** (23.2 vs. 20.6 tokens on average). OLMoTrace merges
+  every overlapping span into one highlight, while `mixed` merges only if the union is in the index.
+  So OLMoTrace's merged "spans" can be longer than any run of text that actually occurs in the
+  corpus.
+
+**Per-generation agreement with OLMoTrace (Spearman rank correlation over generations).**
+
+| Inputs | Coverage: mixed / text | Longest span: mixed / text |
+|---|---|---|
+| Dynaword generations (300) | **0.85** / 0.79 | 0.74 / **0.88** |
+| Common Pile novel English (100) | **0.99** / 0.93 | 0.80 / 0.79 |
+| Dolma3 novel English (100) | **0.99** / 0.95 | 0.84 / 0.84 |
+
+On the verbatim sets `mixed` reports the same 256-token span for every input, so a rank correlation
+is undefined there. Its agreement with OLMoTrace is 0.81–0.97 Jaccard (§4.2).
+
+- `mixed` ranks generations by **how much** text is memorized more like OLMoTrace than `text` mode
+  does.
+- It ranks them by **longest span** less like OLMoTrace on generations. Its spans continue across
+  sentence ends, while OLMoTrace's stop at each period and are then merged.
+
+**Where the tokens that only one tool highlights come from** (Dynaword generations, each token
+counted once):
+
+| Tokens highlighted by `mixed` only (4,848) | Share | Tokens highlighted by OLMoTrace only (3,497) | Share |
+|---|---|---|---|
+| in a `mixed` span that crosses a sentence end | 87.9% | in an OLMoTrace span shorter than 4 tokens | 0% |
+| in a `mixed` span that starts inside a word | 6.1% | step 2 kept different spans, or merging | 100% |
+| other (step 2 / merging) | 6.0% | | |
+
+- Before step 2, `mixed`'s candidate spans cover every token of OLMoTrace's candidate spans. It
+  queries every start position and never trims a match, so the only possible exceptions are spans
+  under 4 tokens, and none occurred here.
+- OLMoTrace-only tokens therefore come **only from step 2**. Both tools keep the same number `K` of
+  rarest spans, `mixed` spends some of those slots on longer spans that cross sentence ends, and
+  some shorter matches that OLMoTrace keeps are left out.
+- On the verbatim sets, 100% of `mixed`-only tokens come from its single whole-text span, and no
+  token is highlighted by OLMoTrace alone.
+
+**SimpleTrace's own `mixed` summary metrics** (from `*__warm1__st_mixed.summary.json`; NV-recall
+threshold 0.5; n-token span threshold 60):
+
+| Inputs (index) | Generations with a full match | Generations with NV-recall > 0.5 | Generations with a span ≥ 60 tokens | Mean longest span (tokens) | Mean NV-recall on hits |
+|---|---|---|---|---|---|
+| Dynaword generations | 3.3% | 6.3% | 4.7% | 20.6 | 0.60 |
+| Dynaword / Common Pile / Dolma3 verbatim | 100% | 100% | 100% | 256 | 0.99–1.00 |
+| Common Pile novel English | 8.0% | 9.0% | 0% | 8.6 | 0.44 |
+| Dolma3 novel English | 10.0% | 20.0% | 0% | 11.1 | 0.48 |
+
+**Cost.** `mixed` costs about the same as `text`. On Dynaword generations it is about 20% slower
+(warm 2.6 vs. 2.2 s, CPU 33 vs. 25 s) because of the extra whole-generation FIND, more start
+positions and the anchor search. On Dolma3 verbatim it takes 7.4 s against 6.6 s, still about
+**19× faster than OLMoTrace** (141 s) with about 10× smaller page tables (7.6 vs. 78.8 GB, §4.4).
+
 ## 5. Conclusions and recommendations
 
 1. **Use the tool that matches the question.**
@@ -360,8 +501,15 @@ even that is within about 17 GB of the limit on 64 texts. SimpleTrace's total is
 2. **For PropMe experiments** (SimpleTrace `mixed`, the mode used by the experiment presets), the
    results above support SimpleTrace as it is:
    - It finds the source of every verbatim text.
-   - It agrees with OLMoTrace's coverage within 0.01 on short novel text.
+   - It flags every input whose whole text is in the index, with no misses. Its string-level check
+     also catches copied continuations that begin mid-word, which token lookups miss (§4.6).
+   - It agrees with OLMoTrace's coverage within 0.01 on short novel text. Per generation, it ranks
+     coverage more like OLMoTrace than `text` mode does.
+   - It reproduces the same ordering of the prompt settings as OLMoTrace (generic ≈ specific < prefix).
    - It is the only one of the two that runs safely at scale on Dolma3.
+   - Its spans differ from OLMoTrace's mainly because they continue across sentence ends. For
+     measuring memorization this is a feature, but `mixed` spans should not be presented as
+     OLMoTrace-style highlights.
 3. **If OLMoTrace is to be used on Dolma3**, port two changes from SimpleTrace that do not change
    results:
    - the lower-bound reuse in step 1 (shown equivalent in §4.1);
@@ -387,6 +535,8 @@ python olmotrace/comparison/schedule.py                  # end-to-end runs, 8x4,
 python olmotrace/comparison/step1_compare.py --index-dir <index> --inputs <set> --output <json>   # §4.1
 olmotrace/comparison/sensitivity.sh                      # §4.5, memory-guarded
 python olmotrace/comparison/analyze.py > olmotrace/comparison/outputs/analysis.json
+PROPME_DATA_ROOT=<data root> python olmotrace/comparison/mixed_analysis.py --check-index \
+    > olmotrace/comparison/outputs/mixed_analysis.json   # §4.6
 ```
 
 | Path | Content |
@@ -396,3 +546,4 @@ python olmotrace/comparison/analyze.py > olmotrace/comparison/outputs/analysis.j
 | `comparison/outputs/e2e/<group>__<phase>__<tool>.{results.jsonl,summary.json}` | raw tool outputs (their logs are in `logs/olmotrace_comparison/e2e/`) |
 | `comparison/outputs/step1_*.json` | per-suffix test 1 results |
 | `comparison/outputs/analysis.json` | the aggregates used in §4.2–4.4 |
+| `comparison/outputs/mixed_analysis.json` | the `mixed`-mode aggregates used in §4.6 |

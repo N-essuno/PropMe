@@ -1,0 +1,647 @@
+{
+ "dynaword__dynaword_generations": {
+  "all": {
+   "generations": 300,
+   "full_text_found_exact": 10,
+   "full_text_found_normalized_only": 0,
+   "docs_by_match_tier": {
+    "exact_full_raw": 89,
+    "exact_full_normalized": 0,
+    "partial": 6450
+   },
+   "distinct_docs_with_full_text": {
+    "1": 2,
+    "2-9": 4,
+    ">=10 (sample cap)": 4
+   },
+   "gens_max_nv_recall_gt_0.5": 19,
+   "gens_max_nv_recall_ge_0.9": 6,
+   "mean_max_nv_recall": 0.07393433681666667,
+   "coverage": {
+    "ot": 0.5254231349631969,
+    "st_text": 0.48490501749642595,
+    "st_mixed": 0.554351127439407
+   },
+   "longest_span_mean": {
+    "ot": 23.17,
+    "st_text": 16.263333333333332,
+    "st_mixed": 20.593333333333334
+   },
+   "gens_longest_span_ge_20": {
+    "ot": 137,
+    "st_text": 60,
+    "st_mixed": 93
+   },
+   "gens_longest_span_ge_60": {
+    "ot": 17,
+    "st_text": 6,
+    "st_mixed": 14
+   },
+   "spearman_vs_ot": {
+    "longest_span_mixed": 0.7394282980872432,
+    "longest_span_text": 0.8748497552969273,
+    "coverage_mixed": 0.8529341435014058,
+    "coverage_text": 0.7934185500913823
+   },
+   "jaccard_mixed_vs_ot": 0.7498523277719401,
+   "jaccard_mixed_vs_text": 0.6384360673190163,
+   "tokens_only_mixed": {
+    "total_tokens": 4848,
+    "mixed span crosses a sentence end": 0.879,
+    "mixed span starts inside a word": 0.061,
+    "other (different spans kept in step 2 / merging)": 0.06
+   },
+   "tokens_only_ot": {
+    "total_tokens": 3497,
+    "OLMoTrace span shorter than 4 tokens": 0.0,
+    "step 2 kept different spans / merging": 1.0
+   },
+   "full_text_check_vs_index": {
+    "in_index": 6,
+    "found_by_mixed_and_in_index": 6,
+    "found_by_mixed_not_in_index": 4,
+    "in_index_missed_by_mixed": 0
+   }
+  },
+  "generic": {
+   "generations": 100,
+   "full_text_found_exact": 0,
+   "full_text_found_normalized_only": 0,
+   "docs_by_match_tier": {
+    "exact_full_raw": 0,
+    "exact_full_normalized": 0,
+    "partial": 2080
+   },
+   "distinct_docs_with_full_text": {
+    "1": 0,
+    "2-9": 0,
+    ">=10 (sample cap)": 0
+   },
+   "gens_max_nv_recall_gt_0.5": 0,
+   "gens_max_nv_recall_ge_0.9": 0,
+   "mean_max_nv_recall": 0.00746031746,
+   "coverage": {
+    "ot": 0.4674912429990329,
+    "st_text": 0.40696852648613574,
+    "st_mixed": 0.499498147372747
+   },
+   "longest_span_mean": {
+    "ot": 19.68,
+    "st_text": 12.56,
+    "st_mixed": 16.96
+   },
+   "gens_longest_span_ge_20": {
+    "ot": 35,
+    "st_text": 8,
+    "st_mixed": 19
+   },
+   "gens_longest_span_ge_60": {
+    "ot": 3,
+    "st_text": 0,
+    "st_mixed": 2
+   },
+   "spearman_vs_ot": {
+    "longest_span_mixed": 0.5888106320695898,
+    "longest_span_text": 0.8775410827158816,
+    "coverage_mixed": 0.738864969474815,
+    "coverage_text": 0.6344079569179008
+   },
+   "jaccard_mixed_vs_ot": 0.7058396023457912,
+   "jaccard_mixed_vs_text": 0.5669054243194737,
+   "tokens_only_mixed": {
+    "total_tokens": 1896,
+    "mixed span crosses a sentence end": 0.908,
+    "mixed span starts inside a word": 0.043,
+    "other (different spans kept in step 2 / merging)": 0.049
+   },
+   "tokens_only_ot": {
+    "total_tokens": 1293,
+    "OLMoTrace span shorter than 4 tokens": 0.0,
+    "step 2 kept different spans / merging": 1.0
+   },
+   "full_text_check_vs_index": {
+    "in_index": 0,
+    "found_by_mixed_and_in_index": 0,
+    "found_by_mixed_not_in_index": 0,
+    "in_index_missed_by_mixed": 0
+   }
+  },
+  "specific": {
+   "generations": 100,
+   "full_text_found_exact": 1,
+   "full_text_found_normalized_only": 0,
+   "docs_by_match_tier": {
+    "exact_full_raw": 20,
+    "exact_full_normalized": 0,
+    "partial": 2441
+   },
+   "distinct_docs_with_full_text": {
+    "1": 0,
+    "2-9": 0,
+    ">=10 (sample cap)": 1
+   },
+   "gens_max_nv_recall_gt_0.5": 1,
+   "gens_max_nv_recall_ge_0.9": 0,
+   "mean_max_nv_recall": 0.008571428570000001,
+   "coverage": {
+    "ot": 0.4978795536852828,
+    "st_text": 0.45039426838064606,
+    "st_mixed": 0.5249255827826695
+   },
+   "longest_span_mean": {
+    "ot": 20.33,
+    "st_text": 13.52,
+    "st_mixed": 16.93
+   },
+   "gens_longest_span_ge_20": {
+    "ot": 42,
+    "st_text": 11,
+    "st_mixed": 23
+   },
+   "gens_longest_span_ge_60": {
+    "ot": 0,
+    "st_text": 0,
+    "st_mixed": 1
+   },
+   "spearman_vs_ot": {
+    "longest_span_mixed": 0.64476100661535,
+    "longest_span_text": 0.8109132273054814,
+    "coverage_mixed": 0.7968712027324064,
+    "coverage_text": 0.7698370788756894
+   },
+   "jaccard_mixed_vs_ot": 0.7290712820865318,
+   "jaccard_mixed_vs_text": 0.6115758850521928,
+   "tokens_only_mixed": {
+    "total_tokens": 1849,
+    "mixed span crosses a sentence end": 0.888,
+    "mixed span starts inside a word": 0.043,
+    "other (different spans kept in step 2 / merging)": 0.069
+   },
+   "tokens_only_ot": {
+    "total_tokens": 1352,
+    "OLMoTrace span shorter than 4 tokens": 0.0,
+    "step 2 kept different spans / merging": 1.0
+   },
+   "full_text_check_vs_index": {
+    "in_index": 1,
+    "found_by_mixed_and_in_index": 1,
+    "found_by_mixed_not_in_index": 0,
+    "in_index_missed_by_mixed": 0
+   }
+  },
+  "prefix": {
+   "generations": 100,
+   "full_text_found_exact": 9,
+   "full_text_found_normalized_only": 0,
+   "docs_by_match_tier": {
+    "exact_full_raw": 69,
+    "exact_full_normalized": 0,
+    "partial": 1929
+   },
+   "distinct_docs_with_full_text": {
+    "1": 2,
+    "2-9": 4,
+    ">=10 (sample cap)": 3
+   },
+   "gens_max_nv_recall_gt_0.5": 18,
+   "gens_max_nv_recall_ge_0.9": 6,
+   "mean_max_nv_recall": 0.20577126442,
+   "coverage": {
+    "ot": 0.6108986082052752,
+    "st_text": 0.597352257622496,
+    "st_mixed": 0.6386296521628043
+   },
+   "longest_span_mean": {
+    "ot": 29.5,
+    "st_text": 22.71,
+    "st_mixed": 27.89
+   },
+   "gens_longest_span_ge_20": {
+    "ot": 60,
+    "st_text": 41,
+    "st_mixed": 51
+   },
+   "gens_longest_span_ge_60": {
+    "ot": 14,
+    "st_text": 6,
+    "st_mixed": 11
+   },
+   "spearman_vs_ot": {
+    "longest_span_mixed": 0.8592111876225824,
+    "longest_span_text": 0.9168165593167709,
+    "coverage_mixed": 0.9252532256291791,
+    "coverage_text": 0.86673329486148
+   },
+   "jaccard_mixed_vs_ot": 0.8146460988834974,
+   "jaccard_mixed_vs_text": 0.7368268925853821,
+   "tokens_only_mixed": {
+    "total_tokens": 1103,
+    "mixed span crosses a sentence end": 0.813,
+    "mixed span starts inside a word": 0.121,
+    "other (different spans kept in step 2 / merging)": 0.066
+   },
+   "tokens_only_ot": {
+    "total_tokens": 852,
+    "OLMoTrace span shorter than 4 tokens": 0.0,
+    "step 2 kept different spans / merging": 1.0
+   },
+   "full_text_check_vs_index": {
+    "in_index": 5,
+    "found_by_mixed_and_in_index": 5,
+    "found_by_mixed_not_in_index": 4,
+    "in_index_missed_by_mixed": 0
+   }
+  },
+  "simpletrace_summary": {
+   "generations_full_matches_ratio": 0.033333333,
+   "unique_full_matches": 67,
+   "avg_nv_recall": 0.021492904,
+   "avg_nv_recall_on_hits": 0.598051484,
+   "generations_above_nv_recall_threshold_ratio": 0.063333333,
+   "generations_with_n_token_span_ratio": 0.046666667,
+   "average_longest_span_length": 20.593333333,
+   "unique_total_docs": 4410,
+   "total_docs": 6539
+  }
+ },
+ "dynaword__dynaword_verbatim": {
+  "all": {
+   "generations": 64,
+   "full_text_found_exact": 64,
+   "full_text_found_normalized_only": 0,
+   "docs_by_match_tier": {
+    "exact_full_raw": 65,
+    "exact_full_normalized": 0,
+    "partial": 0
+   },
+   "distinct_docs_with_full_text": {
+    "1": 63,
+    "2-9": 1,
+    ">=10 (sample cap)": 0
+   },
+   "gens_max_nv_recall_gt_0.5": 64,
+   "gens_max_nv_recall_ge_0.9": 64,
+   "mean_max_nv_recall": 0.9953407383125,
+   "coverage": {
+    "ot": 0.97021484375,
+    "st_text": 0.91766357421875,
+    "st_mixed": 1.0
+   },
+   "longest_span_mean": {
+    "ot": 96.984375,
+    "st_text": 93.953125,
+    "st_mixed": 256
+   },
+   "gens_longest_span_ge_20": {
+    "ot": 63,
+    "st_text": 63,
+    "st_mixed": 64
+   },
+   "gens_longest_span_ge_60": {
+    "ot": 45,
+    "st_text": 40,
+    "st_mixed": 64
+   },
+   "spearman_vs_ot": {
+    "longest_span_mixed": null,
+    "longest_span_text": 0.9742227343066592,
+    "coverage_mixed": null,
+    "coverage_text": 0.7899565142853031
+   },
+   "jaccard_mixed_vs_ot": 0.97021484375,
+   "jaccard_mixed_vs_text": 0.91766357421875,
+   "tokens_only_mixed": {
+    "total_tokens": 488,
+    "mixed span crosses a sentence end": 1.0,
+    "mixed span starts inside a word": 0.0,
+    "other (different spans kept in step 2 / merging)": 0.0
+   },
+   "tokens_only_ot": {
+    "total_tokens": 0,
+    "OLMoTrace span shorter than 4 tokens": 0.0,
+    "step 2 kept different spans / merging": 0.0
+   },
+   "full_text_check_vs_index": {
+    "in_index": 64,
+    "found_by_mixed_and_in_index": 64,
+    "found_by_mixed_not_in_index": 0,
+    "in_index_missed_by_mixed": 0
+   }
+  },
+  "simpletrace_summary": {
+   "generations_full_matches_ratio": 1.0,
+   "unique_full_matches": 65,
+   "avg_nv_recall": 0.995267281,
+   "avg_nv_recall_on_hits": 0.995267281,
+   "generations_above_nv_recall_threshold_ratio": 1.0,
+   "generations_with_n_token_span_ratio": 1.0,
+   "average_longest_span_length": 256.0,
+   "unique_total_docs": 65,
+   "total_docs": 65
+  }
+ },
+ "commonpile__commonpile_verbatim": {
+  "all": {
+   "generations": 64,
+   "full_text_found_exact": 64,
+   "full_text_found_normalized_only": 0,
+   "docs_by_match_tier": {
+    "exact_full_raw": 69,
+    "exact_full_normalized": 0,
+    "partial": 0
+   },
+   "distinct_docs_with_full_text": {
+    "1": 59,
+    "2-9": 5,
+    ">=10 (sample cap)": 0
+   },
+   "gens_max_nv_recall_gt_0.5": 64,
+   "gens_max_nv_recall_ge_0.9": 64,
+   "mean_max_nv_recall": 0.993335373125,
+   "coverage": {
+    "ot": 0.8140869140625,
+    "st_text": 0.6737060546875,
+    "st_mixed": 1.0
+   },
+   "longest_span_mean": {
+    "ot": 46.3125,
+    "st_text": 41.015625,
+    "st_mixed": 256
+   },
+   "gens_longest_span_ge_20": {
+    "ot": 56,
+    "st_text": 49,
+    "st_mixed": 64
+   },
+   "gens_longest_span_ge_60": {
+    "ot": 16,
+    "st_text": 13,
+    "st_mixed": 64
+   },
+   "spearman_vs_ot": {
+    "longest_span_mixed": null,
+    "longest_span_text": 0.93142367459905,
+    "coverage_mixed": null,
+    "coverage_text": 0.9277066288820824
+   },
+   "jaccard_mixed_vs_ot": 0.8140869140625,
+   "jaccard_mixed_vs_text": 0.6737060546875,
+   "tokens_only_mixed": {
+    "total_tokens": 3046,
+    "mixed span crosses a sentence end": 1.0,
+    "mixed span starts inside a word": 0.0,
+    "other (different spans kept in step 2 / merging)": 0.0
+   },
+   "tokens_only_ot": {
+    "total_tokens": 0,
+    "OLMoTrace span shorter than 4 tokens": 0.0,
+    "step 2 kept different spans / merging": 0.0
+   },
+   "full_text_check_vs_index": {
+    "in_index": 64,
+    "found_by_mixed_and_in_index": 64,
+    "found_by_mixed_not_in_index": 0,
+    "in_index_missed_by_mixed": 0
+   }
+  },
+  "simpletrace_summary": {
+   "generations_full_matches_ratio": 1.0,
+   "unique_full_matches": 69,
+   "avg_nv_recall": 0.993171442,
+   "avg_nv_recall_on_hits": 0.993171442,
+   "generations_above_nv_recall_threshold_ratio": 1.0,
+   "generations_with_n_token_span_ratio": 1.0,
+   "average_longest_span_length": 256.0,
+   "unique_total_docs": 69,
+   "total_docs": 69
+  }
+ },
+ "commonpile__english_novel": {
+  "all": {
+   "generations": 100,
+   "full_text_found_exact": 8,
+   "full_text_found_normalized_only": 0,
+   "docs_by_match_tier": {
+    "exact_full_raw": 117,
+    "exact_full_normalized": 0,
+    "partial": 673
+   },
+   "distinct_docs_with_full_text": {
+    "1": 0,
+    "2-9": 1,
+    ">=10 (sample cap)": 7
+   },
+   "gens_max_nv_recall_gt_0.5": 9,
+   "gens_max_nv_recall_ge_0.9": 1,
+   "mean_max_nv_recall": 0.1671404229,
+   "coverage": {
+    "ot": 0.5230905038507356,
+    "st_text": 0.5156055622117626,
+    "st_mixed": 0.5256311685159712
+   },
+   "longest_span_mean": {
+    "ot": 10.1,
+    "st_text": 8.45,
+    "st_mixed": 8.56
+   },
+   "gens_longest_span_ge_20": {
+    "ot": 5,
+    "st_text": 1,
+    "st_mixed": 1
+   },
+   "gens_longest_span_ge_60": {
+    "ot": 0,
+    "st_text": 0,
+    "st_mixed": 0
+   },
+   "spearman_vs_ot": {
+    "longest_span_mixed": 0.8000329832785424,
+    "longest_span_text": 0.791473934873695,
+    "coverage_mixed": 0.9905647348551908,
+    "coverage_text": 0.9301224948081074
+   },
+   "jaccard_mixed_vs_ot": 0.9796962224901279,
+   "jaccard_mixed_vs_text": 0.9148859693370756,
+   "tokens_only_mixed": {
+    "total_tokens": 20,
+    "mixed span crosses a sentence end": 0.0,
+    "mixed span starts inside a word": 0.65,
+    "other (different spans kept in step 2 / merging)": 0.35
+   },
+   "tokens_only_ot": {
+    "total_tokens": 12,
+    "OLMoTrace span shorter than 4 tokens": 0.0,
+    "step 2 kept different spans / merging": 1.0
+   },
+   "full_text_check_vs_index": {
+    "in_index": 8,
+    "found_by_mixed_and_in_index": 8,
+    "found_by_mixed_not_in_index": 0,
+    "in_index_missed_by_mixed": 0
+   }
+  },
+  "simpletrace_summary": {
+   "generations_full_matches_ratio": 0.08,
+   "unique_full_matches": 116,
+   "avg_nv_recall": 0.069675923,
+   "avg_nv_recall_on_hits": 0.436856979,
+   "generations_above_nv_recall_threshold_ratio": 0.09,
+   "generations_with_n_token_span_ratio": 0.0,
+   "average_longest_span_length": 8.56,
+   "unique_total_docs": 788,
+   "total_docs": 790
+  }
+ },
+ "dolma3__dolma3_verbatim": {
+  "all": {
+   "generations": 64,
+   "full_text_found_exact": 64,
+   "full_text_found_normalized_only": 0,
+   "docs_by_match_tier": {
+    "exact_full_raw": 98,
+    "exact_full_normalized": 0,
+    "partial": 0
+   },
+   "distinct_docs_with_full_text": {
+    "1": 51,
+    "2-9": 13,
+    ">=10 (sample cap)": 0
+   },
+   "gens_max_nv_recall_gt_0.5": 64,
+   "gens_max_nv_recall_ge_0.9": 64,
+   "mean_max_nv_recall": 0.99701091340625,
+   "coverage": {
+    "ot": 0.90008544921875,
+    "st_text": 0.75726318359375,
+    "st_mixed": 1.0
+   },
+   "longest_span_mean": {
+    "ot": 52.28125,
+    "st_text": 45.6875,
+    "st_mixed": 256
+   },
+   "gens_longest_span_ge_20": {
+    "ot": 60,
+    "st_text": 58,
+    "st_mixed": 64
+   },
+   "gens_longest_span_ge_60": {
+    "ot": 18,
+    "st_text": 13,
+    "st_mixed": 64
+   },
+   "spearman_vs_ot": {
+    "longest_span_mixed": null,
+    "longest_span_text": 0.8992609596384097,
+    "coverage_mixed": null,
+    "coverage_text": 0.93446585741286
+   },
+   "jaccard_mixed_vs_ot": 0.90008544921875,
+   "jaccard_mixed_vs_text": 0.75726318359375,
+   "tokens_only_mixed": {
+    "total_tokens": 1637,
+    "mixed span crosses a sentence end": 1.0,
+    "mixed span starts inside a word": 0.0,
+    "other (different spans kept in step 2 / merging)": 0.0
+   },
+   "tokens_only_ot": {
+    "total_tokens": 0,
+    "OLMoTrace span shorter than 4 tokens": 0.0,
+    "step 2 kept different spans / merging": 0.0
+   },
+   "full_text_check_vs_index": {
+    "in_index": 64,
+    "found_by_mixed_and_in_index": 64,
+    "found_by_mixed_not_in_index": 0,
+    "in_index_missed_by_mixed": 0
+   }
+  },
+  "simpletrace_summary": {
+   "generations_full_matches_ratio": 1.0,
+   "unique_full_matches": 98,
+   "avg_nv_recall": 0.996346968,
+   "avg_nv_recall_on_hits": 0.996346968,
+   "generations_above_nv_recall_threshold_ratio": 1.0,
+   "generations_with_n_token_span_ratio": 1.0,
+   "average_longest_span_length": 256.0,
+   "unique_total_docs": 98,
+   "total_docs": 98
+  }
+ },
+ "dolma3__english_novel": {
+  "all": {
+   "generations": 100,
+   "full_text_found_exact": 10,
+   "full_text_found_normalized_only": 0,
+   "docs_by_match_tier": {
+    "exact_full_raw": 162,
+    "exact_full_normalized": 0,
+    "partial": 1331
+   },
+   "distinct_docs_with_full_text": {
+    "1": 1,
+    "2-9": 1,
+    ">=10 (sample cap)": 8
+   },
+   "gens_max_nv_recall_gt_0.5": 20,
+   "gens_max_nv_recall_ge_0.9": 2,
+   "mean_max_nv_recall": 0.28721988223,
+   "coverage": {
+    "ot": 0.5930492801811361,
+    "st_text": 0.5937893688887984,
+    "st_mixed": 0.5917739019480213
+   },
+   "longest_span_mean": {
+    "ot": 13.49,
+    "st_text": 10.9,
+    "st_mixed": 11.05
+   },
+   "gens_longest_span_ge_20": {
+    "ot": 14,
+    "st_text": 5,
+    "st_mixed": 5
+   },
+   "gens_longest_span_ge_60": {
+    "ot": 0,
+    "st_text": 0,
+    "st_mixed": 0
+   },
+   "spearman_vs_ot": {
+    "longest_span_mixed": 0.8371465874473614,
+    "longest_span_text": 0.8360827962500413,
+    "coverage_mixed": 0.9900638581059773,
+    "coverage_text": 0.9492091526332798
+   },
+   "jaccard_mixed_vs_ot": 0.9860485221300439,
+   "jaccard_mixed_vs_text": 0.9351489257118597,
+   "tokens_only_mixed": {
+    "total_tokens": 16,
+    "mixed span crosses a sentence end": 0.0,
+    "mixed span starts inside a word": 0.312,
+    "other (different spans kept in step 2 / merging)": 0.688
+   },
+   "tokens_only_ot": {
+    "total_tokens": 14,
+    "OLMoTrace span shorter than 4 tokens": 0.0,
+    "step 2 kept different spans / merging": 1.0
+   },
+   "full_text_check_vs_index": {
+    "in_index": 10,
+    "found_by_mixed_and_in_index": 10,
+    "found_by_mixed_not_in_index": 0,
+    "in_index_missed_by_mixed": 0
+   }
+  },
+  "simpletrace_summary": {
+   "generations_full_matches_ratio": 0.1,
+   "unique_full_matches": 162,
+   "avg_nv_recall": 0.187638397,
+   "avg_nv_recall_on_hits": 0.478878849,
+   "generations_above_nv_recall_threshold_ratio": 0.2,
+   "generations_with_n_token_span_ratio": 0.0,
+   "average_longest_span_length": 11.05,
+   "unique_total_docs": 802,
+   "total_docs": 1493
+  }
+ }
+}
