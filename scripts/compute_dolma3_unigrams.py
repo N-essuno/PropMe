@@ -6,7 +6,7 @@ split26_index_6shards. The three-shard split26_index directory is omitted
 because it appears to be an alternate layout of the same data. Override
 --index-dir if your set of partial indexes differs.
 
-Run from any directory in the project's InfiniGram environment:
+Run from any directory with infini-gram installed:
 
     python scripts/compute_dolma3_unigrams.py
 """
@@ -14,13 +14,15 @@ Run from any directory in the project's InfiniGram environment:
 from __future__ import annotations
 
 import argparse
+import os
 from pathlib import Path
 import subprocess
 import sys
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_INDEX_ROOT = Path("/work/data/propme_data/indexes")
+# Root of the large data (indexes/, raw/), outside the repository by default.
+DEFAULT_INDEX_ROOT = Path(os.environ.get("PROPME_DATA_ROOT", REPO_ROOT / "propme_data")) / "indexes"
 DEFAULT_INDEX_DIRS = [
     *(str(DEFAULT_INDEX_ROOT / f"dolma3_split{i}_index") for i in range(1, 13)),
     str(DEFAULT_INDEX_ROOT / "dolma3_split13_index"),

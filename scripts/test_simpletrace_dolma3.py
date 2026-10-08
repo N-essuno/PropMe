@@ -1,29 +1,30 @@
 #!/usr/bin/env python3
 """Smoke-test SimpleTrace queries against the Dolma3 indexes.
 
-Run from any directory with the project's InfiniGram and Transformers
-environment active:
+Run from any directory with infini-gram and transformers installed:
 
     python scripts/test_simpletrace_dolma3.py
 
 By default, use all Dolma3 split indexes in the index directory. Use --single
 to query the combined symlink-based index instead, or pass --index-dir to
-select specific indexes.
+select specific indexes. Use --num-workers and --find-threads to trace
+queries in parallel worker processes, as in 03_tracing/simple_trace.py.
+Use --drop-index-cache to evict the index files from the OS page cache first,
+so runs comparing these settings all start from a cold cache.
 """
 
 from __future__ import annotations
 
 import argparse
-import json
+import os
 from pathlib import Path
 import sys
-
-from transformers import AutoTokenizer
-from infini_gram.engine import InfiniGramEngine
+import time
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_INDEX_ROOT = Path("/work/pecora/propme_data/indexes")
+# Root of the large data (indexes/, raw/), outside the repository by default.
+DEFAULT_INDEX_ROOT = Path(os.environ.get("PROPME_DATA_ROOT", REPO_ROOT / "propme_data")) / "indexes"
 DEFAULT_INDEX_DIRS = [
     *(str(DEFAULT_INDEX_ROOT / f"dolma3_split{i}_index") for i in range(1, 13)),
     str(DEFAULT_INDEX_ROOT / "dolma3_split13_index"),
@@ -34,6 +35,31 @@ DEFAULT_INDEX_DIRS = [
 DEFAULT_SINGLE_INDEX = DEFAULT_INDEX_ROOT / "dolma3_index_link"
 DEFAULT_QUERY = "Hello world."
 DEFAULT_UNIGRAM_PROBS_PATH = REPO_ROOT / "02_unigram_probs" / "unigram_probs_dolma3_link.json"
+INDEX_FILE_PREFIXES = ("table", "tokenized", "offset", "metadata", "metaoff")
+
+
+def drop_index_cache(index_dirs: list[str]) -> None:
+    """Evict the index files' pages from the OS page cache.
+
+    Repeated runs over the same queries read the same index pages, which
+    otherwise stay cached and make later runs look much faster. Unlike
+    /proc/sys/vm/drop_caches this needs no root. Symlinks are followed, so
+    the combined --single index evicts the split indexes' files. Pages still
+    mapped by a running process are kept.
+    """
+    start = time.time()
+    num_files = 0
+    for index_dir in index_dirs:
+        for name in os.listdir(index_dir):
+            if name.split(".")[0] not in INDEX_FILE_PREFIXES:
+                continue
+            fd = os.open(os.path.join(index_dir, name), os.O_RDONLY)
+            try:
+                os.posix_fadvise(fd, 0, 0, os.POSIX_FADV_DONTNEED)
+            finally:
+                os.close(fd)
+            num_files += 1
+    print(f"Evicted {num_files} index files from the page cache in {time.time() - start:.1f}s.")
 
 
 def main() -> None:
@@ -69,10 +95,28 @@ def main() -> None:
         help="SimpleTrace matching mode (default: mixed).",
     )
     parser.add_argument(
-        "--docs-per-span", type=int, default=3,
+        "--docs-per-span", type=int, default=10,
         help="Maximum retrieved documents per matched span.",
     )
+    parser.add_argument(
+        "--num-workers", type=int, default=1,
+        help="Number of SimpleTrace worker processes (default: 1).",
+    )
+    parser.add_argument(
+        "--find-threads", type=int, default=1,
+        help="Threads per worker running index queries concurrently (default: 1).",
+    )
+    parser.add_argument(
+        "--drop-index-cache",
+        action="store_true",
+        help="Evict the index files from the OS page cache before tracing, "
+             "for timing comparisons on a cold cache.",
+    )
     args = parser.parse_args()
+    if args.num_workers < 1:
+        parser.error("--num-workers must be >= 1")
+    if args.find_threads < 1:
+        parser.error("--find-threads must be >= 1")
 
     if args.query_file:
         if not args.query_file.is_file():
@@ -91,40 +135,36 @@ def main() -> None:
     if not args.unigram_probs_path.is_file():
         parser.error(f"Unigram probabilities file not found: {args.unigram_probs_path}")
 
-    with args.unigram_probs_path.open() as f:
-        unigram_probs = {
-            int(token_id): entry["prob"]
-            for token_id, entry in json.load(f).items()
-        }
-
     # Import the repository's tracing function without requiring scripts to be
     # run from the repository root or installing PropMe as a package.
     sys.path.insert(0, str(REPO_ROOT / "03_tracing"))
-    from simple_trace import trace_generation  # noqa: E402
+    from simple_trace import launch_simpletrace  # noqa: E402
 
-    print(f"Loading Llama tokenizer and {len(index_dirs)} index directories...", flush=True)
-    tokenizer = AutoTokenizer.from_pretrained(
-        "meta-llama/Llama-2-7b-hf",
-        add_bos_token=False,
-        add_eos_token=False,
+    if args.drop_index_cache:
+        drop_index_cache(index_dirs)
+
+    # Each worker process loads its own Llama tokenizer and index engine.
+    print(
+        f"Tracing {len(queries)} queries over {len(index_dirs)} index directories "
+        f"with {args.num_workers} workers and {args.find_threads} find threads each...",
+        flush=True,
     )
-    engine = InfiniGramEngine(
-        index_dir=index_dirs,
-        eos_token_id=tokenizer.eos_token_id,
-        precompute_unigram_logprobs=False,
+    results = launch_simpletrace(
+        index_dirs,
+        queries,
+        str(args.unigram_probs_path),
+        num_workers=args.num_workers,
+        docs_per_span=args.docs_per_span,
+        match_mode=args.match_mode,
+        find_threads=args.find_threads,
     )
 
-    print(f"Loaded {engine.engine.get_num_shards()} shards from {len(index_dirs)} indexes.")
     for query_number, query in enumerate(queries, start=1):
-        print(f"\nTracing query {query_number}/{len(queries)}: {query!r}", flush=True)
-        result = trace_generation(
-            query,
-            engine,
-            tokenizer,
-            unigram_probs=unigram_probs,
-            docs_per_span=args.docs_per_span,
-            match_mode=args.match_mode,
-        )
+        print(f"\nQuery {query_number}/{len(queries)}: {query!r}")
+        result = results.get(query)
+        if result is None:
+            print("Not traced (interrupted).")
+            continue
 
         spans = result["final_spans"]
         print(f"Query tokens: {len(result['gen_ids'])}; traced spans: {len(spans)}")
