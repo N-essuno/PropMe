@@ -14,6 +14,8 @@ dfm9_data/
 # Per-generation SimpleTrace results (GBs each; the summaries are kept) and embedding caches
 memorization_experiment/data/propme/**/st_*_results.json
 00_prepare_data/propensity_settings/embedding_similarity/embeddings/
+# Model generations (outputs of memorization_experiment/generation)
+memorization_experiment/data/**/*_generations*.json
 
 # Run logs
 logs/
