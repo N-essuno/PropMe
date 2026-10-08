@@ -1,0 +1,92 @@
+{
+    "total_generations": 33,
+    "generations_with_spans": 33,
+    "generations_with_prompt": 0,
+    "avg_response_tokens": 30.818181818181817,
+    "total_maximal_spans": 399,
+    "total_filtered_spans": 70,
+    "total_spans": 52,
+    "filtered_span_length_mean": 8.214285714285714,
+    "filtered_span_length_median": 8.0,
+    "min_span_length": 3,
+    "max_span_length": 25,
+    "merged_span_length_mean": 9.038461538461538,
+    "max_merged_span_length": 26,
+    "spans_length_counts_distribution": {
+        "(1, 3)": 1,
+        "(4, 6)": 11,
+        "(7, 10)": 52,
+        "(11, 20)": 5,
+        "(21, 30)": 1,
+        "(31, 40)": 0,
+        "(41, 50)": 0,
+        "(51, 100)": 0,
+        "(101, inf)": 0
+    },
+    "spans_length_distribution": {
+        "(1, 3)": 0.014285714285714285,
+        "(4, 6)": 0.15714285714285714,
+        "(7, 10)": 0.7428571428571429,
+        "(11, 20)": 0.07142857142857142,
+        "(21, 30)": 0.014285714285714285,
+        "(31, 40)": 0.0,
+        "(41, 50)": 0.0,
+        "(51, 100)": 0.0,
+        "(101, inf)": 0.0
+    },
+    "spans_length_counts_exact": {
+        "3": 1,
+        "4": 2,
+        "6": 9,
+        "7": 20,
+        "8": 17,
+        "9": 15,
+        "12": 2,
+        "16": 2,
+        "18": 1,
+        "25": 1
+    },
+    "filtered_spans_count_le_docs_per_span_ratio": 0.8571428571428571,
+    "total_docs": 261,
+    "unique_total_docs": 261,
+    "avg_docs_per_generation": 7.909090909090909,
+    "doc_relevance_counts": {
+        "high": 7,
+        "medium": 43,
+        "low": 211
+    },
+    "doc_relevance_distribution": {
+        "high": 0.02681992337164751,
+        "medium": 0.16475095785440613,
+        "low": 0.8084291187739464
+    },
+    "span_relevance_counts": {
+        "high": 7,
+        "medium": 13,
+        "low": 32
+    },
+    "span_relevance_distribution": {
+        "high": 0.1346153846153846,
+        "medium": 0.25,
+        "low": 0.6153846153846154
+    },
+    "avg_doc_relevance_score": 0.3521241583821035,
+    "avg_max_bm25_per_response_char": 0.07256576226348277,
+    "max_max_bm25_per_response_char": 0.16444706694991246,
+    "avg_latency_steps_1_3_seconds": 0.0401918071068146,
+    "avg_latency_seconds": 0.041737298128392664,
+    "median_latency_seconds": 0.03533306624740362,
+    "config": {
+        "docs_per_span": 10,
+        "span_fraction": 0.05,
+        "snippet_context_tokens": 80,
+        "document_context_tokens": 500,
+        "seed": 0,
+        "bm25_backend": "builtin_rank_bm25_port",
+        "bm25_normalization_coef": 0.18,
+        "relevance_thresholds": {
+            "high": 0.7,
+            "medium": 0.5
+        }
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "total_docs": 21,
+    "spans_length_counts_exact": {
+        "256": 21
+    },
+    "spans_length_distribution_exact": {
+        "256": 1.0
+    }
+}
