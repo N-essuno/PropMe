@@ -2,8 +2,8 @@
 Sample random documents from an InfiniGram index and save them as JSONL.
 
 Example:
-python sample_docs.py \
-    --index-dir 00_data/dynaword_index/ \
+python memorization_experiment/extract_prefixes/sample_docs.py \
+    --index-dir $PROPME_DATA_ROOT/indexes/dynaword_index \
     --output-path memorization_experiment/data/dynaword_sample_docs.jsonl \
     --num-docs 100 \
     --min-tokens 100 \

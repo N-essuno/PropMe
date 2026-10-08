@@ -7,6 +7,7 @@ import json
 import math
 import os
 import re
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -22,6 +23,22 @@ except ImportError:
         FullMatchLengthDistribution,
         load_full_match_length_distribution,
     )
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "generation"))
+from generation_runs import (  # noqa: E402
+    COMPARISONS,
+    SETTING_LABELS,
+    SETTINGS,
+    Comparison,
+    Corpus,
+    Model,
+    comparison_dir,
+    run_plots_dir,
+    run_name,
+    runs,
+    setting_tag,
+    summary_path,
+)
 
 BASE_RED = "#A50922"
 COLOR_A = "#F05039"
@@ -59,7 +76,7 @@ VECTOR_SERIES_COLORS = (
     "#D67AA5",
     "#5DA87A",
 )
-REPO_ROOT = Path(__file__).resolve().parents[1]
+REPO_ROOT = Path(__file__).resolve().parents[2]
 plt = None
 np = None
 to_rgb = None
@@ -73,7 +90,7 @@ class PlotSuite:
     tags: tuple[str, ...]
 
 
-PLOT_SUITES = (
+DFM9_PLOT_SUITES = (
     PlotSuite(
         name="dfm9-generations",
         filepaths=(
@@ -93,419 +110,60 @@ PLOT_SUITES = (
         plots_dir="memorization_experiment/data/dfm9/plots/memorization",
         tags=("dfm9", "generations"),
     ),
-    PlotSuite(
-        name="dynaword-generations",
-        filepaths=(
-            ("Generic Prompts", "memorization_experiment/data/dynaword/generic/st_dyna_generic_summary.json"),
-            ("Specific Prompts", "memorization_experiment/data/dynaword/specific/st_dyna_specific_summary.json"),
-            ("Prefix (Dynaword)", "memorization_experiment/data/dynaword/prefix/st_dyna_prefix_summary.json"),
+
+)
+
+
+def _run_suite(model: Model, corpus: Corpus) -> PlotSuite:
+    """All settings of a generation run (see generation_runs.py)."""
+    return PlotSuite(
+        name=run_name(model, corpus),
+        filepaths=tuple(
+            (SETTING_LABELS[setting], summary_path(model, corpus, setting)) for setting in SETTINGS
         ),
-        plots_dir="memorization_experiment/data/dynaword/plots",
-        tags=("dynaword", "generations"),
-    ),
-    PlotSuite(
-        name="dynaword-prompts",
-        filepaths=(
-            ("Generic Prompts", "memorization_experiment/data/dynaword/generic/st_dyna_prompts_summary.json"),
-            ("Specific Prompts", "memorization_experiment/data/dynaword/specific/st_dyna_prompts_summary.json"),
-            ("Prefix (Dynaword)", "memorization_experiment/data/dynaword/prefix/st_dyna_prompts_summary.json"),
+        plots_dir=run_plots_dir(model, corpus),
+        tags=(model.family, model.key, corpus.name, "generations"),
+    )
+
+
+def _comparison_suite(comparison: Comparison, setting: str) -> PlotSuite:
+    """One setting across the runs of a comparison."""
+    return PlotSuite(
+        name=f"{comparison.name}-{setting_tag(setting)}",
+        filepaths=tuple(
+            (series.label, summary_path(series.model, series.corpus, setting))
+            for series in comparison.all_series
         ),
-        plots_dir="memorization_experiment/data/dynaword/plots/prompts",
-        tags=("dynaword", "prompts"),
-    ),
-    PlotSuite(
-        name="dynaword-stage1-generations",
-        filepaths=(
-            ("Generic Prompts", "memorization_experiment/data/dynaword_stage1/generic/st_dyna_generic_summary.json"),
-            ("Specific Prompts", "memorization_experiment/data/dynaword_stage1/specific/st_dyna_specific_summary.json"),
-            ("Prefix (Dynaword)", "memorization_experiment/data/dynaword_stage1/prefix/st_dyna_prefix_summary.json"),
-        ),
-        plots_dir="memorization_experiment/data/dynaword_stage1/plots",
-        tags=("dynaword-stage1", "generations"),
-    ),
-    PlotSuite(
-        name="dynaword-stage1-prompts",
-        filepaths=(
-            ("Generic Prompts", "memorization_experiment/data/dynaword_stage1/generic/st_dyna_prompts_summary.json"),
-            ("Specific Prompts", "memorization_experiment/data/dynaword_stage1/specific/st_dyna_prompts_summary.json"),
-            ("Prefix (Dynaword)", "memorization_experiment/data/dynaword_stage1/prefix/st_dyna_prompts_summary.json"),
-        ),
-        plots_dir="memorization_experiment/data/dynaword_stage1/plots/prompts",
-        tags=("dynaword-stage1", "prompts"),
-    ),
-    PlotSuite(
-        name="dynaword-stage2-generations",
-        filepaths=(
-            ("Generic Prompts", "memorization_experiment/data/dynaword_stage2/generic/st_dyna_generic_summary.json"),
-            ("Specific Prompts", "memorization_experiment/data/dynaword_stage2/specific/st_dyna_specific_summary.json"),
-            ("Prefix (Dynaword)", "memorization_experiment/data/dynaword_stage2/prefix/st_dyna_prefix_summary.json"),
-        ),
-        plots_dir="memorization_experiment/data/dynaword_stage2/plots",
-        tags=("dynaword-stage2", "generations"),
-    ),
-    PlotSuite(
-        name="dynaword-stage2-prompts",
-        filepaths=(
-            ("Generic Prompts", "memorization_experiment/data/dynaword_stage2/generic/st_dyna_prompts_summary.json"),
-            ("Specific Prompts", "memorization_experiment/data/dynaword_stage2/specific/st_dyna_prompts_summary.json"),
-            ("Prefix (Dynaword)", "memorization_experiment/data/dynaword_stage2/prefix/st_dyna_prompts_summary.json"),
-        ),
-        plots_dir="memorization_experiment/data/dynaword_stage2/plots/prompts",
-        tags=("dynaword-stage2", "prompts"),
-    ),
-    PlotSuite(
-        name="dynaword-stages-comparison-generic",
-        filepaths=(
-            ("generic_stage1", "memorization_experiment/data/dynaword_stage1/generic/st_dyna_generic_summary.json"),
-            ("generic_stage2", "memorization_experiment/data/dynaword_stage2/generic/st_dyna_generic_summary.json"),
-            ("generic", "memorization_experiment/data/dynaword/generic/st_dyna_generic_summary.json"),
-        ),
-        plots_dir="memorization_experiment/data/dynaword_stages_comparison/generic",
-        tags=("dynaword-stages-comparison", "stage-comparison", "generic"),
-    ),
-    PlotSuite(
-        name="dynaword-stages-comparison-specific",
-        filepaths=(
-            ("specific_stage1", "memorization_experiment/data/dynaword_stage1/specific/st_dyna_specific_summary.json"),
-            ("specific_stage2", "memorization_experiment/data/dynaword_stage2/specific/st_dyna_specific_summary.json"),
-            ("specific", "memorization_experiment/data/dynaword/specific/st_dyna_specific_summary.json"),
-        ),
-        plots_dir="memorization_experiment/data/dynaword_stages_comparison/specific",
-        tags=("dynaword-stages-comparison", "stage-comparison", "specific"),
-    ),
-    PlotSuite(
-        name="dynaword-stages-comparison-prefix",
-        filepaths=(
-            ("prefix_stage1", "memorization_experiment/data/dynaword_stage1/prefix/st_dyna_prefix_summary.json"),
-            ("prefix_stage2", "memorization_experiment/data/dynaword_stage2/prefix/st_dyna_prefix_summary.json"),
-            ("prefix", "memorization_experiment/data/dynaword/prefix/st_dyna_prefix_summary.json"),
-        ),
-        plots_dir="memorization_experiment/data/dynaword_stages_comparison/prefix",
-        tags=("dynaword-stages-comparison", "stage-comparison", "prefix"),
-    ),
-    PlotSuite(
-        name="commonpile-generations",
-        filepaths=(
-            ("Generic Prompts", "memorization_experiment/data/commonpile/generic/st_cp_generic_summary.json"),
-            ("Specific Prompts", "memorization_experiment/data/commonpile/specific/st_cp_specific_summary.json"),
-            ("Prefix (Common Pile)", "memorization_experiment/data/commonpile/prefix/st_cp_prefix_summary.json"),
-        ),
-        plots_dir="memorization_experiment/data/commonpile/plots",
-        tags=("commonpile", "generations"),
-    ),
-    PlotSuite(
-        name="commonpile-prompts",
-        filepaths=(
-            ("Generic Prompts", "memorization_experiment/data/commonpile/generic/st_cp_prompts_summary.json"),
-            ("Specific Prompts", "memorization_experiment/data/commonpile/specific/st_cp_prompts_summary.json"),
-            ("Prefix (Common Pile)", "memorization_experiment/data/commonpile/prefix/st_cp_prompts_summary.json"),
-        ),
-        plots_dir="memorization_experiment/data/commonpile/plots/prompts",
-        tags=("commonpile", "prompts"),
-    ),
-    PlotSuite(
-        name="commonpile-dfm-generations",
-        filepaths=(
-            ("Generic Prompts", "memorization_experiment/data/commonpile_dfm/generic/st_cp_generic_summary.json"),
-            ("Specific Prompts", "memorization_experiment/data/commonpile_dfm/specific/st_cp_specific_summary.json"),
-            ("Prefix (Common Pile)", "memorization_experiment/data/commonpile_dfm/prefix/st_cp_prefix_summary.json"),
-        ),
-        plots_dir="memorization_experiment/data/commonpile_dfm/plots",
-        tags=("commonpile-dfm", "generations"),
-    ),
-    PlotSuite(
-        name="commonpile-dfm-stage1-generations",
-        filepaths=(
-            ("Generic Prompts", "memorization_experiment/data/commonpile_dfm_stage1/generic/st_cp_generic_summary.json"),
-            ("Specific Prompts", "memorization_experiment/data/commonpile_dfm_stage1/specific/st_cp_specific_summary.json"),
-            ("Prefix (Common Pile)", "memorization_experiment/data/commonpile_dfm_stage1/prefix/st_cp_prefix_summary.json"),
-        ),
-        plots_dir="memorization_experiment/data/commonpile_dfm_stage1/plots",
-        tags=("commonpile-dfm-stage1", "generations"),
-    ),
-    PlotSuite(
-        name="commonpile-dfm-stage2-generations",
-        filepaths=(
-            ("Generic Prompts", "memorization_experiment/data/commonpile_dfm_stage2/generic/st_cp_generic_summary.json"),
-            ("Specific Prompts", "memorization_experiment/data/commonpile_dfm_stage2/specific/st_cp_specific_summary.json"),
-            ("Prefix (Common Pile)", "memorization_experiment/data/commonpile_dfm_stage2/prefix/st_cp_prefix_summary.json"),
-        ),
-        plots_dir="memorization_experiment/data/commonpile_dfm_stage2/plots",
-        tags=("commonpile-dfm-stage2", "generations"),
-    ),
-    PlotSuite(
-        name="commonpile-dfm-stages-comparison-generic",
-        filepaths=(
-            ("generic_stage1", "memorization_experiment/data/commonpile_dfm_stage1/generic/st_cp_generic_summary.json"),
-            ("generic_stage2", "memorization_experiment/data/commonpile_dfm_stage2/generic/st_cp_generic_summary.json"),
-            ("generic", "memorization_experiment/data/commonpile_dfm/generic/st_cp_generic_summary.json"),
-        ),
-        plots_dir="memorization_experiment/data/commonpile_dfm_stages_comparison/generic",
-        tags=("commonpile-dfm-stages-comparison", "stage-comparison", "generic"),
-    ),
-    PlotSuite(
-        name="commonpile-dfm-stages-comparison-specific",
-        filepaths=(
-            ("specific_stage1", "memorization_experiment/data/commonpile_dfm_stage1/specific/st_cp_specific_summary.json"),
-            ("specific_stage2", "memorization_experiment/data/commonpile_dfm_stage2/specific/st_cp_specific_summary.json"),
-            ("specific", "memorization_experiment/data/commonpile_dfm/specific/st_cp_specific_summary.json"),
-        ),
-        plots_dir="memorization_experiment/data/commonpile_dfm_stages_comparison/specific",
-        tags=("commonpile-dfm-stages-comparison", "stage-comparison", "specific"),
-    ),
-    PlotSuite(
-        name="commonpile-dfm-stages-comparison-prefix",
-        filepaths=(
-            ("prefix_stage1", "memorization_experiment/data/commonpile_dfm_stage1/prefix/st_cp_prefix_summary.json"),
-            ("prefix_stage2", "memorization_experiment/data/commonpile_dfm_stage2/prefix/st_cp_prefix_summary.json"),
-            ("prefix", "memorization_experiment/data/commonpile_dfm/prefix/st_cp_prefix_summary.json"),
-        ),
-        plots_dir="memorization_experiment/data/commonpile_dfm_stages_comparison/prefix",
-        tags=("commonpile-dfm-stages-comparison", "stage-comparison", "prefix"),
-    ),
-    PlotSuite(
-        name="commonpile-dfm-dynaword-comparison-generic",
-        filepaths=(
-            ("commonpile_dfm", "memorization_experiment/data/commonpile_dfm/generic/st_cp_generic_summary.json"),
-            ("dynaword", "memorization_experiment/data/dynaword/generic/st_dyna_generic_summary.json"),
-        ),
-        plots_dir="memorization_experiment/data/commonpile_dfm_dynaword_comparison/generic",
-        tags=("commonpile-dfm-dynaword-comparison", "cross-dataset-comparison", "generic"),
-    ),
-    PlotSuite(
-        name="commonpile-dfm-dynaword-comparison-specific",
-        filepaths=(
-            ("commonpile_dfm", "memorization_experiment/data/commonpile_dfm/specific/st_cp_specific_summary.json"),
-            ("dynaword", "memorization_experiment/data/dynaword/specific/st_dyna_specific_summary.json"),
-        ),
-        plots_dir="memorization_experiment/data/commonpile_dfm_dynaword_comparison/specific",
-        tags=("commonpile-dfm-dynaword-comparison", "cross-dataset-comparison", "specific"),
-    ),
-    PlotSuite(
-        name="commonpile-dfm-dynaword-comparison-prefix",
-        filepaths=(
-            ("commonpile_dfm", "memorization_experiment/data/commonpile_dfm/prefix/st_cp_prefix_summary.json"),
-            ("dynaword", "memorization_experiment/data/dynaword/prefix/st_dyna_prefix_summary.json"),
-        ),
-        plots_dir="memorization_experiment/data/commonpile_dfm_dynaword_comparison/prefix",
-        tags=("commonpile-dfm-dynaword-comparison", "cross-dataset-comparison", "prefix"),
-    ),
-    PlotSuite(
-        name="dynaword-commonpile-stages-comparison-generic",
-        filepaths=(
-            ("Common Pile Stage 1", "memorization_experiment/data/commonpile_dfm_stage1/generic/st_cp_generic_summary.json"),
-            ("Dynaword Stage 1", "memorization_experiment/data/dynaword_stage1/generic/st_dyna_generic_summary.json"),
-            ("Common Pile Stage 2", "memorization_experiment/data/commonpile_dfm_stage2/generic/st_cp_generic_summary.json"),
-            ("Dynaword Stage 2", "memorization_experiment/data/dynaword_stage2/generic/st_dyna_generic_summary.json"),
-            ("Common Pile", "memorization_experiment/data/commonpile_dfm/generic/st_cp_generic_summary.json"),
-            ("Dynaword", "memorization_experiment/data/dynaword/generic/st_dyna_generic_summary.json"),
-        ),
-        plots_dir="memorization_experiment/data/dynaword_commonpile_stages_comparison/generic",
-        tags=("dynaword-commonpile-stages-comparison", "cross-dataset-stage-comparison", "generic"),
-    ),
-    PlotSuite(
-        name="dynaword-commonpile-stages-comparison-specific",
-        filepaths=(
-            ("Common Pile Stage 1", "memorization_experiment/data/commonpile_dfm_stage1/specific/st_cp_specific_summary.json"),
-            ("Dynaword Stage 1", "memorization_experiment/data/dynaword_stage1/specific/st_dyna_specific_summary.json"),
-            ("Common Pile Stage 2", "memorization_experiment/data/commonpile_dfm_stage2/specific/st_cp_specific_summary.json"),
-            ("Dynaword Stage 2", "memorization_experiment/data/dynaword_stage2/specific/st_dyna_specific_summary.json"),
-            ("Common Pile", "memorization_experiment/data/commonpile_dfm/specific/st_cp_specific_summary.json"),
-            ("Dynaword", "memorization_experiment/data/dynaword/specific/st_dyna_specific_summary.json"),
-        ),
-        plots_dir="memorization_experiment/data/dynaword_commonpile_stages_comparison/specific",
-        tags=("dynaword-commonpile-stages-comparison", "cross-dataset-stage-comparison", "specific"),
-    ),
-    PlotSuite(
-        name="dynaword-commonpile-stages-comparison-prefix",
-        filepaths=(
-            ("Common Pile Stage 1", "memorization_experiment/data/commonpile_dfm_stage1/prefix/st_cp_prefix_summary.json"),
-            ("Dynaword Stage 1", "memorization_experiment/data/dynaword_stage1/prefix/st_dyna_prefix_summary.json"),
-            ("Common Pile Stage 2", "memorization_experiment/data/commonpile_dfm_stage2/prefix/st_cp_prefix_summary.json"),
-            ("Dynaword Stage 2", "memorization_experiment/data/dynaword_stage2/prefix/st_dyna_prefix_summary.json"),
-            ("Common Pile", "memorization_experiment/data/commonpile_dfm/prefix/st_cp_prefix_summary.json"),
-            ("Dynaword", "memorization_experiment/data/dynaword/prefix/st_dyna_prefix_summary.json"),
-        ),
-        plots_dir="memorization_experiment/data/dynaword_commonpile_stages_comparison/prefix",
-        tags=("dynaword-commonpile-stages-comparison", "cross-dataset-stage-comparison", "prefix"),
-    ),
-    PlotSuite(
-        name="commonpile-comma-dfm-generic",
-        filepaths=(
-            ("Comma", "memorization_experiment/data/commonpile/generic/st_cp_generic_summary.json"),
-            ("DFM Decoder", "memorization_experiment/data/commonpile_dfm/generic/st_cp_generic_summary.json"),
-        ),
-        plots_dir="memorization_experiment/data/commonpile_comma_dfm/generic",
-        tags=("commonpile-comma-dfm", "cross-dataset-comparison", "generic"),
-    ),
-    PlotSuite(
-        name="commonpile-comma-dfm-specific",
-        filepaths=(
-            ("Comma", "memorization_experiment/data/commonpile/specific/st_cp_specific_summary.json"),
-            ("DFM Decoder", "memorization_experiment/data/commonpile_dfm/specific/st_cp_specific_summary.json"),
-        ),
-        plots_dir="memorization_experiment/data/commonpile_comma_dfm/specific",
-        tags=("commonpile-comma-dfm", "cross-dataset-comparison", "specific"),
-    ),
-    PlotSuite(
-        name="commonpile-comma-dfm-prefix",
-        filepaths=(
-            ("Comma", "memorization_experiment/data/commonpile/prefix/st_cp_prefix_summary.json"),
-            ("DFM Decoder", "memorization_experiment/data/commonpile_dfm/prefix/st_cp_prefix_summary.json"),
-        ),
-        plots_dir="memorization_experiment/data/commonpile_comma_dfm/prefix",
-        tags=("commonpile-comma-dfm", "cross-dataset-comparison", "prefix"),
-    ),
+        plots_dir=f"{comparison_dir(comparison)}/{setting}",
+        tags=(comparison.name, "comparison", setting_tag(setting)),
+    )
+
+
+PLOT_SUITES = (
+    DFM9_PLOT_SUITES
+    + tuple(_run_suite(model, corpus) for model, corpus in runs())
+    + tuple(
+        _comparison_suite(comparison, setting)
+        for comparison in COMPARISONS
+        for setting in SETTINGS
+    )
 )
 
 PLOT_SUITES_BY_NAME = {suite.name: suite for suite in PLOT_SUITES}
 
+# One group per tag: a model family (dfm), model (dfm-main), corpus (dynaword),
+# comparison (dfm-stages-dynaword), setting of the comparisons (generic), or dfm9.
 GROUPS = {
     "all": [suite.name for suite in PLOT_SUITES],
     "all-generations": [suite.name for suite in PLOT_SUITES if "generations" in suite.tags],
-    "all-prompts": [suite.name for suite in PLOT_SUITES if "prompts" in suite.tags],
-    "dfm9": [suite.name for suite in PLOT_SUITES if "dfm9" in suite.tags],
+    "all-comparisons": [suite.name for suite in PLOT_SUITES if "comparison" in suite.tags],
     "dfm9-generations": [
         suite.name for suite in PLOT_SUITES if "dfm9" in suite.tags and "generations" in suite.tags
     ],
-    "dynaword": [suite.name for suite in PLOT_SUITES if "dynaword" in suite.tags],
-    "dynaword-generations": [
-        suite.name for suite in PLOT_SUITES if "dynaword" in suite.tags and "generations" in suite.tags
-    ],
-    "dynaword-prompts": [
-        suite.name for suite in PLOT_SUITES if "dynaword" in suite.tags and "prompts" in suite.tags
-    ],
-    "dynaword-stage1": [suite.name for suite in PLOT_SUITES if "dynaword-stage1" in suite.tags],
-    "dynaword-stage1-generations": [
-        suite.name for suite in PLOT_SUITES if "dynaword-stage1" in suite.tags and "generations" in suite.tags
-    ],
-    "dynaword-stage1-prompts": [
-        suite.name for suite in PLOT_SUITES if "dynaword-stage1" in suite.tags and "prompts" in suite.tags
-    ],
-    "dynaword-stage2": [suite.name for suite in PLOT_SUITES if "dynaword-stage2" in suite.tags],
-    "dynaword-stage2-generations": [
-        suite.name for suite in PLOT_SUITES if "dynaword-stage2" in suite.tags and "generations" in suite.tags
-    ],
-    "dynaword-stage2-prompts": [
-        suite.name for suite in PLOT_SUITES if "dynaword-stage2" in suite.tags and "prompts" in suite.tags
-    ],
-    "dynaword-stages-comparison": [
-        suite.name for suite in PLOT_SUITES if "dynaword-stages-comparison" in suite.tags
-    ],
-    "dynaword-stages-comparison-generic": [
-        suite.name
-        for suite in PLOT_SUITES
-        if "dynaword-stages-comparison" in suite.tags and "generic" in suite.tags
-    ],
-    "dynaword-stages-comparison-specific": [
-        suite.name
-        for suite in PLOT_SUITES
-        if "dynaword-stages-comparison" in suite.tags and "specific" in suite.tags
-    ],
-    "dynaword-stages-comparison-prefix": [
-        suite.name
-        for suite in PLOT_SUITES
-        if "dynaword-stages-comparison" in suite.tags and "prefix" in suite.tags
-    ],
-    "commonpile": [suite.name for suite in PLOT_SUITES if "commonpile" in suite.tags],
-    "commonpile-generations": [
-        suite.name for suite in PLOT_SUITES if "commonpile" in suite.tags and "generations" in suite.tags
-    ],
-    "commonpile-prompts": [
-        suite.name for suite in PLOT_SUITES if "commonpile" in suite.tags and "prompts" in suite.tags
-    ],
-    "commonpile-dfm": [suite.name for suite in PLOT_SUITES if "commonpile-dfm" in suite.tags],
-    "commonpile-dfm-generations": [
-        suite.name for suite in PLOT_SUITES if "commonpile-dfm" in suite.tags and "generations" in suite.tags
-    ],
-    "commonpile-dfm-stage1": [
-        suite.name for suite in PLOT_SUITES if "commonpile-dfm-stage1" in suite.tags
-    ],
-    "commonpile-dfm-stage1-generations": [
-        suite.name
-        for suite in PLOT_SUITES
-        if "commonpile-dfm-stage1" in suite.tags and "generations" in suite.tags
-    ],
-    "commonpile-dfm-stage2": [
-        suite.name for suite in PLOT_SUITES if "commonpile-dfm-stage2" in suite.tags
-    ],
-    "commonpile-dfm-stage2-generations": [
-        suite.name
-        for suite in PLOT_SUITES
-        if "commonpile-dfm-stage2" in suite.tags and "generations" in suite.tags
-    ],
-    "commonpile-dfm-stages-comparison": [
-        suite.name for suite in PLOT_SUITES if "commonpile-dfm-stages-comparison" in suite.tags
-    ],
-    "commonpile-dfm-stages-comparison-generic": [
-        suite.name
-        for suite in PLOT_SUITES
-        if "commonpile-dfm-stages-comparison" in suite.tags and "generic" in suite.tags
-    ],
-    "commonpile-dfm-stages-comparison-specific": [
-        suite.name
-        for suite in PLOT_SUITES
-        if "commonpile-dfm-stages-comparison" in suite.tags and "specific" in suite.tags
-    ],
-    "commonpile-dfm-stages-comparison-prefix": [
-        suite.name
-        for suite in PLOT_SUITES
-        if "commonpile-dfm-stages-comparison" in suite.tags and "prefix" in suite.tags
-    ],
-    "commonpile-dfm-dynaword-comparison": [
-        suite.name for suite in PLOT_SUITES if "commonpile-dfm-dynaword-comparison" in suite.tags
-    ],
-    "commonpile-dfm-dynaword-comparison-generic": [
-        suite.name
-        for suite in PLOT_SUITES
-        if "commonpile-dfm-dynaword-comparison" in suite.tags and "generic" in suite.tags
-    ],
-    "commonpile-dfm-dynaword-comparison-specific": [
-        suite.name
-        for suite in PLOT_SUITES
-        if "commonpile-dfm-dynaword-comparison" in suite.tags and "specific" in suite.tags
-    ],
-    "commonpile-dfm-dynaword-comparison-prefix": [
-        suite.name
-        for suite in PLOT_SUITES
-        if "commonpile-dfm-dynaword-comparison" in suite.tags and "prefix" in suite.tags
-    ],
-    "dynaword-commonpile-stages-comparison": [
-        suite.name for suite in PLOT_SUITES if "dynaword-commonpile-stages-comparison" in suite.tags
-    ],
-    "dynaword-commonpile-stages-comparison-generic": [
-        suite.name
-        for suite in PLOT_SUITES
-        if "dynaword-commonpile-stages-comparison" in suite.tags and "generic" in suite.tags
-    ],
-    "dynaword-commonpile-stages-comparison-specific": [
-        suite.name
-        for suite in PLOT_SUITES
-        if "dynaword-commonpile-stages-comparison" in suite.tags and "specific" in suite.tags
-    ],
-    "dynaword-commonpile-stages-comparison-prefix": [
-        suite.name
-        for suite in PLOT_SUITES
-        if "dynaword-commonpile-stages-comparison" in suite.tags and "prefix" in suite.tags
-    ],
-    "commonpile-comma-dfm": [
-        suite.name for suite in PLOT_SUITES if "commonpile-comma-dfm" in suite.tags
-    ],
-    "commonpile-comma-dfm-generic": [
-        suite.name
-        for suite in PLOT_SUITES
-        if "commonpile-comma-dfm" in suite.tags and "generic" in suite.tags
-    ],
-    "commonpile-comma-dfm-specific": [
-        suite.name
-        for suite in PLOT_SUITES
-        if "commonpile-comma-dfm" in suite.tags and "specific" in suite.tags
-    ],
-    "commonpile-comma-dfm-prefix": [
-        suite.name
-        for suite in PLOT_SUITES
-        if "commonpile-comma-dfm" in suite.tags and "prefix" in suite.tags
-    ],
+    **{
+        tag: [suite.name for suite in PLOT_SUITES if tag in suite.tags]
+        for tag in dict.fromkeys(tag for suite in PLOT_SUITES for tag in suite.tags)
+    },
 }
 
 

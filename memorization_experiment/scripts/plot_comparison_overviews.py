@@ -6,6 +6,7 @@ import argparse
 import json
 import os
 import re
+import sys
 import tempfile
 from dataclasses import dataclass
 from pathlib import Path
@@ -22,6 +23,17 @@ except ImportError:
         FullMatchLengthDistribution,
         load_full_match_length_distribution,
     )
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "generation"))
+from generation_runs import (  # noqa: E402
+    COMPARISONS,
+    SETTING_LABELS,
+    SETTINGS,
+    Comparison,
+    comparison_dir,
+    propensity_path,
+    summary_path,
+)
 
 
 COLOR_A = "#F05039"
@@ -47,7 +59,7 @@ SCALAR_METRICS = (
 )
 PROPENSITY_OUTPUT_NAME = "propensity_metrics_overview.png"
 SPAN_OUTPUT_NAME = "spans_length_distribution_overview.png"
-REPO_ROOT = Path(__file__).resolve().parents[1]
+REPO_ROOT = Path(__file__).resolve().parents[2]
 
 plt = None
 np = None
@@ -74,7 +86,7 @@ class ComparisonOverview:
     propensity_series: tuple[PropensitySeries, ...]
 
 
-OVERVIEWS = (
+DFM9_OVERVIEWS = (
     ComparisonOverview(
         name="dfm9-settings-comparison",
         output_dir="memorization_experiment/data/dfm9/plots/settings_comparison",
@@ -137,186 +149,33 @@ OVERVIEWS = (
             ),
         ),
     ),
-    ComparisonOverview(
-        name="dynaword-stages-comparison",
-        output_dir="memorization_experiment/data/dynaword_stages_comparison",
-        settings=(
-            OverviewSetting(
-                name="generic",
-                filepaths=(
-                    ("generic_stage1", "memorization_experiment/data/dynaword_stage1/generic/st_dyna_generic_summary.json"),
-                    ("generic_stage2", "memorization_experiment/data/dynaword_stage2/generic/st_dyna_generic_summary.json"),
-                    ("generic", "memorization_experiment/data/dynaword/generic/st_dyna_generic_summary.json"),
-                ),
-            ),
-            OverviewSetting(
-                name="specific",
-                filepaths=(
-                    ("specific_stage1", "memorization_experiment/data/dynaword_stage1/specific/st_dyna_specific_summary.json"),
-                    ("specific_stage2", "memorization_experiment/data/dynaword_stage2/specific/st_dyna_specific_summary.json"),
-                    ("specific", "memorization_experiment/data/dynaword/specific/st_dyna_specific_summary.json"),
-                ),
-            ),
-            OverviewSetting(
-                name="prefix",
-                filepaths=(
-                    ("prefix_stage1", "memorization_experiment/data/dynaword_stage1/prefix/st_dyna_prefix_summary.json"),
-                    ("prefix_stage2", "memorization_experiment/data/dynaword_stage2/prefix/st_dyna_prefix_summary.json"),
-                    ("prefix", "memorization_experiment/data/dynaword/prefix/st_dyna_prefix_summary.json"),
-                ),
-            ),
-        ),
-        propensity_series=(
-            PropensitySeries("Stage 1", "memorization_experiment/data/dynaword_stage1/propensity/st_dyna_propensity_metrics.json"),
-            PropensitySeries("Stage 2", "memorization_experiment/data/dynaword_stage2/propensity/st_dyna_propensity_metrics.json"),
-            PropensitySeries("Final", "memorization_experiment/data/dynaword/propensity/st_dyna_propensity_metrics.json"),
-        ),
-    ),
-    ComparisonOverview(
-        name="commonpile-dfm-stages-comparison",
-        output_dir="memorization_experiment/data/commonpile_dfm_stages_comparison",
-        settings=(
-            OverviewSetting(
-                name="generic",
-                filepaths=(
-                    ("generic_stage1", "memorization_experiment/data/commonpile_dfm_stage1/generic/st_cp_generic_summary.json"),
-                    ("generic_stage2", "memorization_experiment/data/commonpile_dfm_stage2/generic/st_cp_generic_summary.json"),
-                    ("generic", "memorization_experiment/data/commonpile_dfm/generic/st_cp_generic_summary.json"),
-                ),
-            ),
-            OverviewSetting(
-                name="specific",
-                filepaths=(
-                    ("specific_stage1", "memorization_experiment/data/commonpile_dfm_stage1/specific/st_cp_specific_summary.json"),
-                    ("specific_stage2", "memorization_experiment/data/commonpile_dfm_stage2/specific/st_cp_specific_summary.json"),
-                    ("specific", "memorization_experiment/data/commonpile_dfm/specific/st_cp_specific_summary.json"),
-                ),
-            ),
-            OverviewSetting(
-                name="prefix",
-                filepaths=(
-                    ("prefix_stage1", "memorization_experiment/data/commonpile_dfm_stage1/prefix/st_cp_prefix_summary.json"),
-                    ("prefix_stage2", "memorization_experiment/data/commonpile_dfm_stage2/prefix/st_cp_prefix_summary.json"),
-                    ("prefix", "memorization_experiment/data/commonpile_dfm/prefix/st_cp_prefix_summary.json"),
-                ),
-            ),
-        ),
-        propensity_series=(
-            PropensitySeries("Stage 1", "memorization_experiment/data/commonpile_dfm_stage1/propensity/st_cp_propensity_metrics.json"),
-            PropensitySeries("Stage 2", "memorization_experiment/data/commonpile_dfm_stage2/propensity/st_cp_propensity_metrics.json"),
-            PropensitySeries("Final", "memorization_experiment/data/commonpile_dfm/propensity/st_cp_propensity_metrics.json"),
-        ),
-    ),
-    ComparisonOverview(
-        name="commonpile-dfm-dynaword-comparison",
-        output_dir="memorization_experiment/data/commonpile_dfm_dynaword_comparison",
-        settings=(
-            OverviewSetting(
-                name="generic",
-                filepaths=(
-                    ("common_pile", "memorization_experiment/data/commonpile_dfm/generic/st_cp_generic_summary.json"),
-                    ("dynaword", "memorization_experiment/data/dynaword/generic/st_dyna_generic_summary.json"),
-                ),
-            ),
-            OverviewSetting(
-                name="specific",
-                filepaths=(
-                    ("common_pile", "memorization_experiment/data/commonpile_dfm/specific/st_cp_specific_summary.json"),
-                    ("dynaword", "memorization_experiment/data/dynaword/specific/st_dyna_specific_summary.json"),
-                ),
-            ),
-            OverviewSetting(
-                name="prefix",
-                filepaths=(
-                    ("common_pile", "memorization_experiment/data/commonpile_dfm/prefix/st_cp_prefix_summary.json"),
-                    ("dynaword", "memorization_experiment/data/dynaword/prefix/st_dyna_prefix_summary.json"),
-                ),
-            ),
-        ),
-        propensity_series=(
-            PropensitySeries("Common Pile", "memorization_experiment/data/commonpile_dfm/propensity/st_cp_propensity_metrics.json"),
-            PropensitySeries("Dynaword", "memorization_experiment/data/dynaword/propensity/st_dyna_propensity_metrics.json"),
-        ),
-    ),
-    ComparisonOverview(
-        name="dynaword-commonpile-stages-comparison",
-        output_dir="memorization_experiment/data/dynaword_commonpile_stages_comparison",
-        settings=(
-            OverviewSetting(
-                name="generic",
-                filepaths=(
-                    ("common_pile_stage1", "memorization_experiment/data/commonpile_dfm_stage1/generic/st_cp_generic_summary.json"),
-                    ("dynaword_stage1", "memorization_experiment/data/dynaword_stage1/generic/st_dyna_generic_summary.json"),
-                    ("common_pile_stage2", "memorization_experiment/data/commonpile_dfm_stage2/generic/st_cp_generic_summary.json"),
-                    ("dynaword_stage2", "memorization_experiment/data/dynaword_stage2/generic/st_dyna_generic_summary.json"),
-                    ("common_pile", "memorization_experiment/data/commonpile_dfm/generic/st_cp_generic_summary.json"),
-                    ("dynaword", "memorization_experiment/data/dynaword/generic/st_dyna_generic_summary.json"),
-                ),
-            ),
-            OverviewSetting(
-                name="specific",
-                filepaths=(
-                    ("common_pile_stage1", "memorization_experiment/data/commonpile_dfm_stage1/specific/st_cp_specific_summary.json"),
-                    ("dynaword_stage1", "memorization_experiment/data/dynaword_stage1/specific/st_dyna_specific_summary.json"),
-                    ("common_pile_stage2", "memorization_experiment/data/commonpile_dfm_stage2/specific/st_cp_specific_summary.json"),
-                    ("dynaword_stage2", "memorization_experiment/data/dynaword_stage2/specific/st_dyna_specific_summary.json"),
-                    ("common_pile", "memorization_experiment/data/commonpile_dfm/specific/st_cp_specific_summary.json"),
-                    ("dynaword", "memorization_experiment/data/dynaword/specific/st_dyna_specific_summary.json"),
-                ),
-            ),
-            OverviewSetting(
-                name="prefix",
-                filepaths=(
-                    ("common_pile_stage1", "memorization_experiment/data/commonpile_dfm_stage1/prefix/st_cp_prefix_summary.json"),
-                    ("dynaword_stage1", "memorization_experiment/data/dynaword_stage1/prefix/st_dyna_prefix_summary.json"),
-                    ("common_pile_stage2", "memorization_experiment/data/commonpile_dfm_stage2/prefix/st_cp_prefix_summary.json"),
-                    ("dynaword_stage2", "memorization_experiment/data/dynaword_stage2/prefix/st_dyna_prefix_summary.json"),
-                    ("common_pile", "memorization_experiment/data/commonpile_dfm/prefix/st_cp_prefix_summary.json"),
-                    ("dynaword", "memorization_experiment/data/dynaword/prefix/st_dyna_prefix_summary.json"),
-                ),
-            ),
-        ),
-        propensity_series=(
-            PropensitySeries("Common Pile Stage 1", "memorization_experiment/data/commonpile_dfm_stage1/propensity/st_cp_propensity_metrics.json"),
-            PropensitySeries("Dynaword Stage 1", "memorization_experiment/data/dynaword_stage1/propensity/st_dyna_propensity_metrics.json"),
-            PropensitySeries("Common Pile Stage 2", "memorization_experiment/data/commonpile_dfm_stage2/propensity/st_cp_propensity_metrics.json"),
-            PropensitySeries("Dynaword Stage 2", "memorization_experiment/data/dynaword_stage2/propensity/st_dyna_propensity_metrics.json"),
-            PropensitySeries("Common Pile", "memorization_experiment/data/commonpile_dfm/propensity/st_cp_propensity_metrics.json"),
-            PropensitySeries("Dynaword", "memorization_experiment/data/dynaword/propensity/st_dyna_propensity_metrics.json"),
-        ),
-    ),
-    ComparisonOverview(
-        name="commonpile-comma-dfm",
-        output_dir="memorization_experiment/data/commonpile_comma_dfm",
-        settings=(
-            OverviewSetting(
-                name="generic",
-                filepaths=(
-                    ("comma", "memorization_experiment/data/commonpile/generic/st_cp_generic_summary.json"),
-                    ("dfm_decoder", "memorization_experiment/data/commonpile_dfm/generic/st_cp_generic_summary.json"),
-                ),
-            ),
-            OverviewSetting(
-                name="specific",
-                filepaths=(
-                    ("comma", "memorization_experiment/data/commonpile/specific/st_cp_specific_summary.json"),
-                    ("dfm_decoder", "memorization_experiment/data/commonpile_dfm/specific/st_cp_specific_summary.json"),
-                ),
-            ),
-            OverviewSetting(
-                name="prefix",
-                filepaths=(
-                    ("comma", "memorization_experiment/data/commonpile/prefix/st_cp_prefix_summary.json"),
-                    ("dfm_decoder", "memorization_experiment/data/commonpile_dfm/prefix/st_cp_prefix_summary.json"),
-                ),
-            ),
-        ),
-        propensity_series=(
-            PropensitySeries("Comma", "memorization_experiment/data/commonpile/propensity/st_cp_propensity_metrics.json"),
-            PropensitySeries("DFM Decoder", "memorization_experiment/data/commonpile_dfm/propensity/st_cp_propensity_metrics.json"),
-        ),
-    ),
+
 )
+
+
+def _comparison_overview(comparison: Comparison) -> ComparisonOverview:
+    """Every setting across the runs of a comparison (see generation_runs.py), with each run's propensity report."""
+    return ComparisonOverview(
+        name=comparison.name,
+        output_dir=comparison_dir(comparison),
+        settings=tuple(
+            OverviewSetting(
+                name=setting,
+                filepaths=tuple(
+                    (series.label, summary_path(series.model, series.corpus, setting))
+                    for series in comparison.all_series
+                ),
+            )
+            for setting in SETTINGS
+        ),
+        propensity_series=tuple(
+            PropensitySeries(series.label, propensity_path(series.model, series.corpus))
+            for series in comparison.all_series
+        ),
+    )
+
+
+OVERVIEWS = DFM9_OVERVIEWS + tuple(_comparison_overview(comparison) for comparison in COMPARISONS)
 
 OVERVIEWS_BY_NAME = {overview.name: overview for overview in OVERVIEWS}
 
@@ -340,8 +199,7 @@ def _require_plot_dependencies():
         import numpy as imported_np
     except ModuleNotFoundError as exc:
         raise ModuleNotFoundError(
-            "Plotting requires matplotlib and numpy. Use the project virtualenv, "
-            "for example `.venv/bin/python memorization_experiment/plot_comparison_overviews.py ...`."
+            "Plotting requires matplotlib and numpy (see requirements.txt)."
         ) from exc
 
     plt = imported_plt
@@ -377,7 +235,7 @@ def _format_value(v: float) -> str:
 
 
 def _pretty_setting_name(name: str) -> str:
-    return name.replace("_", " ").title()
+    return SETTING_LABELS.get(name, name.replace("_", " ").title())
 
 
 def _pretty_metric_name(name: str) -> str:
@@ -403,6 +261,9 @@ def _display_label(label: str, setting_name: str) -> str:
     }
     if label in exact_mapping:
         return exact_mapping[label]
+    # Labels with capitals are display text already (e.g. "DFM Stage 1").
+    if label != label.lower():
+        return label
     if label.endswith("_stage1"):
         return "Stage 1"
     if label.endswith("_stage2"):
@@ -789,7 +650,7 @@ def _plot_scalar_overview(
     ax.set_xticks(x)
     ax.set_xticklabels([_pretty_setting_name(setting.name) for setting in ordered_settings])
     ax.set_ylabel("Tokens" if is_token_metric else "Value")
-    ax.set_title(f"{metric_name} across generic, specific, and prefix")
+    ax.set_title(f"{metric_name} across settings")
     ax.grid(axis="y", linestyle="--", alpha=0.5)
     ax.set_axisbelow(True)
     ax.legend(title="Series")

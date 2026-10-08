@@ -2,7 +2,7 @@
 Prompt inference via a running vLLM OpenAI-compatible server.
 
 Workflow for Apple Silicon:
-    1) Install vLLM in base environment (Apple Silicon uses CPU build path).
+    1) Install vLLM (Apple Silicon uses the CPU build path).
     2) Start server:
         vllm serve <HF_MODEL_ID> --host 127.0.0.1 --port 8000
     3) Run this script to batch prompts through /v1/completions.
@@ -37,6 +37,7 @@ class RunConfig:
     num_beams: int
     repetition_penalty: float
     seed: int
+    num_generations: int
     input_json: str | None
     input_jsonl: str | None
     text_field: str
@@ -73,7 +74,9 @@ def load_prompt_jsonl(
     default_domain: str,
 ) -> dict[str, list[str]]:
     prompt_dict: dict[str, list[str]] = {}
-    raw = Path(path).read_text(encoding="utf-8").splitlines()
+    # Split on "\n" only: splitlines() also breaks at characters such as U+2028 and
+    # U+0085, which JSON strings may hold unescaped.
+    raw = Path(path).read_text(encoding="utf-8").split("\n")
     for line_num, line in enumerate(raw, start=1):
         if not line.strip():
             continue
@@ -183,7 +186,13 @@ def generate_batch_vllm_api(
     repetition_penalty: float,
     seed: int,
     request_timeout_s: float,
-) -> list[dict[str, str]]:
+    num_generations: int = 1,
+) -> list[dict[str, Any]]:
+    """Generate `num_generations` completions per prompt.
+
+    Returns one record per completion, grouped by prompt in input order
+    (prompt 0's generations first), each with its `sample_idx`.
+    """
     payload: dict[str, Any] = {
         "model": model,
         "prompt": prompts,
@@ -191,7 +200,7 @@ def generate_batch_vllm_api(
         "truncate_prompt_tokens": max_input_tokens,
         "repetition_penalty": repetition_penalty,
         "seed": seed,
-        "n": 1,
+        "n": num_generations,
     }
 
     if do_sample:
@@ -220,8 +229,10 @@ def generate_batch_vllm_api(
     if not isinstance(choices, list):
         raise RuntimeError(f"Unexpected completion response format: {response}")
 
-    # Use None as sentinel so an empty-string completion is treated as valid.
-    completions: list[str | None] = [None] * len(prompts)
+    # vLLM numbers the choices prompt by prompt: choice i is generation
+    # i % n of prompt i // n. None marks a missing choice, so an empty-string
+    # completion still counts as valid.
+    completions: list[str | None] = [None] * (len(prompts) * num_generations)
     for choice in choices:
         if not isinstance(choice, dict):
             continue
@@ -239,11 +250,12 @@ def generate_batch_vllm_api(
 
     return [
         {
-            "prompt": prompt,
+            "prompt": prompts[i // num_generations],
+            "sample_idx": i % num_generations,
             "completion": completion.strip(),
-            "full_text": f"{prompt}{completion}",
+            "full_text": f"{prompts[i // num_generations]}{completion}",
         }
-        for prompt, completion in zip(prompts, completions)
+        for i, completion in enumerate(completions)
     ]
 
 
@@ -264,17 +276,20 @@ def run_prompt_set(
     repetition_penalty: float,
     seed: int,
     request_timeout_s: float,
-) -> dict[str, list[dict[str, str]]]:
+    num_generations: int = 1,
+) -> dict[str, list[dict[str, Any]]]:
     print(f"\n[*] Running prompt set: {set_name}")
-    results_by_domain: dict[str, list[dict[str, str]]] = {}
+    results_by_domain: dict[str, list[list[dict[str, Any]]]] = {}
 
     # Flatten across all domains for maximal batching throughput.
-    flat_items: list[tuple[str, int, str]] = []
+    # (domain, index within the domain, prompt, prompt_id); prompt_id numbers the
+    # prompts of the set in the order they are run (grouped by domain).
+    flat_items: list[tuple[str, int, str, int]] = []
     for domain, prompts in prompt_dict.items():
         print(f"  - {domain}: {len(prompts)} prompts")
-        results_by_domain[domain] = [{} for _ in prompts]
+        results_by_domain[domain] = [[] for _ in prompts]
         for idx, prompt in enumerate(prompts):
-            flat_items.append((domain, idx, prompt))
+            flat_items.append((domain, idx, prompt, len(flat_items)))
 
     total_batches = (len(flat_items) + batch_size - 1) // batch_size
     batch_iterator = tqdm(
@@ -300,11 +315,19 @@ def run_prompt_set(
             repetition_penalty=repetition_penalty,
             seed=seed,
             request_timeout_s=request_timeout_s,
+            num_generations=num_generations,
         )
-        for (domain, idx, _), result in zip(item_batch, generated):
-            results_by_domain[domain][idx] = result
+        for j, (domain, idx, _, prompt_id) in enumerate(item_batch):
+            results_by_domain[domain][idx] = [
+                {"prompt_id": prompt_id, **record}
+                for record in generated[j * num_generations : (j + 1) * num_generations]
+            ]
 
-    return {domain: list(items) for domain, items in results_by_domain.items()}
+    # One record per generation, prompts in input order.
+    return {
+        domain: [record for prompt_records in items for record in prompt_records]
+        for domain, items in results_by_domain.items()
+    }
 
 
 def parse_args():
@@ -363,6 +386,15 @@ def parse_args():
     parser.add_argument("--repetition_penalty", type=float, default=1.0, help="Repetition penalty.")
     parser.add_argument("--seed", type=int, default=42, help="Seed for reproducibility.")
     parser.add_argument(
+        "--num_generations",
+        type=int,
+        default=1,
+        help=(
+            "Completions per prompt (vLLM's n). Each is saved as its own record with the prompt's "
+            "prompt_id and its sample_idx, which simple_trace.py uses as the record's key."
+        ),
+    )
+    parser.add_argument(
         "--request_timeout_s",
         type=float,
         default=1000.0,
@@ -378,6 +410,8 @@ def main():
         print(f"[*] Checking vLLM server: {args.api_base}")
         check_server(args.api_base, args.api_key, args.request_timeout_s)
 
+    if args.num_generations < 1:
+        raise ValueError("--num_generations must be >= 1")
     if bool(args.input_json) == bool(args.input_jsonl):
         raise ValueError("Provide exactly one of --input_json or --input_jsonl")
 
@@ -400,6 +434,7 @@ def main():
         num_beams=args.num_beams,
         repetition_penalty=args.repetition_penalty,
         seed=args.seed,
+        num_generations=args.num_generations,
         input_json=args.input_json,
         input_jsonl=args.input_jsonl,
         text_field=args.text_field,
@@ -433,6 +468,7 @@ def main():
             repetition_penalty=args.repetition_penalty,
             seed=args.seed,
             request_timeout_s=args.request_timeout_s,
+            num_generations=args.num_generations,
         )
 
     payload["runtime_seconds"] = round(time.time() - started_at, 3)
@@ -443,6 +479,7 @@ def main():
     )
 
     out_path = Path(args.output_file)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
     print(f"\n[*] API base: {args.api_base}")
     print(f"[*] Saved results to: {out_path}")

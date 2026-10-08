@@ -4,15 +4,29 @@ This folder contains the experiment code and input assets used to run the `Simpl
 
 ## Code in this folder
 
-The scripts in this folder are:
+- `run_memorization_experiments.py`: trace the generations with SimpleTrace (see below).
+
+`generation/`:
 
 - `generate_vllm.py`: batch prompt inference through a running OpenAI-compatible vLLM server.
+- `run_generations_all.sh`: generate every model's completions with vLLM (prompt sets, prefix prompts and the prompt-free settings), 10 per prompt; see the header of the script for models, settings and outputs.
+- `generation_runs.py`: the models, corpora, settings and file layout of those generations, shared by the tracing, propensity and plotting presets below.
+- `generate_vllm_free.py`: prompt-free generation through a running vLLM server: `unconditional` (start-of-document token only) or `minimal_cue` (start-of-document token plus one common word, sampled per generation from `wordfreq`).
+- `subsample_prompt_sets.py`: write the 1000-prompt samples of the larger prompt sets and of their generations.
+
+`extract_prefixes/`:
+
 - `sample_docs.py`: sample source documents from an InfiniGram index into `*_sample_docs.jsonl`.
-- `commonpile_extract_prefixes.py`: build Common Pile prefix prompts from sampled source documents.
-- `dynaword_extract_prefixes.py`: build Dynaword prefix prompts from sampled source documents.
-- `dolma3_extract_prefixes.py`: sample the combined Dolma3 index and build prefix prompts.
-- `dfm9_extract_prefixes.py`: sample selected DFM9 A/B/C/D indexes and write separate 50/75/100-token prefix prompts.
-- `dfm9_domain_distributions.py`: resolve DFM9 SimpleTrace dataset IDs and report domain distributions by span-length bucket and NV-recall threshold.
+- `prefix_extraction.py`: shared index sampling and prefix extraction used by the three scripts below.
+- `commonpile_extract_prefixes.py`: sample the Common Pile index and build 2000 prefix prompts.
+- `dynaword_extract_prefixes.py`: sample the Dynaword index (excluding kb_administrative_publication, kb_historical_letters, municipality_meetings, hvadvilduhelst, tidsskrift-dk) and build 2000 prefix prompts.
+- `dolma3_extract_prefixes.py`: sample the combined Dolma3 index and build 2000 prefix prompts.
+
+`scripts/`:
+
+- `plot_memorization_results.py`: per-suite plots.
+- `plot_comparison_overviews.py`: cross-model and cross-stage comparison views.
+- `full_match_length_distribution.py`: token-length distributions of fully matched generations, used by both plotting scripts.
 
 The rest of the experiment pipeline is using code from other folders in the repository.
 
@@ -23,6 +37,8 @@ The experiment code uses a few recurring input-file patterns:
 - `test_prompts.jsonl`: small prompt sets for ad hoc generation checks.
 - `generic_prompts.jsonl`: ordinary non-adversarial generic prompts.
 - `specific_prompts.jsonl`: ordinary non-adversarial dataset-specific prompts.
+
+The generic and specific prompt sets are built in `00_prepare_data/propensity_settings` (see its README).
 - `*_prefix_prompts.jsonl`: capability-style prefix prompts.
 - `*_sample_docs.jsonl`: sampled source documents used to derive prefix prompts.
 
@@ -48,7 +64,7 @@ Example:
 ```bash
 vllm serve danish-foundation-models/dfm-decoder-open-v0-7b-pt --host 127.0.0.1 --port 8000
 
-python memorization_experiment/generate_vllm.py \
+python memorization_experiment/generation/generate_vllm.py \
   --model danish-foundation-models/dfm-decoder-open-v0-7b-pt \
   --api_base http://127.0.0.1:8000/v1 \
   --input_jsonl memorization_experiment/data/dynaword/generic/generic_prompts.jsonl \
@@ -70,70 +86,64 @@ CLI options include:
 - `--num_beams`: beam-search control.
 - `--repetition_penalty`: repetition penalty forwarded to vLLM.
 - `--seed`: reproducibility seed.
+- `--num_generations`: completions per prompt (vLLM's `n`, default 1). Each completion is saved as its own record with the prompt's `prompt_id` and its `sample_idx`; SimpleTrace keys its results by these, so it traces all of them, identical completions included.
 
 ## Build prefix prompts
 
 The `prefix` setting is created from sampled source documents rather than handwritten prompts.
 
-First sample source documents from the relevant InfiniGram index. The prefix extraction scripts expect the sampled documents to exist before they run.
+The Common Pile, Dynaword, and Dolma3 extractors sample documents directly from
+their InfiniGram index, so they do not need a separate `sample_docs.py` step.
+All three share the logic in `prefix_extraction.py`:
 
-Example for Dynaword:
-
-```bash
-python memorization_experiment/sample_docs.py \
-  --index-dir 00_data/dynaword_index \
-  --output-path memorization_experiment/data/dynaword/dynaword_sample_docs.jsonl \
-  --num-docs 100 \
-  --min-tokens 100 \
-  --tokenizer-model meta-llama/Llama-2-7b-hf
-```
-
-Then extract prefixes with:
-
-- `commonpile_extract_prefixes.py`
-- `dynaword_extract_prefixes.py`
-
-Both scripts currently:
-
-- load sampled source documents from `*_sample_docs.jsonl`,
-- tokenize them with `meta-llama/Llama-2-7b-hf`,
-- extract the first `50` tokens,
-- write JSONL prompt records with `text` and `domain` fields.
+- sample distinct documents with a seeded, lazy shuffle over the whole index,
+- keep documents with at least `100` index tokens (`--min-tokens`),
+- tokenize them with `meta-llama/Llama-2-7b-hf` and extract the first `50` tokens (`--prefix-tokens`),
+- stop after `2000` documents (`--num-docs`) and fail if fewer qualify,
+- write `<dataset>_sample_docs.jsonl` and `prefix/<dataset>_prefix_prompts.jsonl`
+  (records with `text` and `domain` fields) under `--output-dir`.
 
 Run them from the repository root:
 
 ```bash
-python memorization_experiment/dynaword_extract_prefixes.py
+python memorization_experiment/extract_prefixes/commonpile_extract_prefixes.py
+python memorization_experiment/extract_prefixes/dynaword_extract_prefixes.py
+python memorization_experiment/extract_prefixes/dolma3_extract_prefixes.py
 ```
 
-### Dolma3 prefixes
+Default indexes (`$PROPME_DATA_ROOT` defaults to `propme_data/` in the repository root) and outputs:
 
-The Dolma3 extractor samples directly from the combined symlink-backed index,
-so it does not need a separate `sample_docs.py` step. From the repository root:
+| Script | Default index | Output directory |
+| --- | --- | --- |
+| `commonpile_extract_prefixes.py` | `$PROPME_DATA_ROOT/indexes/commonpile_index/common_pile_train_index` | `memorization_experiment/data/commonpile` |
+| `dynaword_extract_prefixes.py` | `$PROPME_DATA_ROOT/indexes/dynaword_index` | `memorization_experiment/data/dynaword` |
+| `dolma3_extract_prefixes.py` | `$PROPME_DATA_ROOT/indexes/dolma3_index_link` | `memorization_experiment/data/dolma3` |
+
+Use `--index-dir`, `--output-dir`, `--num-docs`, `--min-tokens`,
+`--prefix-tokens`, `--tokenizer-model`, or `--seed` to change those settings.
+The Common Pile index metadata carries no `source`, so its prompts get the
+`unknown` domain.
+
+### Dynaword excluded sources
+
+The Dynaword extractor never samples documents whose metadata `source` is
+`kb_administrative_publication`, `kb_historical_letters`,
+`municipality_meetings`, `hvadvilduhelst`, or `tidsskrift-dk`; they are skipped during
+sampling, so the output still contains `--num-docs` prompts. Override the list
+with `--exclude-sources <source> ...`, or pass `--exclude-sources` with no
+values to disable the filter.
+
+### Dolma3 split indexes
+
+To load the separate Dolma3 split indexes instead of the linked index, use:
 
 ```bash
-python memorization_experiment/dolma3_extract_prefixes.py --num-docs 100
-```
-
-To load the separate split indexes instead, use:
-
-```bash
-python memorization_experiment/dolma3_extract_prefixes.py \
-  --split-indexes \
-  --num-docs 100
+python memorization_experiment/extract_prefixes/dolma3_extract_prefixes.py --split-indexes
 ```
 
 `--indexes-root` changes the parent directory used by `--split-indexes`.
-Alternatively, pass one or more directories explicitly with `--index-dir`.
 The split selection includes both split 13 variants and
 `dolma3_split26_index_6shards`, matching the linked index.
-
-It writes `memorization_experiment/data/dolma3/dolma3_sample_docs.jsonl`
-and `memorization_experiment/data/dolma3/prefix/dolma3_prefix_prompts.jsonl`.
-The defaults use the Llama tokenizer, require at least 100 source tokens, and
-take a 50-token prefix. Use `--index-dir`, `--output-dir`, `--min-tokens`,
-`--prefix-tokens`, or `--seed` to change those settings. The default index is
-`/work/pecora/propme_data/indexes/dolma3_index_link`.
 
 
 ### DFM9 category prefixes
@@ -143,7 +153,7 @@ The same sampled documents are reused for every requested prefix length:
 
 ```bash
 HF_HUB_OFFLINE=1 python -u memorization_experiment/dfm9_extract_prefixes.py \
-  --indexes-root /work/olmotrace/mimir_propme/indexes \
+  --indexes-root $PROPME_DFM9_ROOT/indexes \
   --categories A B C D \
   --num-docs 100 \
   --prefix-lengths 50 75 100
@@ -176,11 +186,29 @@ Inspect the available preset groups and experiments:
 python memorization_experiment/run_memorization_experiments.py --list
 ```
 
-Example for running experiments on dynaword generic, specific and prefix generations:
+Each generation run (a model traced against one of its training corpora) has five experiments,
+named `<model>-<corpus>-<setting>`: `generic`, `specific`, `unconditional`, `minimal-cue`
+and `prefix`. The runs are `dfm-stage1`, `dfm-stage2` and
+`dfm-main` on `dynaword` and `commonpile`, `comma-2t` on `commonpile` and `olmo3-32b` on
+`dolma3`. Minimal cues are traced in the corpus language (`minimal_cue_da` on Dynaword,
+`minimal_cue_en` on Common Pile and Dolma3), unconditional generations against every corpus of
+the model. Groups select by tag: a model family (`dfm`), model (`dfm-main`), run
+(`dfm-main-dynaword`), corpus (`dolma3`) or setting (`unconditional`).
 
 ```bash
-python memorization_experiment/run_memorization_experiments.py dynaword-generations
+python memorization_experiment/run_memorization_experiments.py dfm-main-dynaword
+python memorization_experiment/run_memorization_experiments.py olmo3-32b prefix
 ```
+
+Outputs go to `memorization_experiment/data/propme/<model>/<corpus>/st_<setting>_{results,summary}.json`.
+
+Prompt sets with more than 1000 prompts are traced on a random sample of 1000 (seed 42), with all
+generations of each sampled prompt: their generations are read from `<stem>_generations_1000.json`
+and their traces written as `st_<setting>_1000_{results,summary}.json`. The samples are built by
+`generation/subsample_prompt_sets.py`; set `SAMPLE_SIZE` in `generation/generation_runs.py` to `None` to trace the full sets.
+
+Index paths default to `$PROPME_DATA_ROOT/indexes/...` (`propme_data/` in the repository root if unset), and the
+DFM9 indexes to `$PROPME_DFM9_ROOT/indexes/{A,B,C,D}` (`dfm9_data/` if unset).
 
 Run the DFM9 generic and A/B/C/D prefix-generation presets with:
 
@@ -212,20 +240,25 @@ List available preset groups:
 python 05_propensity_metrics/compute_propensity_metrics.py --list
 ```
 
-Example for computing metrics and plotting for the dynaword generations experiment:
+Each run has one preset, named after the run, comparing its five non-prefix settings with its
+prefix setting. The comparison presets (`dfm-stages-dynaword`, `dfm-stages-commonpile`,
+`dfm-dynaword-vs-commonpile`, `commonpile-dfm-vs-comma`, one per setting) compare a setting
+of some runs with the same setting of a reference run instead of the prefix setting.
 
 ```bash
-python 05_propensity_metrics/compute_propensity_metrics.py dynaword-generations --plot
+python 05_propensity_metrics/compute_propensity_metrics.py dfm-main-dynaword --plot
+python 05_propensity_metrics/compute_propensity_metrics.py all-comparisons --plot
 ```
 
 ## Plotting code
 
 Use `plot_memorization_results.py` for per-suite plots:
 
-Example for the dynaword generations experiment:
+Each run has one suite (named after the run) with its five settings, and each comparison one
+suite per setting (e.g. `dfm-stages-dynaword-prefix`):
 
 ```bash
-python memorization_experiment/plot_memorization_results.py dynaword-generations
+python memorization_experiment/scripts/plot_memorization_results.py dfm-main-dynaword
 ```
 
 Alongside the existing metric and distribution plots, each suite produces:
@@ -236,7 +269,7 @@ Alongside the existing metric and distribution plots, each suite produces:
 Use `plot_comparison_overviews.py` for cross-model and cross-stage comparison views:
 
 ```bash
-python memorization_experiment/plot_comparison_overviews.py dynaword-stages-comparison
+python memorization_experiment/scripts/plot_comparison_overviews.py dfm-stages-dynaword
 ```
 
 
@@ -255,8 +288,8 @@ python -u memorization_experiment/dfm9_domain_distributions.py \
     memorization_experiment/data/dfm9/prefix/st_dfm9_B_prefix_50_results.json \
     memorization_experiment/data/dfm9/prefix/st_dfm9_C_prefix_50_results.json \
     memorization_experiment/data/dfm9/prefix/st_dfm9_D_prefix_50_results.json \
-  --indexes-root /work/olmotrace/mimir_propme/indexes \
-  --prepared-data-root /work/olmotrace/mimir_propme/dfm9_memorisation_sources_propme \
+  --indexes-root $PROPME_DFM9_ROOT/indexes \
+  --prepared-data-root $PROPME_DFM9_ROOT/dfm9_memorisation_sources_propme \
   --output-dir memorization_experiment/data/dfm9/domain_analysis \
   --nv-recall-threshold 0.5
 ```
