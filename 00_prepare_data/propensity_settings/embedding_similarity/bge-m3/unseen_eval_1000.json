@@ -1,0 +1,4821 @@
+{
+  "config": {
+    "sets": [
+      "tatoeba_eng",
+      "tatoeba_dan",
+      "generic_cp_1000",
+      "generic_d3_1000",
+      "generic_dw_1000",
+      "unseen_cp",
+      "unseen_d3",
+      "unseen_dw"
+    ],
+    "extra_sets": [
+      "unseen_cp=memorization_experiment/data/commonpile/unseen/unseen_prompts.jsonl:eng:unseen",
+      "generic_cp_1000=memorization_experiment/data/commonpile/generic/generic_prompts_1000.jsonl:eng:tatoeba",
+      "unseen_d3=memorization_experiment/data/dolma3/unseen/unseen_prompts.jsonl:eng:unseen",
+      "generic_d3_1000=memorization_experiment/data/dolma3/generic/generic_prompts_1000.jsonl:eng:tatoeba",
+      "unseen_dw=memorization_experiment/data/dynaword2/unseen/unseen_prompts.jsonl:dan:unseen",
+      "generic_dw_1000=memorization_experiment/data/dynaword2/generic/generic_prompts_1000.jsonl:dan:tatoeba"
+    ],
+    "compare": [
+      "unseen_cp:tatoeba_eng",
+      "unseen_cp:generic_cp_1000",
+      "unseen_d3:tatoeba_eng",
+      "unseen_d3:generic_d3_1000",
+      "unseen_dw:tatoeba_dan",
+      "unseen_dw:generic_dw_1000"
+    ],
+    "summary_name": "unseen_eval_1000",
+    "corpora": [
+      "commonpile",
+      "dolma3",
+      "dynaword1212"
+    ],
+    "output_dir": "00_prepare_data/propensity_settings/embedding_similarity",
+    "num_docs": 10000,
+    "num_train_sentences": 2000,
+    "min_doc_tokens": 32,
+    "seed": 42,
+    "tokenizer_model": "meta-llama/Llama-2-7b-hf",
+    "sample_threads": 16,
+    "sample_only": false,
+    "model": "BAAI/bge-m3",
+    "instruction": "",
+    "doc_max_tokens": 512,
+    "query_max_tokens": 256,
+    "pooling": null,
+    "backend": "vllm",
+    "tensor_parallel_size": 1,
+    "gpu_memory_utilization": 0.9,
+    "batch_size": 16,
+    "device": null,
+    "dtype": "auto",
+    "top_k": 10,
+    "n_bootstrap": 2000,
+    "limit": null,
+    "limit_docs": null
+  },
+  "corpora": {
+    "commonpile": {
+      "num_docs": 10000,
+      "sets": {
+        "tatoeba_eng": {
+          "n": 2000,
+          "max_sim": {
+            "mean": 0.5478,
+            "ci95": [
+              0.5459,
+              0.5496
+            ],
+            "median": 0.5491,
+            "std": 0.0415
+          },
+          "topk_mean": {
+            "mean": 0.5144,
+            "ci95": [
+              0.5127,
+              0.516
+            ],
+            "median": 0.5169,
+            "std": 0.0372
+          },
+          "mean_sim": {
+            "mean": 0.3296,
+            "ci95": [
+              0.3279,
+              0.3312
+            ],
+            "median": 0.3308,
+            "std": 0.038
+          },
+          "avg_n_tokens": 10.73,
+          "by_length": {
+            "1-10": {
+              "n": 1246,
+              "max_sim_mean": 0.5549
+            },
+            "11-20": {
+              "n": 665,
+              "max_sim_mean": 0.5356
+            },
+            "21-30": {
+              "n": 54,
+              "max_sim_mean": 0.5369
+            },
+            "31-45": {
+              "n": 22,
+              "max_sim_mean": 0.5415
+            },
+            "46+": {
+              "n": 13,
+              "max_sim_mean": 0.5425
+            }
+          },
+          "nearest_source": [
+            {
+              "source": "wikiteam",
+              "nearest_count": 1050,
+              "nearest_share": 0.525,
+              "sample_share": 0.1147,
+              "enrichment": 4.58
+            },
+            {
+              "source": "wikimedia",
+              "nearest_count": 238,
+              "nearest_share": 0.119,
+              "sample_share": 0.0694,
+              "enrichment": 1.71
+            },
+            {
+              "source": "biodiversity_heritage_library",
+              "nearest_count": 167,
+              "nearest_share": 0.0835,
+              "sample_share": 0.0619,
+              "enrichment": 1.35
+            },
+            {
+              "source": "pre_1929_books",
+              "nearest_count": 86,
+              "nearest_share": 0.043,
+              "sample_share": 0.0016,
+              "enrichment": 26.87
+            },
+            {
+              "source": "data_provenance_initiative",
+              "nearest_count": 82,
+              "nearest_share": 0.041,
+              "sample_share": 0.0163,
+              "enrichment": 2.52
+            },
+            {
+              "source": "youtube",
+              "nearest_count": 74,
+              "nearest_share": 0.037,
+              "sample_share": 0.0048,
+              "enrichment": 7.71
+            },
+            {
+              "source": "stackv2_edu",
+              "nearest_count": 42,
+              "nearest_share": 0.021,
+              "sample_share": 0.2871,
+              "enrichment": 0.07
+            },
+            {
+              "source": "github_archive",
+              "nearest_count": 40,
+              "nearest_share": 0.02,
+              "sample_share": 0.1014,
+              "enrichment": 0.2
+            },
+            {
+              "source": "uspto",
+              "nearest_count": 33,
+              "nearest_share": 0.0165,
+              "sample_share": 0.0728,
+              "enrichment": 0.23
+            },
+            {
+              "source": "stackv2_html",
+              "nearest_count": 32,
+              "nearest_share": 0.016,
+              "sample_share": 0.0074,
+              "enrichment": 2.16
+            },
+            {
+              "source": "cccc",
+              "nearest_count": 31,
+              "nearest_share": 0.0155,
+              "sample_share": 0.0282,
+              "enrichment": 0.55
+            },
+            {
+              "source": "stackexchange",
+              "nearest_count": 24,
+              "nearest_share": 0.012,
+              "sample_share": 0.1372,
+              "enrichment": 0.09
+            },
+            {
+              "source": "project_gutenberg",
+              "nearest_count": 21,
+              "nearest_share": 0.0105,
+              "sample_share": 0.0012,
+              "enrichment": 8.75
+            },
+            {
+              "source": "library_of_congress",
+              "nearest_count": 20,
+              "nearest_share": 0.01,
+              "sample_share": 0.0016,
+              "enrichment": 6.25
+            },
+            {
+              "source": "pubmed",
+              "nearest_count": 13,
+              "nearest_share": 0.0065,
+              "sample_share": 0.0152,
+              "enrichment": 0.43
+            },
+            {
+              "source": "peS2o",
+              "nearest_count": 11,
+              "nearest_share": 0.0055,
+              "sample_share": 0.0256,
+              "enrichment": 0.21
+            },
+            {
+              "source": "ubuntu_irc",
+              "nearest_count": 10,
+              "nearest_share": 0.005,
+              "sample_share": 0.0018,
+              "enrichment": 2.78
+            },
+            {
+              "source": "usgpo",
+              "nearest_count": 8,
+              "nearest_share": 0.004,
+              "sample_share": 0.0089,
+              "enrichment": 0.45
+            },
+            {
+              "source": "uk_hansard",
+              "nearest_count": 6,
+              "nearest_share": 0.003,
+              "sample_share": 0.0008,
+              "enrichment": 3.75
+            },
+            {
+              "source": "caselaw_access_project",
+              "nearest_count": 6,
+              "nearest_share": 0.003,
+              "sample_share": 0.0257,
+              "enrichment": 0.12
+            },
+            {
+              "source": "news",
+              "nearest_count": 3,
+              "nearest_share": 0.0015,
+              "sample_share": 0.0007,
+              "enrichment": 2.14
+            },
+            {
+              "source": "regulations",
+              "nearest_count": 1,
+              "nearest_share": 0.0005,
+              "sample_share": 0.0008,
+              "enrichment": 0.62
+            },
+            {
+              "source": "doab",
+              "nearest_count": 1,
+              "nearest_share": 0.0005,
+              "sample_share": 0.0026,
+              "enrichment": 0.19
+            },
+            {
+              "source": "arxiv_abstracts",
+              "nearest_count": 1,
+              "nearest_share": 0.0005,
+              "sample_share": 0.0106,
+              "enrichment": 0.05
+            }
+          ],
+          "nearest_subsource": [
+            {
+              "subsource": "-",
+              "nearest_count": 2000,
+              "nearest_share": 1.0,
+              "sample_share": 1.0,
+              "enrichment": 1.0
+            }
+          ]
+        },
+        "generic_cp_1000": {
+          "n": 1000,
+          "max_sim": {
+            "mean": 0.5436,
+            "ci95": [
+              0.5413,
+              0.5461
+            ],
+            "median": 0.5442,
+            "std": 0.0397
+          },
+          "topk_mean": {
+            "mean": 0.51,
+            "ci95": [
+              0.5078,
+              0.5122
+            ],
+            "median": 0.5105,
+            "std": 0.0361
+          },
+          "mean_sim": {
+            "mean": 0.3246,
+            "ci95": [
+              0.3222,
+              0.3266
+            ],
+            "median": 0.3238,
+            "std": 0.0361
+          },
+          "avg_n_tokens": 11.63,
+          "by_length": {
+            "1-10": {
+              "n": 552,
+              "max_sim_mean": 0.5504
+            },
+            "11-20": {
+              "n": 394,
+              "max_sim_mean": 0.5344
+            },
+            "21-30": {
+              "n": 32,
+              "max_sim_mean": 0.541
+            },
+            "31-45": {
+              "n": 13,
+              "max_sim_mean": 0.5418
+            },
+            "46+": {
+              "n": 9,
+              "max_sim_mean": 0.5456
+            }
+          },
+          "by_domain": {
+            "tatoeba": {
+              "n": 1000,
+              "max_sim_mean": 0.5436
+            }
+          },
+          "nearest_source": [
+            {
+              "source": "wikiteam",
+              "nearest_count": 525,
+              "nearest_share": 0.525,
+              "sample_share": 0.1147,
+              "enrichment": 4.58
+            },
+            {
+              "source": "wikimedia",
+              "nearest_count": 124,
+              "nearest_share": 0.124,
+              "sample_share": 0.0694,
+              "enrichment": 1.79
+            },
+            {
+              "source": "biodiversity_heritage_library",
+              "nearest_count": 89,
+              "nearest_share": 0.089,
+              "sample_share": 0.0619,
+              "enrichment": 1.44
+            },
+            {
+              "source": "data_provenance_initiative",
+              "nearest_count": 43,
+              "nearest_share": 0.043,
+              "sample_share": 0.0163,
+              "enrichment": 2.64
+            },
+            {
+              "source": "pre_1929_books",
+              "nearest_count": 40,
+              "nearest_share": 0.04,
+              "sample_share": 0.0016,
+              "enrichment": 25.0
+            },
+            {
+              "source": "youtube",
+              "nearest_count": 39,
+              "nearest_share": 0.039,
+              "sample_share": 0.0048,
+              "enrichment": 8.12
+            },
+            {
+              "source": "stackv2_edu",
+              "nearest_count": 22,
+              "nearest_share": 0.022,
+              "sample_share": 0.2871,
+              "enrichment": 0.08
+            },
+            {
+              "source": "uspto",
+              "nearest_count": 18,
+              "nearest_share": 0.018,
+              "sample_share": 0.0728,
+              "enrichment": 0.25
+            },
+            {
+              "source": "cccc",
+              "nearest_count": 16,
+              "nearest_share": 0.016,
+              "sample_share": 0.0282,
+              "enrichment": 0.57
+            },
+            {
+              "source": "github_archive",
+              "nearest_count": 13,
+              "nearest_share": 0.013,
+              "sample_share": 0.1014,
+              "enrichment": 0.13
+            },
+            {
+              "source": "library_of_congress",
+              "nearest_count": 12,
+              "nearest_share": 0.012,
+              "sample_share": 0.0016,
+              "enrichment": 7.5
+            },
+            {
+              "source": "project_gutenberg",
+              "nearest_count": 11,
+              "nearest_share": 0.011,
+              "sample_share": 0.0012,
+              "enrichment": 9.17
+            },
+            {
+              "source": "stackv2_html",
+              "nearest_count": 10,
+              "nearest_share": 0.01,
+              "sample_share": 0.0074,
+              "enrichment": 1.35
+            },
+            {
+              "source": "pubmed",
+              "nearest_count": 8,
+              "nearest_share": 0.008,
+              "sample_share": 0.0152,
+              "enrichment": 0.53
+            },
+            {
+              "source": "ubuntu_irc",
+              "nearest_count": 7,
+              "nearest_share": 0.007,
+              "sample_share": 0.0018,
+              "enrichment": 3.89
+            },
+            {
+              "source": "stackexchange",
+              "nearest_count": 6,
+              "nearest_share": 0.006,
+              "sample_share": 0.1372,
+              "enrichment": 0.04
+            },
+            {
+              "source": "peS2o",
+              "nearest_count": 5,
+              "nearest_share": 0.005,
+              "sample_share": 0.0256,
+              "enrichment": 0.2
+            },
+            {
+              "source": "usgpo",
+              "nearest_count": 5,
+              "nearest_share": 0.005,
+              "sample_share": 0.0089,
+              "enrichment": 0.56
+            },
+            {
+              "source": "caselaw_access_project",
+              "nearest_count": 4,
+              "nearest_share": 0.004,
+              "sample_share": 0.0257,
+              "enrichment": 0.16
+            },
+            {
+              "source": "news",
+              "nearest_count": 1,
+              "nearest_share": 0.001,
+              "sample_share": 0.0007,
+              "enrichment": 1.43
+            },
+            {
+              "source": "arxiv_abstracts",
+              "nearest_count": 1,
+              "nearest_share": 0.001,
+              "sample_share": 0.0106,
+              "enrichment": 0.09
+            },
+            {
+              "source": "uk_hansard",
+              "nearest_count": 1,
+              "nearest_share": 0.001,
+              "sample_share": 0.0008,
+              "enrichment": 1.25
+            }
+          ],
+          "nearest_subsource": [
+            {
+              "subsource": "-",
+              "nearest_count": 1000,
+              "nearest_share": 1.0,
+              "sample_share": 1.0,
+              "enrichment": 1.0
+            }
+          ]
+        },
+        "generic_d3_1000": {
+          "n": 1000,
+          "max_sim": {
+            "mean": 0.5351,
+            "ci95": [
+              0.5326,
+              0.5375
+            ],
+            "median": 0.5356,
+            "std": 0.0395
+          },
+          "topk_mean": {
+            "mean": 0.5025,
+            "ci95": [
+              0.5003,
+              0.5048
+            ],
+            "median": 0.5028,
+            "std": 0.0358
+          },
+          "mean_sim": {
+            "mean": 0.3179,
+            "ci95": [
+              0.3156,
+              0.3199
+            ],
+            "median": 0.3171,
+            "std": 0.0359
+          },
+          "avg_n_tokens": 11.35,
+          "by_length": {
+            "1-10": {
+              "n": 515,
+              "max_sim_mean": 0.5404
+            },
+            "11-20": {
+              "n": 446,
+              "max_sim_mean": 0.5295
+            },
+            "21-30": {
+              "n": 25,
+              "max_sim_mean": 0.524
+            },
+            "31-45": {
+              "n": 12,
+              "max_sim_mean": 0.5328
+            },
+            "46+": {
+              "n": 2,
+              "max_sim_mean": 0.5487
+            }
+          },
+          "by_domain": {
+            "tatoeba": {
+              "n": 1000,
+              "max_sim_mean": 0.5351
+            }
+          },
+          "nearest_source": [
+            {
+              "source": "wikiteam",
+              "nearest_count": 525,
+              "nearest_share": 0.525,
+              "sample_share": 0.1147,
+              "enrichment": 4.58
+            },
+            {
+              "source": "wikimedia",
+              "nearest_count": 161,
+              "nearest_share": 0.161,
+              "sample_share": 0.0694,
+              "enrichment": 2.32
+            },
+            {
+              "source": "biodiversity_heritage_library",
+              "nearest_count": 80,
+              "nearest_share": 0.08,
+              "sample_share": 0.0619,
+              "enrichment": 1.29
+            },
+            {
+              "source": "youtube",
+              "nearest_count": 38,
+              "nearest_share": 0.038,
+              "sample_share": 0.0048,
+              "enrichment": 7.92
+            },
+            {
+              "source": "data_provenance_initiative",
+              "nearest_count": 32,
+              "nearest_share": 0.032,
+              "sample_share": 0.0163,
+              "enrichment": 1.96
+            },
+            {
+              "source": "pre_1929_books",
+              "nearest_count": 32,
+              "nearest_share": 0.032,
+              "sample_share": 0.0016,
+              "enrichment": 20.0
+            },
+            {
+              "source": "stackv2_edu",
+              "nearest_count": 19,
+              "nearest_share": 0.019,
+              "sample_share": 0.2871,
+              "enrichment": 0.07
+            },
+            {
+              "source": "uspto",
+              "nearest_count": 16,
+              "nearest_share": 0.016,
+              "sample_share": 0.0728,
+              "enrichment": 0.22
+            },
+            {
+              "source": "stackv2_html",
+              "nearest_count": 16,
+              "nearest_share": 0.016,
+              "sample_share": 0.0074,
+              "enrichment": 2.16
+            },
+            {
+              "source": "cccc",
+              "nearest_count": 14,
+              "nearest_share": 0.014,
+              "sample_share": 0.0282,
+              "enrichment": 0.5
+            },
+            {
+              "source": "github_archive",
+              "nearest_count": 12,
+              "nearest_share": 0.012,
+              "sample_share": 0.1014,
+              "enrichment": 0.12
+            },
+            {
+              "source": "library_of_congress",
+              "nearest_count": 9,
+              "nearest_share": 0.009,
+              "sample_share": 0.0016,
+              "enrichment": 5.62
+            },
+            {
+              "source": "project_gutenberg",
+              "nearest_count": 9,
+              "nearest_share": 0.009,
+              "sample_share": 0.0012,
+              "enrichment": 7.5
+            },
+            {
+              "source": "stackexchange",
+              "nearest_count": 8,
+              "nearest_share": 0.008,
+              "sample_share": 0.1372,
+              "enrichment": 0.06
+            },
+            {
+              "source": "ubuntu_irc",
+              "nearest_count": 7,
+              "nearest_share": 0.007,
+              "sample_share": 0.0018,
+              "enrichment": 3.89
+            },
+            {
+              "source": "peS2o",
+              "nearest_count": 6,
+              "nearest_share": 0.006,
+              "sample_share": 0.0256,
+              "enrichment": 0.23
+            },
+            {
+              "source": "caselaw_access_project",
+              "nearest_count": 5,
+              "nearest_share": 0.005,
+              "sample_share": 0.0257,
+              "enrichment": 0.19
+            },
+            {
+              "source": "usgpo",
+              "nearest_count": 3,
+              "nearest_share": 0.003,
+              "sample_share": 0.0089,
+              "enrichment": 0.34
+            },
+            {
+              "source": "news",
+              "nearest_count": 2,
+              "nearest_share": 0.002,
+              "sample_share": 0.0007,
+              "enrichment": 2.86
+            },
+            {
+              "source": "pubmed",
+              "nearest_count": 2,
+              "nearest_share": 0.002,
+              "sample_share": 0.0152,
+              "enrichment": 0.13
+            },
+            {
+              "source": "uk_hansard",
+              "nearest_count": 2,
+              "nearest_share": 0.002,
+              "sample_share": 0.0008,
+              "enrichment": 2.5
+            },
+            {
+              "source": "regulations",
+              "nearest_count": 1,
+              "nearest_share": 0.001,
+              "sample_share": 0.0008,
+              "enrichment": 1.25
+            },
+            {
+              "source": "doab",
+              "nearest_count": 1,
+              "nearest_share": 0.001,
+              "sample_share": 0.0026,
+              "enrichment": 0.38
+            }
+          ],
+          "nearest_subsource": [
+            {
+              "subsource": "-",
+              "nearest_count": 1000,
+              "nearest_share": 1.0,
+              "sample_share": 1.0,
+              "enrichment": 1.0
+            }
+          ]
+        },
+        "unseen_cp": {
+          "n": 1000,
+          "max_sim": {
+            "mean": 0.553,
+            "ci95": [
+              0.5507,
+              0.5553
+            ],
+            "median": 0.5536,
+            "std": 0.0394
+          },
+          "topk_mean": {
+            "mean": 0.522,
+            "ci95": [
+              0.5198,
+              0.5242
+            ],
+            "median": 0.5213,
+            "std": 0.0362
+          },
+          "mean_sim": {
+            "mean": 0.3442,
+            "ci95": [
+              0.3419,
+              0.3466
+            ],
+            "median": 0.3453,
+            "std": 0.038
+          },
+          "avg_n_tokens": 12.86,
+          "by_length": {
+            "1-10": {
+              "n": 443,
+              "max_sim_mean": 0.5616
+            },
+            "11-20": {
+              "n": 475,
+              "max_sim_mean": 0.5467
+            },
+            "21-30": {
+              "n": 56,
+              "max_sim_mean": 0.5379
+            },
+            "31-45": {
+              "n": 13,
+              "max_sim_mean": 0.5502
+            },
+            "46+": {
+              "n": 13,
+              "max_sim_mean": 0.5556
+            }
+          },
+          "by_domain": {
+            "Eurlex": {
+              "n": 109,
+              "max_sim_mean": 0.5343
+            },
+            "Eurovoc": {
+              "n": 109,
+              "max_sim_mean": 0.5581
+            },
+            "GATT_library": {
+              "n": 16,
+              "max_sim_mean": 0.5424
+            },
+            "NewZealand-PD-Newspapers": {
+              "n": 109,
+              "max_sim_mean": 0.5535
+            },
+            "SEC": {
+              "n": 108,
+              "max_sim_mean": 0.5464
+            },
+            "TEDEUTenders": {
+              "n": 2,
+              "max_sim_mean": 0.6177
+            },
+            "US-PD-Newspapers": {
+              "n": 109,
+              "max_sim_mean": 0.5497
+            },
+            "VoxPopuli": {
+              "n": 109,
+              "max_sim_mean": 0.5514
+            },
+            "WTO": {
+              "n": 110,
+              "max_sim_mean": 0.5535
+            },
+            "dotgov": {
+              "n": 109,
+              "max_sim_mean": 0.5652
+            },
+            "wikipedia_new": {
+              "n": 110,
+              "max_sim_mean": 0.565
+            }
+          },
+          "nearest_source": [
+            {
+              "source": "wikiteam",
+              "nearest_count": 217,
+              "nearest_share": 0.217,
+              "sample_share": 0.1147,
+              "enrichment": 1.89
+            },
+            {
+              "source": "biodiversity_heritage_library",
+              "nearest_count": 216,
+              "nearest_share": 0.216,
+              "sample_share": 0.0619,
+              "enrichment": 3.49
+            },
+            {
+              "source": "usgpo",
+              "nearest_count": 71,
+              "nearest_share": 0.071,
+              "sample_share": 0.0089,
+              "enrichment": 7.98
+            },
+            {
+              "source": "wikimedia",
+              "nearest_count": 59,
+              "nearest_share": 0.059,
+              "sample_share": 0.0694,
+              "enrichment": 0.85
+            },
+            {
+              "source": "github_archive",
+              "nearest_count": 50,
+              "nearest_share": 0.05,
+              "sample_share": 0.1014,
+              "enrichment": 0.49
+            },
+            {
+              "source": "uspto",
+              "nearest_count": 48,
+              "nearest_share": 0.048,
+              "sample_share": 0.0728,
+              "enrichment": 0.66
+            },
+            {
+              "source": "caselaw_access_project",
+              "nearest_count": 41,
+              "nearest_share": 0.041,
+              "sample_share": 0.0257,
+              "enrichment": 1.6
+            },
+            {
+              "source": "stackv2_edu",
+              "nearest_count": 38,
+              "nearest_share": 0.038,
+              "sample_share": 0.2871,
+              "enrichment": 0.13
+            },
+            {
+              "source": "cccc",
+              "nearest_count": 38,
+              "nearest_share": 0.038,
+              "sample_share": 0.0282,
+              "enrichment": 1.35
+            },
+            {
+              "source": "pubmed",
+              "nearest_count": 34,
+              "nearest_share": 0.034,
+              "sample_share": 0.0152,
+              "enrichment": 2.24
+            },
+            {
+              "source": "pre_1929_books",
+              "nearest_count": 29,
+              "nearest_share": 0.029,
+              "sample_share": 0.0016,
+              "enrichment": 18.12
+            },
+            {
+              "source": "youtube",
+              "nearest_count": 26,
+              "nearest_share": 0.026,
+              "sample_share": 0.0048,
+              "enrichment": 5.42
+            },
+            {
+              "source": "peS2o",
+              "nearest_count": 26,
+              "nearest_share": 0.026,
+              "sample_share": 0.0256,
+              "enrichment": 1.02
+            },
+            {
+              "source": "uk_hansard",
+              "nearest_count": 21,
+              "nearest_share": 0.021,
+              "sample_share": 0.0008,
+              "enrichment": 26.25
+            },
+            {
+              "source": "data_provenance_initiative",
+              "nearest_count": 18,
+              "nearest_share": 0.018,
+              "sample_share": 0.0163,
+              "enrichment": 1.1
+            },
+            {
+              "source": "stackv2_html",
+              "nearest_count": 14,
+              "nearest_share": 0.014,
+              "sample_share": 0.0074,
+              "enrichment": 1.89
+            },
+            {
+              "source": "regulations",
+              "nearest_count": 13,
+              "nearest_share": 0.013,
+              "sample_share": 0.0008,
+              "enrichment": 16.25
+            },
+            {
+              "source": "project_gutenberg",
+              "nearest_count": 10,
+              "nearest_share": 0.01,
+              "sample_share": 0.0012,
+              "enrichment": 8.33
+            },
+            {
+              "source": "stackexchange",
+              "nearest_count": 8,
+              "nearest_share": 0.008,
+              "sample_share": 0.1372,
+              "enrichment": 0.06
+            },
+            {
+              "source": "library_of_congress",
+              "nearest_count": 8,
+              "nearest_share": 0.008,
+              "sample_share": 0.0016,
+              "enrichment": 5.0
+            },
+            {
+              "source": "doab",
+              "nearest_count": 6,
+              "nearest_share": 0.006,
+              "sample_share": 0.0026,
+              "enrichment": 2.31
+            },
+            {
+              "source": "arxiv_abstracts",
+              "nearest_count": 6,
+              "nearest_share": 0.006,
+              "sample_share": 0.0106,
+              "enrichment": 0.57
+            },
+            {
+              "source": "news",
+              "nearest_count": 2,
+              "nearest_share": 0.002,
+              "sample_share": 0.0007,
+              "enrichment": 2.86
+            },
+            {
+              "source": "ubuntu_irc",
+              "nearest_count": 1,
+              "nearest_share": 0.001,
+              "sample_share": 0.0018,
+              "enrichment": 0.56
+            }
+          ],
+          "nearest_subsource": [
+            {
+              "subsource": "-",
+              "nearest_count": 1000,
+              "nearest_share": 1.0,
+              "sample_share": 1.0,
+              "enrichment": 1.0
+            }
+          ]
+        },
+        "unseen_d3": {
+          "n": 1000,
+          "max_sim": {
+            "mean": 0.5524,
+            "ci95": [
+              0.5496,
+              0.555
+            ],
+            "median": 0.5537,
+            "std": 0.0421
+          },
+          "topk_mean": {
+            "mean": 0.5211,
+            "ci95": [
+              0.5188,
+              0.5235
+            ],
+            "median": 0.5234,
+            "std": 0.0376
+          },
+          "mean_sim": {
+            "mean": 0.3391,
+            "ci95": [
+              0.3369,
+              0.3415
+            ],
+            "median": 0.3422,
+            "std": 0.0381
+          },
+          "avg_n_tokens": 12.83,
+          "by_length": {
+            "1-10": {
+              "n": 392,
+              "max_sim_mean": 0.5571
+            },
+            "11-20": {
+              "n": 549,
+              "max_sim_mean": 0.5493
+            },
+            "21-30": {
+              "n": 42,
+              "max_sim_mean": 0.5437
+            },
+            "31-45": {
+              "n": 12,
+              "max_sim_mean": 0.5635
+            },
+            "46+": {
+              "n": 5,
+              "max_sim_mean": 0.5573
+            }
+          },
+          "by_domain": {
+            "finepdfs": {
+              "n": 333,
+              "max_sim_mean": 0.5565
+            },
+            "hplt": {
+              "n": 334,
+              "max_sim_mean": 0.56
+            },
+            "wikipedia_new": {
+              "n": 333,
+              "max_sim_mean": 0.5406
+            }
+          },
+          "nearest_source": [
+            {
+              "source": "wikiteam",
+              "nearest_count": 241,
+              "nearest_share": 0.241,
+              "sample_share": 0.1147,
+              "enrichment": 2.1
+            },
+            {
+              "source": "biodiversity_heritage_library",
+              "nearest_count": 223,
+              "nearest_share": 0.223,
+              "sample_share": 0.0619,
+              "enrichment": 3.6
+            },
+            {
+              "source": "wikimedia",
+              "nearest_count": 66,
+              "nearest_share": 0.066,
+              "sample_share": 0.0694,
+              "enrichment": 0.95
+            },
+            {
+              "source": "uspto",
+              "nearest_count": 64,
+              "nearest_share": 0.064,
+              "sample_share": 0.0728,
+              "enrichment": 0.88
+            },
+            {
+              "source": "stackv2_edu",
+              "nearest_count": 64,
+              "nearest_share": 0.064,
+              "sample_share": 0.2871,
+              "enrichment": 0.22
+            },
+            {
+              "source": "cccc",
+              "nearest_count": 50,
+              "nearest_share": 0.05,
+              "sample_share": 0.0282,
+              "enrichment": 1.77
+            },
+            {
+              "source": "pubmed",
+              "nearest_count": 44,
+              "nearest_share": 0.044,
+              "sample_share": 0.0152,
+              "enrichment": 2.89
+            },
+            {
+              "source": "github_archive",
+              "nearest_count": 34,
+              "nearest_share": 0.034,
+              "sample_share": 0.1014,
+              "enrichment": 0.34
+            },
+            {
+              "source": "peS2o",
+              "nearest_count": 30,
+              "nearest_share": 0.03,
+              "sample_share": 0.0256,
+              "enrichment": 1.17
+            },
+            {
+              "source": "youtube",
+              "nearest_count": 25,
+              "nearest_share": 0.025,
+              "sample_share": 0.0048,
+              "enrichment": 5.21
+            },
+            {
+              "source": "pre_1929_books",
+              "nearest_count": 24,
+              "nearest_share": 0.024,
+              "sample_share": 0.0016,
+              "enrichment": 15.0
+            },
+            {
+              "source": "stackv2_html",
+              "nearest_count": 23,
+              "nearest_share": 0.023,
+              "sample_share": 0.0074,
+              "enrichment": 3.11
+            },
+            {
+              "source": "usgpo",
+              "nearest_count": 22,
+              "nearest_share": 0.022,
+              "sample_share": 0.0089,
+              "enrichment": 2.47
+            },
+            {
+              "source": "data_provenance_initiative",
+              "nearest_count": 20,
+              "nearest_share": 0.02,
+              "sample_share": 0.0163,
+              "enrichment": 1.23
+            },
+            {
+              "source": "arxiv_abstracts",
+              "nearest_count": 13,
+              "nearest_share": 0.013,
+              "sample_share": 0.0106,
+              "enrichment": 1.23
+            },
+            {
+              "source": "library_of_congress",
+              "nearest_count": 12,
+              "nearest_share": 0.012,
+              "sample_share": 0.0016,
+              "enrichment": 7.5
+            },
+            {
+              "source": "stackexchange",
+              "nearest_count": 11,
+              "nearest_share": 0.011,
+              "sample_share": 0.1372,
+              "enrichment": 0.08
+            },
+            {
+              "source": "caselaw_access_project",
+              "nearest_count": 11,
+              "nearest_share": 0.011,
+              "sample_share": 0.0257,
+              "enrichment": 0.43
+            },
+            {
+              "source": "project_gutenberg",
+              "nearest_count": 9,
+              "nearest_share": 0.009,
+              "sample_share": 0.0012,
+              "enrichment": 7.5
+            },
+            {
+              "source": "uk_hansard",
+              "nearest_count": 6,
+              "nearest_share": 0.006,
+              "sample_share": 0.0008,
+              "enrichment": 7.5
+            },
+            {
+              "source": "doab",
+              "nearest_count": 3,
+              "nearest_share": 0.003,
+              "sample_share": 0.0026,
+              "enrichment": 1.15
+            },
+            {
+              "source": "arxiv_papers",
+              "nearest_count": 2,
+              "nearest_share": 0.002,
+              "sample_share": 0.0015,
+              "enrichment": 1.33
+            },
+            {
+              "source": "news",
+              "nearest_count": 1,
+              "nearest_share": 0.001,
+              "sample_share": 0.0007,
+              "enrichment": 1.43
+            },
+            {
+              "source": "regulations",
+              "nearest_count": 1,
+              "nearest_share": 0.001,
+              "sample_share": 0.0008,
+              "enrichment": 1.25
+            },
+            {
+              "source": "ubuntu_irc",
+              "nearest_count": 1,
+              "nearest_share": 0.001,
+              "sample_share": 0.0018,
+              "enrichment": 0.56
+            }
+          ],
+          "nearest_subsource": [
+            {
+              "subsource": "-",
+              "nearest_count": 1000,
+              "nearest_share": 1.0,
+              "sample_share": 1.0,
+              "enrichment": 1.0
+            }
+          ]
+        },
+        "train_commonpile": {
+          "n": 2000,
+          "max_sim": {
+            "mean": 0.5723,
+            "ci95": [
+              0.5698,
+              0.5747
+            ],
+            "median": 0.5704,
+            "std": 0.0542
+          },
+          "topk_mean": {
+            "mean": 0.538,
+            "ci95": [
+              0.5359,
+              0.54
+            ],
+            "median": 0.539,
+            "std": 0.0468
+          },
+          "mean_sim": {
+            "mean": 0.3491,
+            "ci95": [
+              0.3473,
+              0.3508
+            ],
+            "median": 0.3507,
+            "std": 0.0406
+          },
+          "avg_n_tokens": 26.07,
+          "by_length": {
+            "1-10": {
+              "n": 299,
+              "max_sim_mean": 0.5795
+            },
+            "11-20": {
+              "n": 683,
+              "max_sim_mean": 0.574
+            },
+            "21-30": {
+              "n": 414,
+              "max_sim_mean": 0.5636
+            },
+            "31-45": {
+              "n": 326,
+              "max_sim_mean": 0.5663
+            },
+            "46+": {
+              "n": 278,
+              "max_sim_mean": 0.58
+            }
+          },
+          "nearest_source": [
+            {
+              "source": "wikiteam",
+              "nearest_count": 477,
+              "nearest_share": 0.2385,
+              "sample_share": 0.1147,
+              "enrichment": 2.08
+            },
+            {
+              "source": "stackv2_edu",
+              "nearest_count": 246,
+              "nearest_share": 0.123,
+              "sample_share": 0.2871,
+              "enrichment": 0.43
+            },
+            {
+              "source": "biodiversity_heritage_library",
+              "nearest_count": 237,
+              "nearest_share": 0.1185,
+              "sample_share": 0.0619,
+              "enrichment": 1.91
+            },
+            {
+              "source": "github_archive",
+              "nearest_count": 233,
+              "nearest_share": 0.1165,
+              "sample_share": 0.1014,
+              "enrichment": 1.15
+            },
+            {
+              "source": "uspto",
+              "nearest_count": 219,
+              "nearest_share": 0.1095,
+              "sample_share": 0.0728,
+              "enrichment": 1.5
+            },
+            {
+              "source": "stackexchange",
+              "nearest_count": 101,
+              "nearest_share": 0.0505,
+              "sample_share": 0.1372,
+              "enrichment": 0.37
+            },
+            {
+              "source": "wikimedia",
+              "nearest_count": 99,
+              "nearest_share": 0.0495,
+              "sample_share": 0.0694,
+              "enrichment": 0.71
+            },
+            {
+              "source": "caselaw_access_project",
+              "nearest_count": 69,
+              "nearest_share": 0.0345,
+              "sample_share": 0.0257,
+              "enrichment": 1.34
+            },
+            {
+              "source": "pubmed",
+              "nearest_count": 62,
+              "nearest_share": 0.031,
+              "sample_share": 0.0152,
+              "enrichment": 2.04
+            },
+            {
+              "source": "data_provenance_initiative",
+              "nearest_count": 45,
+              "nearest_share": 0.0225,
+              "sample_share": 0.0163,
+              "enrichment": 1.38
+            },
+            {
+              "source": "cccc",
+              "nearest_count": 43,
+              "nearest_share": 0.0215,
+              "sample_share": 0.0282,
+              "enrichment": 0.76
+            },
+            {
+              "source": "peS2o",
+              "nearest_count": 41,
+              "nearest_share": 0.0205,
+              "sample_share": 0.0256,
+              "enrichment": 0.8
+            },
+            {
+              "source": "stackv2_html",
+              "nearest_count": 27,
+              "nearest_share": 0.0135,
+              "sample_share": 0.0074,
+              "enrichment": 1.82
+            },
+            {
+              "source": "arxiv_abstracts",
+              "nearest_count": 17,
+              "nearest_share": 0.0085,
+              "sample_share": 0.0106,
+              "enrichment": 0.8
+            },
+            {
+              "source": "youtube",
+              "nearest_count": 16,
+              "nearest_share": 0.008,
+              "sample_share": 0.0048,
+              "enrichment": 1.67
+            },
+            {
+              "source": "pre_1929_books",
+              "nearest_count": 16,
+              "nearest_share": 0.008,
+              "sample_share": 0.0016,
+              "enrichment": 5.0
+            },
+            {
+              "source": "usgpo",
+              "nearest_count": 14,
+              "nearest_share": 0.007,
+              "sample_share": 0.0089,
+              "enrichment": 0.79
+            },
+            {
+              "source": "library_of_congress",
+              "nearest_count": 9,
+              "nearest_share": 0.0045,
+              "sample_share": 0.0016,
+              "enrichment": 2.81
+            },
+            {
+              "source": "uk_hansard",
+              "nearest_count": 9,
+              "nearest_share": 0.0045,
+              "sample_share": 0.0008,
+              "enrichment": 5.62
+            },
+            {
+              "source": "doab",
+              "nearest_count": 8,
+              "nearest_share": 0.004,
+              "sample_share": 0.0026,
+              "enrichment": 1.54
+            },
+            {
+              "source": "project_gutenberg",
+              "nearest_count": 5,
+              "nearest_share": 0.0025,
+              "sample_share": 0.0012,
+              "enrichment": 2.08
+            },
+            {
+              "source": "regulations",
+              "nearest_count": 3,
+              "nearest_share": 0.0015,
+              "sample_share": 0.0008,
+              "enrichment": 1.88
+            },
+            {
+              "source": "arxiv_papers",
+              "nearest_count": 2,
+              "nearest_share": 0.001,
+              "sample_share": 0.0015,
+              "enrichment": 0.67
+            },
+            {
+              "source": "ubuntu_irc",
+              "nearest_count": 1,
+              "nearest_share": 0.0005,
+              "sample_share": 0.0018,
+              "enrichment": 0.28
+            },
+            {
+              "source": "news",
+              "nearest_count": 1,
+              "nearest_share": 0.0005,
+              "sample_share": 0.0007,
+              "enrichment": 0.71
+            }
+          ],
+          "nearest_subsource": [
+            {
+              "subsource": "-",
+              "nearest_count": 2000,
+              "nearest_share": 1.0,
+              "sample_share": 1.0,
+              "enrichment": 1.0
+            }
+          ]
+        }
+      },
+      "comparisons": [
+        {
+          "a": "unseen_cp",
+          "b": "tatoeba_eng",
+          "metrics": {
+            "max_sim": {
+              "diff": 0.0052,
+              "ci95": [
+                0.0022,
+                0.0082
+              ],
+              "auc": 0.535
+            },
+            "topk_mean": {
+              "diff": 0.0076,
+              "ci95": [
+                0.0048,
+                0.0104
+              ],
+              "auc": 0.5553
+            },
+            "mean_sim": {
+              "diff": 0.0146,
+              "ci95": [
+                0.0118,
+                0.0175
+              ],
+              "auc": 0.6077
+            }
+          }
+        },
+        {
+          "a": "unseen_cp",
+          "b": "generic_cp_1000",
+          "metrics": {
+            "max_sim": {
+              "diff": 0.0094,
+              "ci95": [
+                0.0057,
+                0.0128
+              ],
+              "auc": 0.5668
+            },
+            "topk_mean": {
+              "diff": 0.012,
+              "ci95": [
+                0.0089,
+                0.015
+              ],
+              "auc": 0.5913
+            },
+            "mean_sim": {
+              "diff": 0.0196,
+              "ci95": [
+                0.0165,
+                0.023
+              ],
+              "auc": 0.6469
+            }
+          }
+        },
+        {
+          "a": "unseen_d3",
+          "b": "tatoeba_eng",
+          "metrics": {
+            "max_sim": {
+              "diff": 0.0046,
+              "ci95": [
+                0.0015,
+                0.0079
+              ],
+              "auc": 0.5316
+            },
+            "topk_mean": {
+              "diff": 0.0067,
+              "ci95": [
+                0.0039,
+                0.0095
+              ],
+              "auc": 0.5502
+            },
+            "mean_sim": {
+              "diff": 0.0096,
+              "ci95": [
+                0.0067,
+                0.0124
+              ],
+              "auc": 0.5754
+            }
+          }
+        },
+        {
+          "a": "unseen_d3",
+          "b": "generic_d3_1000",
+          "metrics": {
+            "max_sim": {
+              "diff": 0.0173,
+              "ci95": [
+                0.0137,
+                0.0208
+              ],
+              "auc": 0.62
+            },
+            "topk_mean": {
+              "diff": 0.0186,
+              "ci95": [
+                0.0153,
+                0.0219
+              ],
+              "auc": 0.6418
+            },
+            "mean_sim": {
+              "diff": 0.0213,
+              "ci95": [
+                0.0179,
+                0.0246
+              ],
+              "auc": 0.6625
+            }
+          }
+        }
+      ]
+    },
+    "dolma3": {
+      "num_docs": 10000,
+      "sets": {
+        "tatoeba_eng": {
+          "n": 2000,
+          "max_sim": {
+            "mean": 0.5436,
+            "ci95": [
+              0.5418,
+              0.5453
+            ],
+            "median": 0.5441,
+            "std": 0.04
+          },
+          "topk_mean": {
+            "mean": 0.5134,
+            "ci95": [
+              0.5118,
+              0.5149
+            ],
+            "median": 0.5148,
+            "std": 0.035
+          },
+          "mean_sim": {
+            "mean": 0.3329,
+            "ci95": [
+              0.3312,
+              0.3344
+            ],
+            "median": 0.3341,
+            "std": 0.0378
+          },
+          "avg_n_tokens": 10.73,
+          "by_length": {
+            "1-10": {
+              "n": 1246,
+              "max_sim_mean": 0.5492
+            },
+            "11-20": {
+              "n": 665,
+              "max_sim_mean": 0.5326
+            },
+            "21-30": {
+              "n": 54,
+              "max_sim_mean": 0.5436
+            },
+            "31-45": {
+              "n": 22,
+              "max_sim_mean": 0.5433
+            },
+            "46+": {
+              "n": 13,
+              "max_sim_mean": 0.5659
+            }
+          },
+          "nearest_source": [
+            {
+              "source": "common_crawl",
+              "nearest_count": 1961,
+              "nearest_share": 0.9805,
+              "sample_share": 0.8072,
+              "enrichment": 1.21
+            },
+            {
+              "source": "stack_edu",
+              "nearest_count": 20,
+              "nearest_share": 0.01,
+              "sample_share": 0.1441,
+              "enrichment": 0.07
+            },
+            {
+              "source": "finemath",
+              "nearest_count": 10,
+              "nearest_share": 0.005,
+              "sample_share": 0.0268,
+              "enrichment": 0.19
+            },
+            {
+              "source": "olmocr_science_pdfs",
+              "nearest_count": 6,
+              "nearest_share": 0.003,
+              "sample_share": 0.0185,
+              "enrichment": 0.16
+            },
+            {
+              "source": "rpj",
+              "nearest_count": 2,
+              "nearest_share": 0.001,
+              "sample_share": 0.0024,
+              "enrichment": 0.42
+            },
+            {
+              "source": "dolma1_7",
+              "nearest_count": 1,
+              "nearest_share": 0.0005,
+              "sample_share": 0.001,
+              "enrichment": 0.5
+            }
+          ],
+          "nearest_subsource": [
+            {
+              "subsource": "entertainment",
+              "nearest_count": 503,
+              "nearest_share": 0.2515,
+              "sample_share": 0.078,
+              "enrichment": 3.22
+            },
+            {
+              "subsource": "literature",
+              "nearest_count": 442,
+              "nearest_share": 0.221,
+              "sample_share": 0.0328,
+              "enrichment": 6.74
+            },
+            {
+              "subsource": "health",
+              "nearest_count": 150,
+              "nearest_share": 0.075,
+              "sample_share": 0.0833,
+              "enrichment": 0.9
+            },
+            {
+              "subsource": "science_math_and_technology",
+              "nearest_count": 125,
+              "nearest_share": 0.0625,
+              "sample_share": 0.1437,
+              "enrichment": 0.43
+            },
+            {
+              "subsource": "crime_and_law",
+              "nearest_count": 99,
+              "nearest_share": 0.0495,
+              "sample_share": 0.03,
+              "enrichment": 1.65
+            },
+            {
+              "subsource": "games",
+              "nearest_count": 80,
+              "nearest_share": 0.04,
+              "sample_share": 0.0491,
+              "enrichment": 0.81
+            },
+            {
+              "subsource": "religion",
+              "nearest_count": 73,
+              "nearest_share": 0.0365,
+              "sample_share": 0.014,
+              "enrichment": 2.61
+            },
+            {
+              "subsource": "politics",
+              "nearest_count": 63,
+              "nearest_share": 0.0315,
+              "sample_share": 0.0163,
+              "enrichment": 1.93
+            },
+            {
+              "subsource": "education_and_jobs",
+              "nearest_count": 61,
+              "nearest_share": 0.0305,
+              "sample_share": 0.0446,
+              "enrichment": 0.68
+            },
+            {
+              "subsource": "food_and_dining",
+              "nearest_count": 57,
+              "nearest_share": 0.0285,
+              "sample_share": 0.0186,
+              "enrichment": 1.53
+            },
+            {
+              "subsource": "finance_and_business",
+              "nearest_count": 41,
+              "nearest_share": 0.0205,
+              "sample_share": 0.04,
+              "enrichment": 0.51
+            },
+            {
+              "subsource": "art_and_design",
+              "nearest_count": 38,
+              "nearest_share": 0.019,
+              "sample_share": 0.0142,
+              "enrichment": 1.34
+            },
+            {
+              "subsource": "software_development",
+              "nearest_count": 36,
+              "nearest_share": 0.018,
+              "sample_share": 0.0929,
+              "enrichment": 0.19
+            },
+            {
+              "subsource": "history_and_geography",
+              "nearest_count": 33,
+              "nearest_share": 0.0165,
+              "sample_share": 0.0176,
+              "enrichment": 0.94
+            },
+            {
+              "subsource": "sports_and_fitness",
+              "nearest_count": 26,
+              "nearest_share": 0.013,
+              "sample_share": 0.0124,
+              "enrichment": 1.05
+            },
+            {
+              "subsource": "electronics_and_hardware",
+              "nearest_count": 26,
+              "nearest_share": 0.013,
+              "sample_share": 0.0341,
+              "enrichment": 0.38
+            },
+            {
+              "subsource": "software",
+              "nearest_count": 24,
+              "nearest_share": 0.012,
+              "sample_share": 0.0528,
+              "enrichment": 0.23
+            },
+            {
+              "subsource": "transportation",
+              "nearest_count": 24,
+              "nearest_share": 0.012,
+              "sample_share": 0.0117,
+              "enrichment": 1.03
+            },
+            {
+              "subsource": "social_life",
+              "nearest_count": 22,
+              "nearest_share": 0.011,
+              "sample_share": 0.0034,
+              "enrichment": 3.24
+            },
+            {
+              "subsource": "home_and_hobbies",
+              "nearest_count": 18,
+              "nearest_share": 0.009,
+              "sample_share": 0.0117,
+              "enrichment": 0.77
+            },
+            {
+              "subsource": "industrial",
+              "nearest_count": 12,
+              "nearest_share": 0.006,
+              "sample_share": 0.0215,
+              "enrichment": 0.28
+            },
+            {
+              "subsource": "3plus",
+              "nearest_count": 10,
+              "nearest_share": 0.005,
+              "sample_share": 0.0268,
+              "enrichment": 0.19
+            },
+            {
+              "subsource": "adult_content",
+              "nearest_count": 7,
+              "nearest_share": 0.0035,
+              "sample_share": 0.001,
+              "enrichment": 3.5
+            },
+            {
+              "subsource": "travel_and_tourism",
+              "nearest_count": 6,
+              "nearest_share": 0.003,
+              "sample_share": 0.0018,
+              "enrichment": 1.67
+            },
+            {
+              "subsource": "Python",
+              "nearest_count": 6,
+              "nearest_share": 0.003,
+              "sample_share": 0.0294,
+              "enrichment": 0.1
+            },
+            {
+              "subsource": "CSharp",
+              "nearest_count": 6,
+              "nearest_share": 0.003,
+              "sample_share": 0.0099,
+              "enrichment": 0.3
+            },
+            {
+              "subsource": "Markdown",
+              "nearest_count": 4,
+              "nearest_share": 0.002,
+              "sample_share": 0.0131,
+              "enrichment": 0.15
+            },
+            {
+              "subsource": "JavaScript",
+              "nearest_count": 3,
+              "nearest_share": 0.0015,
+              "sample_share": 0.0143,
+              "enrichment": 0.1
+            },
+            {
+              "subsource": "proofpile-arxiv",
+              "nearest_count": 2,
+              "nearest_share": 0.001,
+              "sample_share": 0.0024,
+              "enrichment": 0.42
+            },
+            {
+              "subsource": "Java",
+              "nearest_count": 1,
+              "nearest_share": 0.0005,
+              "sample_share": 0.0252,
+              "enrichment": 0.02
+            },
+            {
+              "subsource": "wiki-en",
+              "nearest_count": 1,
+              "nearest_share": 0.0005,
+              "sample_share": 0.001,
+              "enrichment": 0.5
+            },
+            {
+              "subsource": "fashion_and_beauty",
+              "nearest_count": 1,
+              "nearest_share": 0.0005,
+              "sample_share": 0.0002,
+              "enrichment": 2.5
+            }
+          ]
+        },
+        "generic_cp_1000": {
+          "n": 1000,
+          "max_sim": {
+            "mean": 0.5401,
+            "ci95": [
+              0.5376,
+              0.5425
+            ],
+            "median": 0.5391,
+            "std": 0.0402
+          },
+          "topk_mean": {
+            "mean": 0.5102,
+            "ci95": [
+              0.5081,
+              0.5123
+            ],
+            "median": 0.5105,
+            "std": 0.0345
+          },
+          "mean_sim": {
+            "mean": 0.3277,
+            "ci95": [
+              0.3256,
+              0.3299
+            ],
+            "median": 0.3281,
+            "std": 0.0364
+          },
+          "avg_n_tokens": 11.63,
+          "by_length": {
+            "1-10": {
+              "n": 552,
+              "max_sim_mean": 0.5452
+            },
+            "11-20": {
+              "n": 394,
+              "max_sim_mean": 0.5308
+            },
+            "21-30": {
+              "n": 32,
+              "max_sim_mean": 0.5524
+            },
+            "31-45": {
+              "n": 13,
+              "max_sim_mean": 0.5406
+            },
+            "46+": {
+              "n": 9,
+              "max_sim_mean": 0.5824
+            }
+          },
+          "by_domain": {
+            "tatoeba": {
+              "n": 1000,
+              "max_sim_mean": 0.5401
+            }
+          },
+          "nearest_source": [
+            {
+              "source": "common_crawl",
+              "nearest_count": 981,
+              "nearest_share": 0.981,
+              "sample_share": 0.8072,
+              "enrichment": 1.22
+            },
+            {
+              "source": "stack_edu",
+              "nearest_count": 9,
+              "nearest_share": 0.009,
+              "sample_share": 0.1441,
+              "enrichment": 0.06
+            },
+            {
+              "source": "finemath",
+              "nearest_count": 4,
+              "nearest_share": 0.004,
+              "sample_share": 0.0268,
+              "enrichment": 0.15
+            },
+            {
+              "source": "olmocr_science_pdfs",
+              "nearest_count": 4,
+              "nearest_share": 0.004,
+              "sample_share": 0.0185,
+              "enrichment": 0.22
+            },
+            {
+              "source": "rpj",
+              "nearest_count": 1,
+              "nearest_share": 0.001,
+              "sample_share": 0.0024,
+              "enrichment": 0.42
+            },
+            {
+              "source": "dolma1_7",
+              "nearest_count": 1,
+              "nearest_share": 0.001,
+              "sample_share": 0.001,
+              "enrichment": 1.0
+            }
+          ],
+          "nearest_subsource": [
+            {
+              "subsource": "entertainment",
+              "nearest_count": 246,
+              "nearest_share": 0.246,
+              "sample_share": 0.078,
+              "enrichment": 3.15
+            },
+            {
+              "subsource": "literature",
+              "nearest_count": 224,
+              "nearest_share": 0.224,
+              "sample_share": 0.0328,
+              "enrichment": 6.83
+            },
+            {
+              "subsource": "health",
+              "nearest_count": 72,
+              "nearest_share": 0.072,
+              "sample_share": 0.0833,
+              "enrichment": 0.86
+            },
+            {
+              "subsource": "science_math_and_technology",
+              "nearest_count": 60,
+              "nearest_share": 0.06,
+              "sample_share": 0.1437,
+              "enrichment": 0.42
+            },
+            {
+              "subsource": "crime_and_law",
+              "nearest_count": 52,
+              "nearest_share": 0.052,
+              "sample_share": 0.03,
+              "enrichment": 1.73
+            },
+            {
+              "subsource": "games",
+              "nearest_count": 38,
+              "nearest_share": 0.038,
+              "sample_share": 0.0491,
+              "enrichment": 0.77
+            },
+            {
+              "subsource": "religion",
+              "nearest_count": 35,
+              "nearest_share": 0.035,
+              "sample_share": 0.014,
+              "enrichment": 2.5
+            },
+            {
+              "subsource": "politics",
+              "nearest_count": 35,
+              "nearest_share": 0.035,
+              "sample_share": 0.0163,
+              "enrichment": 2.15
+            },
+            {
+              "subsource": "food_and_dining",
+              "nearest_count": 32,
+              "nearest_share": 0.032,
+              "sample_share": 0.0186,
+              "enrichment": 1.72
+            },
+            {
+              "subsource": "education_and_jobs",
+              "nearest_count": 31,
+              "nearest_share": 0.031,
+              "sample_share": 0.0446,
+              "enrichment": 0.7
+            },
+            {
+              "subsource": "finance_and_business",
+              "nearest_count": 22,
+              "nearest_share": 0.022,
+              "sample_share": 0.04,
+              "enrichment": 0.55
+            },
+            {
+              "subsource": "software_development",
+              "nearest_count": 20,
+              "nearest_share": 0.02,
+              "sample_share": 0.0929,
+              "enrichment": 0.22
+            },
+            {
+              "subsource": "art_and_design",
+              "nearest_count": 18,
+              "nearest_share": 0.018,
+              "sample_share": 0.0142,
+              "enrichment": 1.27
+            },
+            {
+              "subsource": "history_and_geography",
+              "nearest_count": 15,
+              "nearest_share": 0.015,
+              "sample_share": 0.0176,
+              "enrichment": 0.85
+            },
+            {
+              "subsource": "sports_and_fitness",
+              "nearest_count": 14,
+              "nearest_share": 0.014,
+              "sample_share": 0.0124,
+              "enrichment": 1.13
+            },
+            {
+              "subsource": "electronics_and_hardware",
+              "nearest_count": 14,
+              "nearest_share": 0.014,
+              "sample_share": 0.0341,
+              "enrichment": 0.41
+            },
+            {
+              "subsource": "social_life",
+              "nearest_count": 12,
+              "nearest_share": 0.012,
+              "sample_share": 0.0034,
+              "enrichment": 3.53
+            },
+            {
+              "subsource": "transportation",
+              "nearest_count": 12,
+              "nearest_share": 0.012,
+              "sample_share": 0.0117,
+              "enrichment": 1.03
+            },
+            {
+              "subsource": "home_and_hobbies",
+              "nearest_count": 11,
+              "nearest_share": 0.011,
+              "sample_share": 0.0117,
+              "enrichment": 0.94
+            },
+            {
+              "subsource": "software",
+              "nearest_count": 8,
+              "nearest_share": 0.008,
+              "sample_share": 0.0528,
+              "enrichment": 0.15
+            },
+            {
+              "subsource": "industrial",
+              "nearest_count": 7,
+              "nearest_share": 0.007,
+              "sample_share": 0.0215,
+              "enrichment": 0.33
+            },
+            {
+              "subsource": "adult_content",
+              "nearest_count": 5,
+              "nearest_share": 0.005,
+              "sample_share": 0.001,
+              "enrichment": 5.0
+            },
+            {
+              "subsource": "3plus",
+              "nearest_count": 4,
+              "nearest_share": 0.004,
+              "sample_share": 0.0268,
+              "enrichment": 0.15
+            },
+            {
+              "subsource": "Python",
+              "nearest_count": 3,
+              "nearest_share": 0.003,
+              "sample_share": 0.0294,
+              "enrichment": 0.1
+            },
+            {
+              "subsource": "CSharp",
+              "nearest_count": 3,
+              "nearest_share": 0.003,
+              "sample_share": 0.0099,
+              "enrichment": 0.3
+            },
+            {
+              "subsource": "travel_and_tourism",
+              "nearest_count": 2,
+              "nearest_share": 0.002,
+              "sample_share": 0.0018,
+              "enrichment": 1.11
+            },
+            {
+              "subsource": "Markdown",
+              "nearest_count": 2,
+              "nearest_share": 0.002,
+              "sample_share": 0.0131,
+              "enrichment": 0.15
+            },
+            {
+              "subsource": "Java",
+              "nearest_count": 1,
+              "nearest_share": 0.001,
+              "sample_share": 0.0252,
+              "enrichment": 0.04
+            },
+            {
+              "subsource": "proofpile-arxiv",
+              "nearest_count": 1,
+              "nearest_share": 0.001,
+              "sample_share": 0.0024,
+              "enrichment": 0.42
+            },
+            {
+              "subsource": "wiki-en",
+              "nearest_count": 1,
+              "nearest_share": 0.001,
+              "sample_share": 0.001,
+              "enrichment": 1.0
+            }
+          ]
+        },
+        "generic_d3_1000": {
+          "n": 1000,
+          "max_sim": {
+            "mean": 0.5316,
+            "ci95": [
+              0.5294,
+              0.534
+            ],
+            "median": 0.5298,
+            "std": 0.0374
+          },
+          "topk_mean": {
+            "mean": 0.502,
+            "ci95": [
+              0.5,
+              0.504
+            ],
+            "median": 0.5025,
+            "std": 0.033
+          },
+          "mean_sim": {
+            "mean": 0.3205,
+            "ci95": [
+              0.3181,
+              0.3227
+            ],
+            "median": 0.321,
+            "std": 0.0359
+          },
+          "avg_n_tokens": 11.35,
+          "by_length": {
+            "1-10": {
+              "n": 515,
+              "max_sim_mean": 0.5366
+            },
+            "11-20": {
+              "n": 446,
+              "max_sim_mean": 0.5253
+            },
+            "21-30": {
+              "n": 25,
+              "max_sim_mean": 0.539
+            },
+            "31-45": {
+              "n": 12,
+              "max_sim_mean": 0.535
+            },
+            "46+": {
+              "n": 2,
+              "max_sim_mean": 0.5592
+            }
+          },
+          "by_domain": {
+            "tatoeba": {
+              "n": 1000,
+              "max_sim_mean": 0.5316
+            }
+          },
+          "nearest_source": [
+            {
+              "source": "common_crawl",
+              "nearest_count": 986,
+              "nearest_share": 0.986,
+              "sample_share": 0.8072,
+              "enrichment": 1.22
+            },
+            {
+              "source": "stack_edu",
+              "nearest_count": 10,
+              "nearest_share": 0.01,
+              "sample_share": 0.1441,
+              "enrichment": 0.07
+            },
+            {
+              "source": "finemath",
+              "nearest_count": 2,
+              "nearest_share": 0.002,
+              "sample_share": 0.0268,
+              "enrichment": 0.07
+            },
+            {
+              "source": "olmocr_science_pdfs",
+              "nearest_count": 2,
+              "nearest_share": 0.002,
+              "sample_share": 0.0185,
+              "enrichment": 0.11
+            }
+          ],
+          "nearest_subsource": [
+            {
+              "subsource": "entertainment",
+              "nearest_count": 292,
+              "nearest_share": 0.292,
+              "sample_share": 0.078,
+              "enrichment": 3.74
+            },
+            {
+              "subsource": "literature",
+              "nearest_count": 230,
+              "nearest_share": 0.23,
+              "sample_share": 0.0328,
+              "enrichment": 7.01
+            },
+            {
+              "subsource": "health",
+              "nearest_count": 60,
+              "nearest_share": 0.06,
+              "sample_share": 0.0833,
+              "enrichment": 0.72
+            },
+            {
+              "subsource": "crime_and_law",
+              "nearest_count": 54,
+              "nearest_share": 0.054,
+              "sample_share": 0.03,
+              "enrichment": 1.8
+            },
+            {
+              "subsource": "science_math_and_technology",
+              "nearest_count": 47,
+              "nearest_share": 0.047,
+              "sample_share": 0.1437,
+              "enrichment": 0.33
+            },
+            {
+              "subsource": "religion",
+              "nearest_count": 37,
+              "nearest_share": 0.037,
+              "sample_share": 0.014,
+              "enrichment": 2.64
+            },
+            {
+              "subsource": "education_and_jobs",
+              "nearest_count": 33,
+              "nearest_share": 0.033,
+              "sample_share": 0.0446,
+              "enrichment": 0.74
+            },
+            {
+              "subsource": "politics",
+              "nearest_count": 33,
+              "nearest_share": 0.033,
+              "sample_share": 0.0163,
+              "enrichment": 2.02
+            },
+            {
+              "subsource": "food_and_dining",
+              "nearest_count": 28,
+              "nearest_share": 0.028,
+              "sample_share": 0.0186,
+              "enrichment": 1.51
+            },
+            {
+              "subsource": "games",
+              "nearest_count": 28,
+              "nearest_share": 0.028,
+              "sample_share": 0.0491,
+              "enrichment": 0.57
+            },
+            {
+              "subsource": "finance_and_business",
+              "nearest_count": 26,
+              "nearest_share": 0.026,
+              "sample_share": 0.04,
+              "enrichment": 0.65
+            },
+            {
+              "subsource": "software_development",
+              "nearest_count": 17,
+              "nearest_share": 0.017,
+              "sample_share": 0.0929,
+              "enrichment": 0.18
+            },
+            {
+              "subsource": "art_and_design",
+              "nearest_count": 16,
+              "nearest_share": 0.016,
+              "sample_share": 0.0142,
+              "enrichment": 1.13
+            },
+            {
+              "subsource": "electronics_and_hardware",
+              "nearest_count": 14,
+              "nearest_share": 0.014,
+              "sample_share": 0.0341,
+              "enrichment": 0.41
+            },
+            {
+              "subsource": "history_and_geography",
+              "nearest_count": 13,
+              "nearest_share": 0.013,
+              "sample_share": 0.0176,
+              "enrichment": 0.74
+            },
+            {
+              "subsource": "transportation",
+              "nearest_count": 12,
+              "nearest_share": 0.012,
+              "sample_share": 0.0117,
+              "enrichment": 1.03
+            },
+            {
+              "subsource": "social_life",
+              "nearest_count": 10,
+              "nearest_share": 0.01,
+              "sample_share": 0.0034,
+              "enrichment": 2.94
+            },
+            {
+              "subsource": "software",
+              "nearest_count": 9,
+              "nearest_share": 0.009,
+              "sample_share": 0.0528,
+              "enrichment": 0.17
+            },
+            {
+              "subsource": "sports_and_fitness",
+              "nearest_count": 8,
+              "nearest_share": 0.008,
+              "sample_share": 0.0124,
+              "enrichment": 0.65
+            },
+            {
+              "subsource": "home_and_hobbies",
+              "nearest_count": 6,
+              "nearest_share": 0.006,
+              "sample_share": 0.0117,
+              "enrichment": 0.51
+            },
+            {
+              "subsource": "industrial",
+              "nearest_count": 6,
+              "nearest_share": 0.006,
+              "sample_share": 0.0215,
+              "enrichment": 0.28
+            },
+            {
+              "subsource": "adult_content",
+              "nearest_count": 5,
+              "nearest_share": 0.005,
+              "sample_share": 0.001,
+              "enrichment": 5.0
+            },
+            {
+              "subsource": "Python",
+              "nearest_count": 4,
+              "nearest_share": 0.004,
+              "sample_share": 0.0294,
+              "enrichment": 0.14
+            },
+            {
+              "subsource": "CSharp",
+              "nearest_count": 4,
+              "nearest_share": 0.004,
+              "sample_share": 0.0099,
+              "enrichment": 0.4
+            },
+            {
+              "subsource": "travel_and_tourism",
+              "nearest_count": 3,
+              "nearest_share": 0.003,
+              "sample_share": 0.0018,
+              "enrichment": 1.67
+            },
+            {
+              "subsource": "Markdown",
+              "nearest_count": 2,
+              "nearest_share": 0.002,
+              "sample_share": 0.0131,
+              "enrichment": 0.15
+            },
+            {
+              "subsource": "3plus",
+              "nearest_count": 2,
+              "nearest_share": 0.002,
+              "sample_share": 0.0268,
+              "enrichment": 0.07
+            },
+            {
+              "subsource": "fashion_and_beauty",
+              "nearest_count": 1,
+              "nearest_share": 0.001,
+              "sample_share": 0.0002,
+              "enrichment": 5.0
+            }
+          ]
+        },
+        "unseen_cp": {
+          "n": 1000,
+          "max_sim": {
+            "mean": 0.5453,
+            "ci95": [
+              0.5427,
+              0.5476
+            ],
+            "median": 0.5472,
+            "std": 0.0395
+          },
+          "topk_mean": {
+            "mean": 0.5146,
+            "ci95": [
+              0.5125,
+              0.5169
+            ],
+            "median": 0.519,
+            "std": 0.0352
+          },
+          "mean_sim": {
+            "mean": 0.3411,
+            "ci95": [
+              0.3389,
+              0.3434
+            ],
+            "median": 0.3433,
+            "std": 0.0362
+          },
+          "avg_n_tokens": 12.86,
+          "by_length": {
+            "1-10": {
+              "n": 443,
+              "max_sim_mean": 0.5535
+            },
+            "11-20": {
+              "n": 475,
+              "max_sim_mean": 0.5393
+            },
+            "21-30": {
+              "n": 56,
+              "max_sim_mean": 0.5239
+            },
+            "31-45": {
+              "n": 13,
+              "max_sim_mean": 0.5614
+            },
+            "46+": {
+              "n": 13,
+              "max_sim_mean": 0.5591
+            }
+          },
+          "by_domain": {
+            "Eurlex": {
+              "n": 109,
+              "max_sim_mean": 0.5357
+            },
+            "Eurovoc": {
+              "n": 109,
+              "max_sim_mean": 0.5535
+            },
+            "GATT_library": {
+              "n": 16,
+              "max_sim_mean": 0.5408
+            },
+            "NewZealand-PD-Newspapers": {
+              "n": 109,
+              "max_sim_mean": 0.5432
+            },
+            "SEC": {
+              "n": 108,
+              "max_sim_mean": 0.5489
+            },
+            "TEDEUTenders": {
+              "n": 2,
+              "max_sim_mean": 0.6111
+            },
+            "US-PD-Newspapers": {
+              "n": 109,
+              "max_sim_mean": 0.5391
+            },
+            "VoxPopuli": {
+              "n": 109,
+              "max_sim_mean": 0.5619
+            },
+            "WTO": {
+              "n": 110,
+              "max_sim_mean": 0.5361
+            },
+            "dotgov": {
+              "n": 109,
+              "max_sim_mean": 0.5543
+            },
+            "wikipedia_new": {
+              "n": 110,
+              "max_sim_mean": 0.5348
+            }
+          },
+          "nearest_source": [
+            {
+              "source": "common_crawl",
+              "nearest_count": 874,
+              "nearest_share": 0.874,
+              "sample_share": 0.8072,
+              "enrichment": 1.08
+            },
+            {
+              "source": "stack_edu",
+              "nearest_count": 41,
+              "nearest_share": 0.041,
+              "sample_share": 0.1441,
+              "enrichment": 0.28
+            },
+            {
+              "source": "rpj",
+              "nearest_count": 33,
+              "nearest_share": 0.033,
+              "sample_share": 0.0024,
+              "enrichment": 13.75
+            },
+            {
+              "source": "olmocr_science_pdfs",
+              "nearest_count": 30,
+              "nearest_share": 0.03,
+              "sample_share": 0.0185,
+              "enrichment": 1.62
+            },
+            {
+              "source": "finemath",
+              "nearest_count": 19,
+              "nearest_share": 0.019,
+              "sample_share": 0.0268,
+              "enrichment": 0.71
+            },
+            {
+              "source": "dolma1_7",
+              "nearest_count": 3,
+              "nearest_share": 0.003,
+              "sample_share": 0.001,
+              "enrichment": 3.0
+            }
+          ],
+          "nearest_subsource": [
+            {
+              "subsource": "science_math_and_technology",
+              "nearest_count": 167,
+              "nearest_share": 0.167,
+              "sample_share": 0.1437,
+              "enrichment": 1.16
+            },
+            {
+              "subsource": "politics",
+              "nearest_count": 111,
+              "nearest_share": 0.111,
+              "sample_share": 0.0163,
+              "enrichment": 6.81
+            },
+            {
+              "subsource": "crime_and_law",
+              "nearest_count": 85,
+              "nearest_share": 0.085,
+              "sample_share": 0.03,
+              "enrichment": 2.83
+            },
+            {
+              "subsource": "finance_and_business",
+              "nearest_count": 79,
+              "nearest_share": 0.079,
+              "sample_share": 0.04,
+              "enrichment": 1.98
+            },
+            {
+              "subsource": "literature",
+              "nearest_count": 61,
+              "nearest_share": 0.061,
+              "sample_share": 0.0328,
+              "enrichment": 1.86
+            },
+            {
+              "subsource": "health",
+              "nearest_count": 57,
+              "nearest_share": 0.057,
+              "sample_share": 0.0833,
+              "enrichment": 0.68
+            },
+            {
+              "subsource": "software",
+              "nearest_count": 43,
+              "nearest_share": 0.043,
+              "sample_share": 0.0528,
+              "enrichment": 0.81
+            },
+            {
+              "subsource": "entertainment",
+              "nearest_count": 43,
+              "nearest_share": 0.043,
+              "sample_share": 0.078,
+              "enrichment": 0.55
+            },
+            {
+              "subsource": "education_and_jobs",
+              "nearest_count": 37,
+              "nearest_share": 0.037,
+              "sample_share": 0.0446,
+              "enrichment": 0.83
+            },
+            {
+              "subsource": "industrial",
+              "nearest_count": 33,
+              "nearest_share": 0.033,
+              "sample_share": 0.0215,
+              "enrichment": 1.53
+            },
+            {
+              "subsource": "proofpile-arxiv",
+              "nearest_count": 33,
+              "nearest_share": 0.033,
+              "sample_share": 0.0024,
+              "enrichment": 13.75
+            },
+            {
+              "subsource": "games",
+              "nearest_count": 26,
+              "nearest_share": 0.026,
+              "sample_share": 0.0491,
+              "enrichment": 0.53
+            },
+            {
+              "subsource": "art_and_design",
+              "nearest_count": 24,
+              "nearest_share": 0.024,
+              "sample_share": 0.0142,
+              "enrichment": 1.69
+            },
+            {
+              "subsource": "history_and_geography",
+              "nearest_count": 24,
+              "nearest_share": 0.024,
+              "sample_share": 0.0176,
+              "enrichment": 1.36
+            },
+            {
+              "subsource": "religion",
+              "nearest_count": 24,
+              "nearest_share": 0.024,
+              "sample_share": 0.014,
+              "enrichment": 1.71
+            },
+            {
+              "subsource": "software_development",
+              "nearest_count": 23,
+              "nearest_share": 0.023,
+              "sample_share": 0.0929,
+              "enrichment": 0.25
+            },
+            {
+              "subsource": "3plus",
+              "nearest_count": 19,
+              "nearest_share": 0.019,
+              "sample_share": 0.0268,
+              "enrichment": 0.71
+            },
+            {
+              "subsource": "food_and_dining",
+              "nearest_count": 18,
+              "nearest_share": 0.018,
+              "sample_share": 0.0186,
+              "enrichment": 0.97
+            },
+            {
+              "subsource": "transportation",
+              "nearest_count": 13,
+              "nearest_share": 0.013,
+              "sample_share": 0.0117,
+              "enrichment": 1.11
+            },
+            {
+              "subsource": "home_and_hobbies",
+              "nearest_count": 12,
+              "nearest_share": 0.012,
+              "sample_share": 0.0117,
+              "enrichment": 1.03
+            },
+            {
+              "subsource": "Markdown",
+              "nearest_count": 11,
+              "nearest_share": 0.011,
+              "sample_share": 0.0131,
+              "enrichment": 0.84
+            },
+            {
+              "subsource": "electronics_and_hardware",
+              "nearest_count": 11,
+              "nearest_share": 0.011,
+              "sample_share": 0.0341,
+              "enrichment": 0.32
+            },
+            {
+              "subsource": "CSharp",
+              "nearest_count": 8,
+              "nearest_share": 0.008,
+              "sample_share": 0.0099,
+              "enrichment": 0.81
+            },
+            {
+              "subsource": "sports_and_fitness",
+              "nearest_count": 7,
+              "nearest_share": 0.007,
+              "sample_share": 0.0124,
+              "enrichment": 0.56
+            },
+            {
+              "subsource": "Python",
+              "nearest_count": 6,
+              "nearest_share": 0.006,
+              "sample_share": 0.0294,
+              "enrichment": 0.2
+            },
+            {
+              "subsource": "Ruby",
+              "nearest_count": 4,
+              "nearest_share": 0.004,
+              "sample_share": 0.0036,
+              "enrichment": 1.11
+            },
+            {
+              "subsource": "wiki-en",
+              "nearest_count": 3,
+              "nearest_share": 0.003,
+              "sample_share": 0.001,
+              "enrichment": 3.0
+            },
+            {
+              "subsource": "social_life",
+              "nearest_count": 3,
+              "nearest_share": 0.003,
+              "sample_share": 0.0034,
+              "enrichment": 0.88
+            },
+            {
+              "subsource": "Cpp",
+              "nearest_count": 3,
+              "nearest_share": 0.003,
+              "sample_share": 0.0187,
+              "enrichment": 0.16
+            },
+            {
+              "subsource": "PHP",
+              "nearest_count": 2,
+              "nearest_share": 0.002,
+              "sample_share": 0.01,
+              "enrichment": 0.2
+            },
+            {
+              "subsource": "Java",
+              "nearest_count": 2,
+              "nearest_share": 0.002,
+              "sample_share": 0.0252,
+              "enrichment": 0.08
+            },
+            {
+              "subsource": "TypeScript",
+              "nearest_count": 2,
+              "nearest_share": 0.002,
+              "sample_share": 0.0033,
+              "enrichment": 0.61
+            },
+            {
+              "subsource": "travel_and_tourism",
+              "nearest_count": 2,
+              "nearest_share": 0.002,
+              "sample_share": 0.0018,
+              "enrichment": 1.11
+            },
+            {
+              "subsource": "Rust",
+              "nearest_count": 1,
+              "nearest_share": 0.001,
+              "sample_share": 0.001,
+              "enrichment": 1.0
+            },
+            {
+              "subsource": "adult_content",
+              "nearest_count": 1,
+              "nearest_share": 0.001,
+              "sample_share": 0.001,
+              "enrichment": 1.0
+            },
+            {
+              "subsource": "Swift",
+              "nearest_count": 1,
+              "nearest_share": 0.001,
+              "sample_share": 0.0032,
+              "enrichment": 0.31
+            },
+            {
+              "subsource": "JavaScript",
+              "nearest_count": 1,
+              "nearest_share": 0.001,
+              "sample_share": 0.0143,
+              "enrichment": 0.07
+            }
+          ]
+        },
+        "unseen_d3": {
+          "n": 1000,
+          "max_sim": {
+            "mean": 0.5561,
+            "ci95": [
+              0.5532,
+              0.5587
+            ],
+            "median": 0.5569,
+            "std": 0.0438
+          },
+          "topk_mean": {
+            "mean": 0.5235,
+            "ci95": [
+              0.5211,
+              0.5257
+            ],
+            "median": 0.5268,
+            "std": 0.0378
+          },
+          "mean_sim": {
+            "mean": 0.3397,
+            "ci95": [
+              0.3374,
+              0.3421
+            ],
+            "median": 0.3437,
+            "std": 0.0374
+          },
+          "avg_n_tokens": 12.83,
+          "by_length": {
+            "1-10": {
+              "n": 392,
+              "max_sim_mean": 0.5584
+            },
+            "11-20": {
+              "n": 549,
+              "max_sim_mean": 0.5547
+            },
+            "21-30": {
+              "n": 42,
+              "max_sim_mean": 0.5494
+            },
+            "31-45": {
+              "n": 12,
+              "max_sim_mean": 0.5492
+            },
+            "46+": {
+              "n": 5,
+              "max_sim_mean": 0.5931
+            }
+          },
+          "by_domain": {
+            "finepdfs": {
+              "n": 333,
+              "max_sim_mean": 0.5646
+            },
+            "hplt": {
+              "n": 334,
+              "max_sim_mean": 0.5711
+            },
+            "wikipedia_new": {
+              "n": 333,
+              "max_sim_mean": 0.5325
+            }
+          },
+          "nearest_source": [
+            {
+              "source": "common_crawl",
+              "nearest_count": 912,
+              "nearest_share": 0.912,
+              "sample_share": 0.8072,
+              "enrichment": 1.13
+            },
+            {
+              "source": "stack_edu",
+              "nearest_count": 38,
+              "nearest_share": 0.038,
+              "sample_share": 0.1441,
+              "enrichment": 0.26
+            },
+            {
+              "source": "olmocr_science_pdfs",
+              "nearest_count": 21,
+              "nearest_share": 0.021,
+              "sample_share": 0.0185,
+              "enrichment": 1.14
+            },
+            {
+              "source": "finemath",
+              "nearest_count": 20,
+              "nearest_share": 0.02,
+              "sample_share": 0.0268,
+              "enrichment": 0.75
+            },
+            {
+              "source": "dolma1_7",
+              "nearest_count": 5,
+              "nearest_share": 0.005,
+              "sample_share": 0.001,
+              "enrichment": 5.0
+            },
+            {
+              "source": "rpj",
+              "nearest_count": 4,
+              "nearest_share": 0.004,
+              "sample_share": 0.0024,
+              "enrichment": 1.67
+            }
+          ],
+          "nearest_subsource": [
+            {
+              "subsource": "science_math_and_technology",
+              "nearest_count": 194,
+              "nearest_share": 0.194,
+              "sample_share": 0.1437,
+              "enrichment": 1.35
+            },
+            {
+              "subsource": "health",
+              "nearest_count": 98,
+              "nearest_share": 0.098,
+              "sample_share": 0.0833,
+              "enrichment": 1.18
+            },
+            {
+              "subsource": "literature",
+              "nearest_count": 87,
+              "nearest_share": 0.087,
+              "sample_share": 0.0328,
+              "enrichment": 2.65
+            },
+            {
+              "subsource": "education_and_jobs",
+              "nearest_count": 84,
+              "nearest_share": 0.084,
+              "sample_share": 0.0446,
+              "enrichment": 1.88
+            },
+            {
+              "subsource": "entertainment",
+              "nearest_count": 59,
+              "nearest_share": 0.059,
+              "sample_share": 0.078,
+              "enrichment": 0.76
+            },
+            {
+              "subsource": "finance_and_business",
+              "nearest_count": 40,
+              "nearest_share": 0.04,
+              "sample_share": 0.04,
+              "enrichment": 1.0
+            },
+            {
+              "subsource": "history_and_geography",
+              "nearest_count": 36,
+              "nearest_share": 0.036,
+              "sample_share": 0.0176,
+              "enrichment": 2.05
+            },
+            {
+              "subsource": "games",
+              "nearest_count": 36,
+              "nearest_share": 0.036,
+              "sample_share": 0.0491,
+              "enrichment": 0.73
+            },
+            {
+              "subsource": "software",
+              "nearest_count": 35,
+              "nearest_share": 0.035,
+              "sample_share": 0.0528,
+              "enrichment": 0.66
+            },
+            {
+              "subsource": "software_development",
+              "nearest_count": 35,
+              "nearest_share": 0.035,
+              "sample_share": 0.0929,
+              "enrichment": 0.38
+            },
+            {
+              "subsource": "politics",
+              "nearest_count": 35,
+              "nearest_share": 0.035,
+              "sample_share": 0.0163,
+              "enrichment": 2.15
+            },
+            {
+              "subsource": "industrial",
+              "nearest_count": 32,
+              "nearest_share": 0.032,
+              "sample_share": 0.0215,
+              "enrichment": 1.49
+            },
+            {
+              "subsource": "crime_and_law",
+              "nearest_count": 29,
+              "nearest_share": 0.029,
+              "sample_share": 0.03,
+              "enrichment": 0.97
+            },
+            {
+              "subsource": "religion",
+              "nearest_count": 27,
+              "nearest_share": 0.027,
+              "sample_share": 0.014,
+              "enrichment": 1.93
+            },
+            {
+              "subsource": "art_and_design",
+              "nearest_count": 23,
+              "nearest_share": 0.023,
+              "sample_share": 0.0142,
+              "enrichment": 1.62
+            },
+            {
+              "subsource": "food_and_dining",
+              "nearest_count": 22,
+              "nearest_share": 0.022,
+              "sample_share": 0.0186,
+              "enrichment": 1.18
+            },
+            {
+              "subsource": "3plus",
+              "nearest_count": 20,
+              "nearest_share": 0.02,
+              "sample_share": 0.0268,
+              "enrichment": 0.75
+            },
+            {
+              "subsource": "electronics_and_hardware",
+              "nearest_count": 15,
+              "nearest_share": 0.015,
+              "sample_share": 0.0341,
+              "enrichment": 0.44
+            },
+            {
+              "subsource": "home_and_hobbies",
+              "nearest_count": 15,
+              "nearest_share": 0.015,
+              "sample_share": 0.0117,
+              "enrichment": 1.28
+            },
+            {
+              "subsource": "sports_and_fitness",
+              "nearest_count": 13,
+              "nearest_share": 0.013,
+              "sample_share": 0.0124,
+              "enrichment": 1.05
+            },
+            {
+              "subsource": "Python",
+              "nearest_count": 11,
+              "nearest_share": 0.011,
+              "sample_share": 0.0294,
+              "enrichment": 0.37
+            },
+            {
+              "subsource": "transportation",
+              "nearest_count": 9,
+              "nearest_share": 0.009,
+              "sample_share": 0.0117,
+              "enrichment": 0.77
+            },
+            {
+              "subsource": "Ruby",
+              "nearest_count": 7,
+              "nearest_share": 0.007,
+              "sample_share": 0.0036,
+              "enrichment": 1.94
+            },
+            {
+              "subsource": "social_life",
+              "nearest_count": 6,
+              "nearest_share": 0.006,
+              "sample_share": 0.0034,
+              "enrichment": 1.76
+            },
+            {
+              "subsource": "JavaScript",
+              "nearest_count": 5,
+              "nearest_share": 0.005,
+              "sample_share": 0.0143,
+              "enrichment": 0.35
+            },
+            {
+              "subsource": "wiki-en",
+              "nearest_count": 5,
+              "nearest_share": 0.005,
+              "sample_share": 0.001,
+              "enrichment": 5.0
+            },
+            {
+              "subsource": "Markdown",
+              "nearest_count": 4,
+              "nearest_share": 0.004,
+              "sample_share": 0.0131,
+              "enrichment": 0.31
+            },
+            {
+              "subsource": "proofpile-arxiv",
+              "nearest_count": 4,
+              "nearest_share": 0.004,
+              "sample_share": 0.0024,
+              "enrichment": 1.67
+            },
+            {
+              "subsource": "Rust",
+              "nearest_count": 2,
+              "nearest_share": 0.002,
+              "sample_share": 0.001,
+              "enrichment": 2.0
+            },
+            {
+              "subsource": "travel_and_tourism",
+              "nearest_count": 2,
+              "nearest_share": 0.002,
+              "sample_share": 0.0018,
+              "enrichment": 1.11
+            },
+            {
+              "subsource": "Java",
+              "nearest_count": 2,
+              "nearest_share": 0.002,
+              "sample_share": 0.0252,
+              "enrichment": 0.08
+            },
+            {
+              "subsource": "CSharp",
+              "nearest_count": 2,
+              "nearest_share": 0.002,
+              "sample_share": 0.0099,
+              "enrichment": 0.2
+            },
+            {
+              "subsource": "Cpp",
+              "nearest_count": 1,
+              "nearest_share": 0.001,
+              "sample_share": 0.0187,
+              "enrichment": 0.05
+            },
+            {
+              "subsource": "TypeScript",
+              "nearest_count": 1,
+              "nearest_share": 0.001,
+              "sample_share": 0.0033,
+              "enrichment": 0.3
+            },
+            {
+              "subsource": "PHP",
+              "nearest_count": 1,
+              "nearest_share": 0.001,
+              "sample_share": 0.01,
+              "enrichment": 0.1
+            },
+            {
+              "subsource": "adult_content",
+              "nearest_count": 1,
+              "nearest_share": 0.001,
+              "sample_share": 0.001,
+              "enrichment": 1.0
+            },
+            {
+              "subsource": "C",
+              "nearest_count": 1,
+              "nearest_share": 0.001,
+              "sample_share": 0.0049,
+              "enrichment": 0.2
+            },
+            {
+              "subsource": "Swift",
+              "nearest_count": 1,
+              "nearest_share": 0.001,
+              "sample_share": 0.0032,
+              "enrichment": 0.31
+            }
+          ]
+        },
+        "train_dolma3": {
+          "n": 2000,
+          "max_sim": {
+            "mean": 0.5626,
+            "ci95": [
+              0.5606,
+              0.5648
+            ],
+            "median": 0.5609,
+            "std": 0.0475
+          },
+          "topk_mean": {
+            "mean": 0.5277,
+            "ci95": [
+              0.5261,
+              0.5294
+            ],
+            "median": 0.5289,
+            "std": 0.0389
+          },
+          "mean_sim": {
+            "mean": 0.3373,
+            "ci95": [
+              0.3358,
+              0.3388
+            ],
+            "median": 0.34,
+            "std": 0.0331
+          },
+          "avg_n_tokens": 27.75,
+          "by_length": {
+            "1-10": {
+              "n": 177,
+              "max_sim_mean": 0.5545
+            },
+            "11-20": {
+              "n": 545,
+              "max_sim_mean": 0.5599
+            },
+            "21-30": {
+              "n": 564,
+              "max_sim_mean": 0.5643
+            },
+            "31-45": {
+              "n": 477,
+              "max_sim_mean": 0.5674
+            },
+            "46+": {
+              "n": 237,
+              "max_sim_mean": 0.5614
+            }
+          },
+          "nearest_source": [
+            {
+              "source": "common_crawl",
+              "nearest_count": 1809,
+              "nearest_share": 0.9045,
+              "sample_share": 0.8072,
+              "enrichment": 1.12
+            },
+            {
+              "source": "stack_edu",
+              "nearest_count": 104,
+              "nearest_share": 0.052,
+              "sample_share": 0.1441,
+              "enrichment": 0.36
+            },
+            {
+              "source": "olmocr_science_pdfs",
+              "nearest_count": 42,
+              "nearest_share": 0.021,
+              "sample_share": 0.0185,
+              "enrichment": 1.14
+            },
+            {
+              "source": "finemath",
+              "nearest_count": 34,
+              "nearest_share": 0.017,
+              "sample_share": 0.0268,
+              "enrichment": 0.63
+            },
+            {
+              "source": "rpj",
+              "nearest_count": 9,
+              "nearest_share": 0.0045,
+              "sample_share": 0.0024,
+              "enrichment": 1.88
+            },
+            {
+              "source": "dolma1_7",
+              "nearest_count": 2,
+              "nearest_share": 0.001,
+              "sample_share": 0.001,
+              "enrichment": 1.0
+            }
+          ],
+          "nearest_subsource": [
+            {
+              "subsource": "science_math_and_technology",
+              "nearest_count": 332,
+              "nearest_share": 0.166,
+              "sample_share": 0.1437,
+              "enrichment": 1.16
+            },
+            {
+              "subsource": "health",
+              "nearest_count": 213,
+              "nearest_share": 0.1065,
+              "sample_share": 0.0833,
+              "enrichment": 1.28
+            },
+            {
+              "subsource": "entertainment",
+              "nearest_count": 167,
+              "nearest_share": 0.0835,
+              "sample_share": 0.078,
+              "enrichment": 1.07
+            },
+            {
+              "subsource": "software_development",
+              "nearest_count": 137,
+              "nearest_share": 0.0685,
+              "sample_share": 0.0929,
+              "enrichment": 0.74
+            },
+            {
+              "subsource": "literature",
+              "nearest_count": 122,
+              "nearest_share": 0.061,
+              "sample_share": 0.0328,
+              "enrichment": 1.86
+            },
+            {
+              "subsource": "software",
+              "nearest_count": 121,
+              "nearest_share": 0.0605,
+              "sample_share": 0.0528,
+              "enrichment": 1.15
+            },
+            {
+              "subsource": "games",
+              "nearest_count": 118,
+              "nearest_share": 0.059,
+              "sample_share": 0.0491,
+              "enrichment": 1.2
+            },
+            {
+              "subsource": "finance_and_business",
+              "nearest_count": 107,
+              "nearest_share": 0.0535,
+              "sample_share": 0.04,
+              "enrichment": 1.34
+            },
+            {
+              "subsource": "education_and_jobs",
+              "nearest_count": 106,
+              "nearest_share": 0.053,
+              "sample_share": 0.0446,
+              "enrichment": 1.19
+            },
+            {
+              "subsource": "electronics_and_hardware",
+              "nearest_count": 63,
+              "nearest_share": 0.0315,
+              "sample_share": 0.0341,
+              "enrichment": 0.92
+            },
+            {
+              "subsource": "food_and_dining",
+              "nearest_count": 55,
+              "nearest_share": 0.0275,
+              "sample_share": 0.0186,
+              "enrichment": 1.48
+            },
+            {
+              "subsource": "crime_and_law",
+              "nearest_count": 54,
+              "nearest_share": 0.027,
+              "sample_share": 0.03,
+              "enrichment": 0.9
+            },
+            {
+              "subsource": "religion",
+              "nearest_count": 42,
+              "nearest_share": 0.021,
+              "sample_share": 0.014,
+              "enrichment": 1.5
+            },
+            {
+              "subsource": "art_and_design",
+              "nearest_count": 41,
+              "nearest_share": 0.0205,
+              "sample_share": 0.0142,
+              "enrichment": 1.44
+            },
+            {
+              "subsource": "politics",
+              "nearest_count": 38,
+              "nearest_share": 0.019,
+              "sample_share": 0.0163,
+              "enrichment": 1.17
+            },
+            {
+              "subsource": "industrial",
+              "nearest_count": 35,
+              "nearest_share": 0.0175,
+              "sample_share": 0.0215,
+              "enrichment": 0.81
+            },
+            {
+              "subsource": "3plus",
+              "nearest_count": 34,
+              "nearest_share": 0.017,
+              "sample_share": 0.0268,
+              "enrichment": 0.63
+            },
+            {
+              "subsource": "Python",
+              "nearest_count": 33,
+              "nearest_share": 0.0165,
+              "sample_share": 0.0294,
+              "enrichment": 0.56
+            },
+            {
+              "subsource": "history_and_geography",
+              "nearest_count": 33,
+              "nearest_share": 0.0165,
+              "sample_share": 0.0176,
+              "enrichment": 0.94
+            },
+            {
+              "subsource": "sports_and_fitness",
+              "nearest_count": 22,
+              "nearest_share": 0.011,
+              "sample_share": 0.0124,
+              "enrichment": 0.89
+            },
+            {
+              "subsource": "transportation",
+              "nearest_count": 19,
+              "nearest_share": 0.0095,
+              "sample_share": 0.0117,
+              "enrichment": 0.81
+            },
+            {
+              "subsource": "JavaScript",
+              "nearest_count": 16,
+              "nearest_share": 0.008,
+              "sample_share": 0.0143,
+              "enrichment": 0.56
+            },
+            {
+              "subsource": "Ruby",
+              "nearest_count": 11,
+              "nearest_share": 0.0055,
+              "sample_share": 0.0036,
+              "enrichment": 1.53
+            },
+            {
+              "subsource": "Markdown",
+              "nearest_count": 11,
+              "nearest_share": 0.0055,
+              "sample_share": 0.0131,
+              "enrichment": 0.42
+            },
+            {
+              "subsource": "home_and_hobbies",
+              "nearest_count": 9,
+              "nearest_share": 0.0045,
+              "sample_share": 0.0117,
+              "enrichment": 0.38
+            },
+            {
+              "subsource": "proofpile-arxiv",
+              "nearest_count": 9,
+              "nearest_share": 0.0045,
+              "sample_share": 0.0024,
+              "enrichment": 1.88
+            },
+            {
+              "subsource": "social_life",
+              "nearest_count": 8,
+              "nearest_share": 0.004,
+              "sample_share": 0.0034,
+              "enrichment": 1.18
+            },
+            {
+              "subsource": "PHP",
+              "nearest_count": 8,
+              "nearest_share": 0.004,
+              "sample_share": 0.01,
+              "enrichment": 0.4
+            },
+            {
+              "subsource": "Cpp",
+              "nearest_count": 6,
+              "nearest_share": 0.003,
+              "sample_share": 0.0187,
+              "enrichment": 0.16
+            },
+            {
+              "subsource": "travel_and_tourism",
+              "nearest_count": 6,
+              "nearest_share": 0.003,
+              "sample_share": 0.0018,
+              "enrichment": 1.67
+            },
+            {
+              "subsource": "Java",
+              "nearest_count": 5,
+              "nearest_share": 0.0025,
+              "sample_share": 0.0252,
+              "enrichment": 0.1
+            },
+            {
+              "subsource": "Shell",
+              "nearest_count": 4,
+              "nearest_share": 0.002,
+              "sample_share": 0.0045,
+              "enrichment": 0.44
+            },
+            {
+              "subsource": "CSharp",
+              "nearest_count": 3,
+              "nearest_share": 0.0015,
+              "sample_share": 0.0099,
+              "enrichment": 0.15
+            },
+            {
+              "subsource": "Swift",
+              "nearest_count": 2,
+              "nearest_share": 0.001,
+              "sample_share": 0.0032,
+              "enrichment": 0.31
+            },
+            {
+              "subsource": "C",
+              "nearest_count": 2,
+              "nearest_share": 0.001,
+              "sample_share": 0.0049,
+              "enrichment": 0.2
+            },
+            {
+              "subsource": "wiki-en",
+              "nearest_count": 2,
+              "nearest_share": 0.001,
+              "sample_share": 0.001,
+              "enrichment": 1.0
+            },
+            {
+              "subsource": "adult_content",
+              "nearest_count": 2,
+              "nearest_share": 0.001,
+              "sample_share": 0.001,
+              "enrichment": 1.0
+            },
+            {
+              "subsource": "TypeScript",
+              "nearest_count": 1,
+              "nearest_share": 0.0005,
+              "sample_share": 0.0033,
+              "enrichment": 0.15
+            },
+            {
+              "subsource": "Go",
+              "nearest_count": 1,
+              "nearest_share": 0.0005,
+              "sample_share": 0.0021,
+              "enrichment": 0.24
+            },
+            {
+              "subsource": "fashion_and_beauty",
+              "nearest_count": 1,
+              "nearest_share": 0.0005,
+              "sample_share": 0.0002,
+              "enrichment": 2.5
+            },
+            {
+              "subsource": "SQL",
+              "nearest_count": 1,
+              "nearest_share": 0.0005,
+              "sample_share": 0.0009,
+              "enrichment": 0.56
+            }
+          ]
+        }
+      },
+      "comparisons": [
+        {
+          "a": "unseen_cp",
+          "b": "tatoeba_eng",
+          "metrics": {
+            "max_sim": {
+              "diff": 0.0017,
+              "ci95": [
+                -0.0013,
+                0.0047
+              ],
+              "auc": 0.5176
+            },
+            "topk_mean": {
+              "diff": 0.0012,
+              "ci95": [
+                -0.0015,
+                0.0039
+              ],
+              "auc": 0.5151
+            },
+            "mean_sim": {
+              "diff": 0.0083,
+              "ci95": [
+                0.0055,
+                0.011
+              ],
+              "auc": 0.5638
+            }
+          }
+        },
+        {
+          "a": "unseen_cp",
+          "b": "generic_cp_1000",
+          "metrics": {
+            "max_sim": {
+              "diff": 0.0052,
+              "ci95": [
+                0.0017,
+                0.0088
+              ],
+              "auc": 0.5463
+            },
+            "topk_mean": {
+              "diff": 0.0044,
+              "ci95": [
+                0.0013,
+                0.0075
+              ],
+              "auc": 0.5432
+            },
+            "mean_sim": {
+              "diff": 0.0134,
+              "ci95": [
+                0.0101,
+                0.0167
+              ],
+              "auc": 0.6058
+            }
+          }
+        },
+        {
+          "a": "unseen_d3",
+          "b": "tatoeba_eng",
+          "metrics": {
+            "max_sim": {
+              "diff": 0.0125,
+              "ci95": [
+                0.0093,
+                0.0157
+              ],
+              "auc": 0.5873
+            },
+            "topk_mean": {
+              "diff": 0.0101,
+              "ci95": [
+                0.0073,
+                0.0129
+              ],
+              "auc": 0.5843
+            },
+            "mean_sim": {
+              "diff": 0.0069,
+              "ci95": [
+                0.0041,
+                0.0098
+              ],
+              "auc": 0.5566
+            }
+          }
+        },
+        {
+          "a": "unseen_d3",
+          "b": "generic_d3_1000",
+          "metrics": {
+            "max_sim": {
+              "diff": 0.0244,
+              "ci95": [
+                0.0208,
+                0.028
+              ],
+              "auc": 0.6703
+            },
+            "topk_mean": {
+              "diff": 0.0215,
+              "ci95": [
+                0.0183,
+                0.0246
+              ],
+              "auc": 0.6742
+            },
+            "mean_sim": {
+              "diff": 0.0193,
+              "ci95": [
+                0.0161,
+                0.0224
+              ],
+              "auc": 0.6503
+            }
+          }
+        }
+      ]
+    },
+    "dynaword1212": {
+      "num_docs": 10000,
+      "sets": {
+        "tatoeba_dan": {
+          "n": 2000,
+          "max_sim": {
+            "mean": 0.5309,
+            "ci95": [
+              0.529,
+              0.5327
+            ],
+            "median": 0.5298,
+            "std": 0.0404
+          },
+          "topk_mean": {
+            "mean": 0.4974,
+            "ci95": [
+              0.4959,
+              0.4989
+            ],
+            "median": 0.4978,
+            "std": 0.0358
+          },
+          "mean_sim": {
+            "mean": 0.3235,
+            "ci95": [
+              0.3219,
+              0.325
+            ],
+            "median": 0.3241,
+            "std": 0.0364
+          },
+          "avg_n_tokens": 12.47,
+          "by_length": {
+            "1-10": {
+              "n": 870,
+              "max_sim_mean": 0.5353
+            },
+            "11-20": {
+              "n": 982,
+              "max_sim_mean": 0.5294
+            },
+            "21-30": {
+              "n": 109,
+              "max_sim_mean": 0.5141
+            },
+            "31-45": {
+              "n": 30,
+              "max_sim_mean": 0.5091
+            },
+            "46+": {
+              "n": 9,
+              "max_sim_mean": 0.5346
+            }
+          },
+          "nearest_source": [
+            {
+              "source": "enevaeldens_nyheder",
+              "nearest_count": 918,
+              "nearest_share": 0.459,
+              "sample_share": 0.8295,
+              "enrichment": 0.55
+            },
+            {
+              "source": "opensubtitles",
+              "nearest_count": 373,
+              "nearest_share": 0.1865,
+              "sample_share": 0.006,
+              "enrichment": 31.08
+            },
+            {
+              "source": "dannet",
+              "nearest_count": 327,
+              "nearest_share": 0.1635,
+              "sample_share": 0.003,
+              "enrichment": 54.5
+            },
+            {
+              "source": "hest",
+              "nearest_count": 62,
+              "nearest_share": 0.031,
+              "sample_share": 0.0026,
+              "enrichment": 11.92
+            },
+            {
+              "source": "ai-aktindsigt",
+              "nearest_count": 54,
+              "nearest_share": 0.027,
+              "sample_share": 0.0367,
+              "enrichment": 0.74
+            },
+            {
+              "source": "wiki",
+              "nearest_count": 51,
+              "nearest_share": 0.0255,
+              "sample_share": 0.057,
+              "enrichment": 0.45
+            },
+            {
+              "source": "ncc_maalfrid",
+              "nearest_count": 48,
+              "nearest_share": 0.024,
+              "sample_share": 0.0062,
+              "enrichment": 3.87
+            },
+            {
+              "source": "ncc_newspaper",
+              "nearest_count": 42,
+              "nearest_share": 0.021,
+              "sample_share": 0.0011,
+              "enrichment": 19.09
+            },
+            {
+              "source": "tv2r",
+              "nearest_count": 33,
+              "nearest_share": 0.0165,
+              "sample_share": 0.0109,
+              "enrichment": 1.51
+            },
+            {
+              "source": "danske-taler",
+              "nearest_count": 28,
+              "nearest_share": 0.014,
+              "sample_share": 0.0009,
+              "enrichment": 15.56
+            },
+            {
+              "source": "spont",
+              "nearest_count": 20,
+              "nearest_share": 0.01,
+              "sample_share": 0.0001,
+              "enrichment": 100.0
+            },
+            {
+              "source": "wiki_misc",
+              "nearest_count": 10,
+              "nearest_share": 0.005,
+              "sample_share": 0.0018,
+              "enrichment": 2.78
+            },
+            {
+              "source": "cellar",
+              "nearest_count": 7,
+              "nearest_share": 0.0035,
+              "sample_share": 0.0113,
+              "enrichment": 0.31
+            },
+            {
+              "source": "health_hovedstaden",
+              "nearest_count": 7,
+              "nearest_share": 0.0035,
+              "sample_share": 0.0058,
+              "enrichment": 0.6
+            },
+            {
+              "source": "ncc_books",
+              "nearest_count": 6,
+              "nearest_share": 0.003,
+              "sample_share": 0.001,
+              "enrichment": 3.0
+            },
+            {
+              "source": "wikisource",
+              "nearest_count": 4,
+              "nearest_share": 0.002,
+              "sample_share": 0.0005,
+              "enrichment": 4.0
+            },
+            {
+              "source": "retsinformationdk",
+              "nearest_count": 4,
+              "nearest_share": 0.002,
+              "sample_share": 0.019,
+              "enrichment": 0.11
+            },
+            {
+              "source": "wikibooks",
+              "nearest_count": 3,
+              "nearest_share": 0.0015,
+              "sample_share": 0.0002,
+              "enrichment": 7.5
+            },
+            {
+              "source": "Domsdatabasen",
+              "nearest_count": 2,
+              "nearest_share": 0.001,
+              "sample_share": 0.0014,
+              "enrichment": 0.71
+            },
+            {
+              "source": "naat",
+              "nearest_count": 1,
+              "nearest_share": 0.0005,
+              "sample_share": 0.0001,
+              "enrichment": 5.0
+            }
+          ],
+          "nearest_subsource": [
+            {
+              "subsource": "-",
+              "nearest_count": 2000,
+              "nearest_share": 1.0,
+              "sample_share": 1.0,
+              "enrichment": 1.0
+            }
+          ]
+        },
+        "generic_dw_1000": {
+          "n": 1000,
+          "max_sim": {
+            "mean": 0.5273,
+            "ci95": [
+              0.5249,
+              0.53
+            ],
+            "median": 0.5263,
+            "std": 0.0415
+          },
+          "topk_mean": {
+            "mean": 0.4935,
+            "ci95": [
+              0.4913,
+              0.4958
+            ],
+            "median": 0.4926,
+            "std": 0.0364
+          },
+          "mean_sim": {
+            "mean": 0.3185,
+            "ci95": [
+              0.3163,
+              0.3208
+            ],
+            "median": 0.318,
+            "std": 0.0362
+          },
+          "avg_n_tokens": 13.18,
+          "by_length": {
+            "1-10": {
+              "n": 362,
+              "max_sim_mean": 0.53
+            },
+            "11-20": {
+              "n": 556,
+              "max_sim_mean": 0.5277
+            },
+            "21-30": {
+              "n": 60,
+              "max_sim_mean": 0.5132
+            },
+            "31-45": {
+              "n": 17,
+              "max_sim_mean": 0.506
+            },
+            "46+": {
+              "n": 5,
+              "max_sim_mean": 0.5411
+            }
+          },
+          "by_domain": {
+            "tatoeba": {
+              "n": 1000,
+              "max_sim_mean": 0.5273
+            }
+          },
+          "nearest_source": [
+            {
+              "source": "enevaeldens_nyheder",
+              "nearest_count": 461,
+              "nearest_share": 0.461,
+              "sample_share": 0.8295,
+              "enrichment": 0.56
+            },
+            {
+              "source": "opensubtitles",
+              "nearest_count": 183,
+              "nearest_share": 0.183,
+              "sample_share": 0.006,
+              "enrichment": 30.5
+            },
+            {
+              "source": "dannet",
+              "nearest_count": 171,
+              "nearest_share": 0.171,
+              "sample_share": 0.003,
+              "enrichment": 57.0
+            },
+            {
+              "source": "hest",
+              "nearest_count": 33,
+              "nearest_share": 0.033,
+              "sample_share": 0.0026,
+              "enrichment": 12.69
+            },
+            {
+              "source": "wiki",
+              "nearest_count": 29,
+              "nearest_share": 0.029,
+              "sample_share": 0.057,
+              "enrichment": 0.51
+            },
+            {
+              "source": "ncc_maalfrid",
+              "nearest_count": 22,
+              "nearest_share": 0.022,
+              "sample_share": 0.0062,
+              "enrichment": 3.55
+            },
+            {
+              "source": "ai-aktindsigt",
+              "nearest_count": 19,
+              "nearest_share": 0.019,
+              "sample_share": 0.0367,
+              "enrichment": 0.52
+            },
+            {
+              "source": "ncc_newspaper",
+              "nearest_count": 19,
+              "nearest_share": 0.019,
+              "sample_share": 0.0011,
+              "enrichment": 17.27
+            },
+            {
+              "source": "tv2r",
+              "nearest_count": 16,
+              "nearest_share": 0.016,
+              "sample_share": 0.0109,
+              "enrichment": 1.47
+            },
+            {
+              "source": "spont",
+              "nearest_count": 12,
+              "nearest_share": 0.012,
+              "sample_share": 0.0001,
+              "enrichment": 120.0
+            },
+            {
+              "source": "danske-taler",
+              "nearest_count": 12,
+              "nearest_share": 0.012,
+              "sample_share": 0.0009,
+              "enrichment": 13.33
+            },
+            {
+              "source": "wiki_misc",
+              "nearest_count": 5,
+              "nearest_share": 0.005,
+              "sample_share": 0.0018,
+              "enrichment": 2.78
+            },
+            {
+              "source": "ncc_books",
+              "nearest_count": 5,
+              "nearest_share": 0.005,
+              "sample_share": 0.001,
+              "enrichment": 5.0
+            },
+            {
+              "source": "cellar",
+              "nearest_count": 4,
+              "nearest_share": 0.004,
+              "sample_share": 0.0113,
+              "enrichment": 0.35
+            },
+            {
+              "source": "health_hovedstaden",
+              "nearest_count": 3,
+              "nearest_share": 0.003,
+              "sample_share": 0.0058,
+              "enrichment": 0.52
+            },
+            {
+              "source": "retsinformationdk",
+              "nearest_count": 2,
+              "nearest_share": 0.002,
+              "sample_share": 0.019,
+              "enrichment": 0.11
+            },
+            {
+              "source": "wikibooks",
+              "nearest_count": 2,
+              "nearest_share": 0.002,
+              "sample_share": 0.0002,
+              "enrichment": 10.0
+            },
+            {
+              "source": "naat",
+              "nearest_count": 1,
+              "nearest_share": 0.001,
+              "sample_share": 0.0001,
+              "enrichment": 10.0
+            },
+            {
+              "source": "Domsdatabasen",
+              "nearest_count": 1,
+              "nearest_share": 0.001,
+              "sample_share": 0.0014,
+              "enrichment": 0.71
+            }
+          ],
+          "nearest_subsource": [
+            {
+              "subsource": "-",
+              "nearest_count": 1000,
+              "nearest_share": 1.0,
+              "sample_share": 1.0,
+              "enrichment": 1.0
+            }
+          ]
+        },
+        "unseen_dw": {
+          "n": 1000,
+          "max_sim": {
+            "mean": 0.5398,
+            "ci95": [
+              0.5371,
+              0.5425
+            ],
+            "median": 0.541,
+            "std": 0.044
+          },
+          "topk_mean": {
+            "mean": 0.5073,
+            "ci95": [
+              0.5048,
+              0.51
+            ],
+            "median": 0.5102,
+            "std": 0.0407
+          },
+          "mean_sim": {
+            "mean": 0.3354,
+            "ci95": [
+              0.3327,
+              0.3382
+            ],
+            "median": 0.3417,
+            "std": 0.0436
+          },
+          "avg_n_tokens": 15.32,
+          "by_length": {
+            "1-10": {
+              "n": 248,
+              "max_sim_mean": 0.5464
+            },
+            "11-20": {
+              "n": 598,
+              "max_sim_mean": 0.5382
+            },
+            "21-30": {
+              "n": 118,
+              "max_sim_mean": 0.5312
+            },
+            "31-45": {
+              "n": 26,
+              "max_sim_mean": 0.5424
+            },
+            "46+": {
+              "n": 10,
+              "max_sim_mean": 0.561
+            }
+          },
+          "by_domain": {
+            "dakultur": {
+              "n": 70,
+              "max_sim_mean": 0.5009
+            },
+            "depbank": {
+              "n": 69,
+              "max_sim_mean": 0.537
+            },
+            "folketingets-dokumenter": {
+              "n": 70,
+              "max_sim_mean": 0.5618
+            },
+            "hvadvilduhelst": {
+              "n": 68,
+              "max_sim_mean": 0.4823
+            },
+            "jvj": {
+              "n": 11,
+              "max_sim_mean": 0.5244
+            },
+            "kalliope": {
+              "n": 69,
+              "max_sim_mean": 0.5302
+            },
+            "kb_administrative_publication": {
+              "n": 69,
+              "max_sim_mean": 0.5575
+            },
+            "kb_historical_letters": {
+              "n": 69,
+              "max_sim_mean": 0.546
+            },
+            "logir": {
+              "n": 69,
+              "max_sim_mean": 0.5633
+            },
+            "mosel_voxpopuli": {
+              "n": 70,
+              "max_sim_mean": 0.5538
+            },
+            "mosel_youtubecommons": {
+              "n": 70,
+              "max_sim_mean": 0.5376
+            },
+            "municipality_meetings": {
+              "n": 70,
+              "max_sim_mean": 0.5815
+            },
+            "nordjyllandnews": {
+              "n": 70,
+              "max_sim_mean": 0.5475
+            },
+            "synne": {
+              "n": 18,
+              "max_sim_mean": 0.5291
+            },
+            "tidsskrift-dk": {
+              "n": 69,
+              "max_sim_mean": 0.5381
+            },
+            "wikipedia_new": {
+              "n": 69,
+              "max_sim_mean": 0.5229
+            }
+          },
+          "nearest_source": [
+            {
+              "source": "enevaeldens_nyheder",
+              "nearest_count": 545,
+              "nearest_share": 0.545,
+              "sample_share": 0.8295,
+              "enrichment": 0.66
+            },
+            {
+              "source": "ai-aktindsigt",
+              "nearest_count": 118,
+              "nearest_share": 0.118,
+              "sample_share": 0.0367,
+              "enrichment": 3.22
+            },
+            {
+              "source": "retsinformationdk",
+              "nearest_count": 58,
+              "nearest_share": 0.058,
+              "sample_share": 0.019,
+              "enrichment": 3.05
+            },
+            {
+              "source": "dannet",
+              "nearest_count": 51,
+              "nearest_share": 0.051,
+              "sample_share": 0.003,
+              "enrichment": 17.0
+            },
+            {
+              "source": "opensubtitles",
+              "nearest_count": 43,
+              "nearest_share": 0.043,
+              "sample_share": 0.006,
+              "enrichment": 7.17
+            },
+            {
+              "source": "wiki",
+              "nearest_count": 36,
+              "nearest_share": 0.036,
+              "sample_share": 0.057,
+              "enrichment": 0.63
+            },
+            {
+              "source": "danske-taler",
+              "nearest_count": 32,
+              "nearest_share": 0.032,
+              "sample_share": 0.0009,
+              "enrichment": 35.56
+            },
+            {
+              "source": "ncc_maalfrid",
+              "nearest_count": 17,
+              "nearest_share": 0.017,
+              "sample_share": 0.0062,
+              "enrichment": 2.74
+            },
+            {
+              "source": "tv2r",
+              "nearest_count": 16,
+              "nearest_share": 0.016,
+              "sample_share": 0.0109,
+              "enrichment": 1.47
+            },
+            {
+              "source": "ncc_newspaper",
+              "nearest_count": 15,
+              "nearest_share": 0.015,
+              "sample_share": 0.0011,
+              "enrichment": 13.64
+            },
+            {
+              "source": "cellar",
+              "nearest_count": 14,
+              "nearest_share": 0.014,
+              "sample_share": 0.0113,
+              "enrichment": 1.24
+            },
+            {
+              "source": "hest",
+              "nearest_count": 12,
+              "nearest_share": 0.012,
+              "sample_share": 0.0026,
+              "enrichment": 4.62
+            },
+            {
+              "source": "ncc_books",
+              "nearest_count": 11,
+              "nearest_share": 0.011,
+              "sample_share": 0.001,
+              "enrichment": 11.0
+            },
+            {
+              "source": "health_hovedstaden",
+              "nearest_count": 10,
+              "nearest_share": 0.01,
+              "sample_share": 0.0058,
+              "enrichment": 1.72
+            },
+            {
+              "source": "wiki_misc",
+              "nearest_count": 8,
+              "nearest_share": 0.008,
+              "sample_share": 0.0018,
+              "enrichment": 4.44
+            },
+            {
+              "source": "ft",
+              "nearest_count": 4,
+              "nearest_share": 0.004,
+              "sample_share": 0.0003,
+              "enrichment": 13.33
+            },
+            {
+              "source": "Domsdatabasen",
+              "nearest_count": 4,
+              "nearest_share": 0.004,
+              "sample_share": 0.0014,
+              "enrichment": 2.86
+            },
+            {
+              "source": "wikisource",
+              "nearest_count": 2,
+              "nearest_share": 0.002,
+              "sample_share": 0.0005,
+              "enrichment": 4.0
+            },
+            {
+              "source": "memo",
+              "nearest_count": 1,
+              "nearest_share": 0.001,
+              "sample_share": 0.0002,
+              "enrichment": 5.0
+            },
+            {
+              "source": "retspraksis",
+              "nearest_count": 1,
+              "nearest_share": 0.001,
+              "sample_share": 0.0005,
+              "enrichment": 2.0
+            },
+            {
+              "source": "skat",
+              "nearest_count": 1,
+              "nearest_share": 0.001,
+              "sample_share": 0.0029,
+              "enrichment": 0.34
+            },
+            {
+              "source": "wikibooks",
+              "nearest_count": 1,
+              "nearest_share": 0.001,
+              "sample_share": 0.0002,
+              "enrichment": 5.0
+            }
+          ],
+          "nearest_subsource": [
+            {
+              "subsource": "-",
+              "nearest_count": 1000,
+              "nearest_share": 1.0,
+              "sample_share": 1.0,
+              "enrichment": 1.0
+            }
+          ]
+        },
+        "train_dynaword1212": {
+          "n": 2000,
+          "max_sim": {
+            "mean": 0.6065,
+            "ci95": [
+              0.6034,
+              0.6101
+            ],
+            "median": 0.595,
+            "std": 0.0762
+          },
+          "topk_mean": {
+            "mean": 0.569,
+            "ci95": [
+              0.5662,
+              0.572
+            ],
+            "median": 0.5589,
+            "std": 0.0683
+          },
+          "mean_sim": {
+            "mean": 0.3617,
+            "ci95": [
+              0.36,
+              0.3634
+            ],
+            "median": 0.3641,
+            "std": 0.0383
+          },
+          "avg_n_tokens": 51.57,
+          "by_length": {
+            "1-10": {
+              "n": 56,
+              "max_sim_mean": 0.5642
+            },
+            "11-20": {
+              "n": 257,
+              "max_sim_mean": 0.5788
+            },
+            "21-30": {
+              "n": 287,
+              "max_sim_mean": 0.5809
+            },
+            "31-45": {
+              "n": 429,
+              "max_sim_mean": 0.5952
+            },
+            "46+": {
+              "n": 971,
+              "max_sim_mean": 0.6289
+            }
+          },
+          "nearest_source": [
+            {
+              "source": "enevaeldens_nyheder",
+              "nearest_count": 1775,
+              "nearest_share": 0.8875,
+              "sample_share": 0.8295,
+              "enrichment": 1.07
+            },
+            {
+              "source": "ai-aktindsigt",
+              "nearest_count": 69,
+              "nearest_share": 0.0345,
+              "sample_share": 0.0367,
+              "enrichment": 0.94
+            },
+            {
+              "source": "wiki",
+              "nearest_count": 45,
+              "nearest_share": 0.0225,
+              "sample_share": 0.057,
+              "enrichment": 0.39
+            },
+            {
+              "source": "retsinformationdk",
+              "nearest_count": 28,
+              "nearest_share": 0.014,
+              "sample_share": 0.019,
+              "enrichment": 0.74
+            },
+            {
+              "source": "cellar",
+              "nearest_count": 13,
+              "nearest_share": 0.0065,
+              "sample_share": 0.0113,
+              "enrichment": 0.58
+            },
+            {
+              "source": "dannet",
+              "nearest_count": 12,
+              "nearest_share": 0.006,
+              "sample_share": 0.003,
+              "enrichment": 2.0
+            },
+            {
+              "source": "tv2r",
+              "nearest_count": 12,
+              "nearest_share": 0.006,
+              "sample_share": 0.0109,
+              "enrichment": 0.55
+            },
+            {
+              "source": "health_hovedstaden",
+              "nearest_count": 11,
+              "nearest_share": 0.0055,
+              "sample_share": 0.0058,
+              "enrichment": 0.95
+            },
+            {
+              "source": "ncc_maalfrid",
+              "nearest_count": 8,
+              "nearest_share": 0.004,
+              "sample_share": 0.0062,
+              "enrichment": 0.65
+            },
+            {
+              "source": "opensubtitles",
+              "nearest_count": 6,
+              "nearest_share": 0.003,
+              "sample_share": 0.006,
+              "enrichment": 0.5
+            },
+            {
+              "source": "hest",
+              "nearest_count": 6,
+              "nearest_share": 0.003,
+              "sample_share": 0.0026,
+              "enrichment": 1.15
+            },
+            {
+              "source": "skat",
+              "nearest_count": 4,
+              "nearest_share": 0.002,
+              "sample_share": 0.0029,
+              "enrichment": 0.69
+            },
+            {
+              "source": "danske-taler",
+              "nearest_count": 3,
+              "nearest_share": 0.0015,
+              "sample_share": 0.0009,
+              "enrichment": 1.67
+            },
+            {
+              "source": "ncc_newspaper",
+              "nearest_count": 2,
+              "nearest_share": 0.001,
+              "sample_share": 0.0011,
+              "enrichment": 0.91
+            },
+            {
+              "source": "Domsdatabasen",
+              "nearest_count": 2,
+              "nearest_share": 0.001,
+              "sample_share": 0.0014,
+              "enrichment": 0.71
+            },
+            {
+              "source": "memo",
+              "nearest_count": 1,
+              "nearest_share": 0.0005,
+              "sample_share": 0.0002,
+              "enrichment": 2.5
+            },
+            {
+              "source": "spont",
+              "nearest_count": 1,
+              "nearest_share": 0.0005,
+              "sample_share": 0.0001,
+              "enrichment": 5.0
+            },
+            {
+              "source": "eur-lex-sum-da",
+              "nearest_count": 1,
+              "nearest_share": 0.0005,
+              "sample_share": 0.0002,
+              "enrichment": 2.5
+            },
+            {
+              "source": "wiki_misc",
+              "nearest_count": 1,
+              "nearest_share": 0.0005,
+              "sample_share": 0.0018,
+              "enrichment": 0.28
+            }
+          ],
+          "nearest_subsource": [
+            {
+              "subsource": "-",
+              "nearest_count": 2000,
+              "nearest_share": 1.0,
+              "sample_share": 1.0,
+              "enrichment": 1.0
+            }
+          ]
+        }
+      },
+      "comparisons": [
+        {
+          "a": "unseen_dw",
+          "b": "tatoeba_dan",
+          "metrics": {
+            "max_sim": {
+              "diff": 0.0089,
+              "ci95": [
+                0.0056,
+                0.0121
+              ],
+              "auc": 0.5639
+            },
+            "topk_mean": {
+              "diff": 0.0099,
+              "ci95": [
+                0.0068,
+                0.0129
+              ],
+              "auc": 0.5803
+            },
+            "mean_sim": {
+              "diff": 0.0119,
+              "ci95": [
+                0.0088,
+                0.0151
+              ],
+              "auc": 0.5947
+            }
+          }
+        },
+        {
+          "a": "unseen_dw",
+          "b": "generic_dw_1000",
+          "metrics": {
+            "max_sim": {
+              "diff": 0.0124,
+              "ci95": [
+                0.0085,
+                0.0162
+              ],
+              "auc": 0.5878
+            },
+            "topk_mean": {
+              "diff": 0.0138,
+              "ci95": [
+                0.0105,
+                0.0173
+              ],
+              "auc": 0.6084
+            },
+            "mean_sim": {
+              "diff": 0.0169,
+              "ci95": [
+                0.0133,
+                0.0204
+              ],
+              "auc": 0.6277
+            }
+          }
+        }
+      ]
+    }
+  }
+}
