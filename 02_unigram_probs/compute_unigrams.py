@@ -2,7 +2,7 @@
 Example run
 
 python 02_unigram_probs/compute_unigrams.py \
-    --index-dir 00_data/dummy_index \
+    --index-dir 00_prepare_data/dummy_index \
     --output-path 02_unigram_probs/unigram_probs_dummy.json \
     --tokenizer-model meta-llama/Llama-2-7b-hf \
     --example-token a \
