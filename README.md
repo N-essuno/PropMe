@@ -16,19 +16,7 @@ The repository accompanies the paper:
 
 > "LLMs Can Leak Training Data But Do They Want To? A Propensity-Aware Evaluation of Memorization in LLMs"
 
-Please cite this paper if you find it useful:
-
-```bibtex
-@misc{barmina2026llmsleaktrainingdata,
-      title={LLMs Can Leak Training Data But Do They Want To? A Propensity-Aware Evaluation of Memorization in LLMs}, 
-      author={Gianluca Barmina and Peter Schneider-Kamp and Lukas Galke Poech},
-      year={2026},
-      eprint={2606.06286},
-      archivePrefix={arXiv},
-      primaryClass={cs.CL},
-      url={https://arxiv.org/abs/2606.06286}, 
-}
-```
+The citation is omitted for anonymous review.
 
 
 ## Requirements
@@ -43,6 +31,17 @@ python -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements.txt
 ```
+
+## Repository layout
+
+- `00_prepare_data/`: dataset downloads, the dummy dataset and index, and `propensity_settings/`, which builds the generic (Tatoeba) and specific (unseen-source) prompt sets.
+- `01_indexing/` to `05_propensity_metrics/`: the pipeline steps below.
+- `memorization_experiment/`: generation (`generation/`), prefix prompts (`extract_prefixes/`), plotting (`scripts/`), the tracing presets (`run_memorization_experiments.py`) and the experiment data (`data/`).
+- `olmotrace/`: a reimplementation of OLMoTrace and its comparison with SimpleTrace.
+- `scripts/`: standalone utilities, e.g. `embedding_similarity.py` (embedding similarity of prompt sets to the training data, compared with Tatoeba).
+- `logs/`: logs of the runs.
+
+Large data (InfiniGram indexes and raw downloads) is kept outside the repository. Scripts look for it under `$PROPME_DATA_ROOT` (default: `propme_data/` in the repository root): indexes in `$PROPME_DATA_ROOT/indexes/`, raw downloads in `$PROPME_DATA_ROOT/raw/`.
 
 ## Workflow
 
@@ -63,6 +62,7 @@ The detailed commands for each step are documented in the folder READMEs:
 - `03_tracing/README.md`: running `SimpleTrace` on generations.
 - `04_validation/README.md`: validation workflows and outputs.
 - `05_propensity_metrics/README.md`: PropMe metric computation.
+- `00_prepare_data/propensity_settings/README.md`: the generic and specific prompt sets.
 - `memorization_experiment/README.md`: prompt generation, bundled experiment presets, and plotting.
 - `preprocess.md`: additional dataset preparation, indexing, and unigram notes.
 
@@ -143,7 +143,7 @@ Common summary fields include:
 
 `SimpleTrace` currently exposes two tracing modes:
 
-- `text`: keeps the original prose-oriented span filtering.
+- `text`: prose-oriented span filtering; spans are trimmed at sentence boundaries (`!`, `.`, `?`, newline) rather than discarded when a match crosses one.
 - `mixed`: adds support for mixed content and full-generation exact matching, which is useful for code, markup, equations, and other structured text.
 
 For most current paper-style experiments, `mixed` is the safer default.
