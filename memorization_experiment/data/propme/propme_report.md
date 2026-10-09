@@ -24,7 +24,7 @@ Some generations are repetition loops of symbols: `|` on every line up to the 25
 - its zlib compression ratio (compressed / raw UTF-8 size) is below 0.1, i.e. it is highly repetitive (zlib entropy is used to discard trivial repetitive matches by Carlini et al., 2021);
 - under 50% of its non-space characters are letters.
 
-Both conditions are needed: repetition alone also flags generations that repeat a natural-language sentence (common under generic prompts; their longest training span is ~8–10 tokens, so they do not inflate any metric), and a low letter share alone also flags code, tables and logs, which are kept because their verbatim reproduction is memorization (their share is examined separately in Section 5.3).
+Both conditions are needed: repetition alone also flags generations that repeat a natural-language sentence (common under generic prompts), and a low letter share alone also flags code, tables and logs, which are kept because their verbatim reproduction is memorization (their share is examined separately in Section 5.3). Sentence loops therefore stay in the main tables; most match only short spans, but a minority match repetitive training text over 50–360 tokens. Section 5 discounts them with a span-level loop filter (5.2).
 
 Degenerate generations are removed from numerators and denominators of every metric, in every setting including prefix, so each PM compares like with like. Bootstrap units are kept (a prompt whose 10 generations are all degenerate contributes nothing), so paired comparisons are unchanged. **All tables and sections of this report use the filtered results**; the unfiltered Tables A and B are in the appendix, and Section 6 gives each claim's unfiltered status. The rule was set after the loops were found while inspecting DFM's specific-prompt full matches, not chosen by its effect on PM. Every excluded generation was checked to be such a loop; non-repetitive symbol sequences are kept, e.g. one counting sequence `1. 2. 3. … 77.` among DFM's specific full matches on Common Pile.
 
@@ -66,7 +66,7 @@ Excluded generations per run, with the full matches among them in parentheses (o
 | Olmo 3 32B | D3 | Specific | 0.0012 [0.0005, 0.0023] | 0.0006 [0.0001, 0.0014] | 17.68 [17.19, 18.23] | 0 |
 | Olmo 3 32B | D3 | Prefix | 0.0085 [0.0058, 0.0120] | 0.0029 [0.0009, 0.0058] | 26.90 [25.48, 28.39] | 12 |
 
-Higher values indicate stronger memorization signals. CP: Common Pile, DW: Dynaword, D3: Dolma 3. Excluded: degenerate generations left out.
+Higher values indicate stronger memorization signals. CP: Common Pile, DW: Dynaword, D3: Dolma 3. Excluded: degenerate generations left out. FMR counts full matches of any length, as in the paper; under generic and specific prompts most of them are short outputs (often under 10 tokens) that occur verbatim in the training data. FMR20 / FMR50, counting only full matches of ≥ 20 / ≥ 50 tokens, are in Section 5.2.
 
 ## Table B — Propensity memorization scores against prefix (cf. paper Tables 2 and 4)
 
@@ -81,7 +81,7 @@ Higher values indicate stronger memorization signals. CP: Common Pile, DW: Dynaw
 | Olmo 3 32B | D3 | PM_NVR | 0.744 [0.674, 0.811] | 0.586 [0.497, 0.679] | 0.201 [0.130, 0.298] | 0.124 [0.054, 0.229] |
 | Olmo 3 32B | D3 | PM_FMR | 0.194 [0.064, 0.467] | 0.579 [0.396, 0.820] | 0.064 [0.000, 0.235] | 0.171 [0.023, 0.454] |
 
-PM = f_setting / (f_setting + f_prefix); 0.5 is neutral, lower values mean lower propensity relative to capability. Setting and prefix sets are resampled independently.
+PM = f_setting / (f_setting + f_prefix); 0.5 is neutral, lower values mean lower propensity relative to capability. Setting and prefix sets are resampled independently. PM_FMR inherits FMR's short full matches (see Table A); PM_FMR20 / PM_FMR50 and the long-span scores PM_R50 / PM_NVR50 are in Section 5.2.
 
 ## 1. How memorization varies across settings, per model and corpus
 
@@ -290,41 +290,82 @@ Spans of about 6–8 tokens arise without memorization; prompts are short (~12 t
 
 ### 5.2 Long spans only
 
-R20 / R50: share of generations whose longest training span has ≥ 20 / ≥ 50 tokens. NVR50: NVR counting only documents retrieved through ≥ 50-token spans (over all retrieved documents). At 50 tokens the false-positive floor of matched non-member controls is ~0 for natural text (Cooper et al., 2026).
+R20 / R50: share of generations whose longest training span has ≥ 20 / ≥ 50 tokens. NVR50: NVR counting only documents retrieved through ≥ 50-token spans (over all retrieved documents). FMR20 / FMR50: full matches whose generation is ≥ 20 / ≥ 50 tokens long. Cooper et al. (2026) find that, under targeted extraction, text not in the training data has its true 50-token continuation reproduced 0.02% of the time, against 0.74% for training text (OLMo 2 32B, Wikipedia, greedy decoding); at 10 tokens the non-training rate is about 24% of the training rate. 50 tokens is therefore used as a conservative threshold motivated by their result, not as a calibrated false-positive rate: these metrics count matches with any training document, and no matched control was run here. Our own baseline (5.1) only shows that non-training prompts match spans of about 6.5–8 tokens on average.
 
-| Model | Data | Prompt | R20 [95% CI] | R50 [95% CI] | NVR50 [95% CI] |
+Spans that are repetition loops do not count here or in the rest of Section 5: after collapsing whitespace, one unit of ≤ 200 characters repeated at least 3 times with ≥ 90% of characters equal one period later (e.g. "I'm sorry. I'm sorry. …", "Hvad er der i vejen?" on every line, `| | |`, `rrrr`). Such loops match repetitive training text over 50–360 tokens without reproducing any document's content. They are tested on spans of ≥ 20 tokens; code or prose whose repeated parts vary (names, numbers) is not periodic. The last column counts the generations whose ≥ 50-token spans were all loops, among all generations with a ≥ 50-token span.
+
+| Model | Data | Prompt | R20 [95% CI] | R50 [95% CI] | NVR50 [95% CI] | Loop-only ≥ 50-token matches |
+|---|---|---|---|---|---|---|
+| Comma | CP | Unconditional | 67.2% [66.3, 68.1] | 17.7% [16.9, 18.4] | 0.0116 [0.0106, 0.0126] | 10 of 1777 |
+| Comma | CP | Minimal Cue | 44.2% [43.3, 45.2] | 10.9% [10.3, 11.5] | 0.0110 [0.0100, 0.0121] | 16 of 1103 |
+| Comma | CP | Generic | 7.7% [7.0, 8.5] | 0.9% [0.7, 1.2] | 0.0006 [0.0004, 0.0009] | 36 of 130 |
+| Comma | CP | Specific | 15.5% [14.4, 16.7] | 2.1% [1.8, 2.5] | 0.0011 [0.0008, 0.0014] | 15 of 225 |
+| Comma | CP | Prefix | 53.5% [51.1, 55.9] | 13.6% [12.0, 15.2] | 0.0099 [0.0074, 0.0125] | 52 of 1410 |
+| DFM | CP | Unconditional | 6.7% [6.2, 7.2] | 1.9% [1.7, 2.2] | 0.0023 [0.0018, 0.0029] | 4 of 198 |
+| DFM | CP | Minimal Cue | 19.4% [18.6, 20.1] | 6.5% [6.0, 7.0] | 0.0086 [0.0075, 0.0096] | 8 of 655 |
+| DFM | CP | Generic | 9.4% [8.6, 10.2] | 0.6% [0.4, 0.8] | 0.0005 [0.0003, 0.0007] | 23 of 82 |
+| DFM | CP | Specific | 12.6% [11.6, 13.7] | 1.4% [1.1, 1.7] | 0.0007 [0.0005, 0.0010] | 24 of 163 |
+| DFM | CP | Prefix | 51.0% [48.6, 53.4] | 11.4% [9.9, 13.0] | 0.0088 [0.0063, 0.0114] | 45 of 1184 |
+| DFM | DW | Unconditional | 49.4% [48.4, 50.4] | 11.0% [10.4, 11.6] | 0.0093 [0.0084, 0.0101] | 2 of 1102 |
+| DFM | DW | Minimal Cue | 33.9% [33.0, 34.9] | 3.3% [2.9, 3.6] | 0.0039 [0.0033, 0.0047] | 3 of 328 |
+| DFM | DW | Generic | 15.1% [14.1, 16.0] | 0.4% [0.3, 0.5] | 0.0001 [0.0000, 0.0002] | 8 of 45 |
+| DFM | DW | Specific | 21.4% [19.9, 23.0] | 2.8% [2.3, 3.4] | 0.0012 [0.0008, 0.0017] | 19 of 301 |
+| DFM | DW | Prefix | 41.6% [39.0, 44.1] | 10.1% [8.6, 11.7] | 0.0108 [0.0082, 0.0135] | 2 of 1010 |
+| Olmo 3 32B | D3 | Unconditional | 84.3% [83.6, 85.0] | 41.4% [40.4, 42.4] | 0.0111 [0.0103, 0.0118] | 34 of 4170 |
+| Olmo 3 32B | D3 | Minimal Cue | 39.4% [38.4, 40.3] | 8.6% [8.1, 9.2] | 0.0048 [0.0042, 0.0053] | 5 of 868 |
+| Olmo 3 32B | D3 | Generic | 8.9% [8.2, 9.7] | 0.8% [0.5, 1.1] | 0.0005 [0.0002, 0.0010] | 17 of 94 |
+| Olmo 3 32B | D3 | Specific | 20.4% [19.2, 21.7] | 1.7% [1.3, 2.1] | 0.0004 [0.0002, 0.0007] | 2 of 172 |
+| Olmo 3 32B | D3 | Prefix | 46.0% [43.8, 48.3] | 9.0% [7.6, 10.5] | 0.0036 [0.0024, 0.0050] | 8 of 909 |
+
+Full matches by length. Most full matches under generic and specific prompts are short outputs that end early and occur verbatim in the training data (e.g. "He is a gentleman.", "Havde I det sjovt?"); FMR20 and FMR50 count only full matches of ≥ 20 / ≥ 50 tokens (loops excluded).
+
+| Model | Data | Prompt | FMR (all) [95% CI] | FMR20 [95% CI] | FMR50 [95% CI] |
 |---|---|---|---|---|---|
-| Comma | CP | Unconditional | 67.3% [66.4, 68.3] | 17.8% [17.0, 18.5] | 0.0116 [0.0106, 0.0126] |
-| Comma | CP | Minimal Cue | 44.3% [43.4, 45.3] | 11.0% [10.4, 11.6] | 0.0110 [0.0100, 0.0121] |
-| Comma | CP | Generic | 8.4% [7.6, 9.1] | 1.3% [1.0, 1.6] | 0.0006 [0.0004, 0.0009] |
-| Comma | CP | Specific | 15.7% [14.6, 16.8] | 2.3% [1.9, 2.6] | 0.0011 [0.0008, 0.0014] |
-| Comma | CP | Prefix | 53.8% [51.4, 56.2] | 14.1% [12.5, 15.8] | 0.0099 [0.0074, 0.0125] |
-| DFM | CP | Unconditional | 6.8% [6.3, 7.3] | 2.0% [1.7, 2.3] | 0.0023 [0.0018, 0.0029] |
-| DFM | CP | Minimal Cue | 19.5% [18.7, 20.3] | 6.6% [6.1, 7.0] | 0.0086 [0.0076, 0.0096] |
-| DFM | CP | Generic | 9.9% [9.1, 10.7] | 0.8% [0.7, 1.0] | 0.0005 [0.0003, 0.0007] |
-| DFM | CP | Specific | 12.9% [11.9, 14.0] | 1.6% [1.4, 1.9] | 0.0007 [0.0005, 0.0010] |
-| DFM | CP | Prefix | 51.4% [49.0, 53.7] | 11.9% [10.4, 13.4] | 0.0088 [0.0064, 0.0114] |
-| DFM | DW | Unconditional | 49.5% [48.5, 50.5] | 11.0% [10.4, 11.6] | 0.0093 [0.0084, 0.0101] |
-| DFM | DW | Minimal Cue | 34.3% [33.4, 35.2] | 3.3% [2.9, 3.6] | 0.0039 [0.0033, 0.0047] |
-| DFM | DW | Generic | 16.8% [15.8, 17.8] | 0.5% [0.3, 0.6] | 0.0001 [0.0000, 0.0002] |
-| DFM | DW | Specific | 22.0% [20.4, 23.5] | 3.0% [2.5, 3.6] | 0.0012 [0.0009, 0.0017] |
-| DFM | DW | Prefix | 41.6% [39.1, 44.1] | 10.1% [8.6, 11.7] | 0.0108 [0.0082, 0.0136] |
-| Olmo 3 32B | D3 | Unconditional | 84.4% [83.7, 85.1] | 41.7% [40.8, 42.7] | 0.0111 [0.0104, 0.0118] |
-| Olmo 3 32B | D3 | Minimal Cue | 39.5% [38.5, 40.4] | 8.7% [8.1, 9.2] | 0.0048 [0.0042, 0.0053] |
-| Olmo 3 32B | D3 | Generic | 9.3% [8.5, 10.0] | 0.9% [0.7, 1.2] | 0.0005 [0.0002, 0.0010] |
-| Olmo 3 32B | D3 | Specific | 20.5% [19.3, 21.8] | 1.7% [1.3, 2.2] | 0.0004 [0.0002, 0.0007] |
-| Olmo 3 32B | D3 | Prefix | 46.0% [43.8, 48.3] | 9.1% [7.7, 10.6] | 0.0036 [0.0024, 0.0050] |
+| Comma | CP | Unconditional | 0.0018 [0.0010, 0.0027] | 0.0014 [0.0007, 0.0022] | 0.0012 [0.0006, 0.0019] |
+| Comma | CP | Minimal Cue | 0.0035 [0.0024, 0.0047] | 0.0032 [0.0021, 0.0044] | 0.0030 [0.0020, 0.0041] |
+| Comma | CP | Generic | 0.0014 [0.0007, 0.0022] | 0.0001 [0.0000, 0.0003] | 0.0001 [0.0000, 0.0003] |
+| Comma | CP | Specific | 0.0017 [0.0009, 0.0026] | 0.0001 [0.0000, 0.0003] | 0.0001 [0.0000, 0.0003] |
+| Comma | CP | Prefix | 0.0056 [0.0029, 0.0090] | 0.0033 [0.0008, 0.0064] | 0.0032 [0.0008, 0.0063] |
+| DFM | CP | Unconditional | 0.0015 [0.0008, 0.0023] | 0.0002 [0.0000, 0.0005] | 0.0002 [0.0000, 0.0005] |
+| DFM | CP | Minimal Cue | 0.0071 [0.0055, 0.0088] | 0.0015 [0.0008, 0.0023] | 0.0015 [0.0008, 0.0023] |
+| DFM | CP | Generic | 0.0057 [0.0042, 0.0073] | 0.0002 [0.0000, 0.0005] | 0.0000 [0.0000, 0.0000] |
+| DFM | CP | Specific | 0.0029 [0.0018, 0.0041] | 0.0002 [0.0000, 0.0005] | 0.0001 [0.0000, 0.0003] |
+| DFM | CP | Prefix | 0.0037 [0.0020, 0.0056] | 0.0014 [0.0003, 0.0029] | 0.0014 [0.0003, 0.0029] |
+| DFM | DW | Unconditional | 0.0287 [0.0254, 0.0321] | 0.0070 [0.0054, 0.0087] | 0.0018 [0.0010, 0.0027] |
+| DFM | DW | Minimal Cue | 0.0208 [0.0181, 0.0236] | 0.0026 [0.0017, 0.0037] | 0.0009 [0.0004, 0.0016] |
+| DFM | DW | Generic | 0.0011 [0.0004, 0.0020] | 0.0000 [0.0000, 0.0000] | 0.0000 [0.0000, 0.0000] |
+| DFM | DW | Specific | 0.0050 [0.0032, 0.0072] | 0.0001 [0.0000, 0.0003] | 0.0000 [0.0000, 0.0000] |
+| DFM | DW | Prefix | 0.0367 [0.0290, 0.0451] | 0.0085 [0.0047, 0.0130] | 0.0052 [0.0021, 0.0090] |
+| Olmo 3 32B | D3 | Unconditional | 0.0007 [0.0002, 0.0013] | 0.0007 [0.0002, 0.0013] | 0.0007 [0.0002, 0.0013] |
+| Olmo 3 32B | D3 | Minimal Cue | 0.0040 [0.0028, 0.0052] | 0.0037 [0.0025, 0.0049] | 0.0036 [0.0025, 0.0048] |
+| Olmo 3 32B | D3 | Generic | 0.0002 [0.0000, 0.0005] | 0.0001 [0.0000, 0.0003] | 0.0001 [0.0000, 0.0003] |
+| Olmo 3 32B | D3 | Specific | 0.0006 [0.0001, 0.0014] | 0.0003 [0.0000, 0.0009] | 0.0003 [0.0000, 0.0009] |
+| Olmo 3 32B | D3 | Prefix | 0.0029 [0.0009, 0.0057] | 0.0019 [0.0001, 0.0045] | 0.0019 [0.0001, 0.0045] |
 
 | Model | Data | Metric | Unconditional | Minimal Cue | Generic | Specific |
 |---|---|---|---|---|---|---|
-| Comma | CP | PM_R50 | 0.558 [0.528, 0.589] | 0.439 [0.408, 0.472] | 0.084 [0.066, 0.105] | 0.138 [0.115, 0.162] |
-| Comma | CP | PM_NVR50 | 0.540 [0.477, 0.613] | 0.528 [0.463, 0.600] | 0.060 [0.037, 0.091] | 0.101 [0.071, 0.140] |
-| DFM | CP | PM_R50 | 0.143 [0.121, 0.168] | 0.356 [0.323, 0.392] | 0.065 [0.050, 0.081] | 0.122 [0.099, 0.147] |
-| DFM | CP | PM_NVR50 | 0.209 [0.155, 0.280] | 0.493 [0.421, 0.579] | 0.056 [0.034, 0.087] | 0.077 [0.052, 0.112] |
-| DFM | DW | PM_R50 | 0.522 [0.483, 0.565] | 0.245 [0.213, 0.283] | 0.043 [0.029, 0.059] | 0.231 [0.191, 0.276] |
-| DFM | DW | PM_NVR50 | 0.462 [0.401, 0.532] | 0.268 [0.214, 0.335] | 0.011 [0.002, 0.024] | 0.103 [0.069, 0.149] |
-| Olmo 3 32B | D3 | PM_R50 | 0.821 [0.797, 0.845] | 0.488 [0.446, 0.534] | 0.094 [0.068, 0.126] | 0.159 [0.124, 0.199] |
-| Olmo 3 32B | D3 | PM_NVR50 | 0.757 [0.686, 0.824] | 0.572 [0.482, 0.670] | 0.119 [0.046, 0.238] | 0.107 [0.053, 0.180] |
+| Comma | CP | PM_R50 | 0.565 [0.536, 0.598] | 0.444 [0.413, 0.479] | 0.065 [0.048, 0.085] | 0.134 [0.112, 0.159] |
+| Comma | CP | PM_NVR50 | 0.540 [0.476, 0.612] | 0.528 [0.463, 0.601] | 0.057 [0.035, 0.088] | 0.101 [0.071, 0.140] |
+| Comma | CP | PM_FMR (all) | 0.243 [0.133, 0.411] | 0.384 [0.256, 0.565] | 0.200 [0.102, 0.355] | 0.233 [0.121, 0.397] |
+| Comma | CP | PM_FMR20 | 0.298 [0.140, 0.636] | 0.492 [0.309, 0.792] | 0.029 [0.000, 0.150] | 0.029 [0.000, 0.154] |
+| Comma | CP | PM_FMR50 | 0.273 [0.120, 0.625] | 0.484 [0.297, 0.800] | 0.030 [0.000, 0.166] | 0.030 [0.000, 0.167] |
+| DFM | CP | PM_R50 | 0.145 [0.123, 0.170] | 0.362 [0.329, 0.399] | 0.049 [0.036, 0.064] | 0.109 [0.087, 0.135] |
+| DFM | CP | PM_NVR50 | 0.208 [0.155, 0.278] | 0.494 [0.421, 0.579] | 0.054 [0.032, 0.085] | 0.077 [0.052, 0.113] |
+| DFM | CP | PM_FMR (all) | 0.288 [0.159, 0.454] | 0.657 [0.542, 0.784] | 0.606 [0.481, 0.746] | 0.441 [0.295, 0.613] |
+| DFM | CP | PM_FMR20 | 0.125 [0.000, 0.499] | 0.517 [0.289, 0.852] | 0.125 [0.000, 0.500] | 0.126 [0.000, 0.501] |
+| DFM | CP | PM_FMR50 | 0.125 [0.000, 0.499] | 0.517 [0.289, 0.852] | 0.000 [0.000, 0.000] | 0.067 [0.000, 0.335] |
+| DFM | DW | PM_R50 | 0.522 [0.482, 0.564] | 0.244 [0.211, 0.280] | 0.035 [0.023, 0.050] | 0.220 [0.180, 0.264] |
+| DFM | DW | PM_NVR50 | 0.462 [0.400, 0.532] | 0.268 [0.214, 0.334] | 0.011 [0.002, 0.024] | 0.103 [0.068, 0.146] |
+| DFM | DW | PM_FMR (all) | 0.439 [0.381, 0.504] | 0.362 [0.306, 0.426] | 0.029 [0.011, 0.055] | 0.121 [0.077, 0.174] |
+| DFM | DW | PM_FMR20 | 0.452 [0.333, 0.607] | 0.234 [0.142, 0.380] | 0.000 [0.000, 0.000] | 0.012 [0.000, 0.045] |
+| DFM | DW | PM_FMR50 | 0.257 [0.136, 0.476] | 0.148 [0.057, 0.333] | 0.000 [0.000, 0.000] | 0.000 [0.000, 0.000] |
+| Olmo 3 32B | D3 | PM_R50 | 0.821 [0.798, 0.844] | 0.489 [0.448, 0.532] | 0.079 [0.054, 0.108] | 0.159 [0.122, 0.199] |
+| Olmo 3 32B | D3 | PM_NVR50 | 0.756 [0.686, 0.824] | 0.571 [0.481, 0.670] | 0.119 [0.045, 0.239] | 0.107 [0.053, 0.183] |
+| Olmo 3 32B | D3 | PM_FMR (all) | 0.194 [0.063, 0.467] | 0.579 [0.393, 0.816] | 0.064 [0.000, 0.235] | 0.171 [0.020, 0.454] |
+| Olmo 3 32B | D3 | PM_FMR20 | 0.269 [0.083, 0.889] | 0.660 [0.428, 0.976] | 0.050 [0.000, 0.500] | 0.136 [0.000, 0.750] |
+| Olmo 3 32B | D3 | PM_FMR50 | 0.269 [0.083, 0.889] | 0.654 [0.422, 0.975] | 0.050 [0.000, 0.500] | 0.136 [0.000, 0.750] |
+
+PM_FMR (all) differs slightly from Table B: Table B resamples setting and prefix with separate random streams of bootstrap_ci.py; the estimate is the same.
 
 ### 5.3 Natural-language generations only (code and symbol-heavy text removed)
 
@@ -334,37 +375,37 @@ Limit of the heuristic: random samples of the remaining ≥ 50-token spans in th
 
 | Model | Data | Prompt | Code-like | NVR [95% CI] | ALS [95% CI] | R50 [95% CI] |
 |---|---|---|---|---|---|---|
-| Comma | CP | Unconditional | 29.2% | 0.0290 [0.0262, 0.0319] | 29.82 [29.20, 30.44] | 10.8% [10.0, 11.5] |
-| Comma | CP | Minimal Cue | 8.9% | 0.0366 [0.0339, 0.0395] | 28.87 [28.21, 29.56] | 10.9% [10.3, 11.6] |
-| Comma | CP | Generic | 4.9% | 0.0023 [0.0018, 0.0028] | 13.54 [13.21, 13.93] | 1.2% [0.9, 1.5] |
-| Comma | CP | Specific | 5.1% | 0.0033 [0.0025, 0.0041] | 15.29 [14.93, 15.67] | 1.7% [1.4, 2.1] |
-| Comma | CP | Prefix | 47.1% | 0.0203 [0.0140, 0.0278] | 24.70 [22.79, 26.89] | 8.4% [6.8, 10.2] |
-| DFM | CP | Unconditional | 4.0% | 0.0053 [0.0040, 0.0067] | 8.97 [8.77, 9.19] | 1.0% [0.8, 1.2] |
-| DFM | CP | Minimal Cue | 8.2% | 0.0316 [0.0288, 0.0345] | 18.06 [17.49, 18.65] | 6.6% [6.1, 7.1] |
-| DFM | CP | Generic | 5.6% | 0.0063 [0.0054, 0.0074] | 13.06 [12.79, 13.35] | 0.7% [0.6, 0.9] |
-| DFM | CP | Specific | 5.4% | 0.0027 [0.0022, 0.0034] | 14.06 [13.70, 14.44] | 1.3% [1.0, 1.5] |
-| DFM | CP | Prefix | 47.0% | 0.0169 [0.0109, 0.0239] | 21.80 [20.24, 23.60] | 5.8% [4.4, 7.3] |
-| DFM | DW | Unconditional | 4.0% | 0.0512 [0.0486, 0.0540] | 27.00 [26.56, 27.43] | 11.5% [10.8, 12.1] |
-| DFM | DW | Minimal Cue | 0.7% | 0.0276 [0.0256, 0.0297] | 20.25 [19.97, 20.52] | 3.3% [2.9, 3.6] |
-| DFM | DW | Generic | 0.5% | 0.0008 [0.0005, 0.0012] | 15.51 [15.32, 15.70] | 0.4% [0.3, 0.6] |
-| DFM | DW | Specific | 1.4% | 0.0033 [0.0025, 0.0042] | 16.67 [16.08, 17.29] | 2.8% [2.3, 3.3] |
-| DFM | DW | Prefix | 2.0% | 0.0464 [0.0405, 0.0525] | 25.56 [24.16, 27.01] | 10.2% [8.6, 11.8] |
-| Olmo 3 32B | D3 | Unconditional | 82.3% | 0.0207 [0.0164, 0.0255] | 26.34 [24.47, 28.30] | 8.8% [7.5, 10.2] |
-| Olmo 3 32B | D3 | Minimal Cue | 10.9% | 0.0116 [0.0104, 0.0129] | 25.44 [24.78, 26.11] | 7.7% [7.1, 8.3] |
-| Olmo 3 32B | D3 | Generic | 0.6% | 0.0021 [0.0014, 0.0031] | 15.02 [14.77, 15.31] | 0.9% [0.7, 1.2] |
-| Olmo 3 32B | D3 | Specific | 0.8% | 0.0011 [0.0005, 0.0022] | 17.38 [16.97, 17.85] | 1.6% [1.2, 2.0] |
-| Olmo 3 32B | D3 | Prefix | 16.0% | 0.0075 [0.0044, 0.0115] | 24.16 [22.85, 25.54] | 6.4% [5.1, 7.7] |
+| Comma | CP | Unconditional | 29.2% | 0.0290 [0.0262, 0.0319] | 29.82 [29.20, 30.47] | 10.7% [10.0, 11.5] |
+| Comma | CP | Minimal Cue | 8.9% | 0.0366 [0.0338, 0.0395] | 28.87 [28.20, 29.57] | 10.9% [10.2, 11.5] |
+| Comma | CP | Generic | 4.9% | 0.0023 [0.0018, 0.0028] | 13.54 [13.21, 13.93] | 0.8% [0.6, 1.1] |
+| Comma | CP | Specific | 5.1% | 0.0033 [0.0025, 0.0041] | 15.29 [14.93, 15.68] | 1.7% [1.4, 2.0] |
+| Comma | CP | Prefix | 47.1% | 0.0203 [0.0140, 0.0276] | 24.70 [22.76, 26.85] | 7.9% [6.2, 9.7] |
+| DFM | CP | Unconditional | 4.0% | 0.0053 [0.0040, 0.0067] | 8.97 [8.77, 9.18] | 1.0% [0.8, 1.2] |
+| DFM | CP | Minimal Cue | 8.2% | 0.0316 [0.0287, 0.0345] | 18.06 [17.47, 18.65] | 6.5% [6.0, 7.0] |
+| DFM | CP | Generic | 5.6% | 0.0063 [0.0054, 0.0074] | 13.06 [12.79, 13.35] | 0.5% [0.4, 0.7] |
+| DFM | CP | Specific | 5.4% | 0.0027 [0.0021, 0.0034] | 14.06 [13.71, 14.44] | 1.1% [0.9, 1.4] |
+| DFM | CP | Prefix | 47.0% | 0.0169 [0.0109, 0.0238] | 21.80 [20.26, 23.51] | 5.5% [4.1, 7.0] |
+| DFM | DW | Unconditional | 4.0% | 0.0512 [0.0485, 0.0539] | 27.00 [26.55, 27.44] | 11.5% [10.8, 12.1] |
+| DFM | DW | Minimal Cue | 0.7% | 0.0276 [0.0255, 0.0297] | 20.25 [19.98, 20.53] | 3.3% [2.9, 3.6] |
+| DFM | DW | Generic | 0.5% | 0.0008 [0.0005, 0.0012] | 15.51 [15.32, 15.70] | 0.4% [0.2, 0.5] |
+| DFM | DW | Specific | 1.4% | 0.0033 [0.0025, 0.0041] | 16.67 [16.08, 17.27] | 2.7% [2.2, 3.2] |
+| DFM | DW | Prefix | 2.0% | 0.0464 [0.0406, 0.0527] | 25.56 [24.17, 27.04] | 10.2% [8.7, 11.8] |
+| Olmo 3 32B | D3 | Unconditional | 82.3% | 0.0207 [0.0163, 0.0255] | 26.34 [24.51, 28.29] | 8.7% [7.4, 10.1] |
+| Olmo 3 32B | D3 | Minimal Cue | 10.9% | 0.0116 [0.0103, 0.0129] | 25.44 [24.78, 26.14] | 7.7% [7.1, 8.2] |
+| Olmo 3 32B | D3 | Generic | 0.6% | 0.0021 [0.0014, 0.0031] | 15.02 [14.77, 15.31] | 0.7% [0.5, 1.0] |
+| Olmo 3 32B | D3 | Specific | 0.8% | 0.0011 [0.0005, 0.0022] | 17.38 [16.96, 17.84] | 1.6% [1.2, 2.0] |
+| Olmo 3 32B | D3 | Prefix | 16.0% | 0.0075 [0.0044, 0.0114] | 24.16 [22.87, 25.58] | 6.3% [5.0, 7.7] |
 
 | Model | Data | Metric (natural language) | Unconditional | Minimal Cue | Generic | Specific |
 |---|---|---|---|---|---|---|
-| Comma | CP | PM_NVR | 0.588 [0.506, 0.678] | 0.643 [0.566, 0.725] | 0.100 [0.070, 0.145] | 0.139 [0.097, 0.200] |
-| Comma | CP | PM_R50 | 0.560 [0.509, 0.616] | 0.564 [0.514, 0.620] | 0.122 [0.092, 0.159] | 0.172 [0.136, 0.214] |
-| DFM | CP | PM_NVR | 0.239 [0.166, 0.341] | 0.652 [0.565, 0.745] | 0.273 [0.203, 0.373] | 0.140 [0.096, 0.210] |
-| DFM | CP | PM_R50 | 0.148 [0.112, 0.195] | 0.532 [0.470, 0.603] | 0.114 [0.083, 0.155] | 0.180 [0.137, 0.236] |
-| DFM | DW | PM_NVR | 0.524 [0.491, 0.560] | 0.373 [0.339, 0.411] | 0.017 [0.010, 0.026] | 0.066 [0.050, 0.085] |
-| DFM | DW | PM_R50 | 0.530 [0.491, 0.573] | 0.243 [0.212, 0.282] | 0.041 [0.028, 0.057] | 0.214 [0.175, 0.258] |
-| Olmo 3 32B | D3 | PM_NVR | 0.733 [0.627, 0.827] | 0.606 [0.498, 0.725] | 0.220 [0.134, 0.350] | 0.130 [0.051, 0.261] |
-| Olmo 3 32B | D3 | PM_R50 | 0.581 [0.519, 0.646] | 0.547 [0.495, 0.606] | 0.125 [0.089, 0.170] | 0.203 [0.157, 0.260] |
+| Comma | CP | PM_NVR | 0.588 [0.508, 0.679] | 0.643 [0.568, 0.725] | 0.100 [0.070, 0.146] | 0.139 [0.098, 0.199] |
+| Comma | CP | PM_R50 | 0.576 [0.523, 0.634] | 0.579 [0.526, 0.636] | 0.095 [0.066, 0.133] | 0.175 [0.138, 0.222] |
+| DFM | CP | PM_NVR | 0.239 [0.168, 0.340] | 0.652 [0.566, 0.744] | 0.273 [0.203, 0.372] | 0.140 [0.096, 0.206] |
+| DFM | CP | PM_R50 | 0.155 [0.117, 0.205] | 0.543 [0.479, 0.618] | 0.090 [0.062, 0.128] | 0.172 [0.128, 0.231] |
+| DFM | DW | PM_NVR | 0.524 [0.490, 0.560] | 0.373 [0.339, 0.409] | 0.017 [0.010, 0.026] | 0.066 [0.050, 0.084] |
+| DFM | DW | PM_R50 | 0.530 [0.490, 0.571] | 0.242 [0.210, 0.278] | 0.034 [0.022, 0.048] | 0.210 [0.170, 0.253] |
+| Olmo 3 32B | D3 | PM_NVR | 0.733 [0.628, 0.830] | 0.606 [0.499, 0.727] | 0.220 [0.135, 0.350] | 0.130 [0.051, 0.258] |
+| Olmo 3 32B | D3 | PM_R50 | 0.581 [0.518, 0.645] | 0.550 [0.497, 0.608] | 0.106 [0.072, 0.149] | 0.203 [0.155, 0.260] |
 
 ### 5.4 Concentration of long matches
 
@@ -372,45 +413,45 @@ For generations with a ≥ 50-token span: distinct training documents retrieved 
 
 | Model | Data | Prompt | Generations with R50 | Distinct documents | Top-10 documents' share |
 |---|---|---|---|---|---|
-| Comma | CP | Unconditional | 1777 | 5865 | 1% |
-| Comma | CP | Minimal Cue | 1103 | 4016 | 1% |
-| Comma | CP | Generic | 130 | 469 | 20% |
-| Comma | CP | Specific | 225 | 874 | 4% |
-| Comma | CP | Prefix | 1410 | 5194 | 1% |
-| DFM | CP | Unconditional | 198 | 646 | 2% |
-| DFM | CP | Minimal Cue | 655 | 2365 | 2% |
-| DFM | CP | Generic | 82 | 282 | 16% |
-| DFM | CP | Specific | 163 | 554 | 15% |
-| DFM | CP | Prefix | 1184 | 4456 | 5% |
-| DFM | DW | Unconditional | 1102 | 2631 | 2% |
-| DFM | DW | Minimal Cue | 328 | 822 | 5% |
-| DFM | DW | Generic | 45 | 98 | 36% |
-| DFM | DW | Specific | 301 | 675 | 7% |
-| DFM | DW | Prefix | 1010 | 1829 | 5% |
-| Olmo 3 32B | D3 | Unconditional | 4170 | 10541 | 0% |
-| Olmo 3 32B | D3 | Minimal Cue | 868 | 2906 | 4% |
-| Olmo 3 32B | D3 | Generic | 94 | 278 | 14% |
-| Olmo 3 32B | D3 | Specific | 172 | 730 | 6% |
-| Olmo 3 32B | D3 | Prefix | 909 | 2839 | 7% |
+| Comma | CP | Unconditional | 1767 | 5839 | 1% |
+| Comma | CP | Minimal Cue | 1087 | 3972 | 1% |
+| Comma | CP | Generic | 94 | 432 | 16% |
+| Comma | CP | Specific | 210 | 845 | 4% |
+| Comma | CP | Prefix | 1358 | 5020 | 1% |
+| DFM | CP | Unconditional | 194 | 629 | 2% |
+| DFM | CP | Minimal Cue | 647 | 2351 | 2% |
+| DFM | CP | Generic | 59 | 255 | 10% |
+| DFM | CP | Specific | 139 | 537 | 8% |
+| DFM | CP | Prefix | 1139 | 4339 | 4% |
+| DFM | DW | Unconditional | 1100 | 2624 | 2% |
+| DFM | DW | Minimal Cue | 325 | 815 | 5% |
+| DFM | DW | Generic | 37 | 93 | 30% |
+| DFM | DW | Specific | 282 | 648 | 6% |
+| DFM | DW | Prefix | 1008 | 1825 | 5% |
+| Olmo 3 32B | D3 | Unconditional | 4136 | 10455 | 0% |
+| Olmo 3 32B | D3 | Minimal Cue | 863 | 2891 | 4% |
+| Olmo 3 32B | D3 | Generic | 77 | 248 | 17% |
+| Olmo 3 32B | D3 | Specific | 170 | 728 | 6% |
+| Olmo 3 32B | D3 | Prefix | 901 | 2827 | 7% |
 
 ### 5.5 Repeated sampling: at least one of 10 generations
 
-Share of prompts with a full match / a ≥ 50-token span in at least one of their 10 generations (an (n = 10)-style rate, Hayes et al., 2025), and in how many of the 10 on average when it happens.
+Share of prompts with a full match of ≥ 20 tokens / a ≥ 50-token span in at least one of their 10 generations (an (n = 10)-style rate, Hayes et al., 2025), and in how many of the 10 on average when it happens. Repetition loops do not count (5.2).
 
-| Model | Data | Prompt | Full match in ≥ 1 of 10 | Mean of 10 | ≥ 50-token span in ≥ 1 of 10 | Mean of 10 |
+| Model | Data | Prompt | Full match (≥ 20 tokens) in ≥ 1 of 10 | Mean of 10 | ≥ 50-token span in ≥ 1 of 10 | Mean of 10 |
 |---|---|---|---|---|---|---|
-| Comma | CP | Generic | 1.4% [0.7, 2.2] | 1.0 | 10.4% [8.6, 12.4] | 1.2 |
-| Comma | CP | Specific | 1.5% [0.8, 2.3] | 1.1 | 17.3% [15.0, 19.6] | 1.3 |
-| Comma | CP | Prefix | 2.7% [1.7, 3.7] | 2.1 | 37.7% [34.7, 40.7] | 3.7 |
-| DFM | CP | Generic | 5.3% [3.9, 6.7] | 1.1 | 7.8% [6.2, 9.5] | 1.1 |
-| DFM | CP | Specific | 2.7% [1.7, 3.7] | 1.1 | 13.4% [11.3, 15.6] | 1.2 |
-| DFM | CP | Prefix | 2.1% [1.2, 3.0] | 1.8 | 33.4% [30.4, 36.4] | 3.5 |
-| DFM | DW | Generic | 0.9% [0.4, 1.5] | 1.2 | 4.0% [2.9, 5.3] | 1.1 |
-| DFM | DW | Specific | 3.4% [2.3, 4.5] | 1.5 | 16.8% [14.5, 19.1] | 1.8 |
-| DFM | DW | Prefix | 12.1% [10.1, 14.2] | 3.0 | 21.2% [18.7, 23.8] | 4.8 |
-| Olmo 3 32B | D3 | Generic | 0.2% [0.0, 0.5] | 1.0 | 7.4% [5.8, 9.1] | 1.3 |
-| Olmo 3 32B | D3 | Specific | 0.4% [0.1, 0.8] | 1.5 | 10.9% [9.0, 12.9] | 1.6 |
-| Olmo 3 32B | D3 | Prefix | 1.1% [0.5, 1.8] | 2.6 | 22.7% [20.1, 25.4] | 4.0 |
+| Comma | CP | Generic | 0.1% [0.0, 0.3] | 1.0 | 7.2% [5.7, 8.8] | 1.3 |
+| Comma | CP | Specific | 0.1% [0.0, 0.3] | 1.0 | 16.2% [13.9, 18.5] | 1.3 |
+| Comma | CP | Prefix | 0.9% [0.4, 1.5] | 3.7 | 35.9% [32.9, 38.9] | 3.8 |
+| DFM | CP | Generic | 0.2% [0.0, 0.5] | 1.0 | 5.5% [4.1, 7.0] | 1.1 |
+| DFM | CP | Specific | 0.2% [0.0, 0.5] | 1.0 | 11.1% [9.2, 13.1] | 1.3 |
+| DFM | CP | Prefix | 0.5% [0.1, 1.0] | 2.8 | 31.4% [28.5, 34.3] | 3.6 |
+| DFM | DW | Generic | 0.0% [0.0, 0.0] | 0.0 | 3.3% [2.2, 4.5] | 1.1 |
+| DFM | DW | Specific | 0.1% [0.0, 0.3] | 1.0 | 15.5% [13.3, 17.8] | 1.8 |
+| DFM | DW | Prefix | 2.7% [1.7, 3.8] | 3.1 | 21.1% [18.6, 23.7] | 4.8 |
+| Olmo 3 32B | D3 | Generic | 0.1% [0.0, 0.3] | 1.0 | 5.9% [4.5, 7.4] | 1.3 |
+| Olmo 3 32B | D3 | Specific | 0.1% [0.0, 0.3] | 3.0 | 10.7% [8.8, 12.7] | 1.6 |
+| Olmo 3 32B | D3 | Prefix | 0.4% [0.1, 0.8] | 4.8 | 22.2% [19.6, 24.8] | 4.1 |
 
 ### 5.6 Discoverable extraction of the prefix documents
 
@@ -418,10 +459,10 @@ Whether a prefix generation reproduces the true continuation of its own source d
 
 | Model | Data | Generations | Per generation [95% CI] | In ≥ 1 of 10 [95% CI] | Mean of 10 |
 |---|---|---|---|---|---|
-| Comma | CP | 9988 | 2.15% [1.36, 3.02] | 3.1% [2.0, 4.2] | 6.9 |
-| DFM | CP | 9982 | 1.93% [1.17, 2.77] | 2.9% [1.9, 4.0] | 6.7 |
-| DFM | DW | 9996 | 1.04% [0.56, 1.60] | 2.5% [1.6, 3.5] | 4.2 |
-| Olmo 3 32B | D3 | 9988 | 1.28% [0.66, 1.99] | 1.8% [1.0, 2.7] | 7.1 |
+| Comma | CP | 9988 | 2.15% [1.35, 3.01] | 3.1% [2.0, 4.2] | 6.9 |
+| DFM | CP | 9982 | 1.93% [1.17, 2.76] | 2.9% [1.9, 4.0] | 6.7 |
+| DFM | DW | 9996 | 1.04% [0.55, 1.62] | 2.5% [1.6, 3.5] | 4.2 |
+| Olmo 3 32B | D3 | 9988 | 1.28% [0.67, 1.98] | 1.8% [1.0, 2.7] | 7.1 |
 
 ### 5.7 Duplication of the long matches
 
@@ -429,62 +470,62 @@ Exact occurrence counts in the training index (infini-gram, Llama-2 tokens) of t
 
 | Model | Data | Prompt | Generations with R50 | Median occurrences (50 tokens) | 1 | 2–9 | 10–99 | ≥ 100 | Whole span occurs once |
 |---|---|---|---|---|---|---|---|---|---|
-| Comma | CP | Unconditional | 1777 | 26 | 18% | 24% | 18% | 40% | 50% |
-| Comma | CP | Minimal Cue | 1103 | 27 | 19% | 20% | 18% | 42% | 42% |
-| Comma | CP | Generic | 130 | 20 | 12% | 28% | 23% | 36% | 39% |
-| Comma | CP | Specific | 225 | 16 | 17% | 24% | 28% | 31% | 40% |
-| Comma | CP | Prefix | 1410 | 28 | 19% | 23% | 17% | 40% | 43% |
-| DFM | CP | Unconditional | 198 | 71 | 14% | 22% | 16% | 48% | 53% |
-| DFM | CP | Minimal Cue | 655 | 144 | 15% | 18% | 14% | 53% | 45% |
-| DFM | CP | Generic | 82 | 13 | 15% | 26% | 32% | 28% | 46% |
-| DFM | CP | Specific | 163 | 18 | 17% | 25% | 22% | 36% | 38% |
-| DFM | CP | Prefix | 1184 | 45 | 15% | 23% | 17% | 44% | 41% |
-| DFM | DW | Unconditional | 1102 | 4 | 20% | 50% | 23% | 6% | 52% |
-| DFM | DW | Minimal Cue | 328 | 4 | 19% | 53% | 21% | 7% | 44% |
-| DFM | DW | Generic | 45 | 4 | 24% | 44% | 16% | 16% | 62% |
-| DFM | DW | Specific | 301 | 5 | 20% | 42% | 26% | 13% | 52% |
-| DFM | DW | Prefix | 1010 | 5 | 22% | 48% | 22% | 8% | 50% |
-| Olmo 3 32B | D3 | Unconditional | 4170 | 18 | 0% | 39% | 30% | 31% | 1% |
-| Olmo 3 32B | D3 | Minimal Cue | 867 | 26 | 3% | 31% | 30% | 35% | 7% |
-| Olmo 3 32B | D3 | Generic | 94 | 21 | 5% | 33% | 38% | 23% | 13% |
-| Olmo 3 32B | D3 | Specific | 172 | 37 | 6% | 25% | 28% | 41% | 17% |
-| Olmo 3 32B | D3 | Prefix | 909 | 70 | 2% | 28% | 25% | 46% | 5% |
+| Comma | CP | Unconditional | 1767 | 25 | 18% | 24% | 18% | 40% | 50% |
+| Comma | CP | Minimal Cue | 1087 | 28 | 20% | 20% | 18% | 42% | 42% |
+| Comma | CP | Generic | 94 | 10 | 14% | 35% | 17% | 34% | 31% |
+| Comma | CP | Specific | 210 | 14 | 18% | 25% | 28% | 29% | 39% |
+| Comma | CP | Prefix | 1358 | 25 | 19% | 24% | 17% | 40% | 44% |
+| DFM | CP | Unconditional | 194 | 66 | 14% | 23% | 16% | 47% | 54% |
+| DFM | CP | Minimal Cue | 647 | 149 | 15% | 18% | 14% | 53% | 45% |
+| DFM | CP | Generic | 59 | 11 | 19% | 29% | 24% | 29% | 41% |
+| DFM | CP | Specific | 139 | 12 | 20% | 26% | 25% | 29% | 37% |
+| DFM | CP | Prefix | 1139 | 36 | 16% | 24% | 18% | 43% | 42% |
+| DFM | DW | Unconditional | 1100 | 4 | 20% | 51% | 23% | 6% | 52% |
+| DFM | DW | Minimal Cue | 325 | 4 | 19% | 53% | 21% | 7% | 44% |
+| DFM | DW | Generic | 37 | 5 | 24% | 41% | 19% | 16% | 57% |
+| DFM | DW | Specific | 282 | 5 | 21% | 44% | 26% | 9% | 53% |
+| DFM | DW | Prefix | 1008 | 5 | 22% | 48% | 22% | 8% | 50% |
+| Olmo 3 32B | D3 | Unconditional | 4136 | 18 | 0% | 39% | 30% | 31% | 1% |
+| Olmo 3 32B | D3 | Minimal Cue | 862 | 26 | 3% | 31% | 31% | 35% | 7% |
+| Olmo 3 32B | D3 | Generic | 77 | 21 | 6% | 34% | 39% | 21% | 10% |
+| Olmo 3 32B | D3 | Specific | 170 | 36 | 6% | 25% | 29% | 40% | 17% |
+| Olmo 3 32B | D3 | Prefix | 901 | 71 | 1% | 28% | 24% | 46% | 5% |
 
 R50 restricted to rare text: generations with a ≥ 50-token span whose first 50 tokens occur fewer than 10 times / exactly once in the training data, and the propensity scores on these generations.
 
 | Model | Data | Prompt | R50, < 10 copies [95% CI] | R50, 1 copy [95% CI] |
 |---|---|---|---|---|
-| Comma | CP | Unconditional | 12.0% [11.4, 12.7] | 6.6% [6.1, 7.1] |
-| Comma | CP | Minimal Cue | 6.4% [5.9, 6.9] | 3.7% [3.3, 4.0] |
-| Comma | CP | Generic | 0.7% [0.5, 1.0] | 0.4% [0.2, 0.5] |
-| Comma | CP | Specific | 1.4% [1.2, 1.7] | 0.8% [0.6, 1.0] |
-| Comma | CP | Prefix | 9.0% [7.8, 10.1] | 5.1% [4.4, 6.0] |
+| Comma | CP | Unconditional | 12.0% [11.4, 12.6] | 6.6% [6.1, 7.1] |
+| Comma | CP | Minimal Cue | 6.3% [5.8, 6.8] | 3.6% [3.2, 4.0] |
+| Comma | CP | Generic | 0.6% [0.4, 0.8] | 0.3% [0.1, 0.5] |
+| Comma | CP | Specific | 1.4% [1.1, 1.7] | 0.8% [0.6, 1.0] |
+| Comma | CP | Prefix | 8.7% [7.6, 9.9] | 5.1% [4.3, 5.9] |
 | DFM | CP | Unconditional | 1.2% [1.0, 1.4] | 0.7% [0.5, 0.8] |
-| DFM | CP | Minimal Cue | 3.5% [3.1, 3.8] | 2.1% [1.8, 2.4] |
-| DFM | CP | Generic | 0.4% [0.3, 0.6] | 0.2% [0.1, 0.3] |
-| DFM | CP | Specific | 1.1% [0.9, 1.3] | 0.5% [0.3, 0.6] |
-| DFM | CP | Prefix | 7.3% [6.3, 8.3] | 4.0% [3.3, 4.7] |
+| DFM | CP | Minimal Cue | 3.4% [3.1, 3.8] | 2.1% [1.8, 2.3] |
+| DFM | CP | Generic | 0.4% [0.2, 0.5] | 0.2% [0.1, 0.3] |
+| DFM | CP | Specific | 0.9% [0.7, 1.1] | 0.5% [0.3, 0.6] |
+| DFM | CP | Prefix | 7.1% [6.1, 8.1] | 3.9% [3.2, 4.6] |
 | DFM | DW | Unconditional | 9.7% [9.1, 10.3] | 4.6% [4.2, 5.0] |
-| DFM | DW | Minimal Cue | 3.0% [2.6, 3.3] | 1.2% [1.0, 1.4] |
-| DFM | DW | Generic | 0.4% [0.2, 0.5] | 0.2% [0.1, 0.2] |
-| DFM | DW | Specific | 2.4% [2.0, 2.9] | 1.1% [0.8, 1.4] |
-| DFM | DW | Prefix | 8.6% [7.3, 10.0] | 3.8% [3.1, 4.6] |
-| Olmo 3 32B | D3 | Unconditional | 30.2% [29.3, 31.1] | 0.4% [0.3, 0.6] |
-| Olmo 3 32B | D3 | Minimal Cue | 4.1% [3.7, 4.5] | 0.5% [0.4, 0.7] |
-| Olmo 3 32B | D3 | Generic | 0.5% [0.3, 0.7] | 0.1% [0.0, 0.1] |
+| DFM | DW | Minimal Cue | 2.9% [2.6, 3.3] | 1.2% [1.0, 1.4] |
+| DFM | DW | Generic | 0.3% [0.2, 0.4] | 0.1% [0.1, 0.2] |
+| DFM | DW | Specific | 2.4% [1.9, 2.8] | 1.1% [0.8, 1.4] |
+| DFM | DW | Prefix | 8.6% [7.3, 10.0] | 3.8% [3.1, 4.5] |
+| Olmo 3 32B | D3 | Unconditional | 30.0% [29.1, 30.9] | 0.4% [0.3, 0.5] |
+| Olmo 3 32B | D3 | Minimal Cue | 4.0% [3.7, 4.4] | 0.5% [0.4, 0.6] |
+| Olmo 3 32B | D3 | Generic | 0.4% [0.3, 0.6] | 0.1% [0.0, 0.1] |
 | Olmo 3 32B | D3 | Specific | 0.9% [0.6, 1.2] | 0.3% [0.2, 0.4] |
-| Olmo 3 32B | D3 | Prefix | 4.5% [3.6, 5.4] | 0.5% [0.3, 0.7] |
+| Olmo 3 32B | D3 | Prefix | 4.4% [3.6, 5.3] | 0.4% [0.2, 0.7] |
 
 | Model | Data | Metric | Unconditional | Minimal Cue | Generic | Specific |
 |---|---|---|---|---|---|---|
-| Comma | CP | PM_R50 (< 10 copies) | 0.573 [0.540, 0.609] | 0.416 [0.382, 0.454] | 0.072 [0.051, 0.099] | 0.138 [0.112, 0.167] |
-| Comma | CP | PM_R50 (1 copy) | 0.563 [0.522, 0.606] | 0.415 [0.372, 0.462] | 0.064 [0.037, 0.098] | 0.132 [0.101, 0.166] |
-| DFM | CP | PM_R50 (< 10 copies) | 0.143 [0.117, 0.173] | 0.323 [0.287, 0.363] | 0.056 [0.039, 0.075] | 0.130 [0.102, 0.161] |
-| DFM | CP | PM_R50 (1 copy) | 0.144 [0.110, 0.183] | 0.343 [0.297, 0.396] | 0.043 [0.024, 0.066] | 0.108 [0.076, 0.145] |
-| DFM | DW | PM_R50 (< 10 copies) | 0.529 [0.490, 0.574] | 0.255 [0.221, 0.295] | 0.040 [0.027, 0.056] | 0.220 [0.179, 0.267] |
-| DFM | DW | PM_R50 (1 copy) | 0.546 [0.496, 0.600] | 0.236 [0.192, 0.288] | 0.038 [0.018, 0.062] | 0.227 [0.172, 0.289] |
-| Olmo 3 32B | D3 | PM_R50 (< 10 copies) | 0.871 [0.849, 0.893] | 0.478 [0.426, 0.534] | 0.099 [0.067, 0.138] | 0.164 [0.117, 0.219] |
-| Olmo 3 32B | D3 | PM_R50 (1 copy) | 0.477 [0.349, 0.630] | 0.525 [0.400, 0.673] | 0.148 [0.058, 0.278] | 0.378 [0.238, 0.544] |
+| Comma | CP | PM_R50 (< 10 copies) | 0.580 [0.546, 0.615] | 0.420 [0.384, 0.459] | 0.062 [0.041, 0.087] | 0.138 [0.111, 0.167] |
+| Comma | CP | PM_R50 (1 copy) | 0.567 [0.525, 0.610] | 0.417 [0.373, 0.463] | 0.049 [0.024, 0.083] | 0.132 [0.102, 0.166] |
+| DFM | CP | PM_R50 (< 10 copies) | 0.146 [0.119, 0.176] | 0.326 [0.288, 0.367] | 0.048 [0.032, 0.067] | 0.116 [0.089, 0.146] |
+| DFM | CP | PM_R50 (1 copy) | 0.145 [0.110, 0.184] | 0.345 [0.297, 0.397] | 0.042 [0.022, 0.065] | 0.106 [0.074, 0.144] |
+| DFM | DW | PM_R50 (< 10 copies) | 0.530 [0.489, 0.573] | 0.253 [0.219, 0.292] | 0.033 [0.021, 0.047] | 0.215 [0.174, 0.260] |
+| DFM | DW | PM_R50 (1 copy) | 0.547 [0.496, 0.601] | 0.237 [0.193, 0.287] | 0.033 [0.015, 0.055] | 0.224 [0.169, 0.285] |
+| Olmo 3 32B | D3 | PM_R50 (< 10 copies) | 0.871 [0.849, 0.893] | 0.477 [0.425, 0.533] | 0.087 [0.057, 0.123] | 0.166 [0.117, 0.222] |
+| Olmo 3 32B | D3 | PM_R50 (1 copy) | 0.482 [0.353, 0.641] | 0.532 [0.404, 0.684] | 0.154 [0.061, 0.294] | 0.389 [0.244, 0.560] |
 
 Discoverable extraction (5.6) by duplication of the source: per-generation extraction rate grouped by how often the prefix with its true 50-token continuation (100 tokens) occurs in the training data (number of prompts in parentheses).
 
@@ -514,7 +555,7 @@ Statuses follow fixed rules: point estimates for orderings and the 0.5 threshold
 | For DFM, prefix FMR is higher on Dynaword than on Common Pile (§5.2) | holds | DW − CP +0.0330 [+0.0248, +0.0415] ↑ | holds |
 | Memorization is essentially stable across DFM training stages (§5.3) | does not hold | 20/60 stage − final paired differences significant (see Section 4) | does not hold |
 
-Section 5 tests whether the prompt-free exceptions come from code, templated or duplicated text (5.3, 5.7).
+Section 5 tests whether the prompt-free exceptions come from code, templated or duplicated text (5.3, 5.7). PM_FMR exceptions rest largely on short full matches: with full matches of ≥ 20 / ≥ 50 tokens only, see PM_FMR20 / PM_FMR50 in 5.2.
 
 ## Appendix — Unfiltered results (every generation, degenerate outputs included)
 
@@ -545,7 +586,7 @@ The same tables without the degenerate-output filter, as the SimpleTrace summari
 | Olmo 3 32B | D3 | Specific | 0.0012 [0.0005, 0.0023] | 0.0006 [0.0001, 0.0014] | 17.68 [17.19, 18.23] | 0 |
 | Olmo 3 32B | D3 | Prefix | 0.0085 [0.0058, 0.0120] | 0.0029 [0.0009, 0.0058] | 26.88 [25.46, 28.38] | 0 |
 
-Higher values indicate stronger memorization signals. CP: Common Pile, DW: Dynaword, D3: Dolma 3. Every generation counted (Excluded is 0).
+Higher values indicate stronger memorization signals. CP: Common Pile, DW: Dynaword, D3: Dolma 3. Every generation counted (Excluded is 0). FMR counts full matches of any length, as in the paper; under generic and specific prompts most of them are short outputs (often under 10 tokens) that occur verbatim in the training data. FMR20 / FMR50, counting only full matches of ≥ 20 / ≥ 50 tokens, are in Section 5.2.
 
 ### Table B (unfiltered)
 
@@ -560,5 +601,5 @@ Higher values indicate stronger memorization signals. CP: Common Pile, DW: Dynaw
 | Olmo 3 32B | D3 | PM_NVR | 0.745 [0.675, 0.812] | 0.586 [0.497, 0.679] | 0.201 [0.130, 0.298] | 0.124 [0.054, 0.229] |
 | Olmo 3 32B | D3 | PM_FMR | 0.194 [0.065, 0.467] | 0.580 [0.397, 0.820] | 0.065 [0.000, 0.235] | 0.171 [0.023, 0.455] |
 
-PM = f_setting / (f_setting + f_prefix); 0.5 is neutral, lower values mean lower propensity relative to capability. Setting and prefix sets are resampled independently.
+PM = f_setting / (f_setting + f_prefix); 0.5 is neutral, lower values mean lower propensity relative to capability. Setting and prefix sets are resampled independently. PM_FMR inherits FMR's short full matches (see Table A); PM_FMR20 / PM_FMR50 and the long-span scores PM_R50 / PM_NVR50 are in Section 5.2.
 

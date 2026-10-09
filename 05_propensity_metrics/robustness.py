@@ -6,7 +6,8 @@ extraction (Hayes et al. 2025):
 
   1. Predictability floor: ALS of the non-member prompt texts themselves (prompt-set tracing).
   2. Long spans: the share of generations whose longest training span has >= 20 / >= 50 tokens,
-     and NVR counting only documents retrieved through spans of >= 50 tokens.
+     NVR counting only documents retrieved through spans of >= 50 tokens, and full matches of
+     >= 20 / >= 50 tokens. Spans that are repetition loops (`is_periodic`) do not count.
   3. Code and boilerplate: generations flagged by a simple heuristic (`is_code_like`); the
      metrics recomputed on the remaining natural-language generations.
   4. Concentration: how many distinct training documents the >= 50-token matches hit, and the
@@ -36,11 +37,16 @@ sys.path.insert(0, str(REPO_ROOT / "memorization_experiment" / "generation"))
 import bootstrap_ci as bci  # noqa: E402
 from generation_runs import CORPORA, MODELS_BY_KEY, generation_path, prompts_path, results_path  # noqa: E402
 
-LONG = 50  # tokens: Cooper et al.'s false-positive floor is ~0 at 50-token matches
+# tokens; a conservative threshold motivated by Cooper et al. (2026), whose non-training suffixes are
+# reproduced at 50 tokens 0.02% of the time (targeted extraction; not a calibrated rate for our metrics)
+LONG = 50
 MEDIUM = 20
 TARGET_TOKENS = 50  # discoverable extraction: the 50 tokens after the 50-token prefix
 TOKENIZER = "meta-llama/Llama-2-7b-hf"  # the tokenizer the prefixes were cut with
-CACHE_VERSION = 4  # bump when the features change
+CACHE_VERSION = 5  # bump when the features change
+LOOP_MIN_TOKENS = 20  # spans shorter than this are not tested for periodicity (no metric uses them)
+LOOP_MAX_PERIOD = 200  # characters of the repeated unit
+LOOP_AGREEMENT = 0.9  # share of characters equal to the character one period later
 
 _CODE_LINE = re.compile(
     r"^\s*(import\s|from\s+\S+\s+import\s|package\s|#include|#define|def\s|class\s|public\s|private\s|"
@@ -63,6 +69,18 @@ def is_code_like(text: str) -> bool:
         return True
     chars = [c for c in text if not c.isspace()]
     return bool(chars) and sum(c.isalpha() for c in chars) / len(chars) < 0.5
+
+
+def is_periodic(text: str) -> bool:
+    """A repetition loop: after collapsing whitespace, one unit of <= LOOP_MAX_PERIOD characters
+    repeated at least 3 times, with >= LOOP_AGREEMENT of characters equal one period later
+    ("I'm sorry. I'm sorry. ...", "| | |", "rrrr"). Code or prose whose repeated parts vary
+    (names, numbers of different lengths) is not periodic."""
+    chars = np.frombuffer(" ".join(text.split()).encode("utf-8"), dtype=np.uint8)
+    for period in range(1, min(LOOP_MAX_PERIOD, len(chars) // 3) + 1):
+        if (chars[:-period] == chars[period:]).mean() >= LOOP_AGREEMENT:
+            return True
+    return False
 
 
 def _norm(text: str) -> str:
@@ -113,7 +131,7 @@ def features(model_key: str, corpus_name: str, setting: str) -> dict:
     sys.path.insert(0, str(REPO_ROOT / "03_tracing"))
     import simple_trace
 
-    rows = {k: [] for k in ("prompt_id", "sample_idx", "code", "longest", "full", "nv_all", "docs_all",
+    rows = {k: [] for k in ("prompt_id", "sample_idx", "code", "longest", "longest_np", "full", "nv_all", "docs_all",
                             "nv_long", "long_docs", "extracted")}
     with open(results) as f:
         for line in f:
@@ -121,9 +139,12 @@ def features(model_key: str, corpus_name: str, setting: str) -> dict:
                 continue
             r = json.loads(line)
             full, longest, nv_all, docs_all = bci._generation_stats(r, simple_trace)
+            # longest_np, nv_long and long_docs ignore spans that are repetition loops
             nv_long, best, best_len = 0.0, [], 0
             for span in r["spans"]:
                 length = span["end"] - span["start"]
+                if length >= LOOP_MIN_TOKENS and is_periodic(span["text"]):
+                    continue
                 if length >= LONG:
                     nv_long += sum(simple_trace._round_metric_float(d["nv_recall"]) for d in span.get("docs", [])
                                    if d.get("nv_recall") is not None)
@@ -133,11 +154,12 @@ def features(model_key: str, corpus_name: str, setting: str) -> dict:
             rows["sample_idx"].append(r["sample_idx"])
             rows["code"].append(int(is_code_like(r["generation"])))
             rows["longest"].append(longest)
+            rows["longest_np"].append(best_len)
             rows["full"].append(full)
             rows["nv_all"].append(nv_all)
             rows["docs_all"].append(docs_all)
             rows["nv_long"].append(nv_long)
-            rows["long_docs"].append(best if longest >= LONG else [])
+            rows["long_docs"].append(best if best_len >= LONG else [])
     if setting == "prefix":
         targets = _prefix_targets(model, corpus)
         gen = json.loads((REPO_ROOT / generation_path(model, corpus, setting)).read_text(encoding="utf-8"))
@@ -173,9 +195,11 @@ def _units(feat: dict, setting: str, columns: dict[str, np.ndarray]) -> np.ndarr
 
 
 def ratio_ci(feat: dict, setting: str, num: np.ndarray, den: np.ndarray, rounds: int, seed: int) -> dict:
-    """Estimate and 95% CI of sum(num) / sum(den)."""
+    """Estimate and 95% CI of sum(num) / sum(den). Each setting gets its own random stream, so a
+    setting and prefix (both 1000 prompts) are resampled independently, not by prompt position."""
     sums = _units(feat, setting, {"num": num, "den": den})
-    boot = bci.resample_counts(len(sums), rounds, np.random.default_rng(seed)) @ sums
+    rng = np.random.default_rng([seed, list(bci.RESAMPLING_UNIT).index(setting)])
+    boot = bci.resample_counts(len(sums), rounds, rng) @ sums
     with np.errstate(divide="ignore", invalid="ignore"):
         values = np.where(boot[:, 1] > 0, boot[:, 0] / boot[:, 1], np.nan)
     low, high = np.nanpercentile(values, [2.5, 97.5]) if np.isfinite(values).any() else (None, None)
