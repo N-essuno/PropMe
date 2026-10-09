@@ -6,32 +6,34 @@ For each model, corpus and setting, 100 generations traced by SimpleTrace agains
 
 **Fields.** `longest span` = longest verbatim training span in the generation, in Llama-2 tokens (it can exceed the 256 generated model tokens, because the model tokenizers differ from Llama-2's); `code-like` = the code/boilerplate heuristic of `05_propensity_metrics/robustness.py`; `docs` = training document IDs of the full match, or of the longest span for partial matches (first 5). For partial matches the longest span's text is shown below the generation. The prompt is shown for generic, specific and prefix; for minimal cue it is the cue word, for unconditional it is empty.
 
+**Degenerate outputs excluded.** As in the main results of `propme_report.md`, generations flagged by `is_degenerate` in `05_propensity_metrics/bootstrap_ci.py` (zlib compression ratio < 0.1 and under 50% letters among non-space characters, i.e. repetition loops of symbols such as `|` lines or dot leaders) are left out of both the full and the partial matches.
+
 **Caveat.** A full match only requires the whole generation to occur in a training document, so a generation that stops after a word or a character (e.g. `Software`) counts as one; the overview gives how many of the full matches shown are shorter than 10 tokens.
 
 ## Overview
 
-| Model | Corpus | Setting | Generations | Full matches | Full shown | of which < 10 tok | Partial shown | Shortest partial span shown | Distinct texts shown |
-|---|---|---|---|---|---|---|---|---|---|
-| Comma | Common Pile | [Unconditional](#comma-2t-commonpile-unconditional) | 10000 | 19 | 19 | 1 | 81 | 190 | 99 |
-| Comma | Common Pile | [Minimal cue](#comma-2t-commonpile-minimal-cue) | 10000 | 35 | 35 | 2 | 65 | 189 | 85 |
-| Comma | Common Pile | [Generic](#comma-2t-commonpile-generic-1000) | 10000 | 14 | 14 | 9 | 86 | 71 | 99 |
-| Comma | Common Pile | [Specific](#comma-2t-commonpile-specific) | 10000 | 19 | 19 | 13 | 81 | 102 | 99 |
-| Comma | Common Pile | [Prefix](#comma-2t-commonpile-prefix-1000) | 10000 | 56 | 56 | 17 | 44 | 219 | 84 |
-| DFM (final) | Common Pile | [Unconditional](#dfm-main-commonpile-unconditional) | 10000 | 15 | 15 | 13 | 85 | 74 | 100 |
-| DFM (final) | Common Pile | [Minimal cue](#dfm-main-commonpile-minimal-cue) | 10000 | 71 | 71 | 51 | 29 | 216 | 78 |
-| DFM (final) | Common Pile | [Generic](#dfm-main-commonpile-generic-1000) | 10000 | 59 | 59 | 49 | 41 | 101 | 97 |
-| DFM (final) | Common Pile | [Specific](#dfm-main-commonpile-specific) | 10000 | 67 | 67 | 22 | 33 | 257 | 63 |
-| DFM (final) | Common Pile | [Prefix](#dfm-main-commonpile-prefix-1000) | 10000 | 37 | 37 | 20 | 63 | 204 | 90 |
-| DFM (final) | Dynaword | [Unconditional](#dfm-main-dynaword-unconditional) | 10000 | 287 | 100 | 46 | 0 | – | 77 |
-| DFM (final) | Dynaword | [Minimal cue](#dfm-main-dynaword-minimal-cue) | 10000 | 208 | 100 | 75 | 0 | – | 52 |
-| DFM (final) | Dynaword | [Generic](#dfm-main-dynaword-generic-1000) | 10000 | 19 | 19 | 10 | 81 | 46 | 92 |
-| DFM (final) | Dynaword | [Specific](#dfm-main-dynaword-specific) | 10000 | 84 | 84 | 44 | 16 | 434 | 59 |
-| DFM (final) | Dynaword | [Prefix](#dfm-main-dynaword-prefix-1000) | 10000 | 367 | 100 | 63 | 0 | – | 79 |
-| Olmo 3 32B | Dolma 3 | [Unconditional](#olmo3-32b-dolma3-unconditional) | 10000 | 7 | 7 | 0 | 93 | 215 | 100 |
-| Olmo 3 32B | Dolma 3 | [Minimal cue](#olmo3-32b-dolma3-minimal-cue) | 10000 | 40 | 40 | 0 | 60 | 208 | 86 |
-| Olmo 3 32B | Dolma 3 | [Generic](#olmo3-32b-dolma3-generic-1000) | 10000 | 2 | 2 | 0 | 98 | 49 | 93 |
-| Olmo 3 32B | Dolma 3 | [Specific](#olmo3-32b-dolma3-specific) | 10000 | 6 | 6 | 3 | 94 | 67 | 100 |
-| Olmo 3 32B | Dolma 3 | [Prefix](#olmo3-32b-dolma3-prefix-1000) | 10000 | 29 | 29 | 6 | 71 | 156 | 89 |
+| Model | Corpus | Setting | Generations | Degenerate excluded (full) | Full matches kept | Full shown | of which < 10 tok | Partial shown | Shortest partial span shown | Distinct texts shown |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Comma | Common Pile | [Unconditional](#comma-2t-commonpile-unconditional) | 10000 | 13 (1) | 18 | 18 | 1 | 82 | 190 | 99 |
+| Comma | Common Pile | [Minimal cue](#comma-2t-commonpile-minimal-cue) | 10000 | 1 (0) | 35 | 35 | 2 | 65 | 189 | 85 |
+| Comma | Common Pile | [Generic](#comma-2t-commonpile-generic-1000) | 10000 | 3 (0) | 14 | 14 | 9 | 86 | 71 | 99 |
+| Comma | Common Pile | [Specific](#comma-2t-commonpile-specific) | 10000 | 5 (2) | 17 | 17 | 13 | 83 | 99 | 99 |
+| Comma | Common Pile | [Prefix](#comma-2t-commonpile-prefix-1000) | 10000 | 12 (0) | 56 | 56 | 17 | 44 | 219 | 84 |
+| DFM (final) | Common Pile | [Unconditional](#dfm-main-commonpile-unconditional) | 10000 | 1 (0) | 15 | 15 | 13 | 85 | 74 | 100 |
+| DFM (final) | Common Pile | [Minimal cue](#dfm-main-commonpile-minimal-cue) | 10000 | 3 (0) | 71 | 71 | 51 | 29 | 211 | 78 |
+| DFM (final) | Common Pile | [Generic](#dfm-main-commonpile-generic-1000) | 10000 | 3 (2) | 57 | 57 | 49 | 43 | 97 | 98 |
+| DFM (final) | Common Pile | [Specific](#dfm-main-commonpile-specific) | 10000 | 75 (38) | 29 | 29 | 22 | 71 | 99 | 98 |
+| DFM (final) | Common Pile | [Prefix](#dfm-main-commonpile-prefix-1000) | 10000 | 18 (0) | 37 | 37 | 20 | 63 | 201 | 90 |
+| DFM (final) | Dynaword | [Unconditional](#dfm-main-dynaword-unconditional) | 10000 | 1 (0) | 287 | 100 | 46 | 0 | – | 77 |
+| DFM (final) | Dynaword | [Minimal cue](#dfm-main-dynaword-minimal-cue) | 10000 | 1 (0) | 208 | 100 | 75 | 0 | – | 52 |
+| DFM (final) | Dynaword | [Generic](#dfm-main-dynaword-generic-1000) | 10000 | 16 (8) | 11 | 11 | 10 | 89 | 42 | 99 |
+| DFM (final) | Dynaword | [Specific](#dfm-main-dynaword-specific) | 10000 | 74 (34) | 50 | 50 | 44 | 50 | 123 | 92 |
+| DFM (final) | Dynaword | [Prefix](#dfm-main-dynaword-prefix-1000) | 10000 | 4 (0) | 367 | 100 | 63 | 0 | – | 79 |
+| Olmo 3 32B | Dolma 3 | [Unconditional](#olmo3-32b-dolma3-unconditional) | 10000 | 8 (0) | 7 | 7 | 0 | 93 | 214 | 100 |
+| Olmo 3 32B | Dolma 3 | [Minimal cue](#olmo3-32b-dolma3-minimal-cue) | 10000 | 0 (0) | 40 | 40 | 0 | 60 | 208 | 86 |
+| Olmo 3 32B | Dolma 3 | [Generic](#olmo3-32b-dolma3-generic-1000) | 10000 | 0 (0) | 2 | 2 | 0 | 98 | 49 | 93 |
+| Olmo 3 32B | Dolma 3 | [Specific](#olmo3-32b-dolma3-specific) | 10000 | 0 (0) | 6 | 6 | 3 | 94 | 67 | 100 |
+| Olmo 3 32B | Dolma 3 | [Prefix](#olmo3-32b-dolma3-prefix-1000) | 10000 | 12 (0) | 29 | 29 | 6 | 71 | 156 | 89 |
 
 ## Comma on Common Pile
 
@@ -39,7 +41,7 @@ For each model, corpus and setting, 100 generations traced by SimpleTrace agains
 
 ### Comma / Common Pile / Unconditional
 
-19 full matches out of 10000 generations; showing 19 full and 81 partial.
+18 full matches out of 9987 non-degenerate generations (13 degenerate excluded, 1 of them full matches); showing 18 full and 82 partial.
 
 #### Unconditional 1 — FULL
 
@@ -195,16 +197,6 @@ Generation:
 
 #### Unconditional 6 — FULL
 
-FULL · prompt 0 / sample 8814 · longest span 258 tok · 3 spans · NV recall sum 0 · code-like yes · 4096 chars · docs 164701595, 165166535, 165595205, 210227955, 210395506 (+1)
-
-Generation:
-
-```text
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-```
-
-#### Unconditional 7 — FULL
-
 FULL · prompt 0 / sample 6031 · longest span 257 tok · 1 spans · NV recall sum 20 · code-like no · 1022 chars · docs 1201411, 12060706, 12227435, 12606615, 12630416 (+15)
 
 Generation:
@@ -220,7 +212,7 @@ TASK DEFINITION: In this task, you are given a natural language interpretation o
  7. argmax/argmin: returns the row with the max/min value in header column.
 ```
 
-#### Unconditional 8 — FULL
+#### Unconditional 7 — FULL
 
 FULL · prompt 0 / sample 6246 · longest span 250 tok · 1 spans · NV recall sum 20 · code-like no · 1099 chars · docs 1072488, 11619224, 11724816, 11828565, 11897264 (+15)
 
@@ -235,7 +227,7 @@ AGE: Describing someone's age
 CURRENCY: Reference to some monetary
 ```
 
-#### Unconditional 9 — FULL
+#### Unconditional 8 — FULL
 
 FULL · prompt 0 / sample 3350 · longest span 228 tok · 1 spans · NV recall sum 19.7 · code-like no · 533 chars · docs 146189912, 146346792, 146747256, 146970341, 147062951 (+15)
 
@@ -245,11 +237,11 @@ Generation:
 Dersleri yüzünden oldukça stresli bir ruh haline sikiş hikayeleri bürünüp özel matematik dersinden önce rahatlayabilmek için amatör pornolar kendisini yatak odasına kapatan genç adam telefonundan porno resimleri açtığı porno filmini keyifle seyir ederek yatağını mobil porno okşar ruh dinlendirici olduğunu iddia ettikleri özel sex resim bir masaj salonunda çalışan genç masör hem sağlık hem de huzur sikiş için gelip masaj yaptıracak olan kadını gördüğünde porn nutku tutulur tüm gün boyu seksi lezbiyenleri sikiş dikizleyerek onlar
 ```
 
-#### Unconditional 10 — FULL
+#### Unconditional 9 — FULL
 
 FULL · prompt 0 / sample 9284 · longest span 228 tok · 1 spans · NV recall sum 19.7 · code-like no · 533 chars · docs 146189912, 146346792, 146747256, 146970341, 147062951 (+15)
 
-*Same generation text as #9.*
+*Same generation text as #8.*
 
 Generation:
 
@@ -257,7 +249,7 @@ Generation:
 Dersleri yüzünden oldukça stresli bir ruh haline sikiş hikayeleri bürünüp özel matematik dersinden önce rahatlayabilmek için amatör pornolar kendisini yatak odasına kapatan genç adam telefonundan porno resimleri açtığı porno filmini keyifle seyir ederek yatağını mobil porno okşar ruh dinlendirici olduğunu iddia ettikleri özel sex resim bir masaj salonunda çalışan genç masör hem sağlık hem de huzur sikiş için gelip masaj yaptıracak olan kadını gördüğünde porn nutku tutulur tüm gün boyu seksi lezbiyenleri sikiş dikizleyerek onlar
 ```
 
-#### Unconditional 11 — FULL
+#### Unconditional 10 — FULL
 
 FULL · prompt 0 / sample 6932 · longest span 209 tok · 1 spans · NV recall sum 20 · code-like no · 291 chars · docs 146341313, 146458475, 146587893, 146742311, 147090560 (+15)
 
@@ -267,7 +259,7 @@ Generation:
 Afrikaans | العربية | অসমীয়া | asturianu | azərbaycanca | Boarisch | беларуская | беларуская (тарашкевіца) | български | ပအိုဝ်ႏဘာႏသာႏ | বাংলা | བོད་ཡིག | bosanski | català | کوردی | corsu | čeština | Cymraeg | dansk | Deutsch | Deutsch (Sie-Form) | Zazaki | ދިވެހިބަސް | Ελληνικά | emiliàn
 ```
 
-#### Unconditional 12 — FULL
+#### Unconditional 11 — FULL
 
 FULL · prompt 0 / sample 8953 · longest span 144 tok · 1 spans · NV recall sum 1 · code-like no · 552 chars · docs 149050075
 
@@ -290,7 +282,7 @@ You can view and copy the source of this page.
 Return to User talk:Cyberpower678.
 ```
 
-#### Unconditional 13 — FULL
+#### Unconditional 12 — FULL
 
 FULL · prompt 0 / sample 7016 · longest span 126 tok · 1 spans · NV recall sum 1 · code-like no · 476 chars · docs 146519957
 
@@ -308,7 +300,7 @@ Diff selection: Mark the radio boxes of the revisions to compare and hit enter o
 Legend: (cur) = difference with latest revision, (prev) = difference with preceding revision, m = minor edit.
 ```
 
-#### Unconditional 14 — FULL
+#### Unconditional 13 — FULL
 
 FULL · prompt 0 / sample 4631 · longest span 32 tok · 1 spans · NV recall sum 0.944 · code-like no · 105 chars · docs 213613828
 
@@ -320,7 +312,7 @@ Category:Years of the 19th century in the Ottoman Empire
 Years of the 19th century in the Ottoman Empire
 ```
 
-#### Unconditional 15 — FULL
+#### Unconditional 14 — FULL
 
 FULL · prompt 0 / sample 8431 · longest span 30 tok · 1 spans · NV recall sum 1 · code-like no · 104 chars · docs 168502435
 
@@ -330,7 +322,7 @@ Generation:
 Page:History of Iowa From the Earliest Times to the Beginning of the Twentieth Century Volume 2.djvu/245
 ```
 
-#### Unconditional 16 — FULL
+#### Unconditional 15 — FULL
 
 FULL · prompt 0 / sample 3893 · longest span 14 tok · 1 spans · NV recall sum 1 · code-like no · 42 chars · docs 214610028
 
@@ -340,7 +332,7 @@ Generation:
 Page:History of the Royal Society.djvu/186
 ```
 
-#### Unconditional 17 — FULL
+#### Unconditional 16 — FULL
 
 FULL · prompt 0 / sample 7911 · longest span 12 tok · 2 spans · NV recall sum 7 · code-like no · 23 chars · docs 132526673, 136051153, 141384604, 51838381, 57755321 (+4)
 
@@ -352,7 +344,7 @@ Generation:
 First release.
 ```
 
-#### Unconditional 18 — FULL
+#### Unconditional 17 — FULL
 
 FULL · prompt 0 / sample 7810 · longest span 10 tok · 1 spans · NV recall sum 0 · code-like no · 23 chars · docs 161456510, 161611768, 162382184, 162924194, 163245678 (+15)
 
@@ -362,7 +354,7 @@ Generation:
 https://www.indjst.org/
 ```
 
-#### Unconditional 19 — FULL
+#### Unconditional 18 — FULL
 
 FULL · prompt 0 / sample 4972 · longest span 1 tok · 1 spans · NV recall sum 0 · code-like no · 8 chars · docs 118173960, 127956421, 143338428, 164624729, 1855969 (+5)
 
@@ -372,7 +364,7 @@ Generation:
 Software
 ```
 
-#### Unconditional 20 — partial
+#### Unconditional 19 — partial
 
 partial · prompt 0 / sample 5037 · longest span 512 tok · 32 spans · NV recall sum 0 · code-like yes · 837 chars · docs 134571651
 
@@ -391,7 +383,7 @@ Longest matched span:
 33333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333
 ```
 
-#### Unconditional 21 — partial
+#### Unconditional 20 — partial
 
 partial · prompt 0 / sample 3008 · longest span 366 tok · 6 spans · NV recall sum 8.07 · code-like yes · 399 chars · docs 9121233, 5495349, 9191197, 18689691, 44765412 (+4)
 
@@ -409,7 +401,7 @@ Longest matched span:
 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033, 2034, 2035, 2036, 2037, 2038, 2039, 2040, 2041, 2042, 2043, 2044, 2045, 2046, 2047, 2048, 2049, 2050, 2051, 2052, 2053, 2054, 2055, 2056, 2057, 2058, 2059, 2060, 2061, 2062, 2063, 2064, 2065, 2066, 2067, 2068, 2069, 2070, 2071, 2072, 2073, 2074, 2075, 2076, 2077, 2078,
 ```
 
-#### Unconditional 22 — partial
+#### Unconditional 21 — partial
 
 partial · prompt 0 / sample 2914 · longest span 355 tok · 14 spans · NV recall sum 14.3 · code-like yes · 823 chars · docs 61025405, 67941289
 
@@ -462,7 +454,7 @@ Longest matched span:
 -- Dumping data for table `
 ```
 
-#### Unconditional 23 — partial
+#### Unconditional 22 — partial
 
 partial · prompt 0 / sample 8114 · longest span 348 tok · 13 spans · NV recall sum 9.06 · code-like yes · 381 chars · docs 18654519, 8673138, 18689691, 9121233, 9191197 (+5)
 
@@ -479,7 +471,7 @@ Longest matched span:
 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033, 2034, 2035, 2036, 2037, 2038, 2039, 2040, 2041, 2042, 2043, 2044, 2045, 2046, 2047, 2048, 2049, 2050, 2051, 2052, 2053, 2054, 2055, 2056, 2057, 2058, 2059, 2060, 2061, 2062, 2063, 2064, 2065, 2066, 2067, 2068, 2069, 2070, 2071, 2072, 2073, 2074, 2075,
 ```
 
-#### Unconditional 24 — partial
+#### Unconditional 23 — partial
 
 partial · prompt 0 / sample 70 · longest span 329 tok · 4 spans · NV recall sum 2.7 · code-like yes · 1398 chars · docs 50303101, 63817431
 
@@ -567,7 +559,7 @@ Form
             this.label7 = new System.Windows.Forms.Label
 ```
 
-#### Unconditional 25 — partial
+#### Unconditional 24 — partial
 
 partial · prompt 0 / sample 7323 · longest span 329 tok · 7 spans · NV recall sum 25 · code-like yes · 1080 chars · docs 83040424, 127064833, 144751645, 67453484, 51697170 (+5)
 
@@ -619,7 +611,7 @@ Longest matched span:
  * SUBSTITUTE GOODS
 ```
 
-#### Unconditional 26 — partial
+#### Unconditional 25 — partial
 
 partial · prompt 0 / sample 7383 · longest span 324 tok · 4 spans · NV recall sum 19 · code-like yes · 1050 chars · docs 67910018, 55624950, 81877623, 112534570, 55651409 (+5)
 
@@ -670,7 +662,7 @@ Longest matched span:
  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
 ```
 
-#### Unconditional 27 — partial
+#### Unconditional 26 — partial
 
 partial · prompt 0 / sample 3507 · longest span 320 tok · 10 spans · NV recall sum 14.1 · code-like yes · 1054 chars · docs 120956968, 126556991, 50346208, 59174271, 119646666 (+5)
 
@@ -720,7 +712,7 @@ Longest matched span:
 // (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
 ```
 
-#### Unconditional 28 — partial
+#### Unconditional 27 — partial
 
 partial · prompt 0 / sample 6780 · longest span 317 tok · 6 spans · NV recall sum 11.8 · code-like no · 1123 chars · docs 76330831, 53621416, 61382867, 55733080, 51560218 (+5)
 
@@ -772,7 +764,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 ```
 
-#### Unconditional 29 — partial
+#### Unconditional 28 — partial
 
 partial · prompt 0 / sample 9561 · longest span 301 tok · 12 spans · NV recall sum 17.8 · code-like yes · 1101 chars · docs 58775023, 61007492, 113514673, 137194404, 130259554 (+2)
 
@@ -831,7 +823,7 @@ Longest matched span:
 # ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOL
 ```
 
-#### Unconditional 30 — partial
+#### Unconditional 29 — partial
 
 partial · prompt 0 / sample 9894 · longest span 298 tok · 16 spans · NV recall sum 11.4 · code-like yes · 1145 chars · docs 64736750, 120408937, 55628575, 134541894, 50066659 (+5)
 
@@ -869,7 +861,7 @@ Longest matched span:
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT
 ```
 
-#### Unconditional 31 — partial
+#### Unconditional 30 — partial
 
 partial · prompt 0 / sample 1863 · longest span 297 tok · 7 spans · NV recall sum 34.6 · code-like yes · 1137 chars · docs 72516554, 55955576, 115838381
 
@@ -919,7 +911,7 @@ are permitted provided that the following conditions are met:
 # ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL
 ```
 
-#### Unconditional 32 — partial
+#### Unconditional 31 — partial
 
 partial · prompt 0 / sample 4627 · longest span 297 tok · 7 spans · NV recall sum 26.2 · code-like yes · 988 chars · docs 83242078, 130758458, 50250450, 119623016, 139410363 (+5)
 
@@ -969,7 +961,7 @@ Longest matched span:
 #  LIABILITY, WHETHER IN AN ACTION
 ```
 
-#### Unconditional 33 — partial
+#### Unconditional 32 — partial
 
 partial · prompt 0 / sample 2187 · longest span 296 tok · 8 spans · NV recall sum 10.9 · code-like yes · 1108 chars · docs 142717261, 142480040, 118195638, 56783881, 66264465 (+5)
 
@@ -1028,7 +1020,7 @@ Longest matched span:
 # DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
 ```
 
-#### Unconditional 34 — partial
+#### Unconditional 33 — partial
 
 partial · prompt 0 / sample 5335 · longest span 296 tok · 9 spans · NV recall sum 23.2 · code-like yes · 1068 chars · docs 66941250, 80878631, 71707917, 139426045, 138884819 (+1)
 
@@ -1079,7 +1071,7 @@ Academy of Sciences
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 ```
 
-#### Unconditional 35 — partial
+#### Unconditional 34 — partial
 
 partial · prompt 0 / sample 2284 · longest span 293 tok · 10 spans · NV recall sum 27.8 · code-like yes · 990 chars · docs 140706093, 74736874, 131909224, 56486831, 70358103 (+5)
 
@@ -1129,7 +1121,7 @@ Longest matched span:
 #  LIABILITY, WHETHER
 ```
 
-#### Unconditional 36 — partial
+#### Unconditional 35 — partial
 
 partial · prompt 0 / sample 2159 · longest span 282 tok · 7 spans · NV recall sum 8.28 · code-like yes · 1003 chars · docs 64849679
 
@@ -1180,7 +1172,7 @@ ff
 # LIABILITY, WHETHER IN
 ```
 
-#### Unconditional 37 — partial
+#### Unconditional 36 — partial
 
 partial · prompt 0 / sample 7222 · longest span 279 tok · 16 spans · NV recall sum 13.4 · code-like yes · 1001 chars · docs 116635603, 76142927, 139215506, 129264715, 55811042 (+5)
 
@@ -1229,7 +1221,7 @@ Longest matched span:
 //  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
 ```
 
-#### Unconditional 38 — partial
+#### Unconditional 37 — partial
 
 partial · prompt 0 / sample 3086 · longest span 276 tok · 5 spans · NV recall sum 21.7 · code-like yes · 821 chars · docs 214190531, 173276604, 174157920, 172790708, 220237866 (+5)
 
@@ -1256,7 +1248,7 @@ Longest matched span:
  * Added archive http://www.webcitation
 ```
 
-#### Unconditional 39 — partial
+#### Unconditional 38 — partial
 
 partial · prompt 0 / sample 1797 · longest span 263 tok · 15 spans · NV recall sum 1.7 · code-like no · 524 chars · docs 83817717, 83912981
 
@@ -1287,7 +1279,7 @@ Bloms61, A. Bortone67A,67C, I. Boyko29, R. A. Briere5, H. Cai69, X. Cai1,50,
 A. Calcaterra23A, G. F. Cao1,55, N. Cao1,55
 ```
 
-#### Unconditional 40 — partial
+#### Unconditional 39 — partial
 
 partial · prompt 0 / sample 379 · longest span 256 tok · 17 spans · NV recall sum 11.3 · code-like no · 673 chars · docs 148138134, 146247443, 146886270, 193672661, 193933215 (+1)
 
@@ -1326,23 +1318,7 @@ Architectures:
 aarch64_cortex-a53, aarch64_cortex-a72, aarch64_generic, arc_arc700, arc_archs, arm_arm1176jzf-s_vfp, arm_arm926ej-s, arm_cortex-a15_neon-vfpv4, arm_cortex-a5_vfpv4, arm_cortex-a7_neon-vfpv4, arm_cortex-a8_neon, arm_cortex-a8_vfpv3, arm_cortex-a9, arm_cortex-a9_neon, arm_cortex-a9_vfpv3, arm_cortex-a9_vfpv3-d16, arm_fa526, arm_mpcore, arm_mpcore_vfp, arm_xscale, i386_pentium4, mips64_octeonplus, mips_24
 ```
 
-#### Unconditional 41 — partial
-
-partial · prompt 0 / sample 7080 · longest span 251 tok · 5 spans · NV recall sum 0 · code-like yes · 257 chars · docs 96421116, 45162063, 103978605, 46405964, 108108556 (+1)
-
-Generation:
-
-```text
-#  #  1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-```
-
-Longest matched span:
-
-```text
-1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-```
-
-#### Unconditional 42 — partial
+#### Unconditional 40 — partial
 
 partial · prompt 0 / sample 4730 · longest span 250 tok · 16 spans · NV recall sum 2.34 · code-like no · 874 chars · docs 22772649, 22807454, 22807906
 
@@ -1382,23 +1358,7 @@ NAS of the Kyrgyz Republic, 265 a, Chui Street, Bishkek 720071, Kyrgyzstan
 
 ```
 
-#### Unconditional 43 — partial
-
-partial · prompt 0 / sample 5341 · longest span 248 tok · 7 spans · NV recall sum 0 · code-like yes · 258 chars · docs 34285444, 34221511, 95372809, 104356740, 95316642 (+5)
-
-Generation:
-
-```text
-2002 13 0 13 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-```
-
-Longest matched span:
-
-```text
-13 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-```
-
-#### Unconditional 44 — partial
+#### Unconditional 41 — partial
 
 partial · prompt 0 / sample 1293 · longest span 243 tok · 16 spans · NV recall sum 13.1 · code-like no · 994 chars · docs 130996352
 
@@ -1458,7 +1418,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-#### Unconditional 45 — partial
+#### Unconditional 42 — partial
 
 partial · prompt 0 / sample 7254 · longest span 237 tok · 14 spans · NV recall sum 10.9 · code-like yes · 1085 chars · docs 1894696, 13138956, 13192484, 1817232, 13222482 (+5)
 
@@ -1496,7 +1456,7 @@ The compilation of articles constituting this e-book, wherever published, as wel
 Images and graphics not forming part of user-contributed materials may
 ```
 
-#### Unconditional 46 — partial
+#### Unconditional 43 — partial
 
 partial · prompt 0 / sample 326 · longest span 230 tok · 8 spans · NV recall sum 3.06 · code-like yes · 1096 chars · docs 71740179
 
@@ -1594,7 +1554,7 @@ class UserController extends Controller
             'password' => 'required|string|min:
 ```
 
-#### Unconditional 47 — partial
+#### Unconditional 44 — partial
 
 partial · prompt 0 / sample 5300 · longest span 230 tok · 9 spans · NV recall sum 1.53 · code-like no · 1273 chars · docs 172096984
 
@@ -1613,7 +1573,7 @@ Longest matched span:
 page=history. Copied or closely paraphrased material has been rewritten or removed and must not be restored, unless it is duly released under a compatible license. (For more information, please see "using copyrighted works from others" if you are not the copyright holder of this material, or "donating copyrighted materials" if you are.) For legal reasons, we cannot accept copyrighted text or images borrowed from other web sites or published material; such additions will be deleted. Contributors may use copyrighted publications as a source of information, but not as a source of sentences or phrases. Accordingly, the material may be rewritten, but only if it does not infringe on the copyright of the original or plagiarize from that source. Please see our guideline on non-free text for how to properly implement limited quotations of copyrighted text. Wikipedia takes copyright violations very seriously, and persistent violators will be blocked from editing. While we appreciate contributions, we must require all contributors to understand and comply with these policies
 ```
 
-#### Unconditional 48 — partial
+#### Unconditional 45 — partial
 
 partial · prompt 0 / sample 6745 · longest span 229 tok · 14 spans · NV recall sum 11.7 · code-like no · 1054 chars · docs 13124864, 1974388, 1944927, 1816372, 13291870 (+5)
 
@@ -1651,7 +1611,7 @@ The compilation of articles constituting this e-book, wherever published, as wel
 Images and graphics not forming
 ```
 
-#### Unconditional 49 — partial
+#### Unconditional 46 — partial
 
 partial · prompt 0 / sample 9572 · longest span 228 tok · 9 spans · NV recall sum 7.05 · code-like no · 1271 chars · docs 219460980, 220866730
 
@@ -1670,7 +1630,7 @@ Longest matched span:
 /about/history. Copied or closely paraphrased material has been rewritten or removed and must not be restored, unless it is duly released under a compatible license. (For more information, please see "using copyrighted works from others" if you are not the copyright holder of this material, or "donating copyrighted materials" if you are.) For legal reasons, we cannot accept copyrighted text or images borrowed from other web sites or published material; such additions will be deleted. Contributors may use copyrighted publications as a source of information, but not as a source of sentences or phrases. Accordingly, the material may be rewritten, but only if it does not infringe on the copyright of the original or plagiarize from that source. Please see our guideline on non-free text for how to properly implement limited quotations of copyrighted text. Wikipedia takes copyright violations very seriously, and persistent violators will be blocked from editing. While we appreciate contributions, we must require all contributors to understand and comply
 ```
 
-#### Unconditional 50 — partial
+#### Unconditional 47 — partial
 
 partial · prompt 0 / sample 5014 · longest span 227 tok · 14 spans · NV recall sum 13.4 · code-like no · 1051 chars · docs 1907424, 1844656, 13296523, 13226564, 13200340 (+5)
 
@@ -1700,7 +1660,7 @@ PUBLISHED IN: Frontiers in Immunology
 *The compilation of articles constituting this e-book, wherever published, as well as the compilation of all other content on this site, is the exclusive property of Frontiers. For the conditions for downloading and copying of e-books from Frontiers' website, please see the Terms for Website Use. If purchasing Frontiers e-books from other websites or sources, the conditions of the website concerned
 ```
 
-#### Unconditional 51 — partial
+#### Unconditional 48 — partial
 
 partial · prompt 0 / sample 690 · longest span 226 tok · 6 spans · NV recall sum 12 · code-like yes · 1109 chars · docs 70531585
 
@@ -1761,7 +1721,7 @@ Longest matched span:
 package org.apache.sshd.sftp.
 ```
 
-#### Unconditional 52 — partial
+#### Unconditional 49 — partial
 
 partial · prompt 0 / sample 145 · longest span 225 tok · 15 spans · NV recall sum 10.6 · code-like no · 1091 chars · docs 165553088, 209980430, 210623908, 210843186, 165418059 (+5)
 
@@ -1787,7 +1747,7 @@ Please include the following items when submitting your revised manuscript:
 If applicable, we recommend that you deposit your laboratory protocols in protocols.io to enhance the reproducibility of your results. Protocols.io assigns your protocol its own identifier (DOI) so that it can be cited independently in the future. For instructions see: <http://journals.plos.org/plosone/s/submission-guidelines#loc-laboratory-protocols>. Additionally, PLOS ONE offers
 ```
 
-#### Unconditional 53 — partial
+#### Unconditional 50 — partial
 
 partial · prompt 0 / sample 1101 · longest span 224 tok · 16 spans · NV recall sum 40.4 · code-like yes · 1079 chars · docs 130507454, 126494521, 111917352, 68291989, 126757814 (+5)
 
@@ -1846,7 +1806,7 @@ Longest matched span:
 package org.apache.metamodel.
 ```
 
-#### Unconditional 54 — partial
+#### Unconditional 51 — partial
 
 partial · prompt 0 / sample 3791 · longest span 222 tok · 13 spans · NV recall sum 0 · code-like yes · 436 chars · docs 36302564, 137787536
 
@@ -1862,7 +1822,7 @@ Longest matched span:
 ', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0
 ```
 
-#### Unconditional 55 — partial
+#### Unconditional 52 — partial
 
 partial · prompt 0 / sample 6923 · longest span 221 tok · 14 spans · NV recall sum 22.2 · code-like no · 1030 chars · docs 13290247, 13121243, 1762990, 1872317, 13118543 (+5)
 
@@ -1892,7 +1852,7 @@ PUBLISHED IN: Frontiers in Genetics
 *The compilation of articles constituting this e-book, wherever published, as well as the compilation of all other content on this site, is the exclusive property of Frontiers. For the conditions for downloading and copying of e-books from Frontiers' website, please see the Terms for Website Use. If purchasing Frontiers e-books from other websites or sources,
 ```
 
-#### Unconditional 56 — partial
+#### Unconditional 53 — partial
 
 partial · prompt 0 / sample 4182 · longest span 220 tok · 14 spans · NV recall sum 5.25 · code-like no · 1069 chars · docs 1911865, 1837672, 1790704
 
@@ -1926,7 +1886,7 @@ Each article within this eBook, and the eBook itself, are published under the mo
 When exercising any right under the CC-BY licence, Frontiers must be attributed as the original publisher of the article
 ```
 
-#### Unconditional 57 — partial
+#### Unconditional 54 — partial
 
 partial · prompt 0 / sample 6593 · longest span 219 tok · 11 spans · NV recall sum 32 · code-like yes · 1190 chars · docs 68826371, 58132059, 119400094, 53048489, 127217942 (+5)
 
@@ -1982,7 +1942,7 @@ Longest matched span:
 
 ```
 
-#### Unconditional 58 — partial
+#### Unconditional 55 — partial
 
 partial · prompt 0 / sample 9905 · longest span 219 tok · 14 spans · NV recall sum 18.2 · code-like no · 1016 chars · docs 13224970, 1953559, 1808968, 1973463, 1862738 (+5)
 
@@ -2012,7 +1972,7 @@ PUBLISHED IN: Frontiers in Plant Science
 *The compilation of articles constituting this e-book, wherever published, as well as the compilation of all other content on this site, is the exclusive property of Frontiers. For the conditions for downloading and copying of e-books from Frontiers' website, please see the Terms for Website Use. If purchasing Frontiers e-books from other websites or sources
 ```
 
-#### Unconditional 59 — partial
+#### Unconditional 56 — partial
 
 partial · prompt 0 / sample 9985 · longest span 219 tok · 13 spans · NV recall sum 10.7 · code-like no · 1040 chars · docs 1811298, 1806944, 1843568, 1830064, 13193880 (+4)
 
@@ -2046,7 +2006,7 @@ Each article within this eBook, and the eBook itself, are published under the mo
 When exercising any right under the CC-BY licence, Frontiers must be attributed as the original publisher of the article or eBook
 ```
 
-#### Unconditional 60 — partial
+#### Unconditional 57 — partial
 
 partial · prompt 0 / sample 8643 · longest span 218 tok · 15 spans · NV recall sum 9.27 · code-like no · 1009 chars · docs 146440380, 191593157, 148029902, 147943365, 147021702 (+5)
 
@@ -2092,7 +2052,7 @@ The 2018 moderator election has started! We are electing 6 moderators and 2 alte
 Essay:
 ```
 
-#### Unconditional 61 — partial
+#### Unconditional 58 — partial
 
 partial · prompt 0 / sample 2153 · longest span 217 tok · 13 spans · NV recall sum 11.7 · code-like no · 1005 chars · docs 13200340, 13226564, 13296523, 13194076, 13123873 (+5)
 
@@ -2122,7 +2082,7 @@ PUBLISHED IN: Frontiers in Immunology
 *The compilation of articles constituting this e-book, wherever published, as well as the compilation of all other content on this site, is the exclusive property of Frontiers. For the conditions for downloading and copying of e-books from Frontiers' website, please see the Terms for Website Use. If purchasing Frontiers e-books from other
 ```
 
-#### Unconditional 62 — partial
+#### Unconditional 59 — partial
 
 partial · prompt 0 / sample 1381 · longest span 216 tok · 16 spans · NV recall sum 46 · code-like yes · 964 chars · docs 57408644, 65510669, 76982739, 83614585, 53363288 (+4)
 
@@ -2181,7 +2141,7 @@ Longest matched span:
 package boofcv.alg.feature
 ```
 
-#### Unconditional 63 — partial
+#### Unconditional 60 — partial
 
 partial · prompt 0 / sample 2618 · longest span 216 tok · 2 spans · NV recall sum 2.91 · code-like no · 720 chars · docs 149231720
 
@@ -2241,7 +2201,7 @@ Page name:
 No changes during the given period matching these criteria.
 ```
 
-#### Unconditional 64 — partial
+#### Unconditional 61 — partial
 
 partial · prompt 0 / sample 4333 · longest span 216 tok · 16 spans · NV recall sum 59.1 · code-like yes · 956 chars · docs 80501876, 118120408, 83045934, 113643891, 111152263 (+5)
 
@@ -2298,7 +2258,7 @@ Longest matched span:
 package org.wso2.carbon.
 ```
 
-#### Unconditional 65 — partial
+#### Unconditional 62 — partial
 
 partial · prompt 0 / sample 5067 · longest span 216 tok · 2 spans · NV recall sum 1.97 · code-like no · 719 chars · docs 148523004
 
@@ -2358,7 +2318,7 @@ Page name:
 No changes during the given period matching these criteria.
 ```
 
-#### Unconditional 66 — partial
+#### Unconditional 63 — partial
 
 partial · prompt 0 / sample 6574 · longest span 216 tok · 10 spans · NV recall sum 9.09 · code-like yes · 1146 chars · docs 68402663, 144053511, 119958043, 140856222, 131389144 (+5)
 
@@ -2420,7 +2380,7 @@ Longest matched span:
 package com.github.
 ```
 
-#### Unconditional 67 — partial
+#### Unconditional 64 — partial
 
 partial · prompt 0 / sample 790 · longest span 215 tok · 14 spans · NV recall sum 3.04 · code-like no · 1032 chars · docs 13303720
 
@@ -2450,7 +2410,7 @@ PUBLISHED IN : Frontiers in Cellular Neuroscience and Frontiers in Molecular N
 The compilation of articles constituting this e-book, wherever published, as well as the compilation of all other content on this site, is the exclusive property of Frontiers. For the conditions for downloading and copying of e-books from Frontiers' website, please see the Terms for Website Use
 ```
 
-#### Unconditional 68 — partial
+#### Unconditional 65 — partial
 
 partial · prompt 0 / sample 2519 · longest span 206 tok · 16 spans · NV recall sum 31.6 · code-like yes · 1157 chars · docs 83448968, 129199901
 
@@ -2518,7 +2478,7 @@ import os
 import
 ```
 
-#### Unconditional 69 — partial
+#### Unconditional 66 — partial
 
 partial · prompt 0 / sample 6767 · longest span 205 tok · 13 spans · NV recall sum 13.6 · code-like no · 1014 chars · docs 1816866, 13330900, 1977124, 1807037, 1936128 (+5)
 
@@ -2552,7 +2512,7 @@ Each article within this eBook, and the eBook itself, are published under the mo
 When exercising any right under the CC-BY licence, Frontiers must be
 ```
 
-#### Unconditional 70 — partial
+#### Unconditional 67 — partial
 
 partial · prompt 0 / sample 7703 · longest span 202 tok · 9 spans · NV recall sum 8.79 · code-like yes · 1050 chars · docs 54306679, 127530847, 118050073
 
@@ -2651,7 +2611,7 @@ class Handler extends ExceptionHandler
     
 ```
 
-#### Unconditional 71 — partial
+#### Unconditional 68 — partial
 
 partial · prompt 0 / sample 8630 · longest span 202 tok · 15 spans · NV recall sum 6.62 · code-like yes · 1103 chars · docs 61982807
 
@@ -2712,7 +2672,7 @@ import * as tf from '@tensorflow/tfjs-core';
 
 ```
 
-#### Unconditional 72 — partial
+#### Unconditional 69 — partial
 
 partial · prompt 0 / sample 4545 · longest span 199 tok · 6 spans · NV recall sum 7.76 · code-like no · 725 chars · docs 194387245
 
@@ -2768,7 +2728,7 @@ Hide minor edits | Show bots | Hide anonymous users | Hide registered users | Hi
 Show new changes starting from 18:4
 ```
 
-#### Unconditional 73 — partial
+#### Unconditional 70 — partial
 
 partial · prompt 0 / sample 6507 · longest span 198 tok · 5 spans · NV recall sum 5.06 · code-like no · 731 chars · docs 192100481
 
@@ -2824,7 +2784,7 @@ Hide minor edits | Hide bots | Hide anonymous users | Hide registered users | Hi
 Show new changes starting from 00:
 ```
 
-#### Unconditional 74 — partial
+#### Unconditional 71 — partial
 
 partial · prompt 0 / sample 508 · longest span 197 tok · 5 spans · NV recall sum 17.4 · code-like no · 727 chars · docs 191041094
 
@@ -2879,7 +2839,7 @@ Show minor edits | Hide bots | Hide anonymous users | Hide registered users | Hi
 Show new changes starting from 02:5
 ```
 
-#### Unconditional 75 — partial
+#### Unconditional 72 — partial
 
 partial · prompt 0 / sample 6467 · longest span 197 tok · 17 spans · NV recall sum 15.2 · code-like yes · 1156 chars · docs 78849253, 144089709
 
@@ -2951,7 +2911,7 @@ package org.springframework.messaging.support;
 import java.util.
 ```
 
-#### Unconditional 76 — partial
+#### Unconditional 73 — partial
 
 partial · prompt 0 / sample 8778 · longest span 197 tok · 18 spans · NV recall sum 33.2 · code-like no · 818 chars · docs 192440929
 
@@ -2987,7 +2947,7 @@ Coverage:
 Latitude: 
 ```
 
-#### Unconditional 77 — partial
+#### Unconditional 74 — partial
 
 partial · prompt 0 / sample 8991 · longest span 197 tok · 17 spans · NV recall sum 10 · code-like yes · 1123 chars · docs 118266686
 
@@ -3080,7 +3040,7 @@ class ProductController extends Controller
 
 ```
 
-#### Unconditional 78 — partial
+#### Unconditional 75 — partial
 
 partial · prompt 0 / sample 5505 · longest span 196 tok · 13 spans · NV recall sum 0 · code-like yes · 369 chars · docs 197820636, 156326209, 105247615, 21423642, 154458502 (+4)
 
@@ -3098,7 +3058,7 @@ Longest matched span:
 , 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 ```
 
-#### Unconditional 79 — partial
+#### Unconditional 76 — partial
 
 partial · prompt 0 / sample 7132 · longest span 196 tok · 17 spans · NV recall sum 17.4 · code-like yes · 1263 chars · docs 80456341
 
@@ -3160,7 +3120,7 @@ Longest matched span:
 """Tests for
 ```
 
-#### Unconditional 80 — partial
+#### Unconditional 77 — partial
 
 partial · prompt 0 / sample 2726 · longest span 195 tok · 15 spans · NV recall sum 10.3 · code-like no · 920 chars · docs 192119740, 192633456, 193763224, 147852242, 191395564 (+5)
 
@@ -3212,7 +3172,7 @@ Please also consider supporting the https://archive.org/donate/ who are now host
 hpr2
 ```
 
-#### Unconditional 81 — partial
+#### Unconditional 78 — partial
 
 partial · prompt 0 / sample 8997 · longest span 195 tok · 5 spans · NV recall sum 5.26 · code-like no · 721 chars · docs 148394361, 193010970
 
@@ -3268,7 +3228,7 @@ Hide minor edits | Hide bots | Hide anonymous users | Hide registered users | Hi
 Show new changes starting from 
 ```
 
-#### Unconditional 82 — partial
+#### Unconditional 79 — partial
 
 partial · prompt 0 / sample 2301 · longest span 194 tok · 6 spans · NV recall sum 14.5 · code-like no · 722 chars · docs 191789489
 
@@ -3324,7 +3284,7 @@ Hide minor edits | Show bots | Hide anonymous users | Hide registered users | Hi
 Show new changes starting from 15:
 ```
 
-#### Unconditional 83 — partial
+#### Unconditional 80 — partial
 
 partial · prompt 0 / sample 2493 · longest span 194 tok · 17 spans · NV recall sum 8.8 · code-like yes · 1198 chars · docs 71132808
 
@@ -3421,7 +3381,7 @@ Controller extends Controller
         $
 ```
 
-#### Unconditional 84 — partial
+#### Unconditional 81 — partial
 
 partial · prompt 0 / sample 6158 · longest span 194 tok · 15 spans · NV recall sum 8.11 · code-like yes · 1148 chars · docs 128281142
 
@@ -3526,7 +3486,7 @@ class PostController extends Controller
        
 ```
 
-#### Unconditional 85 — partial
+#### Unconditional 82 — partial
 
 partial · prompt 0 / sample 4000 · longest span 193 tok · 6 spans · NV recall sum 15.4 · code-like no · 725 chars · docs 149503140, 147620068, 149181101
 
@@ -3582,7 +3542,7 @@ Hide minor edits | Show bots | Hide anonymous users | Hide registered users | Hi
 Show new changes starting from 1
 ```
 
-#### Unconditional 86 — partial
+#### Unconditional 83 — partial
 
 partial · prompt 0 / sample 6465 · longest span 193 tok · 13 spans · NV recall sum 20.7 · code-like yes · 1217 chars · docs 57421981
 
@@ -3640,7 +3600,7 @@ Longest matched span:
     internal class
 ```
 
-#### Unconditional 87 — partial
+#### Unconditional 84 — partial
 
 partial · prompt 0 / sample 7584 · longest span 193 tok · 5 spans · NV recall sum 4.18 · code-like no · 715 chars · docs 147593470
 
@@ -3696,7 +3656,7 @@ Hide minor edits | Show bots | Hide anonymous users | Hide registered users | Hi
 Show new changes starting from 03:4
 ```
 
-#### Unconditional 88 — partial
+#### Unconditional 85 — partial
 
 partial · prompt 0 / sample 7808 · longest span 193 tok · 17 spans · NV recall sum 51.3 · code-like yes · 1048 chars · docs 50297195, 128942182, 131419738, 77520371, 111985934 (+5)
 
@@ -3759,7 +3719,7 @@ Longest matched span:
 
 ```
 
-#### Unconditional 89 — partial
+#### Unconditional 86 — partial
 
 partial · prompt 0 / sample 8399 · longest span 193 tok · 6 spans · NV recall sum 9.94 · code-like no · 718 chars · docs 191980454
 
@@ -3815,7 +3775,7 @@ Hide minor edits | Show bots | Hide anonymous users | Hide registered users | Hi
 Show new changes starting from 19:
 ```
 
-#### Unconditional 90 — partial
+#### Unconditional 87 — partial
 
 partial · prompt 0 / sample 26 · longest span 192 tok · 15 spans · NV recall sum 1.01 · code-like no · 1104 chars · docs 13194470
 
@@ -3887,7 +3847,7 @@ Numbers displayed above are based on latest data collected. For more information
 Prof. Dr.
 ```
 
-#### Unconditional 91 — partial
+#### Unconditional 88 — partial
 
 partial · prompt 0 / sample 121 · longest span 192 tok · 4 spans · NV recall sum 7.72 · code-like no · 722 chars · docs 148528938, 146956634, 193339896, 193345615, 191789489
 
@@ -3943,7 +3903,7 @@ Hide minor edits | Show bots | Hide anonymous users | Hide registered users | Hi
 Show new changes starting from 1
 ```
 
-#### Unconditional 92 — partial
+#### Unconditional 89 — partial
 
 partial · prompt 0 / sample 542 · longest span 192 tok · 16 spans · NV recall sum 3.75 · code-like no · 1126 chars · docs 1911111, 1792162, 1838579, 13152662, 13253257 (+1)
 
@@ -4019,7 +3979,7 @@ Numbers displayed above are based on latest data collected. For more information
 Dr.
 ```
 
-#### Unconditional 93 — partial
+#### Unconditional 90 — partial
 
 partial · prompt 0 / sample 1205 · longest span 192 tok · 16 spans · NV recall sum 4.46 · code-like no · 1101 chars · docs 1775864, 1920350, 1789999, 13248352, 13220270 (+2)
 
@@ -4095,7 +4055,7 @@ Numbers displayed above are based on latest data collected. For more information
 Dr.
 ```
 
-#### Unconditional 94 — partial
+#### Unconditional 91 — partial
 
 partial · prompt 0 / sample 3847 · longest span 192 tok · 9 spans · NV recall sum 25.7 · code-like yes · 1138 chars · docs 81227493, 136835069, 72649149, 111747629, 55768683 (+5)
 
@@ -4140,7 +4100,7 @@ Neither the name of the copyright holder nor the names of its contributors may
  * ANY DIRECT, INDIRECT,
 ```
 
-#### Unconditional 95 — partial
+#### Unconditional 92 — partial
 
 partial · prompt 0 / sample 4768 · longest span 192 tok · 13 spans · NV recall sum 23.2 · code-like no · 904 chars · docs 148233276, 148298121, 148728613, 193874713, 193957021 (+5)
 
@@ -4179,7 +4139,7 @@ The timeline feature depends on the key date field to order issues into a timeli
 Key Date Pub. Date On-sale date Number Indicia Publisher Brand Pages Price
 ```
 
-#### Unconditional 96 — partial
+#### Unconditional 93 — partial
 
 partial · prompt 0 / sample 4810 · longest span 192 tok · 16 spans · NV recall sum 8.28 · code-like no · 1092 chars · docs 1867017, 1771801, 1918192, 13208610, 13262036 (+5)
 
@@ -4255,7 +4215,7 @@ Numbers displayed above are based on latest data collected. For more information
 Dr.
 ```
 
-#### Unconditional 97 — partial
+#### Unconditional 94 — partial
 
 partial · prompt 0 / sample 2247 · longest span 191 tok · 17 spans · NV recall sum 17.6 · code-like yes · 1077 chars · docs 69376984, 74606955, 82200043, 124437310, 125271509 (+1)
 
@@ -4318,7 +4278,7 @@ import numpy as np
 import
 ```
 
-#### Unconditional 98 — partial
+#### Unconditional 95 — partial
 
 partial · prompt 0 / sample 5010 · longest span 191 tok · 6 spans · NV recall sum 19 · code-like no · 728 chars · docs 193843593, 194257466, 193478367
 
@@ -4373,7 +4333,7 @@ Hide minor edits | Show bots | Hide anonymous users | Hide registered users | Hi
 Show new changes starting from 0
 ```
 
-#### Unconditional 99 — partial
+#### Unconditional 96 — partial
 
 partial · prompt 0 / sample 8428 · longest span 191 tok · 8 spans · NV recall sum 6.88 · code-like no · 1022 chars · docs 191347272
 
@@ -4430,7 +4390,66 @@ Lots of Words is a word search engine to search words that match constraints (co
 You can use it for many word games: to create or to solve crosswords, arrowords (crosswords with arrows), word puzzles, to play Scrabble, Words With Friends, hangman, the longest word, and for creative writing: rhymes
 ```
 
-#### Unconditional 100 — partial
+#### Unconditional 97 — partial
+
+partial · prompt 0 / sample 2801 · longest span 190 tok · 17 spans · NV recall sum 20.8 · code-like yes · 1056 chars · docs 143521851, 140313924, 111750359, 136788425, 135376108 (+5)
+
+Generation:
+
+```text
+# Copyright 2019 The TensorFlow Authors. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ==============================================================================
+"""Tests for the `tf.compat.v1.functions` module."""
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
+import numpy as np
+import tensorflow as tf
+
+
+class FunctionTest(tf.test.TestCase):
+
+  def testSumOfSquares(self):
+    x = np.array([1, 2, 3])
+    y = np.array([2, 4, 6])
+    z = np.array([3, 6, 9])
+    ys
+```
+
+Longest matched span:
+
+```text
+# Copyright 2019 The TensorFlow Authors. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ==============================================================================
+"""Tests for the
+```
+
+#### Unconditional 98 — partial
 
 partial · prompt 0 / sample 2975 · longest span 190 tok · 17 spans · NV recall sum 20.8 · code-like yes · 1241 chars · docs 71090194, 115066332, 116761501, 138093516, 65844198 (+5)
 
@@ -4492,11 +4511,122 @@ Longest matched span:
 package org.springframework.boot.autoconfigure.
 ```
 
+#### Unconditional 99 — partial
+
+partial · prompt 0 / sample 3829 · longest span 190 tok · 5 spans · NV recall sum 11.9 · code-like no · 717 chars · docs 146937098, 192753168, 193991561, 194032993, 148713652 (+5)
+
+Generation:
+
+```text
+Changes related to "The Third Leg"
+
+Jump to: navigation, search
+
+This is a list of changes made recently to pages linked from a specified page (or to members of a specified category). Pages on your watchlist are bold.
+
+Recent changes options
+Legend:
+N
+This edit created a new page (also see list of new pages)
+m
+This is a minor edit
+b
+This edit was performed by a bot
+(±123)
+The page size changed by this number of bytes
+Show last 50 | 100 | 250 | 500 changes in last 1 | 3 | 7 | 14 | 30 days
+Hide minor edits | Show bots | Hide anonymous users | Hide registered users | Hide my edits
+Show new changes starting from 09:27, 17 September 2014
+   
+ 
+Page name:
+No changes during the given period matching these criteria.
+```
+
+Longest matched span:
+
+```text
+Changes related to "The Third Leg"
+
+Jump to: navigation, search
+
+This is a list of changes made recently to pages linked from a specified page (or to members of a specified category). Pages on your watchlist are bold.
+
+Recent changes options
+Legend:
+N
+This edit created a new page (also see list of new pages)
+m
+This is a minor edit
+b
+This edit was performed by a bot
+(±123)
+The page size changed by this number of bytes
+Show last 50 | 100 | 250 | 500 changes in last 1 | 3 | 7 | 14 | 30 days
+Hide minor edits | Show bots | Hide anonymous users | Hide registered users | Hide my edits
+Show new changes starting from 0
+```
+
+#### Unconditional 100 — partial
+
+partial · prompt 0 / sample 8565 · longest span 190 tok · 9 spans · NV recall sum 13 · code-like no · 714 chars · docs 193403018
+
+Generation:
+
+```text
+Changes related to "Category:WebGoat"
+
+Jump to: navigation, search
+
+This is a list of changes made recently to pages linked from a specified page (or to members of a specified category). Pages on your watchlist are bold.
+
+Recent changes options
+Legend:
+N
+This edit created a new page (also see list of new pages)
+m
+This is a minor edit
+b
+This edit was performed by a bot
+(±123)
+The page size changed by this number of bytes
+Show last 50 | 100 | 250 | 500 changes in last 1 | 3 | 7 | 14 | 30 days
+Hide minor edits | Hide bots | Hide anonymous users | Hide registered users | Hide my edits
+Show new changes starting from 19:56, 28 March 2015
+   
+Page name:
+No changes during the given period matching these criteria.
+```
+
+Longest matched span:
+
+```text
+"
+
+Jump to: navigation, search
+
+This is a list of changes made recently to pages linked from a specified page (or to members of a specified category). Pages on your watchlist are bold.
+
+Recent changes options
+Legend:
+N
+This edit created a new page (also see list of new pages)
+m
+This is a minor edit
+b
+This edit was performed by a bot
+(±123)
+The page size changed by this number of bytes
+Show last 50 | 100 | 250 | 500 changes in last 1 | 3 | 7 | 14 | 30 days
+Hide minor edits | Hide bots | Hide anonymous users | Hide registered users | Hide my edits
+Show new changes starting from 19:56, 2
+```
+
 <a id="comma-2t-commonpile-minimal-cue"></a>
 
 ### Comma / Common Pile / Minimal cue
 
-35 full matches out of 10000 generations; showing 35 full and 65 partial.
+35 full matches out of 9999 non-degenerate generations (1 degenerate excluded, 0 of them full matches); showing 35 full and 65 partial.
 
 #### Minimal cue 1 — FULL
 
@@ -6216,28 +6346,6 @@ Median Latitude
 
 #### Minimal cue 55 — partial
 
-partial · prompt 38 / sample 193 · longest span 252 tok · 5 spans · NV recall sum 0 · code-like yes · 519 chars · docs 220087310, 214947290
-
-Prompt:
-
-```text
-That
-```
-
-Generation:
-
-```text
-'s Not a Problem. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-```
-
-Longest matched span:
-
-```text
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-```
-
-#### Minimal cue 56 — partial
-
 partial · prompt 52 / sample 50 · longest span 242 tok · 17 spans · NV recall sum 0.617 · code-like no · 568 chars · docs 147634090
 
 Prompt:
@@ -6344,7 +6452,7 @@ Longest matched span:
   • 
 ```
 
-#### Minimal cue 57 — partial
+#### Minimal cue 56 — partial
 
 partial · prompt 9 / sample 48 · longest span 240 tok · 18 spans · NV recall sum 27.7 · code-like no · 920 chars · docs 148529682
 
@@ -6395,7 +6503,7 @@ Coverage:
 Latitude: 1
 ```
 
-#### Minimal cue 58 — partial
+#### Minimal cue 57 — partial
 
 partial · prompt 55 / sample 10 · longest span 236 tok · 9 spans · NV recall sum 0.83 · code-like yes · 304 chars · docs 46198782, 104977631
 
@@ -6420,7 +6528,7 @@ Longest matched span:
 [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 ```
 
-#### Minimal cue 59 — partial
+#### Minimal cue 58 — partial
 
 partial · prompt 22 / sample 23 · longest span 235 tok · 14 spans · NV recall sum 7.42 · code-like no · 1244 chars · docs 109707648, 151303313
 
@@ -6458,7 +6566,7 @@ Longest matched span:
    at
 ```
 
-#### Minimal cue 60 — partial
+#### Minimal cue 59 — partial
 
 partial · prompt 9 / sample 4 · longest span 230 tok · 10 spans · NV recall sum 12.7 · code-like no · 832 chars · docs 149172620, 149190638, 193039016
 
@@ -6500,7 +6608,7 @@ Mayer, L; Pisias, Nicklas G; Janecek, Thomas R; et al. (1992): Proceedings of th
 ODP/TAMU (2005): JANUS Database. Ocean Drilling Program, Texas A&M University, College Station TX 77845-9547, USA; (data copied from Janus 2005-02 to 2005-06), http://www-odp.t
 ```
 
-#### Minimal cue 61 — partial
+#### Minimal cue 60 — partial
 
 partial · prompt 38 / sample 35 · longest span 230 tok · 14 spans · NV recall sum 0.858 · code-like no · 1073 chars · docs 146466689
 
@@ -6544,7 +6652,7 @@ The safehouse itself is a three-story brickwork cottage over a century old and c
 Inside, the cottage is decorated in mismatched
 ```
 
-#### Minimal cue 62 — partial
+#### Minimal cue 61 — partial
 
 partial · prompt 9 / sample 45 · longest span 230 tok · 10 spans · NV recall sum 12.9 · code-like no · 826 chars · docs 147564930
 
@@ -6598,7 +6706,7 @@ Coverage:
 Latitude: 29.15
 ```
 
-#### Minimal cue 63 — partial
+#### Minimal cue 62 — partial
 
 partial · prompt 1 / sample 1116 · longest span 230 tok · 13 spans · NV recall sum 3.89 · code-like no · 777 chars · docs 22724888, 83844616, 83857909, 83834533
 
@@ -6642,7 +6750,7 @@ Poland  P. Ahlburg  University of Bonn, 53115 Bonn, Germany  J. K. Ahn  Korea
 University, Seoul 02841, South Korea  H
 ```
 
-#### Minimal cue 64 — partial
+#### Minimal cue 63 — partial
 
 partial · prompt 9 / sample 58 · longest span 228 tok · 15 spans · NV recall sum 15.3 · code-like no · 839 chars · docs 191141017
 
@@ -6693,7 +6801,7 @@ Latitude: 39.300000 * Longitude: -72.300000
 Date/Time Start: 1980-0
 ```
 
-#### Minimal cue 65 — partial
+#### Minimal cue 64 — partial
 
 partial · prompt 9 / sample 29 · longest span 217 tok · 17 spans · NV recall sum 9.8 · code-like no · 940 chars · docs 146510409, 192057204, 193976412
 
@@ -6742,7 +6850,7 @@ Coverage:
 Latitude: -56.8
 ```
 
-#### Minimal cue 66 — partial
+#### Minimal cue 65 — partial
 
 partial · prompt 67 / sample 81 · longest span 216 tok · 17 spans · NV recall sum 3.72 · code-like yes · 508 chars · docs 21097045, 17374797
 
@@ -6766,7 +6874,7 @@ Longest matched span:
 , 23, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77
 ```
 
-#### Minimal cue 67 — partial
+#### Minimal cue 66 — partial
 
 partial · prompt 9 / sample 102 · longest span 216 tok · 18 spans · NV recall sum 9.74 · code-like no · 888 chars · docs 148233418
 
@@ -6818,7 +6926,7 @@ Coverage:
 Latitude: 1
 ```
 
-#### Minimal cue 68 — partial
+#### Minimal cue 67 — partial
 
 partial · prompt 52 / sample 178 · longest span 214 tok · 12 spans · NV recall sum 1.52 · code-like no · 1067 chars · docs 12623315
 
@@ -6846,7 +6954,7 @@ In this task, you are given a context, a subject, a relation, and many options. 
 Context: The Netherlands  is the main constituent country of the Kingdom of the Netherlands. It is a densely populated country located in Western Europe with three island territories in the Caribbean. The European part of the Netherlands borders Germany to the east, Belgium to the south, and the North Sea to the northwest, sharing maritime borders with Belgium, the United Kingdom, and Germany. The largest cities in the Netherlands are Amsterdam, Rotterdam, The Hague and Utrecht. Amsterdam is the country's capital, while The Hague holds the Dutch seat of government and parliament. The name "Holland" is used to refer informally to the whole of the country of the Netherlands.,
 ```
 
-#### Minimal cue 69 — partial
+#### Minimal cue 68 — partial
 
 partial · prompt 9 / sample 103 · longest span 208 tok · 19 spans · NV recall sum 22.1 · code-like no · 932 chars · docs 193328038
 
@@ -6898,7 +7006,7 @@ Coverage:
 Latitude: 0.000000 * Longitude: -140.
 ```
 
-#### Minimal cue 70 — partial
+#### Minimal cue 69 — partial
 
 partial · prompt 14 / sample 28 · longest span 205 tok · 15 spans · NV recall sum 8.94 · code-like no · 1088 chars · docs 147503073
 
@@ -6953,7 +7061,7 @@ Sponsorship/Membership
 to this chapter or become a
 ```
 
-#### Minimal cue 71 — partial
+#### Minimal cue 70 — partial
 
 partial · prompt 9 / sample 57 · longest span 204 tok · 10 spans · NV recall sum 21.2 · code-like no · 893 chars · docs 192747832
 
@@ -7001,7 +7109,7 @@ Latitude: 50.102000 * Longitude: -5.541000
 Date/Time Start: 19
 ```
 
-#### Minimal cue 72 — partial
+#### Minimal cue 71 — partial
 
 partial · prompt 9 / sample 74 · longest span 204 tok · 11 spans · NV recall sum 15.6 · code-like no · 922 chars · docs 146421160, 148636176, 146713135, 148393134, 192835875 (+1)
 
@@ -7043,7 +7151,7 @@ Haas, Christian (2003): Airborne EM measurements of Baltic ice thickness. IRIS d
 Haas, Christian (2003): Airborne EM measurements of Baltic ice thickness in February 2003: The campaign. IRIS field report, Alfred Wegener Institute for Polar and Marine Research (AWI), Bremerhaven, Germany, 43 pp, hdl:10013/epic.32236.d
 ```
 
-#### Minimal cue 73 — partial
+#### Minimal cue 72 — partial
 
 partial · prompt 9 / sample 88 · longest span 204 tok · 13 spans · NV recall sum 14.6 · code-like no · 922 chars · docs 148538947
 
@@ -7085,7 +7193,7 @@ Haas, Christian (2003): Airborne EM measurements of Baltic ice thickness. IRIS d
 Haas, Christian (2003): Airborne EM measurements of Baltic ice thickness in February 2003: The campaign. IRIS field report, Alfred Wegener Institute for Polar and Marine Research (AWI), Bremerhaven, Germany, 43 pp, hdl:10013/epic.32236.d
 ```
 
-#### Minimal cue 74 — partial
+#### Minimal cue 73 — partial
 
 partial · prompt 9 / sample 81 · longest span 203 tok · 9 spans · NV recall sum 25.1 · code-like no · 856 chars · docs 148466299, 146632720, 147313780, 146263336, 149265920
 
@@ -7125,7 +7233,7 @@ Related to:
 Golubev, Valery A; Zuyev, Aleksey N; Oelke, Christoph (1999): Barents and Kara Seas oceanographic data base (BarKode). World Climate Research Programme, Arctic Climate System Study (ACSYS), Murmansk/Tromsø, IACPO Informal Report, 5,
 ```
 
-#### Minimal cue 75 — partial
+#### Minimal cue 74 — partial
 
 partial · prompt 23 / sample 124 · longest span 202 tok · 17 spans · NV recall sum 2.3 · code-like yes · 432 chars · docs 110322655
 
@@ -7149,7 +7257,7 @@ Longest matched span:
 12|s13|s14|s15|s16|s17|s18|s19|s20|s21|s22|s23|s24|s25|s26|s27|s28|s29|s30|s31|s32|s33|s34|s35|s36|s37|s38|s39|s40|s41|s42|s43|s44|s45|s46|s47|s48|s49|s50|s51|s52|s53|s54|s55|s56|s57|s58|s59|s60|s61|s62
 ```
 
-#### Minimal cue 76 — partial
+#### Minimal cue 75 — partial
 
 partial · prompt 9 / sample 35 · longest span 200 tok · 13 spans · NV recall sum 20.4 · code-like no · 893 chars · docs 192395311
 
@@ -7191,7 +7299,7 @@ DSDP (1989): Data from the Deep Sea Drilling Project. Sediment, hard rock and re
 Whitman, Jill M; Sliter, William V; Schaefer, Rainer G; Schaaf, André; Premoli Silva, Isabella; Ogg, James G; Haggerty, Janet A; Fujii, Naoyuki; Floyd, Peter A; Dean, Walter E; Bergen, James A; Baltuck, Miriam;
 ```
 
-#### Minimal cue 77 — partial
+#### Minimal cue 76 — partial
 
 partial · prompt 9 / sample 21 · longest span 199 tok · 17 spans · NV recall sum 20.5 · code-like no · 979 chars · docs 147913510, 194221625, 191575390
 
@@ -7239,7 +7347,7 @@ Coverage:
 Median Latitude: 28.
 ```
 
-#### Minimal cue 78 — partial
+#### Minimal cue 77 — partial
 
 partial · prompt 15 / sample 16 · longest span 198 tok · 12 spans · NV recall sum 4.54 · code-like no · 864 chars · docs 1688904, 751418, 386951, 12331542
 
@@ -7273,7 +7381,7 @@ Example explanation: This is a stereotype because it is a common mental picture 
 Q: Passage: I
 ```
 
-#### Minimal cue 79 — partial
+#### Minimal cue 78 — partial
 
 partial · prompt 9 / sample 85 · longest span 198 tok · 18 spans · NV recall sum 32.8 · code-like no · 816 chars · docs 148652636
 
@@ -7315,7 +7423,7 @@ Coverage:
 Latitude: -6
 ```
 
-#### Minimal cue 80 — partial
+#### Minimal cue 79 — partial
 
 partial · prompt 9 / sample 95 · longest span 198 tok · 18 spans · NV recall sum 16.2 · code-like no · 811 chars · docs 146578034
 
@@ -7356,7 +7464,7 @@ Coverage:
 Latitude: -
 ```
 
-#### Minimal cue 81 — partial
+#### Minimal cue 80 — partial
 
 partial · prompt 9 / sample 44 · longest span 197 tok · 18 spans · NV recall sum 15 · code-like no · 816 chars · docs 194392646
 
@@ -7398,7 +7506,7 @@ Coverage:
 Latitude: -
 ```
 
-#### Minimal cue 82 — partial
+#### Minimal cue 81 — partial
 
 partial · prompt 9 / sample 46 · longest span 197 tok · 18 spans · NV recall sum 15.9 · code-like no · 941 chars · docs 192911795
 
@@ -7450,7 +7558,7 @@ Coverage:
 Latitude: 21.1
 ```
 
-#### Minimal cue 83 — partial
+#### Minimal cue 82 — partial
 
 partial · prompt 15 / sample 360 · longest span 194 tok · 12 spans · NV recall sum 0.804 · code-like no · 1103 chars · docs 1558125
 
@@ -7482,7 +7590,7 @@ Example explanation: This is a good example, and the Russian Revolution is the f
 Q: What is the
 ```
 
-#### Minimal cue 84 — partial
+#### Minimal cue 83 — partial
 
 partial · prompt 37 / sample 4 · longest span 193 tok · 13 spans · NV recall sum 7.93 · code-like no · 1164 chars · docs 13225850, 1920514, 13135835, 13118595, 13248537 (+5)
 
@@ -7522,7 +7630,7 @@ The images or other third party material in this chapter are included in the cha
 # **Chapter 4
 ```
 
-#### Minimal cue 85 — partial
+#### Minimal cue 84 — partial
 
 partial · prompt 28 / sample 6 · longest span 192 tok · 17 spans · NV recall sum 3.42 · code-like no · 1081 chars · docs 1963042, 1794458, 13277412, 13308637
 
@@ -7604,7 +7712,7 @@ Numbers displayed above are based on latest data collected. For more information
 Dr.
 ```
 
-#### Minimal cue 86 — partial
+#### Minimal cue 85 — partial
 
 partial · prompt 16 / sample 91 · longest span 192 tok · 9 spans · NV recall sum 7.36 · code-like no · 865 chars · docs 149455155
 
@@ -7669,7 +7777,7 @@ Hide minor edits | Show bots | Hide anonymous users | Hide registered users | Hi
 Show new changes starting from 09:16, 
 ```
 
-#### Minimal cue 87 — partial
+#### Minimal cue 86 — partial
 
 partial · prompt 9 / sample 22 · longest span 192 tok · 19 spans · NV recall sum 21.9 · code-like no · 821 chars · docs 191654739
 
@@ -7713,7 +7821,7 @@ Coverage:
 Latitude:
 ```
 
-#### Minimal cue 88 — partial
+#### Minimal cue 87 — partial
 
 partial · prompt 16 / sample 101 · longest span 192 tok · 10 spans · NV recall sum 7.9 · code-like no · 864 chars · docs 146355241
 
@@ -7778,7 +7886,7 @@ Hide minor edits | Show bots | Hide anonymous users | Hide registered users | Hi
 Show new changes starting from 16:25, 
 ```
 
-#### Minimal cue 89 — partial
+#### Minimal cue 88 — partial
 
 partial · prompt 28 / sample 19 · longest span 192 tok · 16 spans · NV recall sum 2.25 · code-like no · 1066 chars · docs 1963042, 1794458, 13277412, 13308637
 
@@ -7860,7 +7968,7 @@ Numbers displayed above are based on latest data collected. For more information
 Dr.
 ```
 
-#### Minimal cue 90 — partial
+#### Minimal cue 89 — partial
 
 partial · prompt 16 / sample 151 · longest span 192 tok · 12 spans · NV recall sum 19.2 · code-like no · 869 chars · docs 148953471
 
@@ -7925,7 +8033,7 @@ Hide minor edits | Show bots | Hide anonymous users | Hide registered users | Hi
 Show new changes starting from 22:04, 
 ```
 
-#### Minimal cue 91 — partial
+#### Minimal cue 90 — partial
 
 partial · prompt 16 / sample 474 · longest span 192 tok · 12 spans · NV recall sum 18.9 · code-like no · 874 chars · docs 147831326
 
@@ -7990,7 +8098,7 @@ Hide minor edits | Show bots | Hide anonymous users | Hide registered users | Hi
 Show new changes starting from 08:56, 
 ```
 
-#### Minimal cue 92 — partial
+#### Minimal cue 91 — partial
 
 partial · prompt 28 / sample 73 · longest span 192 tok · 16 spans · NV recall sum 1.65 · code-like no · 1094 chars · docs 1922558
 
@@ -8072,7 +8180,7 @@ Numbers displayed above are based on latest data collected. For more information
 Professor
 ```
 
-#### Minimal cue 93 — partial
+#### Minimal cue 92 — partial
 
 partial · prompt 28 / sample 1 · longest span 191 tok · 16 spans · NV recall sum 1.91 · code-like no · 1039 chars · docs 13320043
 
@@ -8158,7 +8266,7 @@ Numbers displayed above are based on latest data collected. For more information
 Prof. Dr.
 ```
 
-#### Minimal cue 94 — partial
+#### Minimal cue 93 — partial
 
 partial · prompt 28 / sample 10 · longest span 191 tok · 16 spans · NV recall sum 4.56 · code-like no · 1062 chars · docs 1775864, 1920350, 1789999, 13248352, 13220270 (+2)
 
@@ -8240,7 +8348,7 @@ Numbers displayed above are based on latest data collected. For more information
 Dr.
 ```
 
-#### Minimal cue 95 — partial
+#### Minimal cue 94 — partial
 
 partial · prompt 28 / sample 17 · longest span 191 tok · 15 spans · NV recall sum 7.47 · code-like no · 1067 chars · docs 1911111, 1792162, 1838579, 13152662, 13253257 (+1)
 
@@ -8322,7 +8430,7 @@ Numbers displayed above are based on latest data collected. For more information
 Dr.
 ```
 
-#### Minimal cue 96 — partial
+#### Minimal cue 95 — partial
 
 partial · prompt 28 / sample 26 · longest span 191 tok · 15 spans · NV recall sum 0.552 · code-like no · 1112 chars · docs 13194470
 
@@ -8400,7 +8508,7 @@ Numbers displayed above are based on latest data collected. For more information
 Prof. Dr.
 ```
 
-#### Minimal cue 97 — partial
+#### Minimal cue 96 — partial
 
 partial · prompt 3 / sample 368 · longest span 191 tok · 14 spans · NV recall sum 10.2 · code-like no · 1012 chars · docs 191642601, 193811469, 192090104, 191961720, 192409918 (+5)
 
@@ -8438,7 +8546,7 @@ Central Park has been, and remains, a key attraction in New York City, both for 
 An array of paths and tracks wind their way through stands of trees and swathes of grass, frequented by joggers, bikers, dog-walkers, and horsemen alike. Flowerbeds, tended gardens, and sheltered conservatories provide a wide array of colorful plants; the sheer size of the park, along with a designated wildlife sanctuary add a wide variety of fauna to the park's visitor list. Several ponds and lakes, as well as the massive Jacqueline Kennedy Onassis Reservoir, break up the
 ```
 
-#### Minimal cue 98 — partial
+#### Minimal cue 97 — partial
 
 partial · prompt 9 / sample 32 · longest span 190 tok · 8 spans · NV recall sum 24.9 · code-like no · 864 chars · docs 148564750
 
@@ -8486,7 +8594,7 @@ Latitude: 50.102000 * Longitude: -5.541000
 Date/Time Start: 19
 ```
 
-#### Minimal cue 99 — partial
+#### Minimal cue 98 — partial
 
 partial · prompt 28 / sample 4 · longest span 189 tok · 16 spans · NV recall sum 3.01 · code-like no · 1084 chars · docs 1957102, 13186827
 
@@ -8568,7 +8676,7 @@ Numbers displayed above are based on latest data collected. For more information
 Dr
 ```
 
-#### Minimal cue 100 — partial
+#### Minimal cue 99 — partial
 
 partial · prompt 28 / sample 15 · longest span 189 tok · 16 spans · NV recall sum 2.72 · code-like no · 1118 chars · docs 1959951
 
@@ -8654,11 +8762,89 @@ Numbers displayed above are based on latest data collected. For more information
 Prof.
 ```
 
+#### Minimal cue 100 — partial
+
+partial · prompt 28 / sample 67 · longest span 189 tok · 15 spans · NV recall sum 2.65 · code-like no · 1063 chars · docs 1903174, 13122757, 13178588
+
+Prompt:
+
+```text
+We
+```
+
+Generation:
+
+```text
+are IntechOpen, the world's leading publisher of Open Access books Built by scientists, for scientists
+
+3,750+ Open access books available
+
+115,000+
+
+International authors and editors
+
+119M+
+
+Downloads
+
+151 Countries delivered to Our authors are among the
+
+Top 1% most cited scientists
+
+12.2%
+
+Contributors from top 500 universities
+
+Selection of our books indexed in the Book Citation Index in Web of Science™ Core Collection (BKCI)
+
+## Interested in publishing with us? Contact<EMAIL_ADDRESS>
+Numbers displayed above are based on latest data collected. For more information visit www.intechopen.com
+
+## **Meet the editor**
+
+Professor Aimé Peláiz Barranco, MD, PhD, is a Full Professor of Medicine at the Faculty of Medicine of the University of Oviedo, Spain. He was trained at the University of Oviedo, Spain, and at the University of Texas Medical Branch at Galveston, USA, where he earned his PhD in Medical Sciences. He is currently the Head of the Cardiology Department of the University Hospital of
+
+Oviedo. His research interests include the epidemiology
+```
+
+Longest matched span:
+
+```text
+are IntechOpen, the world's leading publisher of Open Access books Built by scientists, for scientists
+
+3,750+ Open access books available
+
+115,000+
+
+International authors and editors
+
+119M+
+
+Downloads
+
+151 Countries delivered to Our authors are among the
+
+Top 1% most cited scientists
+
+12.2%
+
+Contributors from top 500 universities
+
+Selection of our books indexed in the Book Citation Index in Web of Science™ Core Collection (BKCI)
+
+## Interested in publishing with us? Contact<EMAIL_ADDRESS>
+Numbers displayed above are based on latest data collected. For more information visit www.intechopen.com
+
+## **Meet the editor**
+
+Prof
+```
+
 <a id="comma-2t-commonpile-generic-1000"></a>
 
 ### Comma / Common Pile / Generic
 
-14 full matches out of 10000 generations; showing 14 full and 86 partial.
+14 full matches out of 9997 non-degenerate generations (3 degenerate excluded, 0 of them full matches); showing 14 full and 86 partial.
 
 #### Generic 1 — FULL
 
@@ -12158,280 +12344,9 @@ Longest matched span:
 
 ### Comma / Common Pile / Specific
 
-19 full matches out of 10000 generations; showing 19 full and 81 partial.
+17 full matches out of 9995 non-degenerate generations (5 degenerate excluded, 2 of them full matches); showing 17 full and 83 partial.
 
 #### Specific 1 — FULL
-
-FULL · prompt 437 / sample 3 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs 166751268
-
-Prompt:
-
-```text
-No natural gas supply.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 2 — FULL
 
 FULL · prompt 2200 / sample 8 · longest span 331 tok · 3 spans · NV recall sum 9.62 · code-like yes · 330 chars · docs 173047452
 
@@ -12447,23 +12362,7 @@ Generation:
 1. 2. 3. 4. 5. 6. 7. 8. 9. 10. 11. 12. 13. 14. 15. 16. 17. 18. 19. 20. 21. 22. 23. 24. 25. 26. 27. 28. 29. 30. 31. 32. 33. 34. 35. 36. 37. 38. 39. 40. 41. 42. 43. 44. 45. 46. 47. 48. 49. 50. 51. 52. 53. 54. 55. 56. 57. 58. 59. 60. 61. 62. 63. 64. 65. 66. 67. 68. 69. 70. 71. 72. 73. 74. 75. 76. 77. 78. 79. 80. 81. 82. 83. 84. 85.
 ```
 
-#### Specific 3 — FULL
-
-FULL · prompt 2147 / sample 5 · longest span 256 tok · 1 spans · NV recall sum 1.38 · code-like yes · 511 chars · docs 15535299, 220087310
-
-Prompt:
-
-```text
-Address, fax number and e-mail address (if available) of other body:.
-```
-
-Generation:
-
-```text
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-```
-
-#### Specific 4 — FULL
+#### Specific 2 — FULL
 
 FULL · prompt 2089 / sample 6 · longest span 15 tok · 1 spans · NV recall sum 2.6 · code-like no · 31 chars · docs 167474653, 168374431, 211965026
 
@@ -12479,7 +12378,7 @@ Generation:
 Applicability. 8 USC 1101 note.
 ```
 
-#### Specific 5 — FULL
+#### Specific 3 — FULL
 
 FULL · prompt 1727 / sample 0 · longest span 11 tok · 1 spans · NV recall sum 0 · code-like yes · 11 chars · docs 13450136, 13463777, 174598171, 220901870
 
@@ -12495,7 +12394,7 @@ Generation:
 (1803-1819)
 ```
 
-#### Specific 6 — FULL
+#### Specific 4 — FULL
 
 FULL · prompt 2383 / sample 6 · longest span 10 tok · 1 spans · NV recall sum 9 · code-like no · 41 chars · docs 11275706, 147739873, 167288277, 167313455, 173148314 (+4)
 
@@ -12511,7 +12410,7 @@ Generation:
 I wish you luck in your future endeavors.
 ```
 
-#### Specific 7 — FULL
+#### Specific 5 — FULL
 
 FULL · prompt 1060 / sample 4 · longest span 9 tok · 1 spans · NV recall sum 18 · code-like no · 33 chars · docs 13529386, 170914567, 174097423, 194032892, 2069971 (+13)
 
@@ -12527,7 +12426,7 @@ Generation:
 to be sold to the highest bidder.
 ```
 
-#### Specific 8 — FULL
+#### Specific 6 — FULL
 
 FULL · prompt 1488 / sample 0 · longest span 8 tok · 1 spans · NV recall sum 3 · code-like no · 37 chars · docs 2062165, 2099220, 2101676
 
@@ -12543,7 +12442,7 @@ Generation:
 Address all orders to the Publishers,
 ```
 
-#### Specific 9 — FULL
+#### Specific 7 — FULL
 
 FULL · prompt 1884 / sample 6 · longest span 8 tok · 1 spans · NV recall sum 20 · code-like no · 27 chars · docs 104962626, 149826376, 154146899, 157683046, 158550868 (+15)
 
@@ -12559,7 +12458,7 @@ Generation:
 I will take a look at this.
 ```
 
-#### Specific 10 — FULL
+#### Specific 8 — FULL
 
 FULL · prompt 144 / sample 2 · longest span 7 tok · 1 spans · NV recall sum 9.83 · code-like no · 33 chars · docs 147736780, 161761602, 186101069, 195727446, 200465720 (+5)
 
@@ -12575,7 +12474,7 @@ Generation:
 How can we improve the situation?
 ```
 
-#### Specific 11 — FULL
+#### Specific 9 — FULL
 
 FULL · prompt 997 / sample 4 · longest span 7 tok · 1 spans · NV recall sum 1 · code-like no · 31 chars · docs 31039252
 
@@ -12591,7 +12490,7 @@ Generation:
 Read the third time and passed.
 ```
 
-#### Specific 12 — FULL
+#### Specific 10 — FULL
 
 FULL · prompt 2392 / sample 4 · longest span 7 tok · 1 spans · NV recall sum 13 · code-like no · 35 chars · docs 103805517, 105366096, 107147132, 110727884, 158710728 (+8)
 
@@ -12607,7 +12506,7 @@ Generation:
 Thanks for your attention and help.
 ```
 
-#### Specific 13 — FULL
+#### Specific 11 — FULL
 
 FULL · prompt 2717 / sample 6 · longest span 7 tok · 1 spans · NV recall sum 20 · code-like no · 33 chars · docs 12379860, 168404945, 168774803, 169809934, 172631491 (+15)
 
@@ -12623,11 +12522,11 @@ Generation:
 It is threatened by habitat loss.
 ```
 
-#### Specific 14 — FULL
+#### Specific 12 — FULL
 
 FULL · prompt 2804 / sample 6 · longest span 7 tok · 1 spans · NV recall sum 20 · code-like no · 33 chars · docs 12379860, 168404945, 168774803, 169809934, 172631491 (+15)
 
-*Same generation text as #13.*
+*Same generation text as #11.*
 
 Prompt:
 
@@ -12641,7 +12540,7 @@ Generation:
 It is threatened by habitat loss.
 ```
 
-#### Specific 15 — FULL
+#### Specific 13 — FULL
 
 FULL · prompt 951 / sample 4 · longest span 6 tok · 1 spans · NV recall sum 0 · code-like yes · 5 chars · docs 13500320, 14428864, 168950688, 17592362, 17725291 (+15)
 
@@ -12657,7 +12556,7 @@ Generation:
 1914.
 ```
 
-#### Specific 16 — FULL
+#### Specific 14 — FULL
 
 FULL · prompt 434 / sample 4 · longest span 5 tok · 1 spans · NV recall sum 20 · code-like no · 24 chars · docs 100174598, 101683145, 105362394, 109450112, 192682222 (+15)
 
@@ -12673,7 +12572,7 @@ Generation:
 Any help is appreciated.
 ```
 
-#### Specific 17 — FULL
+#### Specific 15 — FULL
 
 FULL · prompt 1488 / sample 6 · longest span 5 tok · 1 spans · NV recall sum 0 · code-like no · 16 chars · docs 13395118, 23445231, 25347579, 33904826, 85151927 (+2)
 
@@ -12689,7 +12588,7 @@ Generation:
 (Postage extra.)
 ```
 
-#### Specific 18 — FULL
+#### Specific 16 — FULL
 
 FULL · prompt 2383 / sample 5 · longest span 3 tok · 1 spans · NV recall sum 0 · code-like no · 10 chars · docs 101236245, 106540313, 1497851, 159947307, 160511681 (+15)
 
@@ -12705,7 +12604,7 @@ Generation:
 Thank you!
 ```
 
-#### Specific 19 — FULL
+#### Specific 17 — FULL
 
 FULL · prompt 1532 / sample 3 · longest span 1 tok · 1 spans · NV recall sum 0 · code-like no · 1 chars · docs 146381440, 148984877, 17934903, 209121338, 20967828 (+5)
 
@@ -12721,7 +12620,7 @@ Generation:
 A
 ```
 
-#### Specific 20 — partial
+#### Specific 18 — partial
 
 partial · prompt 2797 / sample 2 · longest span 414 tok · 3 spans · NV recall sum 0 · code-like yes · 415 chars · docs 36802081
 
@@ -12743,7 +12642,7 @@ Longest matched span:
 ,7,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134
 ```
 
-#### Specific 21 — partial
+#### Specific 19 — partial
 
 partial · prompt 1491 / sample 8 · longest span 398 tok · 18 spans · NV recall sum 4.7 · code-like yes · 686 chars · docs 16197857
 
@@ -13151,7 +13050,7 @@ Longest matched span:
 125
 ```
 
-#### Specific 22 — partial
+#### Specific 20 — partial
 
 partial · prompt 2355 / sample 8 · longest span 366 tok · 10 spans · NV recall sum 0 · code-like yes · 546 chars · docs 218857917
 
@@ -13417,7 +13316,7 @@ Longest matched span:
  *
 ```
 
-#### Specific 23 — partial
+#### Specific 21 — partial
 
 partial · prompt 2313 / sample 5 · longest span 323 tok · 8 spans · NV recall sum 4.22 · code-like yes · 444 chars · docs 38318827, 49390021, 158955716, 158819292
 
@@ -13439,7 +13338,7 @@ Longest matched span:
 1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29, $30, $31, $32, $33, $34, $35, $36, $37, $38, $39, $40, $41, $42, $43, $44, $45, $46, $47, $48, $49, $50, $51, $52, $53, $54, $55, $56, $57, $58, $59, $60, $61, $62, $63, $64, $65, $66, $67, $68, $69, $70, $71, $72, $73, $74, $75, $76, $77, $78, $79, $80, $81, $82, $83, $
 ```
 
-#### Specific 24 — partial
+#### Specific 22 — partial
 
 partial · prompt 400 / sample 6 · longest span 305 tok · 21 spans · NV recall sum 5.13 · code-like no · 714 chars · docs 2551133, 2342140, 15000721, 8950050, 6428864 (+5)
 
@@ -13781,7 +13680,7 @@ Longest matched span:
 80
 ```
 
-#### Specific 25 — partial
+#### Specific 23 — partial
 
 partial · prompt 791 / sample 4 · longest span 275 tok · 18 spans · NV recall sum 6.55 · code-like yes · 526 chars · docs 211735346, 149145783, 211354798, 191381594, 149048908 (+5)
 
@@ -13803,7 +13702,7 @@ Longest matched span:
 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101
 ```
 
-#### Specific 26 — partial
+#### Specific 24 — partial
 
 partial · prompt 2299 / sample 0 · longest span 270 tok · 9 spans · NV recall sum 5.1 · code-like no · 1169 chars · docs 148246762, 193974007, 192461533, 192340476, 192463120
 
@@ -13892,7 +13791,7 @@ Keywords
   •
 ```
 
-#### Specific 27 — partial
+#### Specific 25 — partial
 
 partial · prompt 1458 / sample 1 · longest span 264 tok · 8 spans · NV recall sum 3.38 · code-like no · 1123 chars · docs 95329335, 95344599, 95333692
 
@@ -13947,7 +13846,7 @@ printed, paper form in the official public docket. To the extent
 feasible, publicly available docket materials will be made available in
 ```
 
-#### Specific 28 — partial
+#### Specific 26 — partial
 
 partial · prompt 495 / sample 4 · longest span 256 tok · 9 spans · NV recall sum 0.935 · code-like no · 951 chars · docs 220172822
 
@@ -13987,7 +13886,7 @@ It will work on a variety of links, including those from cite web, cite journal 
 The script is mostly based on WP:RSPSOURCES, WP:NPPSG and WP:CITEWATCH and a good dose of common sense. I'm always expanding coverage and tweaking the script's logic, so general feedback and suggestions to expand coverage to other unreliable sources are always welcomed
 ```
 
-#### Specific 29 — partial
+#### Specific 27 — partial
 
 partial · prompt 1875 / sample 7 · longest span 249 tok · 5 spans · NV recall sum 0 · code-like yes · 273 chars · docs 36417372, 36273635, 152341656, 160192399, 37835139
 
@@ -14009,7 +13908,7 @@ Longest matched span:
 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
 ```
 
-#### Specific 30 — partial
+#### Specific 28 — partial
 
 partial · prompt 1011 / sample 1 · longest span 246 tok · 9 spans · NV recall sum 2.23 · code-like yes · 334 chars · docs 146715222, 192027618, 191778470
 
@@ -14032,7 +13931,7 @@ Longest matched span:
 9 5.10 5.11 5.12 5.13 5.14 5.15 5.16 5.17 5.18 5.19 5.20 5.21 5.22 5.23 5.24 5.25 5.26 5.27 5.28 5.29 5.30 5.31 5.32 5.33 5.34 5.35 5.36 5.37 5.38 5.39 5.40 5.41 5.42 5.43 5.44 5.45 5.46 5.47 5.48 5.49 5.50 5.51 5.52 5.53 5.54 5.55 5.56 5.57 5.58
 ```
 
-#### Specific 31 — partial
+#### Specific 29 — partial
 
 partial · prompt 1869 / sample 2 · longest span 235 tok · 15 spans · NV recall sum 0 · code-like no · 768 chars · docs 11075491
 
@@ -14054,7 +13953,7 @@ Longest matched span:
 . I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know.
 ```
 
-#### Specific 32 — partial
+#### Specific 30 — partial
 
 partial · prompt 1307 / sample 4 · longest span 225 tok · 13 spans · NV recall sum 1.1 · code-like yes · 352 chars · docs 35986671
 
@@ -14078,7 +13977,7 @@ Longest matched span:
 (1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 ```
 
-#### Specific 33 — partial
+#### Specific 31 — partial
 
 partial · prompt 1817 / sample 0 · longest span 221 tok · 16 spans · NV recall sum 6.57 · code-like yes · 327 chars · docs 191900290, 193613087, 146889103, 193472734, 146665972 (+5)
 
@@ -14101,7 +14000,7 @@ Longest matched span:
 9 3.10 3.11 3.12 3.13 3.14 3.15 3.16 3.17 3.18 3.19 3.20 3.21 3.22 3.23 3.24 3.25 3.26 3.27 3.28 3.29 3.30 3.31 3.32 3.33 3.34 3.35 3.36 3.37 3.38 3.39 3.40 3.41 3.42 3.43 3.44 3.45 3.46 3.47 3.48 3.49 3.50 3.51 3.52 3.53
 ```
 
-#### Specific 34 — partial
+#### Specific 32 — partial
 
 partial · prompt 2337 / sample 3 · longest span 221 tok · 14 spans · NV recall sum 0 · code-like yes · 271 chars · docs 203885818
 
@@ -14124,7 +14023,7 @@ Longest matched span:
 000 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 ```
 
-#### Specific 35 — partial
+#### Specific 33 — partial
 
 partial · prompt 107 / sample 3 · longest span 219 tok · 15 spans · NV recall sum 7.76 · code-like no · 1054 chars · docs 192626729, 194395183, 193707723, 193626909, 192795176 (+5)
 
@@ -14179,7 +14078,7 @@ Context
 Privacy Policy | Impressum (Legal Info) | Copyright information: Unless otherwise specified, all text and images on this website are licensed under the Creative Commons Attribution-Share Alike 3.0 License. This does not include the source code of LibreOffice, which is licensed under the Mozilla Public License (MPLv2). "LibreOffice" and "The Document Foundation" are registered trademarks of their corresponding registered owners or are in actual use as
 ```
 
-#### Specific 36 — partial
+#### Specific 34 — partial
 
 partial · prompt 391 / sample 7 · longest span 214 tok · 13 spans · NV recall sum 0 · code-like yes · 255 chars · docs 34259402, 199197287, 95329003, 34285582, 95358525 (+3)
 
@@ -14201,7 +14100,7 @@ Longest matched span:
 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 ```
 
-#### Specific 37 — partial
+#### Specific 35 — partial
 
 partial · prompt 2448 / sample 2 · longest span 210 tok · 13 spans · NV recall sum 0 · code-like no · 400 chars · docs 42734986, 41208699, 160007838, 199570808, 196978920 (+2)
 
@@ -14231,7 +14130,7 @@ Longest matched span:
 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 ```
 
-#### Specific 38 — partial
+#### Specific 36 — partial
 
 partial · prompt 204 / sample 9 · longest span 205 tok · 13 spans · NV recall sum 0.653 · code-like yes · 827 chars · docs 22779549
 
@@ -14266,7 +14165,7 @@ Longest matched span:
   * [2]
 ```
 
-#### Specific 39 — partial
+#### Specific 37 — partial
 
 partial · prompt 1517 / sample 6 · longest span 202 tok · 13 spans · NV recall sum 0 · code-like yes · 600 chars · docs 165310509, 165627840, 164742489
 
@@ -14288,7 +14187,7 @@ Longest matched span:
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ```
 
-#### Specific 40 — partial
+#### Specific 38 — partial
 
 partial · prompt 1423 / sample 4 · longest span 197 tok · 2 spans · NV recall sum 0.986 · code-like no · 916 chars · docs 163484187
 
@@ -14312,61 +14211,7 @@ have no other competing interests to declare.
 Open Access This article is licensed under a Creative Commons Attribution 4.0 International License, which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons licence, and indicate if changes were made. The images or other third party material in this article are included in the article's Creative Commons licence, unless indicated otherwise in a credit line to the material. If material is not included in the article's Creative Commons licence and your intended use is not permitted by statutory regulation or exceeds the permitted use, you will need to obtain permission directly from the copyright holder. To view a copy of this licence, visit http:// creat iveco mmons. org/ licen ses/ by/4. 0/.
 ```
 
-#### Specific 41 — partial
-
-partial · prompt 1031 / sample 2 · longest span 196 tok · 8 spans · NV recall sum 0 · code-like yes · 418 chars · docs 22745222
-
-Prompt:
-
-```text
-Applications for crown LANDS.
-```
-
-Generation:
-
-```text
-|  |  |  |  |  |  |   
-|  |  |  |  |  |  |   
-|  |  |  |  |  |  |   
-|  |  |  |  |  |  |   
-|  |  |  |  |  |  |   
-|  |  |  |  |  |  |   
-|  |  |  |  |  |  |   
-|  |  |  |  |  |  |   
-|  |  |  |  |  |  |   
-|  |  |  |  |  |  |   
-|  |  |  |  |  |  |   
-|  |  |  |  |  |  |   
-|  |  |  |  |  |  |   
-|  |  |  |  |  |  |   
-|  |  |  |  |  |  |   
-|  |  |  |  |  |  |   
-|  |  |  |  |  |  |   
-|  |  |  |  |  |  |   
-|  |
-```
-
-Longest matched span:
-
-```text
-
-|  |  |  |  |  |  |   
-|  |  |  |  |  |  |   
-|  |  |  |  |  |  |   
-|  |  |  |  |  |  |   
-|  |  |  |  |  |  |   
-|  |  |  |  |  |  |   
-|  |  |  |  |  |  |   
-|  |  |  |  |  |  |   
-|  |  |  |  |  |  |   
-|  |  |  |  |  |  |   
-|  |  |  |  |  |  |   
-|  |  |  |  |  |  |   
-|  |  |  |  |  |  |   
-
-```
-
-#### Specific 42 — partial
+#### Specific 39 — partial
 
 partial · prompt 1147 / sample 6 · longest span 195 tok · 13 spans · NV recall sum 5.1 · code-like no · 1160 chars · docs 1900330
 
@@ -14408,7 +14253,7 @@ The images or other third party material in this chapter are included in the cha
 ## **Chapter 13 Con
 ```
 
-#### Specific 43 — partial
+#### Specific 40 — partial
 
 partial · prompt 618 / sample 2 · longest span 194 tok · 14 spans · NV recall sum 14.3 · code-like no · 1122 chars · docs 13186867
 
@@ -14452,7 +14297,7 @@ The images or other third party material in this chapter are included in the cha
 ## **Chapter 
 ```
 
-#### Specific 44 — partial
+#### Specific 41 — partial
 
 partial · prompt 270 / sample 6 · longest span 193 tok · 13 spans · NV recall sum 6.41 · code-like no · 1148 chars · docs 1899453, 1864046, 13161972, 13321015, 13282507 (+1)
 
@@ -14492,7 +14337,7 @@ The images or other third party material in this chapter are included in the cha
 ## **Chapter 6 The
 ```
 
-#### Specific 45 — partial
+#### Specific 42 — partial
 
 partial · prompt 2071 / sample 9 · longest span 193 tok · 13 spans · NV recall sum 7.69 · code-like no · 1182 chars · docs 1813960, 1762557, 13179375, 13199686, 13218796 (+1)
 
@@ -14532,7 +14377,7 @@ The images or other third party material in this chapter are included in the cha
 # **Chapter 4 The
 ```
 
-#### Specific 46 — partial
+#### Specific 43 — partial
 
 partial · prompt 2016 / sample 2 · longest span 188 tok · 14 spans · NV recall sum 2.92 · code-like no · 1096 chars · docs 1966378
 
@@ -14574,7 +14419,7 @@ The images or other third party material in this chapter are included in the cha
 # **Chapter 4 Challenges
 ```
 
-#### Specific 47 — partial
+#### Specific 44 — partial
 
 partial · prompt 252 / sample 0 · longest span 187 tok · 13 spans · NV recall sum 3.58 · code-like no · 1136 chars · docs 1921742, 1949142, 13122383, 13223801, 13297896
 
@@ -14608,7 +14453,7 @@ The images or other third party material in this chapter are included in the cha
 ## **Chapter 11 The
 ```
 
-#### Specific 48 — partial
+#### Specific 45 — partial
 
 partial · prompt 2506 / sample 6 · longest span 185 tok · 13 spans · NV recall sum 3.7 · code-like no · 858 chars · docs 146433563, 191362375
 
@@ -14650,7 +14495,7 @@ Genesis 3:1-24 ESV / 3 helpful votes
 Now the serpent was more
 ```
 
-#### Specific 49 — partial
+#### Specific 46 — partial
 
 partial · prompt 1964 / sample 2 · longest span 181 tok · 13 spans · NV recall sum 3.57 · code-like no · 1082 chars · docs 1769434, 13174455, 13130891, 13132303, 13284812
 
@@ -14684,29 +14529,7 @@ The images or other third party material in this chapter are included in the cha
 ##
 ```
 
-#### Specific 50 — partial
-
-partial · prompt 787 / sample 8 · longest span 179 tok · 26 spans · NV recall sum 0 · code-like yes · 501 chars · docs 97676064
-
-Prompt:
-
-```text
-Banks:—Bank of New South Wales.
-```
-
-Generation:
-
-```text
-2,000 0 0 00 00 00 00 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000
-```
-
-Longest matched span:
-
-```text
-00 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 000 
-```
-
-#### Specific 51 — partial
+#### Specific 47 — partial
 
 partial · prompt 1504 / sample 4 · longest span 178 tok · 13 spans · NV recall sum 1.99 · code-like no · 1123 chars · docs 1894984
 
@@ -14742,7 +14565,7 @@ is left behind.
 The images or other third party material in this chapter are included in the chapter's Creative Commons license, unless indicated otherwise in a credit line to the material. If material is not included in the chapter's Creative Commons license and your intended use is not permitted by statutory regulation or exceeds the permitted use, you will need
 ```
 
-#### Specific 52 — partial
+#### Specific 48 — partial
 
 partial · prompt 1703 / sample 8 · longest span 176 tok · 13 spans · NV recall sum 13.2 · code-like no · 837 chars · docs 148042874, 149466339, 191352905, 192963226, 146165615 (+5)
 
@@ -14778,7 +14601,7 @@ If I speak in the tongues of men and of angels, but have not love, I am a noisy 
 
 ```
 
-#### Specific 53 — partial
+#### Specific 49 — partial
 
 partial · prompt 2506 / sample 5 · longest span 176 tok · 13 spans · NV recall sum 9.22 · code-like no · 966 chars · docs 146550500, 194020600
 
@@ -14812,7 +14635,7 @@ There is therefore now no condemnation for those who are in Christ Jesus. For th
 
 ```
 
-#### Specific 54 — partial
+#### Specific 50 — partial
 
 partial · prompt 1584 / sample 1 · longest span 174 tok · 12 spans · NV recall sum 6.14 · code-like yes · 481 chars · docs 148101774, 191664627, 193996908, 147397148, 193444948 (+5)
 
@@ -14836,7 +14659,7 @@ Longest matched span:
 9 3.10 3.11 3.12 3.13 3.14 3.15 3.16 3.17 3.18 3.19 3.20 3.21 3.22 3.23 3.24 3.25 3.26 3.27 3.28 3.29 3.30 3.31 3.32 3.33 3.34 3.35 3.36 3.37 3.38 3.39 3.40 3.41 3.42 3.43 3.
 ```
 
-#### Specific 55 — partial
+#### Specific 51 — partial
 
 partial · prompt 290 / sample 8 · longest span 170 tok · 14 spans · NV recall sum 4.27 · code-like yes · 1189 chars · docs 1833980, 13313248
 
@@ -14882,7 +14705,7 @@ Longest matched span:
 The images or other third party material in this chapter are included in the chapter's Creative Commons licence, unless indicated otherwise in a credit line to the material. If material is not included in the chapter's Creative Commons licence and your intended use is not permitted by statutory regulation or
 ```
 
-#### Specific 56 — partial
+#### Specific 52 — partial
 
 partial · prompt 1904 / sample 2 · longest span 169 tok · 13 spans · NV recall sum 1.99 · code-like no · 1122 chars · docs 1849899, 13168366, 13167603
 
@@ -14912,7 +14735,7 @@ here.
 The images or other third party material in this chapter are included in the chapter's Creative Commons license, unless indicated otherwise in a credit line to the material. If material is not included in the chapter's Creative Commons license and your intended use is not permitted by statutory regulation or exceeds the permitted use, you will need to
 ```
 
-#### Specific 57 — partial
+#### Specific 53 — partial
 
 partial · prompt 2518 / sample 2 · longest span 169 tok · 15 spans · NV recall sum 0 · code-like no · 645 chars · docs 22803676
 
@@ -14981,7 +14804,7 @@ Longest matched span:
 
 ```
 
-#### Specific 58 — partial
+#### Specific 54 — partial
 
 partial · prompt 1964 / sample 0 · longest span 167 tok · 13 spans · NV recall sum 6.07 · code-like no · 1186 chars · docs 1936041, 1875854, 13279718, 1982934, 1795217 (+5)
 
@@ -15011,7 +14834,7 @@ Longest matched span:
 The images or other third party material in this chapter are included in the chapter's Creative Commons license, unless indicated otherwise in a credit line to the material. If material is not included in the chapter's Creative Commons license and your intended use is not permitted by statutory regulation or exceeds the permitted use, you will need
 ```
 
-#### Specific 59 — partial
+#### Specific 55 — partial
 
 partial · prompt 2418 / sample 9 · longest span 166 tok · 11 spans · NV recall sum 1.04 · code-like yes · 740 chars · docs 22797591, 83795376
 
@@ -15040,7 +14863,7 @@ Longest matched span:
   *
 ```
 
-#### Specific 60 — partial
+#### Specific 56 — partial
 
 partial · prompt 1310 / sample 6 · longest span 162 tok · 14 spans · NV recall sum 0.467 · code-like yes · 991 chars · docs 83807336
 
@@ -15078,7 +14901,7 @@ Longest matched span:
   * [2]
 ```
 
-#### Specific 61 — partial
+#### Specific 57 — partial
 
 partial · prompt 66 / sample 0 · longest span 158 tok · 14 spans · NV recall sum 0.571 · code-like no · 1184 chars · docs 149317287
 
@@ -15122,7 +14945,7 @@ Copyright © Source (mentioned above). All rights reserved. The Land Portal dis
 Various news items related to land governance are posted on the Land Portal every day by the Land Portal users, from various sources, such as news organizations and other institutions and individuals, representing a diversity of positions on every topic. The
 ```
 
-#### Specific 62 — partial
+#### Specific 58 — partial
 
 partial · prompt 21 / sample 9 · longest span 152 tok · 13 spans · NV recall sum 7.73 · code-like no · 1101 chars · docs 1824421, 13128915, 13122611, 1801750, 1825916 (+5)
 
@@ -15158,7 +14981,7 @@ Sage.
 The images or other third party material in this chapter are included in the chapter's Creative Commons license, unless indicated otherwise in a credit line to the material. If material is not included in the chapter's Creative Commons license and your intended use is
 ```
 
-#### Specific 63 — partial
+#### Specific 59 — partial
 
 partial · prompt 1451 / sample 0 · longest span 149 tok · 14 spans · NV recall sum 15 · code-like no · 923 chars · docs 191706972
 
@@ -15224,7 +15047,7 @@ Cyrene (Libya) (2)
 
 ```
 
-#### Specific 64 — partial
+#### Specific 60 — partial
 
 partial · prompt 1422 / sample 0 · longest span 148 tok · 12 spans · NV recall sum 5.26 · code-like no · 946 chars · docs 194403385, 191110626, 191645599, 146735791, 148323265 (+5)
 
@@ -15264,7 +15087,7 @@ Partner news
 ---
 ```
 
-#### Specific 65 — partial
+#### Specific 61 — partial
 
 partial · prompt 2411 / sample 4 · longest span 148 tok · 3 spans · NV recall sum 4.87 · code-like no · 558 chars · docs 147538200, 148916800, 147356538, 193258593, 193962211
 
@@ -15320,7 +15143,7 @@ Forgot your details?
 Create Account
 ```
 
-#### Specific 66 — partial
+#### Specific 62 — partial
 
 partial · prompt 1564 / sample 2 · longest span 145 tok · 15 spans · NV recall sum 12.7 · code-like no · 1109 chars · docs 146822595, 148294198, 148359637, 191763723, 193807196 (+4)
 
@@ -15383,7 +15206,7 @@ Wisconsin (Wisconsin, United States) (1)
 
 ```
 
-#### Specific 67 — partial
+#### Specific 63 — partial
 
 partial · prompt 1817 / sample 6 · longest span 145 tok · 13 spans · NV recall sum 0.769 · code-like no · 1028 chars · docs 34220067
 
@@ -15433,7 +15256,7 @@ designed to prevent fraudulent and manipulative acts and practices, to
 promote just and equitable principles of trade, to remove impediments
 ```
 
-#### Specific 68 — partial
+#### Specific 64 — partial
 
 partial · prompt 349 / sample 9 · longest span 144 tok · 16 spans · NV recall sum 16.5 · code-like no · 862 chars · docs 168233399, 175800623, 169537204, 175995723, 175416610 (+4)
 
@@ -15477,7 +15300,7 @@ do not modify it. <div class="boilerplate metadata afc" style="background-color:
 Description: Photo of
 ```
 
-#### Specific 69 — partial
+#### Specific 65 — partial
 
 partial · prompt 2317 / sample 5 · longest span 144 tok · 12 spans · NV recall sum 5.64 · code-like no · 882 chars · docs 192279221, 193717609, 192989417, 146548794, 148510610 (+5)
 
@@ -15519,7 +15342,7 @@ Partner news
 ---
 ```
 
-#### Specific 70 — partial
+#### Specific 66 — partial
 
 partial · prompt 2628 / sample 1 · longest span 144 tok · 14 spans · NV recall sum 1.96 · code-like no · 1056 chars · docs 1768242
 
@@ -15565,7 +15388,7 @@ Longest matched span:
 ### **
 ```
 
-#### Specific 71 — partial
+#### Specific 67 — partial
 
 partial · prompt 177 / sample 2 · longest span 142 tok · 13 spans · NV recall sum 5.23 · code-like no · 1078 chars · docs 1774335, 1799799, 13164352, 1958790, 13271059 (+5)
 
@@ -15601,7 +15424,7 @@ Longest matched span:
 The images or other third party material in this chapter are included in the chapter's Creative Commons license, unless indicated otherwise in a credit line to the material. If material is
 ```
 
-#### Specific 72 — partial
+#### Specific 68 — partial
 
 partial · prompt 1654 / sample 0 · longest span 141 tok · 18 spans · NV recall sum 0.93 · code-like yes · 540 chars · docs 83802581
 
@@ -15700,7 +15523,7 @@ Longest matched span:
 
 ```
 
-#### Specific 73 — partial
+#### Specific 69 — partial
 
 partial · prompt 1979 / sample 5 · longest span 139 tok · 13 spans · NV recall sum 5.4 · code-like no · 1075 chars · docs 1882318, 1856536, 1903632, 1817254, 1949447 (+5)
 
@@ -15732,7 +15555,7 @@ research.
 The images or other third party material in this chapter are included in the chapter's Creative Commons license, unless indicated otherwise in a credit line to the material. If material is not included in the
 ```
 
-#### Specific 74 — partial
+#### Specific 70 — partial
 
 partial · prompt 1458 / sample 0 · longest span 137 tok · 13 spans · NV recall sum 2.41 · code-like no · 1198 chars · docs 2873604, 18494000
 
@@ -15762,7 +15585,7 @@ While the invention has been described with reference to certain embodiments, it
 1. A method for producing a
 ```
 
-#### Specific 75 — partial
+#### Specific 71 — partial
 
 partial · prompt 140 / sample 6 · longest span 135 tok · 10 spans · NV recall sum 7.65 · code-like yes · 703 chars · docs 215699991, 171563478, 213569718, 216060357, 172672791 (+5)
 
@@ -15820,7 +15643,7 @@ with four tildes — ~
  * Link to feedback:
 ```
 
-#### Specific 76 — partial
+#### Specific 72 — partial
 
 partial · prompt 499 / sample 7 · longest span 135 tok · 15 spans · NV recall sum 1.44 · code-like no · 702 chars · docs 146990753, 192593924
 
@@ -15845,7 +15668,7 @@ Longest matched span:
 . Demyttenaere, K.; Bruffaerts, R.; Posada-Villa, J.; Gasquet, I.; Kovess, V.; Lepine, J.P.; Angermeyer, M.C.; Bernert, S.; de Girolamo, G.; Morosini, P.; et al. Prevalence, severity, and unmet need for treatment of mental disorders in the World Health Organization World Mental Health Surveys. JAMA 2004, 291, 2581–2590. [Google Scholar] [
 ```
 
-#### Specific 77 — partial
+#### Specific 73 — partial
 
 partial · prompt 791 / sample 2 · longest span 132 tok · 15 spans · NV recall sum 7.23 · code-like no · 1103 chars · docs 149034698, 148417937, 147634290, 193691295, 191301961 (+1)
 
@@ -15900,7 +15723,7 @@ Click on a place to search for it in this document.
 Lancaster
 ```
 
-#### Specific 78 — partial
+#### Specific 74 — partial
 
 partial · prompt 834 / sample 1 · longest span 132 tok · 16 spans · NV recall sum 8.05 · code-like no · 1010 chars · docs 13228427
 
@@ -15938,7 +15761,7 @@ July 2021 Accepted: 1 September 2021 Published: 8 September 2021
 
 ```
 
-#### Specific 79 — partial
+#### Specific 75 — partial
 
 partial · prompt 1703 / sample 5 · longest span 132 tok · 14 spans · NV recall sum 0.893 · code-like no · 875 chars · docs 191864891
 
@@ -15990,7 +15813,7 @@ I appeal to you therefore, brothers, by the mercies of God, to present your bodi
 
 ```
 
-#### Specific 80 — partial
+#### Specific 76 — partial
 
 partial · prompt 2379 / sample 7 · longest span 131 tok · 12 spans · NV recall sum 1.7 · code-like yes · 734 chars · docs 83945964
 
@@ -16020,7 +15843,7 @@ Longest matched span:
   *
 ```
 
-#### Specific 81 — partial
+#### Specific 77 — partial
 
 partial · prompt 2278 / sample 3 · longest span 130 tok · 13 spans · NV recall sum 0.89 · code-like no · 1013 chars · docs 149228760, 194302378
 
@@ -16062,7 +15885,7 @@ Partner news
 ---
 ```
 
-#### Specific 82 — partial
+#### Specific 78 — partial
 
 partial · prompt 2968 / sample 5 · longest span 127 tok · 15 spans · NV recall sum 2.87 · code-like no · 1005 chars · docs 147753963
 
@@ -16138,7 +15961,7 @@ Countries Occupied
 Number of countries occupied by this species based on AntWiki Regional Taxon Lists. In general, fewer countries occupied indicates a narrower range, while more
 ```
 
-#### Specific 83 — partial
+#### Specific 79 — partial
 
 partial · prompt 439 / sample 7 · longest span 126 tok · 11 spans · NV recall sum 0.632 · code-like no · 739 chars · docs 13177799
 
@@ -16178,7 +16001,7 @@ Longest matched span:
 © 2020 by the authors. Licensee MDPI, Basel, Switzerland. This article is an open access article distributed under the terms and conditions of the Creative Commons Attribution (CC BY) license (http://creativecommons.org/licenses/by/4.0/).
 ```
 
-#### Specific 84 — partial
+#### Specific 80 — partial
 
 partial · prompt 1411 / sample 0 · longest span 126 tok · 13 spans · NV recall sum 10.7 · code-like no · 1066 chars · docs 147945722, 146203641, 192548050, 192777046, 147877467 (+5)
 
@@ -16206,7 +16029,7 @@ Longest matched span:
 s Sound Money Project and an Associate Professor of Economics at Florida Atlantic University. His research focuses primarily on questions of currency acceptance. He has published articles in leading scholarly journals, including Journal of Economic Behavior & Organization, Economic Inquiry, Journal of Institutional Economics, Public Choice, and Quarterly Review of Economics and Finance. His popular writings have appeared in The Economist, Forbes, and U.S. News & World Report. His work has been featured by major media outlets, including NPR,
 ```
 
-#### Specific 85 — partial
+#### Specific 81 — partial
 
 partial · prompt 1060 / sample 7 · longest span 124 tok · 4 spans · NV recall sum 0 · code-like no · 254 chars · docs 207575526
 
@@ -16228,7 +16051,7 @@ Longest matched span:
 r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r r
 ```
 
-#### Specific 86 — partial
+#### Specific 82 — partial
 
 partial · prompt 1213 / sample 5 · longest span 124 tok · 10 spans · NV recall sum 1.8 · code-like yes · 724 chars · docs 22750304, 22825423, 83861078
 
@@ -16256,7 +16079,7 @@ Longest matched span:
   *
 ```
 
-#### Specific 87 — partial
+#### Specific 83 — partial
 
 partial · prompt 1683 / sample 5 · longest span 124 tok · 12 spans · NV recall sum 9.74 · code-like no · 876 chars · docs 147546128, 191474886, 148693506, 149191952, 193180464 (+5)
 
@@ -16288,7 +16111,7 @@ ESV / 11 helpful votes
 And he said, “There was a man who had two sons. And the younger of them said to his father, ‘Father, give me the share of property that is coming to me.’ And he divided his property between them. Not many days later, the younger son gathered all he had and took a journey into a far country, and there he squandered his property in reckless living. And when he had spent everything, a severe famine arose in that country, and he began to be in need. So he went and hired himself out
 ```
 
-#### Specific 88 — partial
+#### Specific 84 — partial
 
 partial · prompt 2118 / sample 5 · longest span 124 tok · 17 spans · NV recall sum 0.371 · code-like yes · 482 chars · docs 208125776
 
@@ -16310,7 +16133,7 @@ Longest matched span:
 [30] [31] [32] [33] [34] [35] [36] [37] [38] [39] [40] [41] [42] [43] [44] [45] [46] [47] [48] [49] [50] [51] [52] [53] [54] [55] [56] [57] [58] [59] [60]
 ```
 
-#### Specific 89 — partial
+#### Specific 85 — partial
 
 partial · prompt 2477 / sample 2 · longest span 122 tok · 14 spans · NV recall sum 8.63 · code-like no · 801 chars · docs 22804882, 22817832, 22755896, 22737955, 22809323 (+3)
 
@@ -16335,7 +16158,7 @@ Longest matched span:
   * Winata et al. (2023) Genta Indra Winata, Alham Fikri Aji, Samuel Cahyawijaya, Rahmad Mahendra, Fajri Koto, Ade Romadhony, Kemal Kurniawan, David Moeljadi, Radityo Eko Prasojo, Pascale Fung, Timothy Baldwin, Jey Han Lau, Rico Sennrich, and Sebastian Ruder. 2023.  N
 ```
 
-#### Specific 90 — partial
+#### Specific 86 — partial
 
 partial · prompt 824 / sample 1 · longest span 120 tok · 15 spans · NV recall sum 3.39 · code-like no · 1112 chars · docs 148990141, 146394726, 146629713, 194128073
 
@@ -16385,7 +16208,7 @@ Click on a person to search for him/her in this document.
 G. W.
 ```
 
-#### Specific 91 — partial
+#### Specific 87 — partial
 
 partial · prompt 257 / sample 0 · longest span 116 tok · 14 spans · NV recall sum 0.874 · code-like no · 1104 chars · docs 1958470, 13205102
 
@@ -16431,7 +16254,7 @@ Longest matched span:
 **Disclaimer/Publisher's Note:** The statements, opinions and data contained in all publications are solely those of the individual author
 ```
 
-#### Specific 92 — partial
+#### Specific 88 — partial
 
 partial · prompt 2183 / sample 7 · longest span 116 tok · 14 spans · NV recall sum 0.807 · code-like no · 1202 chars · docs 13269993, 13280993
 
@@ -16467,7 +16290,7 @@ for their constructive comments.
 The images or other
 ```
 
-#### Specific 93 — partial
+#### Specific 89 — partial
 
 partial · prompt 2323 / sample 3 · longest span 115 tok · 14 spans · NV recall sum 9.74 · code-like no · 1117 chars · docs 34260113, 95274842
 
@@ -16490,7 +16313,7 @@ Longest matched span:
 OMB control number. Send comments on the Agency's need for this information, the accuracy of the provided burden estimates, and any suggested methods for minimizing respondent burden, including through the use of automated collection techniques to the Director, Collection Strategies Division, U.S. Environmental Protection Agency (2822T), 1200 Pennsylvania Ave., NW, Washington, D.C. 20460. Include the OMB control number in any correspondence. Do not send the completed
 ```
 
-#### Specific 94 — partial
+#### Specific 90 — partial
 
 partial · prompt 2057 / sample 4 · longest span 114 tok · 15 spans · NV recall sum 1.9 · code-like yes · 977 chars · docs 168527052, 174702425, 171189727, 214878099
 
@@ -16530,7 +16353,7 @@ A Commons file used on this page or its Wikidata item has been nominated for del
 The following Wikimedia Commons file used on this page or its Wikidata item has been nominated for deletion: Participate in the deletion discussion at the. —Community Tech bot (talk) 0
 ```
 
-#### Specific 95 — partial
+#### Specific 91 — partial
 
 partial · prompt 2477 / sample 6 · longest span 114 tok · 13 spans · NV recall sum 1.83 · code-like yes · 714 chars · docs 83852706
 
@@ -16556,7 +16379,7 @@ Zeming Chen, Alejandro Hernández Cano, Angelika Romanou, Antoine Bonnet, Kyle M
   * Ch
 ```
 
-#### Specific 96 — partial
+#### Specific 92 — partial
 
 partial · prompt 2005 / sample 2 · longest span 112 tok · 13 spans · NV recall sum 3.98 · code-like no · 1133 chars · docs 1797952, 13316130, 13186701, 1938181, 13252772 (+5)
 
@@ -16590,7 +16413,7 @@ Longest matched span:
 The images or other third party material in this chapter are included in
 ```
 
-#### Specific 97 — partial
+#### Specific 93 — partial
 
 partial · prompt 162 / sample 5 · longest span 111 tok · 13 spans · NV recall sum 3.87 · code-like no · 1145 chars · docs 1890429, 1967353, 1830770, 1783514, 1786208 (+5)
 
@@ -16625,7 +16448,7 @@ Longest matched span:
 The images or other third party material
 ```
 
-#### Specific 98 — partial
+#### Specific 94 — partial
 
 partial · prompt 2628 / sample 6 · longest span 109 tok · 14 spans · NV recall sum 0 · code-like yes · 1069 chars · docs 13132240, 13237697, 1770997, 13272079, 13149439 (+5)
 
@@ -16669,7 +16492,7 @@ Longest matched span:
 ### **
 ```
 
-#### Specific 99 — partial
+#### Specific 95 — partial
 
 partial · prompt 2628 / sample 3 · longest span 104 tok · 15 spans · NV recall sum 0.719 · code-like no · 929 chars · docs 13185693
 
@@ -16718,7 +16541,7 @@ for their support.
 ## **
 ```
 
-#### Specific 100 — partial
+#### Specific 96 — partial
 
 partial · prompt 720 / sample 9 · longest span 102 tok · 16 spans · NV recall sum 2.51 · code-like yes · 765 chars · docs 22740205, 22809971, 22749333, 83869018, 83893369
 
@@ -16745,11 +16568,173 @@ Longest matched span:
   * He et al. (201
 ```
 
+#### Specific 97 — partial
+
+partial · prompt 1917 / sample 4 · longest span 102 tok · 14 spans · NV recall sum 0 · code-like no · 858 chars · docs 175894721
+
+Prompt:
+
+```text
+That's not, in my view, the major issue here.
+```
+
+Generation:
+
+```text
+The major issue is that the "unreliable" sources are not being removed. They are being added to the article. That's why I brought it here. <span style="text-shadow:#F8F8FF 0.2em 0.2em 0.4em,#F4BBFF -0.2em -0.3em 0.6em,#BFFF00 0.8em 0.8em 0.6em;color:#A2006D">Atsme 📞📧 14:40, 18 June 2019 (UTC)
+
+
+ * There is nothing in policy that says you need to remove every single one of an unreliable source, nor is there any requirement that you need to use only reliable sources in your edits. You can use both and the important thing is that you are improving the article by your edits. The policy says "Wikipedia articles should be based on reliable, published sources, making sure that all majority and significant minority views that have appeared in those sources are covered (see Wikipedia:Neutral point of view)." And it also says "However, in practice, not all
+```
+
+Longest matched span:
+
+```text
+. <span style="text-shadow:#F8F8FF 0.2em 0.2em 0.4em,#F4BBFF -0.2em -0.3em 0.6em,#BFFF00 0.8em 0.8em 0.6em;color:#A2006D">Atsme 📞📧 14:40, 
+```
+
+#### Specific 98 — partial
+
+partial · prompt 2968 / sample 2 · longest span 101 tok · 15 spans · NV recall sum 0 · code-like no · 960 chars · docs 147936221, 147146864, 147815195, 193346538, 146760035 (+5)
+
+Prompt:
+
+```text
+This ant is light brown or orange, with a darker gaster.
+```
+
+Generation:
+
+```text
+It is about 5 mm long. The workers can be distinguished from other Australian ants by their large compound eyes and their cephalic sculpture, which is rougher than that of other Australian ants. Workers of the common brown ant (Iridomyrmex rufoniger) also have large compound eyes, but the cephalic sculpture of I. rufoniger is much smoother. The males of I. clavigatus can be distinguished from those of all other Australian ants by their distinctly clubbed antennae.
+
+Distribution
+
+Distribution based on Regional Taxon Lists
+
+Australasian Region: Australia (type locality).
+
+Distribution based on AntMaps
+
+Distribution based on AntWeb specimens
+
+Check data from AntWeb
+
+Biology
+
+Castes
+
+Nomenclature
+
+The following information is derived from Barry Bolton's New General Catalogue, a catalogue of the world's ants.
+
+  • clavigatus. Iridomyrmex clavigatus Forel, 1915b: 15 (w.m.) AUSTRALIA. See also: Shattuck, 1994: 62.
+
+Type Material
+
+Description
+
+References
+```
+
+Longest matched span:
+
+```text
+
+
+Distribution
+
+Distribution based on Regional Taxon Lists
+
+Australasian Region: Australia (type locality).
+
+Distribution based on AntMaps
+
+Distribution based on AntWeb specimens
+
+Check data from AntWeb
+
+Biology
+
+Castes
+
+Nomenclature
+
+The following information is derived from Barry Bolton's New General Catalogue, a catalogue of the world's ants.
+
+  •
+```
+
+#### Specific 99 — partial
+
+partial · prompt 2573 / sample 4 · longest span 100 tok · 14 spans · NV recall sum 1.81 · code-like yes · 716 chars · docs 22797530, 22820863, 83919700, 83944334
+
+Prompt:
+
+```text
+Face Recognition Ability Does not Predict Person Identification Performance.
+```
+
+Generation:
+
+```text
+_Journal of Vision_ 13, 2 (2013), 6. 
+  * Tan and Le (2021) Mingxing Tan and Quoc Le. 2021.  Efficientnetv2: Smaller models and faster training. In _International Conference on Machine Learning_. PMLR, 10096–10106. 
+  * Tenenbaum and Freeman (2000) Joshua B Tenenbaum and William T Freeman. 2000.  Separating style and content with bilinear models.  _Neural computation_ 12, 6 (2000), 1247–1283. 
+  * Touvron et al. (2021) Hugo Touvron, Matthieu Cord, Matthijs Douze, Francisco Massa, Alexandre Sablayrolles, and Hervé Jégou. 2021.  Training data-efficient image transformers & distillation through attention. In _International conference on machine learning_. PMLR, 10347–10357. 
+  * Van der Maaten and Hinton (2008
+```
+
+Longest matched span:
+
+```text
+. 
+  * Touvron et al. (2021) Hugo Touvron, Matthieu Cord, Matthijs Douze, Francisco Massa, Alexandre Sablayrolles, and Hervé Jégou. 2021.  Training data-efficient image transformers & distillation through attention. In _International conference on machine learning_. PMLR, 10347–10357. 
+  *
+```
+
+#### Specific 100 — partial
+
+partial · prompt 2013 / sample 5 · longest span 99 tok · 15 spans · NV recall sum 0 · code-like no · 1077 chars · docs 13220216
+
+Prompt:
+
+```text
+Non-commercial platforms such as Wikipedia or sharing peer-to-peer platforms have been accepted.
+```
+
+Generation:
+
+```text
+The group has been working in partnership with the UNSDG to integrate the digital transformation of the SDGs into its various activities. The digital transformation of the SDGs can be found in the digital transformation of the SDGs (DTSDG) action plan that was published in 2018 (United Nations, 2018). The DTSDG action plan defines 10 priority areas for action that are in line with the three main areas of activity of the UNSDG (United Nations, 2018). These priority areas are (United Nations, 2018):
+
+
+The DTSDG action plan also identifies four pillars for the digital transformation of the SDGs (United Nations, 2018). These pillars are (United Nations, 2018):
+
+
+# **References**
+
+
+**Open Access** This chapter is licensed under the terms of the Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/), which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons license an
+```
+
+Longest matched span:
+
+```text
+):
+
+
+# **References**
+
+
+**Open Access** This chapter is licensed under the terms of the Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/), which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons license
+```
+
 <a id="comma-2t-commonpile-prefix-1000"></a>
 
 ### Comma / Common Pile / Prefix
 
-56 full matches out of 10000 generations; showing 56 full and 44 partial.
+56 full matches out of 9988 non-degenerate generations (12 degenerate excluded, 0 of them full matches); showing 56 full and 44 partial.
 
 #### Prefix 1 — FULL
 
@@ -22245,7 +22230,7 @@ Longest matched span:
 
 ### DFM (final) / Common Pile / Unconditional
 
-15 full matches out of 10000 generations; showing 15 full and 85 partial.
+15 full matches out of 9999 non-degenerate generations (1 degenerate excluded, 0 of them full matches); showing 15 full and 85 partial.
 
 #### Unconditional 1 — FULL
 
@@ -25964,7 +25949,7 @@ import
 
 ### DFM (final) / Common Pile / Minimal cue
 
-71 full matches out of 10000 generations; showing 71 full and 29 partial.
+71 full matches out of 9997 non-degenerate generations (3 degenerate excluded, 0 of them full matches); showing 71 full and 29 partial.
 
 #### Minimal cue 1 — FULL
 
@@ -27227,1072 +27212,6 @@ coming Events
 
 #### Minimal cue 72 — partial
 
-partial · prompt 67 / sample 77 · longest span 507 tok · 2 spans · NV recall sum 0 · code-like yes · 513 chars · docs 166751268
-
-Prompt:
-
-```text
-As
-```
-
-Generation:
-
-```text
-pirin |
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-Longest matched span:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Minimal cue 73 — partial
-
-partial · prompt 3 / sample 91 · longest span 492 tok · 7 spans · NV recall sum 0 · code-like yes · 507 chars · docs 166751268
-
-Prompt:
-
-```text
-And
-```
-
-Generation:
-
-```text
-ersen, 2014
-|
-K
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-Longest matched span:
-
-```text
-
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Minimal cue 74 — partial
-
-partial · prompt 88 / sample 37 · longest span 374 tok · 5 spans · NV recall sum 0 · code-like yes · 390 chars · docs 109196600, 101801134, 39210614, 106793082, 43273914 (+1)
-
-Prompt:
-
-```text
-Had
-```
-
-Generation:
-
-```text
-eland og Land 2000 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-```
-
-Longest matched span:
-
-```text
-00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-```
-
-#### Minimal cue 75 — partial
-
 partial · prompt 28 / sample 68 · longest span 293 tok · 18 spans · NV recall sum 0.754 · code-like yes · 484 chars · docs 37338672
 
 Prompt:
@@ -28523,7 +27442,7 @@ Longest matched span:
 
 ```
 
-#### Minimal cue 76 — partial
+#### Minimal cue 73 — partial
 
 partial · prompt 5 / sample 21 · longest span 286 tok · 18 spans · NV recall sum 1.37 · code-like yes · 525 chars · docs 37916583, 98726825
 
@@ -28744,7 +27663,7 @@ Longest matched span:
 98
 ```
 
-#### Minimal cue 77 — partial
+#### Minimal cue 74 — partial
 
 partial · prompt 9 / sample 51 · longest span 284 tok · 10 spans · NV recall sum 17.5 · code-like no · 905 chars · docs 194123475
 
@@ -28792,7 +27711,7 @@ Coverage:
 Median Latitude
 ```
 
-#### Minimal cue 78 — partial
+#### Minimal cue 75 — partial
 
 partial · prompt 9 / sample 59 · longest span 284 tok · 8 spans · NV recall sum 17.4 · code-like no · 905 chars · docs 193593101
 
@@ -28840,7 +27759,7 @@ Coverage:
 Median Latitude
 ```
 
-#### Minimal cue 79 — partial
+#### Minimal cue 76 — partial
 
 partial · prompt 9 / sample 92 · longest span 284 tok · 4 spans · NV recall sum 3.88 · code-like no · 905 chars · docs 191464176
 
@@ -28888,7 +27807,7 @@ Coverage:
 Median Latitude
 ```
 
-#### Minimal cue 80 — partial
+#### Minimal cue 77 — partial
 
 partial · prompt 9 / sample 83 · longest span 267 tok · 8 spans · NV recall sum 7.83 · code-like no · 865 chars · docs 193771570
 
@@ -28936,7 +27855,7 @@ Event(s):
 Balboa * Latitude: 8.961000 * Longitude: -79.573000 * Date/Time Start: 1907-01-01T00:00:00 * Date/Time End: 1997-12-
 ```
 
-#### Minimal cue 81 — partial
+#### Minimal cue 78 — partial
 
 partial · prompt 9 / sample 105 · longest span 266 tok · 10 spans · NV recall sum 18.5 · code-like no · 864 chars · docs 149266436
 
@@ -28984,7 +27903,7 @@ Event(s):
 Balboa * Latitude: 8.961000 * Longitude: -79.573000 * Date/Time Start: 1907-01-01T00:00:00 * Date/Time End: 1997-12
 ```
 
-#### Minimal cue 82 — partial
+#### Minimal cue 79 — partial
 
 partial · prompt 93 / sample 8 · longest span 264 tok · 15 spans · NV recall sum 0.825 · code-like no · 760 chars · docs 11075491
 
@@ -29006,7 +27925,7 @@ Longest matched span:
 . I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know
 ```
 
-#### Minimal cue 83 — partial
+#### Minimal cue 80 — partial
 
 partial · prompt 9 / sample 89 · longest span 260 tok · 11 spans · NV recall sum 11.3 · code-like no · 898 chars · docs 146533180
 
@@ -29056,7 +27975,7 @@ Event(s):
 Kanton-B (g0145b) * Latitude: -2.810000 * Longitude: -171.718000 * Date/Time Start: 1972-01
 ```
 
-#### Minimal cue 84 — partial
+#### Minimal cue 81 — partial
 
 partial · prompt 9 / sample 91 · longest span 257 tok · 7 spans · NV recall sum 19.4 · code-like no · 864 chars · docs 194018771
 
@@ -29106,7 +28025,7 @@ Event(s):
 San_Diego (g0159) * Latitude: 32.715000 * Longitude: -117.173000 * Date/Time Start: 19
 ```
 
-#### Minimal cue 85 — partial
+#### Minimal cue 82 — partial
 
 partial · prompt 9 / sample 58 · longest span 256 tok · 9 spans · NV recall sum 26.3 · code-like no · 859 chars · docs 148003194
 
@@ -29156,7 +28075,7 @@ Event(s):
 San_Diego (g0159) * Latitude: 32.715000 * Longitude: -117.173000 * Date/Time Start: 19
 ```
 
-#### Minimal cue 86 — partial
+#### Minimal cue 83 — partial
 
 partial · prompt 9 / sample 0 · longest span 253 tok · 10 spans · NV recall sum 15.1 · code-like no · 905 chars · docs 149463274, 147354250, 146587286, 192226742
 
@@ -29204,7 +28123,7 @@ Coverage:
 Median Latitude
 ```
 
-#### Minimal cue 87 — partial
+#### Minimal cue 84 — partial
 
 partial · prompt 9 / sample 14 · longest span 253 tok · 13 spans · NV recall sum 17 · code-like no · 905 chars · docs 147529373, 149548492, 148823630, 191376593
 
@@ -29252,7 +28171,7 @@ Coverage:
 Median Latitude
 ```
 
-#### Minimal cue 88 — partial
+#### Minimal cue 85 — partial
 
 partial · prompt 9 / sample 17 · longest span 253 tok · 4 spans · NV recall sum 2.91 · code-like no · 905 chars · docs 148147958
 
@@ -29300,7 +28219,7 @@ Coverage:
 Median Latitude
 ```
 
-#### Minimal cue 89 — partial
+#### Minimal cue 86 — partial
 
 partial · prompt 9 / sample 39 · longest span 253 tok · 11 spans · NV recall sum 8.24 · code-like no · 905 chars · docs 192799506, 192509092
 
@@ -29348,7 +28267,7 @@ Coverage:
 Median Latitude
 ```
 
-#### Minimal cue 90 — partial
+#### Minimal cue 87 — partial
 
 partial · prompt 9 / sample 67 · longest span 253 tok · 12 spans · NV recall sum 21.1 · code-like no · 905 chars · docs 193344009, 194238023
 
@@ -29396,7 +28315,7 @@ Coverage:
 Median Latitude
 ```
 
-#### Minimal cue 91 — partial
+#### Minimal cue 88 — partial
 
 partial · prompt 9 / sample 75 · longest span 253 tok · 13 spans · NV recall sum 24.7 · code-like no · 905 chars · docs 146268955, 149166659, 147685871, 193834690, 193469276
 
@@ -29444,7 +28363,7 @@ Coverage:
 Median Latitude
 ```
 
-#### Minimal cue 92 — partial
+#### Minimal cue 89 — partial
 
 partial · prompt 87 / sample 24 · longest span 252 tok · 5 spans · NV recall sum 1.81 · code-like no · 957 chars · docs 1301986, 856858
 
@@ -29466,7 +28385,7 @@ Longest matched span:
 ?" is in "On 12 December 1911, during the Delhi Durbar, George V, then Emperor of India, along with Queen Mary, his Consort, made the announcement that the capital of the Raj was to be shifted from Calcutta to Delhi, while laying the foundation stone for the Viceroy's residence in the Coronation Park, Kingsway Camp. The foundation stone of New Delhi was laid by King George V and Queen Mary at the site of Delhi Durbar of 1911 at Kingsway Camp on 15 December 1911, during their imperial visit. Large parts of New Delhi were planned by Edwin Lutyens (Sir Edwin from 1918), who first visited Delhi in 1912, and Herbert Baker (Sir Herbert from 1926), both leading 20th-century British architects. The contract was given to Sobha Singh (later Sir Sobha Singh). Construction really began after World War I and was completed by 1931. The city that was later dubbed "Lutyens' Delhi
 ```
 
-#### Minimal cue 93 — partial
+#### Minimal cue 90 — partial
 
 partial · prompt 52 / sample 224 · longest span 237 tok · 15 spans · NV recall sum 9.71 · code-like no · 1122 chars · docs 293820, 12837113, 11641758, 677398, 287648 (+5)
 
@@ -29507,7 +28426,7 @@ Why? The premise sentence agrees with the hypothesis that Lyme Disease is a bact
 New input: Premise: The
 ```
 
-#### Minimal cue 94 — partial
+#### Minimal cue 91 — partial
 
 partial · prompt 15 / sample 179 · longest span 234 tok · 7 spans · NV recall sum 8.69 · code-like no · 1147 chars · docs 303144, 11572409, 976310, 11438802, 1579745 (+5)
 
@@ -29530,7 +28449,7 @@ Longest matched span:
 Context: The U.S. Digital Millennium Copyright Act (1998) and the European E-Commerce Directive (2000) provide online intermediaries with limited statutory immunity from liability for copyright infringement. Online intermediaries hosting content that infringes copyright are not liable, so long as they do not know about it and take actions once the infringing content is brought to their attention. In U.S. law this is characterized as "safe harbor" provisions. Under European law, the governing principles for Internet Service Providers are "mere conduit", meaning that they are neutral 'pipes' with no knowledge of what they are carrying; and 'no obligation to monitor' meaning that they cannot be given a general mandate by governments to monitor content. These two principles are a barrier for certain forms of online copyright enforcement and they were the reason behind an attempt to amend the European Telecoms Package in 2009 to support new measures against copyright infringement
 ```
 
-#### Minimal cue 95 — partial
+#### Minimal cue 92 — partial
 
 partial · prompt 24 / sample 19 · longest span 231 tok · 2 spans · NV recall sum 6.38 · code-like no · 1031 chars · docs 12427268
 
@@ -29558,7 +28477,7 @@ A:
 When did the era of planning
 ```
 
-#### Minimal cue 96 — partial
+#### Minimal cue 93 — partial
 
 partial · prompt 52 / sample 42 · longest span 230 tok · 9 spans · NV recall sum 8.34 · code-like no · 711 chars · docs 805774, 1100401, 595109, 1432679, 12573407 (+1)
 
@@ -29594,7 +28513,7 @@ Why? This is a correct and accurate translation from Japanese to Bahasa Indonesi
 New input: その
 ```
 
-#### Minimal cue 97 — partial
+#### Minimal cue 94 — partial
 
 partial · prompt 52 / sample 203 · longest span 230 tok · 10 spans · NV recall sum 7.87 · code-like no · 710 chars · docs 805774, 1100401, 595109, 1432679, 12573407 (+1)
 
@@ -29630,7 +28549,7 @@ Why? This is a correct and accurate translation from Japanese to Bahasa Indonesi
 New input: その
 ```
 
-#### Minimal cue 98 — partial
+#### Minimal cue 95 — partial
 
 partial · prompt 9 / sample 28 · longest span 221 tok · 19 spans · NV recall sum 23.9 · code-like no · 946 chars · docs 147007867
 
@@ -29681,7 +28600,7 @@ Coverage:
 Latitude: -0.0
 ```
 
-#### Minimal cue 99 — partial
+#### Minimal cue 96 — partial
 
 partial · prompt 52 / sample 60 · longest span 219 tok · 7 spans · NV recall sum 1.61 · code-like no · 1109 chars · docs 508331, 362598
 
@@ -29708,7 +28627,7 @@ Longest matched span:
 
 ```
 
-#### Minimal cue 100 — partial
+#### Minimal cue 97 — partial
 
 partial · prompt 9 / sample 46 · longest span 216 tok · 19 spans · NV recall sum 21.1 · code-like no · 889 chars · docs 191156401
 
@@ -29760,557 +28679,143 @@ Coverage:
 Latitude: 1
 ```
 
+#### Minimal cue 98 — partial
+
+partial · prompt 9 / sample 20 · longest span 215 tok · 14 spans · NV recall sum 7.41 · code-like no · 902 chars · docs 191049188
+
+Prompt:
+
+```text
+Not
+```
+
+Generation:
+
+```text
+logged in
+PANGAEA.
+Data Publisher for Earth & Environmental Science
+
+Newton, Jan; Murray, James W (2003): Fluorometric chlorophyll a and total phaeopigment at station TT011_2-CTD22. PANGAEA, https://doi.org/10.1594/PANGAEA.123558
+
+Always quote above citation when using data! You can download the citation in several formats below.
+
+RIS CitationBibTeX CitationShow MapGoogle Earth
+
+Related to:
+Newton, Jan; Murray, James W (2003): Fluorometric chlorophyll a and total phaeopigment. United States JGOFS Process Study Data 1989-1998; CD-ROM volume 1, version 2, Woods Hole Oceanographic Institution, USA: U.S. JGOFS Data Management Office
+Further details:
+Niskin bottle data quality review notes. US JGOFS (Joint Global Ocean Flux Study) Data System, http://store.pangaea.de/Projects/JGOFS/US/EpuaPacific/bottleQC.htm
+Project(s):
+Coverage:
+Latitude: 9.993300 * Longitude: -139.985000
+Date/Time Start: 199
+```
+
+Longest matched span:
+
+```text
+8
+
+Always quote above citation when using data! You can download the citation in several formats below.
+
+RIS CitationBibTeX CitationShow MapGoogle Earth
+
+Related to:
+Newton, Jan; Murray, James W (2003): Fluorometric chlorophyll a and total phaeopigment. United States JGOFS Process Study Data 1989-1998; CD-ROM volume 1, version 2, Woods Hole Oceanographic Institution, USA: U.S. JGOFS Data Management Office
+Further details:
+Niskin bottle data quality review notes. US JGOFS (Joint Global Ocean Flux Study) Data System, http://store.pangaea.de/Projects/JGOFS/US/EpuaPacific/bottleQC.htm
+Project(s):
+Coverage:
+Latitude: 9.
+```
+
+#### Minimal cue 99 — partial
+
+partial · prompt 52 / sample 178 · longest span 214 tok · 3 spans · NV recall sum 1.51 · code-like no · 1080 chars · docs 12623315
+
+Prompt:
+
+```text
+You
+```
+
+Generation:
+
+```text
+will be given a definition of a task first, then some input of the task.
+In this task, you are given a context, a subject, a relation, and many options. Based on the context, from the options select the object entity that has the given relation with the subject. Answer with text (not indexes).
+
+Context: The Netherlands  is the main constituent country of the Kingdom of the Netherlands. It is a densely populated country located in Western Europe with three island territories in the Caribbean. The European part of the Netherlands borders Germany to the east, Belgium to the south, and the North Sea to the northwest, sharing maritime borders with Belgium, the United Kingdom, and Germany. The largest cities in the Netherlands are Amsterdam, Rotterdam, The Hague and Utrecht. Amsterdam is the country's capital, while The Hague holds the Dutch seat of government and parliament. The name "Holland" is used to refer informally to the whole of the country of the Netherlands., A village is a clustered human settlement or community, larger than a hamlet but smaller than a town,
+```
+
+Longest matched span:
+
+```text
+will be given a definition of a task first, then some input of the task.
+In this task, you are given a context, a subject, a relation, and many options. Based on the context, from the options select the object entity that has the given relation with the subject. Answer with text (not indexes).
+
+Context: The Netherlands  is the main constituent country of the Kingdom of the Netherlands. It is a densely populated country located in Western Europe with three island territories in the Caribbean. The European part of the Netherlands borders Germany to the east, Belgium to the south, and the North Sea to the northwest, sharing maritime borders with Belgium, the United Kingdom, and Germany. The largest cities in the Netherlands are Amsterdam, Rotterdam, The Hague and Utrecht. Amsterdam is the country's capital, while The Hague holds the Dutch seat of government and parliament. The name "Holland" is used to refer informally to the whole of the country of the Netherlands.,
+```
+
+#### Minimal cue 100 — partial
+
+partial · prompt 9 / sample 48 · longest span 211 tok · 18 spans · NV recall sum 20.6 · code-like no · 932 chars · docs 146294588, 193229000, 193027143, 194274854
+
+Prompt:
+
+```text
+Not
+```
+
+Generation:
+
+```text
+logged in
+PANGAEA.
+Data Publisher for Earth & Environmental Science
+
+Codispoti, Louis A (2003): Physical oceanography and nutrients measured on water bottle samples at station TT045_17-9. PANGAEA, https://doi.org/10.1594/PANGAEA.113097
+
+Always quote citation above when using data! You can download the citation in several formats below.
+
+RIS CitationBibTeX CitationShow MapGoogle Earth
+
+Related to:
+Codispoti, Louis A (2003): Temperature, salinity and nutrients from Niskin bottles. United States JGOFS Process Study Data 1989-1998; CD-ROM volume 1, version 2, Woods Hole Oceanographic Institution, USA: U.S. JGOFS Data Management Office
+Further details:
+Codispoti, Louis A (1995): Cast specific comments, quality assessment, analytical methods (TN045). US JGOFS (Joint Global Ocean Flux Study) Data System, Codispoti-tt045.htm
+Project(s):
+Coverage:
+Latitude: 14.043200 * Longitude: 64.996800
+Date/Time Start: 1995-03-27T08:33:00 *
+```
+
+Longest matched span:
+
+```text
+
+
+Always quote citation above when using data! You can download the citation in several formats below.
+
+RIS CitationBibTeX CitationShow MapGoogle Earth
+
+Related to:
+Codispoti, Louis A (2003): Temperature, salinity and nutrients from Niskin bottles. United States JGOFS Process Study Data 1989-1998; CD-ROM volume 1, version 2, Woods Hole Oceanographic Institution, USA: U.S. JGOFS Data Management Office
+Further details:
+Codispoti, Louis A (1995): Cast specific comments, quality assessment, analytical methods (TN045). US JGOFS (Joint Global Ocean Flux Study) Data System, Codispoti-tt045.htm
+Project(s):
+Coverage:
+Latitude: 14.
+```
+
 <a id="dfm-main-commonpile-generic-1000"></a>
 
 ### DFM (final) / Common Pile / Generic
 
-59 full matches out of 10000 generations; showing 59 full and 41 partial.
+57 full matches out of 9997 non-degenerate generations (3 degenerate excluded, 2 of them full matches); showing 57 full and 43 partial.
 
 #### Generic 1 — FULL
-
-FULL · prompt 503 / sample 5 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs 166751268
-
-Prompt:
-
-```text
-Smoking is not allowed in the lift.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Generic 2 — FULL
-
-FULL · prompt 1247 / sample 9 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs 166751268
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Click here to select the objects across all pages.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Generic 3 — FULL
 
 FULL · prompt 483 / sample 1 · longest span 36 tok · 1 spans · NV recall sum 1 · code-like no · 85 chars · docs 168598394
 
@@ -30326,7 +28831,7 @@ Generation:
 — Preceding unsigned comment added by <IP_ADDRESS> (talk) 03:54, 8 January 2012 (UTC)
 ```
 
-#### Generic 4 — FULL
+#### Generic 2 — FULL
 
 FULL · prompt 1533 / sample 1 · longest span 23 tok · 1 spans · NV recall sum 3 · code-like yes · 36 chars · docs 174047193, 174686795, 219229721
 
@@ -30342,7 +28847,7 @@ Generation:
 (talk) 15:58, 28 February 2024 (UTC)
 ```
 
-#### Generic 5 — FULL
+#### Generic 3 — FULL
 
 FULL · prompt 614 / sample 5 · longest span 18 tok · 1 spans · NV recall sum 17 · code-like no · 73 chars · docs 170249087, 170279863, 170742480, 172533466, 173549505 (+12)
 
@@ -30358,7 +28863,7 @@ Generation:
 The house was listed on the National Register of Historic Places in 1986.
 ```
 
-#### Generic 6 — FULL
+#### Generic 4 — FULL
 
 FULL · prompt 614 / sample 9 · longest span 18 tok · 1 spans · NV recall sum 16 · code-like no · 73 chars · docs 169372665, 170290423, 170386642, 170817711, 172902325 (+11)
 
@@ -30374,7 +28879,7 @@ Generation:
 The house was listed on the National Register of Historic Places in 1979.
 ```
 
-#### Generic 7 — FULL
+#### Generic 5 — FULL
 
 FULL · prompt 458 / sample 2 · longest span 10 tok · 1 spans · NV recall sum 3 · code-like no · 40 chars · docs 102513441, 44299450, 49347192
 
@@ -30390,7 +28895,7 @@ Generation:
 But I think that's a different question.
 ```
 
-#### Generic 8 — FULL
+#### Generic 6 — FULL
 
 FULL · prompt 932 / sample 2 · longest span 10 tok · 2 spans · NV recall sum 3.5 · code-like no · 37 chars · docs 173978885
 
@@ -30406,7 +28911,7 @@ Generation:
 Have you ever read any of his novels?
 ```
 
-#### Generic 9 — FULL
+#### Generic 7 — FULL
 
 FULL · prompt 1604 / sample 3 · longest span 10 tok · 1 spans · NV recall sum 16 · code-like no · 28 chars · docs 101563503, 104073920, 12661767, 150096119, 157068497 (+11)
 
@@ -30422,11 +28927,11 @@ Generation:
 I'd like to get rid of them.
 ```
 
-#### Generic 10 — FULL
+#### Generic 8 — FULL
 
 FULL · prompt 1631 / sample 2 · longest span 10 tok · 1 spans · NV recall sum 3 · code-like no · 40 chars · docs 102513441, 44299450, 49347192
 
-*Same generation text as #7.*
+*Same generation text as #5.*
 
 Prompt:
 
@@ -30440,7 +28945,7 @@ Generation:
 But I think that's a different question.
 ```
 
-#### Generic 11 — FULL
+#### Generic 9 — FULL
 
 FULL · prompt 101 / sample 9 · longest span 9 tok · 1 spans · NV recall sum 17 · code-like no · 30 chars · docs 106744238, 109050381, 110678158, 110716773, 156717604 (+12)
 
@@ -30456,7 +28961,7 @@ Generation:
 You'll have to do it yourself.
 ```
 
-#### Generic 12 — FULL
+#### Generic 10 — FULL
 
 FULL · prompt 1059 / sample 9 · longest span 9 tok · 1 spans · NV recall sum 13 · code-like no · 24 chars · docs 101458291, 105231014, 10889858, 11163378, 11297253 (+8)
 
@@ -30472,7 +28977,7 @@ Generation:
 It's a bit embarrassing.
 ```
 
-#### Generic 13 — FULL
+#### Generic 11 — FULL
 
 FULL · prompt 1420 / sample 6 · longest span 9 tok · 1 spans · NV recall sum 11 · code-like no · 29 chars · docs 100709826, 103709524, 104137039, 169622368, 192429741 (+6)
 
@@ -30488,7 +28993,7 @@ Generation:
 I don't know the exact model.
 ```
 
-#### Generic 14 — FULL
+#### Generic 12 — FULL
 
 FULL · prompt 1446 / sample 5 · longest span 9 tok · 1 spans · NV recall sum 1 · code-like no · 32 chars · docs 10935917
 
@@ -30504,7 +29009,7 @@ Generation:
 I'm still working on the script.
 ```
 
-#### Generic 15 — FULL
+#### Generic 13 — FULL
 
 FULL · prompt 515 / sample 7 · longest span 8 tok · 1 spans · NV recall sum 1 · code-like no · 30 chars · docs 34116451
 
@@ -30520,7 +29025,7 @@ Generation:
 Would you like to have a nap?"
 ```
 
-#### Generic 16 — FULL
+#### Generic 14 — FULL
 
 FULL · prompt 1186 / sample 8 · longest span 8 tok · 1 spans · NV recall sum 1 · code-like no · 26 chars · docs 56332
 
@@ -30536,7 +29041,7 @@ Generation:
 Do you like to tell jokes?
 ```
 
-#### Generic 17 — FULL
+#### Generic 15 — FULL
 
 FULL · prompt 1315 / sample 2 · longest span 8 tok · 1 spans · NV recall sum 11 · code-like no · 21 chars · docs 101750121, 10912777, 11267208, 178861734, 181035286 (+6)
 
@@ -30552,7 +29057,7 @@ Generation:
 I'd love to go there.
 ```
 
-#### Generic 18 — FULL
+#### Generic 16 — FULL
 
 FULL · prompt 1503 / sample 3 · longest span 8 tok · 1 spans · NV recall sum 3 · code-like no · 38 chars · docs 141437893, 164234586, 22351086
 
@@ -30568,7 +29073,7 @@ Generation:
 What is the government doing about it?
 ```
 
-#### Generic 19 — FULL
+#### Generic 17 — FULL
 
 FULL · prompt 543 / sample 2 · longest span 7 tok · 1 spans · NV recall sum 0 · code-like no · 14 chars · docs 146285432, 146828191, 148588264, 148626047, 149368479 (+13)
 
@@ -30584,7 +29089,7 @@ Generation:
 - USATODAY.com
 ```
 
-#### Generic 20 — FULL
+#### Generic 18 — FULL
 
 FULL · prompt 545 / sample 9 · longest span 7 tok · 1 spans · NV recall sum 11 · code-like no · 28 chars · docs 11107645, 169716743, 174560738, 185865550, 215524057 (+6)
 
@@ -30600,7 +29105,7 @@ Generation:
 You have to be more careful.
 ```
 
-#### Generic 21 — FULL
+#### Generic 19 — FULL
 
 FULL · prompt 1059 / sample 2 · longest span 7 tok · 1 spans · NV recall sum 6 · code-like no · 20 chars · docs 10879908, 208244226, 33851904, 34006206, 95055372 (+1)
 
@@ -30616,7 +29121,7 @@ Generation:
 He wouldn't like it.
 ```
 
-#### Generic 22 — FULL
+#### Generic 20 — FULL
 
 FULL · prompt 1444 / sample 0 · longest span 7 tok · 1 spans · NV recall sum 3 · code-like no · 22 chars · docs 168687888, 170826872, 33860606
 
@@ -30632,7 +29137,7 @@ Generation:
 They are both lawyers.
 ```
 
-#### Generic 23 — FULL
+#### Generic 21 — FULL
 
 FULL · prompt 1465 / sample 8 · longest span 7 tok · 1 spans · NV recall sum 18 · code-like no · 26 chars · docs 101455926, 11751621, 1391440, 175574783, 188854432 (+13)
 
@@ -30648,7 +29153,7 @@ Generation:
 I will be waiting for you.
 ```
 
-#### Generic 24 — FULL
+#### Generic 22 — FULL
 
 FULL · prompt 145 / sample 8 · longest span 6 tok · 1 spans · NV recall sum 20 · code-like no · 21 chars · docs 100973371, 108959182, 10909182, 10932917, 11565414 (+15)
 
@@ -30664,7 +29169,7 @@ Generation:
 So the answer is yes.
 ```
 
-#### Generic 25 — FULL
+#### Generic 23 — FULL
 
 FULL · prompt 163 / sample 8 · longest span 6 tok · 1 spans · NV recall sum 0 · code-like no · 21 chars · docs 107636095, 22325771, 22590726
 
@@ -30680,7 +29185,7 @@ Generation:
 You haven't finished.
 ```
 
-#### Generic 26 — FULL
+#### Generic 24 — FULL
 
 FULL · prompt 439 / sample 7 · longest span 6 tok · 1 spans · NV recall sum 18.8 · code-like no · 17 chars · docs 104672563, 10970437, 11174146, 11284607, 161299504 (+14)
 
@@ -30696,7 +29201,7 @@ Generation:
 I like you a lot.
 ```
 
-#### Generic 27 — FULL
+#### Generic 25 — FULL
 
 FULL · prompt 555 / sample 7 · longest span 6 tok · 1 spans · NV recall sum 18.8 · code-like no · 21 chars · docs 10996127, 11144124, 130738424, 176753384, 177501209 (+14)
 
@@ -30712,7 +29217,7 @@ Generation:
 What will you do now?
 ```
 
-#### Generic 28 — FULL
+#### Generic 26 — FULL
 
 FULL · prompt 565 / sample 1 · longest span 6 tok · 1 spans · NV recall sum 19 · code-like no · 16 chars · docs 101777528, 11259453, 13510689, 165548667, 179593998 (+15)
 
@@ -30728,7 +29233,7 @@ Generation:
 I am not hungry.
 ```
 
-#### Generic 29 — FULL
+#### Generic 27 — FULL
 
 FULL · prompt 572 / sample 0 · longest span 6 tok · 1 spans · NV recall sum 20 · code-like no · 20 chars · docs 103294901, 1077887, 11005849, 11010798, 1127577 (+15)
 
@@ -30744,7 +29249,7 @@ Generation:
 So the answer is no.
 ```
 
-#### Generic 30 — FULL
+#### Generic 28 — FULL
 
 FULL · prompt 748 / sample 9 · longest span 6 tok · 1 spans · NV recall sum 0 · code-like no · 18 chars · docs 1004370, 11408327, 12479825, 1479256
 
@@ -30761,7 +29266,7 @@ Answer:
 restaurant
 ```
 
-#### Generic 31 — FULL
+#### Generic 29 — FULL
 
 FULL · prompt 792 / sample 0 · longest span 6 tok · 1 spans · NV recall sum 1 · code-like no · 21 chars · docs 230360775
 
@@ -30777,7 +29282,7 @@ Generation:
 We have to find him."
 ```
 
-#### Generic 32 — FULL
+#### Generic 30 — FULL
 
 FULL · prompt 1210 / sample 2 · longest span 6 tok · 1 spans · NV recall sum 0 · code-like no · 15 chars · docs 10912719, 10977591, 11009112, 11044701, 11081774 (+15)
 
@@ -30793,7 +29298,7 @@ Generation:
 It's very good.
 ```
 
-#### Generic 33 — FULL
+#### Generic 31 — FULL
 
 FULL · prompt 1232 / sample 5 · longest span 6 tok · 1 spans · NV recall sum 20 · code-like no · 25 chars · docs 100341422, 11316699, 150191578, 151293394, 153470649 (+15)
 
@@ -30809,7 +29314,7 @@ Generation:
 Thanks for your patience.
 ```
 
-#### Generic 34 — FULL
+#### Generic 32 — FULL
 
 FULL · prompt 1258 / sample 6 · longest span 6 tok · 1 spans · NV recall sum 0 · code-like no · 15 chars · docs 11744176, 12790510, 12905710, 334524
 
@@ -30826,7 +29331,7 @@ Answer:
 unusual
 ```
 
-#### Generic 35 — FULL
+#### Generic 33 — FULL
 
 FULL · prompt 17 / sample 1 · longest span 5 tok · 1 spans · NV recall sum 20 · code-like no · 18 chars · docs 11129327, 13423848, 13461810, 13492157, 167056434 (+15)
 
@@ -30842,7 +29347,7 @@ Generation:
 He is a gentleman.
 ```
 
-#### Generic 36 — FULL
+#### Generic 34 — FULL
 
 FULL · prompt 158 / sample 9 · longest span 5 tok · 1 spans · NV recall sum 3 · code-like no · 17 chars · docs 166305263, 184502713, 234206533
 
@@ -30858,7 +29363,7 @@ Generation:
 He has pale skin.
 ```
 
-#### Generic 37 — FULL
+#### Generic 35 — FULL
 
 FULL · prompt 195 / sample 7 · longest span 5 tok · 1 spans · NV recall sum 0 · code-like no · 16 chars · docs 1145024, 12482469, 181304, 321459, 720113
 
@@ -30875,7 +29380,7 @@ Answer:
 industry
 ```
 
-#### Generic 38 — FULL
+#### Generic 36 — FULL
 
 FULL · prompt 442 / sample 8 · longest span 5 tok · 1 spans · NV recall sum 20 · code-like no · 20 chars · docs 10855736, 109209168, 11128612, 11279025, 11300443 (+15)
 
@@ -30891,7 +29396,7 @@ Generation:
 Thank you very much.
 ```
 
-#### Generic 39 — FULL
+#### Generic 37 — FULL
 
 FULL · prompt 524 / sample 9 · longest span 5 tok · 1 spans · NV recall sum 0 · code-like no · 13 chars · docs 12139251, 12161408, 12207884
 
@@ -30908,7 +29413,7 @@ Answer:
 shame
 ```
 
-#### Generic 40 — FULL
+#### Generic 38 — FULL
 
 FULL · prompt 608 / sample 9 · longest span 5 tok · 1 spans · NV recall sum 0 · code-like no · 15 chars · docs 10887841, 10899756, 11088067, 11159084, 11229525 (+12)
 
@@ -30924,7 +29429,7 @@ Generation:
 You're invited.
 ```
 
-#### Generic 41 — FULL
+#### Generic 39 — FULL
 
 FULL · prompt 611 / sample 2 · longest span 5 tok · 1 spans · NV recall sum 0 · code-like no · 14 chars · docs 1091991, 12003153, 220108, 629371
 
@@ -30941,7 +29446,7 @@ Output:
 Samuel
 ```
 
-#### Generic 42 — FULL
+#### Generic 40 — FULL
 
 FULL · prompt 748 / sample 4 · longest span 5 tok · 1 spans · NV recall sum 0 · code-like no · 13 chars · docs 1023464, 1169148, 11828361, 11830520, 12203956 (+7)
 
@@ -30958,7 +29463,7 @@ Answer:
 novel
 ```
 
-#### Generic 43 — FULL
+#### Generic 41 — FULL
 
 FULL · prompt 772 / sample 4 · longest span 5 tok · 1 spans · NV recall sum 0 · code-like no · 17 chars · docs 11952542, 13003452, 1706974, 319776, 451642
 
@@ -30975,7 +29480,7 @@ Answer:
 inclusion
 ```
 
-#### Generic 44 — FULL
+#### Generic 42 — FULL
 
 FULL · prompt 797 / sample 9 · longest span 5 tok · 1 spans · NV recall sum 20 · code-like no · 23 chars · docs 13470237, 146955353, 148215178, 168992953, 169086473 (+15)
 
@@ -30991,7 +29496,7 @@ Generation:
 They have two children.
 ```
 
-#### Generic 45 — FULL
+#### Generic 43 — FULL
 
 FULL · prompt 989 / sample 1 · longest span 5 tok · 1 spans · NV recall sum 19 · code-like no · 20 chars · docs 10868334, 10944572, 11037271, 11109491, 11217837 (+15)
 
@@ -31007,7 +29512,7 @@ Generation:
 I really enjoyed it.
 ```
 
-#### Generic 46 — FULL
+#### Generic 44 — FULL
 
 FULL · prompt 1275 / sample 0 · longest span 5 tok · 1 spans · NV recall sum 0 · code-like no · 9 chars · docs 11449870, 11819607, 11937190, 12590877, 12729213 (+3)
 
@@ -31024,7 +29529,7 @@ A:
 Russia
 ```
 
-#### Generic 47 — FULL
+#### Generic 45 — FULL
 
 FULL · prompt 1319 / sample 1 · longest span 5 tok · 1 spans · NV recall sum 0 · code-like no · 15 chars · docs 11527847, 11835480, 1489554, 658848
 
@@ -31041,7 +29546,7 @@ Answer:
 newport
 ```
 
-#### Generic 48 — FULL
+#### Generic 46 — FULL
 
 FULL · prompt 1439 / sample 1 · longest span 5 tok · 1 spans · NV recall sum 0 · code-like no · 18 chars · docs 11559028, 11838260, 12442182, 1465881, 70596
 
@@ -31058,7 +29563,7 @@ Answer:
 originally
 ```
 
-#### Generic 49 — FULL
+#### Generic 47 — FULL
 
 FULL · prompt 1439 / sample 5 · longest span 5 tok · 1 spans · NV recall sum 0 · code-like no · 16 chars · docs 11617866, 124094, 12658316, 13086722, 1416795 (+1)
 
@@ -31075,7 +29580,7 @@ Answer:
 modeling
 ```
 
-#### Generic 50 — FULL
+#### Generic 48 — FULL
 
 FULL · prompt 1582 / sample 5 · longest span 5 tok · 1 spans · NV recall sum 20 · code-like no · 21 chars · docs 106624398, 108481084, 110760679, 159563471, 160881887 (+15)
 
@@ -31091,7 +29596,7 @@ Generation:
 Thanks for your help!
 ```
 
-#### Generic 51 — FULL
+#### Generic 49 — FULL
 
 FULL · prompt 1617 / sample 8 · longest span 5 tok · 1 spans · NV recall sum 0 · code-like no · 11 chars · docs 193216225, 193231440, 219205964, 219633568
 
@@ -31107,7 +29612,7 @@ Generation:
 (Photo: AP)
 ```
 
-#### Generic 52 — FULL
+#### Generic 50 — FULL
 
 FULL · prompt 1636 / sample 2 · longest span 5 tok · 1 spans · NV recall sum 0 · code-like no · 11 chars · docs 146451340, 147313352, 176690547, 181040229, 191397942 (+14)
 
@@ -31123,7 +29628,7 @@ Generation:
 It's okay."
 ```
 
-#### Generic 53 — FULL
+#### Generic 51 — FULL
 
 FULL · prompt 1053 / sample 9 · longest span 4 tok · 1 spans · NV recall sum 0 · code-like no · 10 chars · docs 110235000, 11582867, 11716726, 12113994, 12229942 (+10)
 
@@ -31140,7 +29645,7 @@ Answer:
 my
 ```
 
-#### Generic 54 — FULL
+#### Generic 52 — FULL
 
 FULL · prompt 1263 / sample 3 · longest span 4 tok · 1 spans · NV recall sum 0 · code-like no · 16 chars · docs 144843929, 144852446, 148712453, 169020970, 180311251 (+15)
 
@@ -31156,7 +29661,7 @@ Generation:
 How much longer?
 ```
 
-#### Generic 55 — FULL
+#### Generic 53 — FULL
 
 FULL · prompt 595 / sample 0 · longest span 3 tok · 1 spans · NV recall sum 0 · code-like no · 10 chars · docs 101236245, 106540313, 1497851, 159947307, 160511681 (+15)
 
@@ -31172,11 +29677,11 @@ Generation:
 Thank you!
 ```
 
-#### Generic 56 — FULL
+#### Generic 54 — FULL
 
 FULL · prompt 1101 / sample 0 · longest span 3 tok · 1 spans · NV recall sum 0 · code-like no · 10 chars · docs 101236245, 106540313, 1497851, 159947307, 160511681 (+15)
 
-*Same generation text as #55.*
+*Same generation text as #53.*
 
 Prompt:
 
@@ -31190,7 +29695,7 @@ Generation:
 Thank you!
 ```
 
-#### Generic 57 — FULL
+#### Generic 55 — FULL
 
 FULL · prompt 1359 / sample 0 · longest span 3 tok · 1 spans · NV recall sum 0 · code-like no · 10 chars · docs 101970589, 102371315, 104605499, 10880190, 10886689 (+15)
 
@@ -31206,7 +29711,7 @@ Generation:
 Thank you.
 ```
 
-#### Generic 58 — FULL
+#### Generic 56 — FULL
 
 FULL · prompt 222 / sample 2 · longest span 1 tok · 1 spans · NV recall sum 0 · code-like yes · 2 chars · docs 122996173, 124114402, 132108283, 143504475, 2129882 (+5)
 
@@ -31222,7 +29727,7 @@ Generation:
 ".
 ```
 
-#### Generic 59 — FULL
+#### Generic 57 — FULL
 
 FULL · prompt 477 / sample 0 · longest span 1 tok · 1 spans · NV recall sum 0 · code-like yes · 2 chars · docs 113315325, 117658772, 126258878, 138793471, 2127025 (+5)
 
@@ -31238,7 +29743,7 @@ Generation:
 ")
 ```
 
-#### Generic 60 — partial
+#### Generic 58 — partial
 
 partial · prompt 958 / sample 6 · longest span 361 tok · 21 spans · NV recall sum 0 · code-like no · 654 chars · docs 166751268
 
@@ -31620,7 +30125,7 @@ Longest matched span:
 |
 ```
 
-#### Generic 61 — partial
+#### Generic 59 — partial
 
 partial · prompt 722 / sample 9 · longest span 299 tok · 13 spans · NV recall sum 8.37 · code-like yes · 380 chars · docs 8816540, 14976339, 10287882, 13738801, 13940961 (+5)
 
@@ -31644,7 +30149,7 @@ Longest matched span:
 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77,
 ```
 
-#### Generic 62 — partial
+#### Generic 60 — partial
 
 partial · prompt 1029 / sample 2 · longest span 263 tok · 16 spans · NV recall sum 0 · code-like no · 715 chars · docs 11075491
 
@@ -31672,7 +30177,7 @@ Longest matched span:
 don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know.
 ```
 
-#### Generic 63 — partial
+#### Generic 61 — partial
 
 partial · prompt 1308 / sample 2 · longest span 254 tok · 6 spans · NV recall sum 18.6 · code-like no · 1001 chars · docs 192986695, 194159956, 192348047, 191436966, 191751923 (+5)
 
@@ -31718,7 +30223,7 @@ Context
 Privacy Policy | Impressum (Legal Info) | Copyright information: Unless otherwise specified, all text and images on this website are licensed under the Creative Commons Attribution-Share Alike 3.0 License. This does not include the source code of LibreOffice, which is licensed under the Mozilla Public License (MPLv2). "LibreOffice" and "The Document Foundation" are registered trademarks of their corresponding registered owners or are in actual use as trademarks in one or more countries. Their respective logos and icons are also subject to international copyright laws. Use thereof is explained in our trademark policy.
 ```
 
-#### Generic 64 — partial
+#### Generic 62 — partial
 
 partial · prompt 1154 / sample 9 · longest span 250 tok · 15 spans · NV recall sum 1.61 · code-like yes · 553 chars · docs 83946007, 83929088
 
@@ -31771,7 +30276,7 @@ Longest matched span:
 |  |  |  |  |  |  |  |
 ```
 
-#### Generic 65 — partial
+#### Generic 63 — partial
 
 partial · prompt 1111 / sample 8 · longest span 244 tok · 16 spans · NV recall sum 0 · code-like no · 756 chars · docs 11075491, 22359279
 
@@ -31793,7 +30298,7 @@ Longest matched span:
 I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't know. I don't
 ```
 
-#### Generic 66 — partial
+#### Generic 64 — partial
 
 partial · prompt 779 / sample 4 · longest span 236 tok · 10 spans · NV recall sum 9.29 · code-like no · 1082 chars · docs 191956926, 148423818, 191360942, 146163912, 148498135 (+5)
 
@@ -31837,7 +30342,7 @@ These people bookmarked this quote:
 
 ```
 
-#### Generic 67 — partial
+#### Generic 65 — partial
 
 partial · prompt 836 / sample 2 · longest span 229 tok · 15 spans · NV recall sum 0 · code-like no · 775 chars · docs 22506888
 
@@ -31859,7 +30364,7 @@ Longest matched span:
 . I didn't know. I didn't know. I didn't know. I didn't know. I didn't know. I didn't know. I didn't know. I didn't know. I didn't know. I didn't know. I didn't know. I didn't know. I didn't know. I didn't know. I didn't know. I didn't know. I didn't know. I didn't know. I didn't know. I didn't know. I didn't know. I didn't know. I didn't know. I didn't know. I didn't know. I didn't know. I didn't know. I didn't know. I didn't know. I didn't know. I didn't know. I didn't know. I didn't know. I didn't know. I didn't know. I didn't know. I didn't know. I didn't know.
 ```
 
-#### Generic 68 — partial
+#### Generic 66 — partial
 
 partial · prompt 1631 / sample 8 · longest span 220 tok · 13 spans · NV recall sum 3.67 · code-like yes · 367 chars · docs 61992011, 110011173, 121669268, 96504681, 143528754
 
@@ -31884,7 +30389,7 @@ Longest matched span:
 = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 ```
 
-#### Generic 69 — partial
+#### Generic 67 — partial
 
 partial · prompt 264 / sample 2 · longest span 217 tok · 16 spans · NV recall sum 6.09 · code-like no · 771 chars · docs 1646043, 1346747, 66283, 12570571, 12943260 (+5)
 
@@ -31913,7 +30418,7 @@ The 2010 United States Census reported that Marin County had a population of 252
 
 ```
 
-#### Generic 70 — partial
+#### Generic 68 — partial
 
 partial · prompt 783 / sample 3 · longest span 214 tok · 13 spans · NV recall sum 1.52 · code-like no · 919 chars · docs 763649, 11958578
 
@@ -31942,7 +30447,7 @@ Longest matched span:
 Problem: Given the question: I want to test the ability of students to read a passage and answer questions about it. Could you please come up with a good question for the passage "On August 1, 2012, Windows 8 (build 9200) was released to manufacturing with the build number 6.2.9200.16384 . Microsoft planned to hold a launch event on October 25, 2012 and release Windows 8 for general availability on the next day. However, only a day after its release to manufacturing, a copy of the final version of Windows 8 Enterprise N (a version for European markets lacking bundled media players to comply with a court ruling) leaked online, followed by leaks of the final versions of Windows 8 Pro and Enterprise a few days later. On August 15, 2012, Windows 8 was made available to download for MSDN
 ```
 
-#### Generic 71 — partial
+#### Generic 69 — partial
 
 partial · prompt 593 / sample 6 · longest span 210 tok · 13 spans · NV recall sum 0.805 · code-like no · 941 chars · docs 978769
 
@@ -31967,7 +30472,7 @@ longest field goal?
 Article: Coming off their bye week the Cardinals flew to Qwest Field for an NFC West rivalry match against the Seahawks. In the first quarter the Cardinals trailed early as kicker Olindo Mare got a 20-yard field goal. Followed in the second quarter by QB Matt Hasselbeck making a 2-yard TD pass to WR Mike Williams. The Cardinals fell further behind in the 3rd quarter with Mare nailing a 31 and a 51-yard field goal. The Cardinals replied with RB Beanie Wells getting a 2-yard TD run. The Seahawks continued to score with Mare hitting a 24-yard field goal, but the Cardinals responded in the fourth quarter with kicker Jay Feely getting a 24-yard field goal. The Seahawks pulled away with Mare making a 26-yard field goal.
 ```
 
-#### Generic 72 — partial
+#### Generic 70 — partial
 
 partial · prompt 870 / sample 2 · longest span 205 tok · 14 spans · NV recall sum 14.1 · code-like yes · 1056 chars · docs 220636060, 218043631, 170464263, 168355668, 215524330 (+5)
 
@@ -32034,7 +30539,7 @@ with four tildes — ~
  * Link to feedback:
 ```
 
-#### Generic 73 — partial
+#### Generic 71 — partial
 
 partial · prompt 1323 / sample 8 · longest span 204 tok · 13 spans · NV recall sum 3.28 · code-like no · 1072 chars · docs 536774, 1134156, 1300722, 12779522
 
@@ -32060,7 +30565,7 @@ Longest matched span:
 : I want to test the ability of students to read a passage and answer questions about it. Could you please come up with a good question for the passage "The climate of the Cretaceous is less certain and more widely disputed. Higher levels of carbon dioxide in the atmosphere are thought to have caused the world temperature gradient from north to south to become almost flat: temperatures were about the same across the planet. Average temperatures were also higher than today by about 10°C. In fact, by the middle Cretaceous, equatorial ocean waters (perhaps as warm as 20 °C in the deep ocean) may have been too warm for sea life,[dubious – discuss][citation needed] and land areas near the equator may have been deserts despite their proximity to water. The circulation of oxygen to the deep ocean may also have been disrupted.[dubious – discuss] For this reason, large volumes of
 ```
 
-#### Generic 74 — partial
+#### Generic 72 — partial
 
 partial · prompt 367 / sample 4 · longest span 194 tok · 14 spans · NV recall sum 13.3 · code-like yes · 1163 chars · docs 13114070, 1965965, 13198010, 1914514, 1775725 (+5)
 
@@ -32106,7 +30611,7 @@ The images or other third party material in this chapter are included in the cha
 ## **Chapter 12
 ```
 
-#### Generic 75 — partial
+#### Generic 73 — partial
 
 partial · prompt 1518 / sample 1 · longest span 191 tok · 13 spans · NV recall sum 0 · code-like no · 772 chars · docs 22272313
 
@@ -32128,7 +30633,7 @@ Longest matched span:
 a very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very,
 ```
 
-#### Generic 76 — partial
+#### Generic 74 — partial
 
 partial · prompt 842 / sample 2 · longest span 186 tok · 13 spans · NV recall sum 6.41 · code-like no · 1133 chars · docs 1813143, 1908656, 1893563, 1933502, 1895631 (+2)
 
@@ -32164,7 +30669,7 @@ The images or other third party material in this chapter are included in the cha
 ### **Chapter 4
 ```
 
-#### Generic 77 — partial
+#### Generic 75 — partial
 
 partial · prompt 1024 / sample 3 · longest span 180 tok · 13 spans · NV recall sum 7.1 · code-like no · 999 chars · docs 11491143, 1134761, 11688535, 1484467, 11695350 (+5)
 
@@ -32191,7 +30696,7 @@ Longest matched span:
 : The city and surrounding area suffered the bulk of the economic damage and largest loss of human life in the aftermath of the September 11, 2001 attacks when 10 of the 19 terrorists associated with Al-Qaeda piloted American Airlines Flight 11 into the North Tower of the World Trade Center and United Airlines Flight 175 into the South Tower of the World Trade Center, and later destroyed them, killing 2,192 civilians, 343 firefighters, and 71 law enforcement officers who were in the towers and in the surrounding area. The rebuilding of the area, has created a new One World Trade Center, and a 9/11 memorial and museum along with other new buildings and infrastructure. The World Trade Center PATH station, which
 ```
 
-#### Generic 78 — partial
+#### Generic 76 — partial
 
 partial · prompt 195 / sample 6 · longest span 177 tok · 12 spans · NV recall sum 0.714 · code-like no · 1001 chars · docs 1603132
 
@@ -32224,7 +30729,7 @@ Here is a question about this article: In 1975, the band left for a world tour w
 What is the answer to this question: Who
 ```
 
-#### Generic 79 — partial
+#### Generic 77 — partial
 
 partial · prompt 124 / sample 9 · longest span 176 tok · 17 spans · NV recall sum 0 · code-like no · 726 chars · docs 211085440
 
@@ -32310,7 +30815,7 @@ I don't know.
 
 ```
 
-#### Generic 80 — partial
+#### Generic 78 — partial
 
 partial · prompt 617 / sample 3 · longest span 170 tok · 15 spans · NV recall sum 0 · code-like yes · 769 chars · docs 155224348
 
@@ -32338,7 +30843,7 @@ Longest matched span:
 I don't like you. I don't like you. I don't like you. I don't like you. I don't like you. I don't like you. I don't like you. I don't like you. I don't like you. I don't like you. I don't like you. I don't like you. I don't like you. I don't like you. I don't like you. I don't like you. I don't like you. I don't like you. I don't like you. I don't like you. I don't like you. I don't like you. I don't like you. I don't like you. I don
 ```
 
-#### Generic 81 — partial
+#### Generic 79 — partial
 
 partial · prompt 1199 / sample 6 · longest span 161 tok · 12 spans · NV recall sum 6.4 · code-like no · 886 chars · docs 147863353, 149056277
 
@@ -32368,7 +30873,7 @@ Matthew 17:1-27 ESV / 3 helpful votes
 And after six days Jesus took with him Peter and James, and John his brother, and led them up a high mountain by themselves. And he was transfigured before them, and his face shone like the sun, and his clothes became white as light. And behold, there appeared to them Moses and Elijah, talking with him. And Peter said to Jesus, “Lord, it is good that we are here. If you wish, I will make three tents here, one for you and one for Moses and one for Elijah.” He was still speaking when, behold, a bright cloud overshadowed them, and a voice from the
 ```
 
-#### Generic 82 — partial
+#### Generic 80 — partial
 
 partial · prompt 1350 / sample 0 · longest span 160 tok · 13 spans · NV recall sum 8.76 · code-like no · 1027 chars · docs 1383077, 890909, 1066048, 12558899, 12320177
 
@@ -32396,7 +30901,7 @@ Longest matched span:
 
 ```
 
-#### Generic 83 — partial
+#### Generic 81 — partial
 
 partial · prompt 316 / sample 3 · longest span 148 tok · 14 spans · NV recall sum 1.83 · code-like no · 1145 chars · docs 12666517, 12343486, 12691155
 
@@ -32433,7 +30938,7 @@ Question: After the Japanese attack on Pearl Harbor, Eisenhower was assigned to 
 Is there an answer to this question: What
 ```
 
-#### Generic 84 — partial
+#### Generic 82 — partial
 
 partial · prompt 155 / sample 2 · longest span 141 tok · 12 spans · NV recall sum 0 · code-like no · 630 chars · docs 22312235
 
@@ -32456,7 +30961,7 @@ Longest matched span:
 . I don't know how to do it. I don't know how to do it. I don't know how to do it. I don't know how to do it. I don't know how to do it. I don't know how to do it. I don't know how to do it. I don't know how to do it. I don't know how to do it. I don't know how to do it. I don't know how to do it. I don't know how to do it. I don't know how to do it. I don't know how to do it.
 ```
 
-#### Generic 85 — partial
+#### Generic 83 — partial
 
 partial · prompt 165 / sample 1 · longest span 141 tok · 13 spans · NV recall sum 0 · code-like no · 671 chars · docs 22312235
 
@@ -32478,7 +30983,7 @@ Longest matched span:
 . I don't know how to do it. I don't know how to do it. I don't know how to do it. I don't know how to do it. I don't know how to do it. I don't know how to do it. I don't know how to do it. I don't know how to do it. I don't know how to do it. I don't know how to do it. I don't know how to do it. I don't know how to do it. I don't know how to do it. I don't know how to do it.
 ```
 
-#### Generic 86 — partial
+#### Generic 84 — partial
 
 partial · prompt 1387 / sample 4 · longest span 140 tok · 14 spans · NV recall sum 2.15 · code-like no · 1031 chars · docs 11464801, 13029279
 
@@ -32517,7 +31022,7 @@ QUES: The official policy of the U.S. Government is that Thailand was not an all
 
 ```
 
-#### Generic 87 — partial
+#### Generic 85 — partial
 
 partial · prompt 868 / sample 1 · longest span 139 tok · 13 spans · NV recall sum 0 · code-like no · 997 chars · docs 49476558
 
@@ -32541,7 +31046,7 @@ Longest matched span:
 , please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please,
 ```
 
-#### Generic 88 — partial
+#### Generic 86 — partial
 
 partial · prompt 1339 / sample 5 · longest span 139 tok · 13 spans · NV recall sum 0 · code-like no · 995 chars · docs 49476558
 
@@ -32566,7 +31071,7 @@ Longest matched span:
 , please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please, please,
 ```
 
-#### Generic 89 — partial
+#### Generic 87 — partial
 
 partial · prompt 1085 / sample 5 · longest span 136 tok · 13 spans · NV recall sum 0 · code-like no · 835 chars · docs 11216018
 
@@ -32588,7 +31093,7 @@ Longest matched span:
 I love you. I love you. I love you. I love you. I love you. I love you. I love you. I love you. I love you. I love you. I love you. I love you. I love you. I love you. I love you. I love you. I love you. I love you. I love you. I love you. I love you. I love you. I love you. I love you. I love you. I love you. I love you. I love you. I love you. I love you. I love you. I love you. I love you. I love you.
 ```
 
-#### Generic 90 — partial
+#### Generic 88 — partial
 
 partial · prompt 1158 / sample 8 · longest span 136 tok · 14 spans · NV recall sum 4.68 · code-like no · 1010 chars · docs 13008211, 12595911, 13075246, 767617, 13008456 (+5)
 
@@ -32610,7 +31115,7 @@ Longest matched span:
 or the Great War, was a global war originating in Europe that lasted from 28 July 1914 to 11 November 1918. More than 70 million military personnel, including 60 million Europeans, were mobilised in one of the largest wars in history. Over nine million combatants and seven million civilians died as a result of the war (including the victims of a number of genocides), a casualty rate exacerbated by the belligerents' technological and industrial sophistication, and the tactical stalemate caused by gruelling trench
 ```
 
-#### Generic 91 — partial
+#### Generic 89 — partial
 
 partial · prompt 76 / sample 8 · longest span 132 tok · 12 spans · NV recall sum 2.92 · code-like no · 850 chars · docs 1065274, 1430467, 1556275, 1072621, 12248848
 
@@ -32641,7 +31146,7 @@ Longest matched span:
 .  - Wales is a country that is part of the United Kingdom and the island of Great Britain. It is bordered by England to the east, the Irish Sea to the north and west, and the Bristol Channel to the south. It had a population in 2011 of 3,063,456 and has a total area of . Wales has over of coastline and is largely mountainous, with its higher peaks in the north and central areas, including Snowdon, its highest summit. The country lies within the north temperate zone and has a changeable, maritime climate.  - The
 ```
 
-#### Generic 92 — partial
+#### Generic 90 — partial
 
 partial · prompt 1167 / sample 6 · longest span 132 tok · 15 spans · NV recall sum 0 · code-like no · 825 chars · docs 11349107
 
@@ -32663,7 +31168,7 @@ Longest matched span:
 's gone. He's gone. He's gone. He's gone. He's gone. He's gone. He's gone. He's gone. He's gone. He's gone. He's gone. He's gone. He's gone. He's gone. He's gone. He's gone. He's gone. He's gone. He's gone. He's gone. He's gone. He's gone. He's gone. He's gone. He's gone. He's gone. He's
 ```
 
-#### Generic 93 — partial
+#### Generic 91 — partial
 
 partial · prompt 509 / sample 1 · longest span 128 tok · 11 spans · NV recall sum 5.22 · code-like no · 853 chars · docs 191822867, 147439504, 192345706, 148222883, 193641163 (+5)
 
@@ -32731,29 +31236,7 @@ Email Frequency
 No thanks, show me the site
 ```
 
-#### Generic 94 — partial
-
-partial · prompt 1511 / sample 1 · longest span 122 tok · 13 spans · NV recall sum 0 · code-like yes · 385 chars · docs 83882441
-
-Prompt:
-
-```text
-I want the red balloon.
-```
-
-Generation:
-
-```text
-<eos> |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
-```
-
-Longest matched span:
-
-```text
- |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
-```
-
-#### Generic 95 — partial
+#### Generic 92 — partial
 
 partial · prompt 517 / sample 7 · longest span 119 tok · 14 spans · NV recall sum 0 · code-like no · 761 chars · docs 22604135, 22536621, 11018209, 22313962
 
@@ -32779,7 +31262,7 @@ Longest matched span:
 I'm sorry. I'm sorry. I'm sorry. I'm sorry. I'm sorry. I'm sorry. I'm sorry. I'm sorry. I'm sorry. I'm sorry. I'm sorry. I'm sorry. I'm sorry. I'm sorry. I'm sorry. I'm sorry. I'm sorry. I'm sorry. I'm sorry. I'm sorry. I'm sorry. I'm sorry. I'm sorry. I'm sorry
 ```
 
-#### Generic 96 — partial
+#### Generic 93 — partial
 
 partial · prompt 1549 / sample 5 · longest span 118 tok · 8 spans · NV recall sum 7.42 · code-like no · 539 chars · docs 193853156, 193420987, 193392218, 146388634, 147498732 (+5)
 
@@ -32855,7 +31338,7 @@ Destination Docents
 In other languages
 ```
 
-#### Generic 97 — partial
+#### Generic 94 — partial
 
 partial · prompt 1287 / sample 7 · longest span 112 tok · 13 spans · NV recall sum 1.67 · code-like no · 904 chars · docs 193221157
 
@@ -32901,7 +31384,7 @@ No temptation has overtaken you that is not common to man. God is faithful, and 
 
 ```
 
-#### Generic 98 — partial
+#### Generic 95 — partial
 
 partial · prompt 1078 / sample 4 · longest span 111 tok · 14 spans · NV recall sum 0.762 · code-like no · 892 chars · docs 192892827
 
@@ -32969,7 +31452,7 @@ The Elder Scrolls V: Skyrim
 news ( 2
 ```
 
-#### Generic 99 — partial
+#### Generic 96 — partial
 
 partial · prompt 246 / sample 7 · longest span 104 tok · 11 spans · NV recall sum 0.497 · code-like no · 966 chars · docs 148038873
 
@@ -33003,7 +31486,7 @@ Subscribe
 Reports and views published in the Media Wire section have been retrieved from other news agencies and websites, and do not necessarily reflect the opinion of the Iran Front Page (IFP) news website. The IFP may change the headlines of the reports in a bid to make them compatible with its own style of covering Iran News, and does not make any changes to the content. The source and URL of all reports and news stories are mentioned at the bottom of each article.
 ```
 
-#### Generic 100 — partial
+#### Generic 97 — partial
 
 partial · prompt 173 / sample 1 · longest span 101 tok · 13 spans · NV recall sum 0.398 · code-like no · 959 chars · docs 188985
 
@@ -33034,8954 +31517,107 @@ Longest matched span:
 Here is a question about this article: The era of planning in Himachal Pradesh started 1948 along with the rest of India. The first five-year plan allocated ₹ 52.7 million to Himachal. More than 50% of this expenditure was incurred on road construction since it was felt that without proper transport facilities, the process of planning and development could not be carried to the people, who mostly lived an isolated
 ```
 
+#### Generic 98 — partial
+
+partial · prompt 1588 / sample 0 · longest span 99 tok · 8 spans · NV recall sum 0.94 · code-like no · 575 chars · docs 1981526
+
+Prompt:
+
+```text
+The biggest donor was Ziri and his parents.
+```
+
+Generation:
+
+```text
+Their generosity was essential to make the project possible. Many other people, too, have shown their support and have donated their time and money to help make the project a success. We thank everyone who has supported our work.
+
+**Conflicts of Interest:** The authors declare no conflict of interest.
+
+#### **References**
+
+
+© 2020 by the authors. Licensee MDPI, Basel, Switzerland. This article is an open access article distributed under the terms and conditions of the Creative Commons Attribution (CC BY) license (http://creativecommons.org/licenses/by/4.0/).
+
+*Article*
+```
+
+Longest matched span:
+
+```text
+our work.
+
+**Conflicts of Interest:** The authors declare no conflict of interest.
+
+#### **References**
+
+
+© 2020 by the authors. Licensee MDPI, Basel, Switzerland. This article is an open access article distributed under the terms and conditions of the Creative Commons Attribution (CC BY) license (http://creativecommons.org/licenses/by/4.0/).
+
+*Article*
+```
+
+#### Generic 99 — partial
+
+partial · prompt 2 / sample 1 · longest span 98 tok · 14 spans · NV recall sum 0 · code-like no · 825 chars · docs 22272313, 98096729
+
+Prompt:
+
+```text
+I'm glad to be able to be in his company.
+```
+
+Generation:
+
+```text
+It's a great pleasure. He's a very nice man, and he's also very kind, and he's very generous and he's very charming, and he's very smart. I was talking to him, and he said, 'You know, I've just done a little bit of research on you. I found out that you're a qualified electrician and I think it would be a good idea if you applied for this job, and I think you would be a good fit for it.' He's very nice. He's very generous. He's very kind. And he's very smart.
+
+And he's very charming.
+
+And he's very, very intelligent.
+
+And he's very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very,
+```
+
+Longest matched span:
+
+```text
+very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very,
+```
+
+#### Generic 100 — partial
+
+partial · prompt 727 / sample 8 · longest span 97 tok · 14 spans · NV recall sum 10.6 · code-like no · 985 chars · docs 12648207, 360522, 11881892, 11860377, 12586045 (+5)
+
+Prompt:
+
+```text
+"The Little Prince" by Antoine de Saint-Exupéry has been translated from French into many languages.
+```
+
+Generation:
+
+```text
+In 1970, the film rights were purchased by William Goldman, who adapted the story into a classic film Little Lost Girl, directed by him and starring David Niven and Virginia Majewski. The story also inspired the 1985 film The Adventures of Tintin, and the 2006 Disney/Pixar animated film Tintin.
+Answer this question: How many languages did the "Little Prince" get translated to?
+answer: 30
+
+question: Coming off their divisional home win over the Buccaneers, the Falcons flew to the Louisiana Superdome for a Week 5 divisional duel with the New Orleans Saints. Due to QB Joey Harrington's ineffectiveness from last week's loss to the Buccaneers, QB Byron Leftwich was given the start. In the first quarter, Atlanta trailed early as Saints QB Drew Brees completed a 37-yard TD pass to WR Devery Henderson. The Falcons responded with former Saints kicker Morten Andersen's 38-yard field goal. In the second quarter, Atlanta began to play well as Andersen got a 33-yard field goal, while
+```
+
+Longest matched span:
+
+```text
+, QB Byron Leftwich was given the start. In the first quarter, Atlanta trailed early as Saints QB Drew Brees completed a 37-yard TD pass to WR Devery Henderson. The Falcons responded with former Saints kicker Morten Andersen's 38-yard field goal. In the second quarter, Atlanta began to play well as Andersen got a 33-yard field goal, while
+```
+
 <a id="dfm-main-commonpile-specific"></a>
 
 ### DFM (final) / Common Pile / Specific
 
-67 full matches out of 10000 generations; showing 67 full and 33 partial.
+29 full matches out of 9925 non-degenerate generations (75 degenerate excluded, 38 of them full matches); showing 29 full and 71 partial.
 
 #### Specific 1 — FULL
-
-FULL · prompt 375 / sample 1 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs 166751268
-
-Prompt:
-
-```text
-State whether it intends to issue the proposal by the end of the year?
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 2 — FULL
-
-FULL · prompt 437 / sample 3 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs 166751268
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-No natural gas supply.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 3 — FULL
-
-FULL · prompt 581 / sample 6 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs 166751268
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-See explanatory notes at beginning of the tables.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 4 — FULL
-
-FULL · prompt 637 / sample 3 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs 166751268
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Pesticide to be analysed on a voluntary basis only.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 5 — FULL
-
-FULL · prompt 637 / sample 8 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs 166751268
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Pesticide to be analysed on a voluntary basis only.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 6 — FULL
-
-FULL · prompt 680 / sample 3 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs 166751268
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Not adequate broadband connection.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 7 — FULL
-
-FULL · prompt 680 / sample 5 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs 166751268
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Not adequate broadband connection.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 8 — FULL
-
-FULL · prompt 705 / sample 2 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs 166751268
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Please specify the applicable legislation.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 9 — FULL
-
-FULL · prompt 728 / sample 2 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs 166751268
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Government support stocks are nil.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 10 — FULL
-
-FULL · prompt 1171 / sample 7 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs 166751268
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-See Note 15 for further details.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 11 — FULL
-
-FULL · prompt 1220 / sample 7 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs 166751268
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-See Note 2 for additional details.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 12 — FULL
-
-FULL · prompt 1295 / sample 6 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs 166751268
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Such loans are identified as Level 2 assets.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 13 — FULL
-
-FULL · prompt 1346 / sample 6 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs 166751268
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-All loans are secured by mortgages.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 14 — FULL
-
-FULL · prompt 1377 / sample 5 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs 166751268
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Otherwise, the general units hold the same rights as the limited units.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 15 — FULL
-
-FULL · prompt 1406 / sample 6 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs 166751268
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Regulation of Controlled Substances.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 16 — FULL
-
-FULL · prompt 1451 / sample 7 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs 166751268
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-See Note 2 for further information.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 17 — FULL
-
-FULL · prompt 2017 / sample 5 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs 166751268
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Proposed date of entry into force: To be determined.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 18 — FULL
-
-FULL · prompt 2023 / sample 0 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs 166751268
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Is there a relevant international standard?
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 19 — FULL
-
-FULL · prompt 2023 / sample 2 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs 166751268
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Is there a relevant international standard?
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 20 — FULL
-
-FULL · prompt 2023 / sample 8 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs 166751268
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Is there a relevant international standard?
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 21 — FULL
-
-FULL · prompt 2034 / sample 4 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs 166751268
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Is there a relevant international stan dard?
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 22 — FULL
-
-FULL · prompt 2034 / sample 9 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs 166751268
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Is there a relevant international stan dard?
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 23 — FULL
-
-FULL · prompt 2049 / sample 5 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs 166751268
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Import permit: an import permit is required.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 24 — FULL
-
-FULL · prompt 2051 / sample 2 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs 166751268
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-No animal cases have been reported.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 25 — FULL
-
-FULL · prompt 2136 / sample 0 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs 166751268
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Members with economies in transition.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 26 — FULL
-
-FULL · prompt 2136 / sample 2 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs 166751268
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Members with economies in transition.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 27 — FULL
-
-FULL · prompt 2136 / sample 7 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs 166751268
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Members with economies in transition.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 28 — FULL
-
-FULL · prompt 2321 / sample 2 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs 166751268
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-How can the tool help you?
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 29 — FULL
-
-FULL · prompt 2337 / sample 7 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs 166751268
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Z = Suppressed for data quality reasons.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 30 — FULL
-
-FULL · prompt 2337 / sample 8 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs 166751268
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Z = Suppressed for data quality reasons.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 31 — FULL
-
-FULL · prompt 2384 / sample 0 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs 166751268
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Data includes only permanent employees.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 32 — FULL
-
-FULL · prompt 2514 / sample 6 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs 166751268
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-No foreign companies received spectrum in this auction.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 33 — FULL
-
-FULL · prompt 1460 / sample 3 · longest span 383 tok · 3 spans · NV recall sum 0 · code-like yes · 447 chars · docs 211851388
-
-Prompt:
-
-```text
-Schedules other than those listed are omitted because they are not applicable.
-```
-
-Generation:
-
-```text
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-```
-
-#### Specific 34 — FULL
 
 FULL · prompt 807 / sample 7 · longest span 331 tok · 3 spans · NV recall sum 9.62 · code-like yes · 330 chars · docs 173047452
 
@@ -41997,93 +31633,7 @@ Generation:
 1. 2. 3. 4. 5. 6. 7. 8. 9. 10. 11. 12. 13. 14. 15. 16. 17. 18. 19. 20. 21. 22. 23. 24. 25. 26. 27. 28. 29. 30. 31. 32. 33. 34. 35. 36. 37. 38. 39. 40. 41. 42. 43. 44. 45. 46. 47. 48. 49. 50. 51. 52. 53. 54. 55. 56. 57. 58. 59. 60. 61. 62. 63. 64. 65. 66. 67. 68. 69. 70. 71. 72. 73. 74. 75. 76. 77. 78. 79. 80. 81. 82. 83. 84. 85.
 ```
 
-#### Specific 35 — FULL
-
-FULL · prompt 807 / sample 4 · longest span 256 tok · 1 spans · NV recall sum 1.38 · code-like yes · 511 chars · docs 15535299, 220087310
-
-Prompt:
-
-```text
-Telephone connection with both Offices.
-```
-
-Generation:
-
-```text
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-```
-
-#### Specific 36 — FULL
-
-FULL · prompt 2147 / sample 1 · longest span 256 tok · 1 spans · NV recall sum 1.38 · code-like yes · 511 chars · docs 15535299, 220087310
-
-*Same generation text as #35.*
-
-Prompt:
-
-```text
-Address, fax number and e-mail address (if available) of other body:.
-```
-
-Generation:
-
-```text
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-```
-
-#### Specific 37 — FULL
-
-FULL · prompt 2147 / sample 5 · longest span 256 tok · 1 spans · NV recall sum 1.38 · code-like yes · 511 chars · docs 15535299, 220087310
-
-*Same generation text as #35.*
-
-Prompt:
-
-```text
-Address, fax number and e-mail address (if available) of other body:.
-```
-
-Generation:
-
-```text
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-```
-
-#### Specific 38 — FULL
-
-FULL · prompt 2147 / sample 6 · longest span 256 tok · 1 spans · NV recall sum 1.38 · code-like yes · 511 chars · docs 15535299, 220087310
-
-*Same generation text as #35.*
-
-Prompt:
-
-```text
-Address, fax number and e-mail address (if available) of other body:.
-```
-
-Generation:
-
-```text
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-```
-
-#### Specific 39 — FULL
-
-FULL · prompt 1841 / sample 7 · longest span 255 tok · 1 spans · NV recall sum 0 · code-like yes · 254 chars · docs 152341656, 153858922, 158836251, 36273635, 3705521 (+6)
-
-Prompt:
-
-```text
-This is a slide coming from ECDC, I think.
-```
-
-Generation:
-
-```text
-2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-```
-
-#### Specific 40 — FULL
+#### Specific 2 — FULL
 
 FULL · prompt 2299 / sample 3 · longest span 38 tok · 1 spans · NV recall sum 1 · code-like no · 190 chars · docs 209033652
 
@@ -42099,7 +31649,7 @@ Generation:
 The other authors declare that they have no competing interests. The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.
 ```
 
-#### Specific 41 — FULL
+#### Specific 3 — FULL
 
 FULL · prompt 1063 / sample 5 · longest span 11 tok · 1 spans · NV recall sum 0 · code-like no · 18 chars · docs 146286385, 191011156, 192081406, 193137020, 194219611
 
@@ -42115,7 +31665,7 @@ Generation:
 12. December 2009.
 ```
 
-#### Specific 42 — FULL
+#### Specific 4 — FULL
 
 FULL · prompt 1884 / sample 6 · longest span 11 tok · 1 spans · NV recall sum 3 · code-like no · 38 chars · docs 103364412, 107167535, 109993830
 
@@ -42131,7 +31681,7 @@ Generation:
 I think it is the best way to do this.
 ```
 
-#### Specific 43 — FULL
+#### Specific 5 — FULL
 
 FULL · prompt 2344 / sample 9 · longest span 10 tok · 1 spans · NV recall sum 1 · code-like no · 43 chars · docs 1837242
 
@@ -42147,7 +31697,7 @@ Generation:
 Please feel free to contact us at any time.
 ```
 
-#### Specific 44 — FULL
+#### Specific 6 — FULL
 
 FULL · prompt 2821 / sample 6 · longest span 10 tok · 1 spans · NV recall sum 1 · code-like no · 43 chars · docs 208390988
 
@@ -42163,11 +31713,11 @@ Generation:
 The species is named for the type locality.
 ```
 
-#### Specific 45 — FULL
+#### Specific 7 — FULL
 
 FULL · prompt 2970 / sample 6 · longest span 10 tok · 1 spans · NV recall sum 1 · code-like no · 43 chars · docs 208390988
 
-*Same generation text as #44.*
+*Same generation text as #6.*
 
 Prompt:
 
@@ -42181,7 +31731,7 @@ Generation:
 The species is named for the type locality.
 ```
 
-#### Specific 46 — FULL
+#### Specific 8 — FULL
 
 FULL · prompt 204 / sample 6 · longest span 9 tok · 1 spans · NV recall sum 18 · code-like no · 36 chars · docs 150838333, 153333865, 155645879, 158133075, 159956399 (+13)
 
@@ -42197,7 +31747,7 @@ Generation:
 I will fix this in the next release.
 ```
 
-#### Specific 47 — FULL
+#### Specific 9 — FULL
 
 FULL · prompt 951 / sample 1 · longest span 9 tok · 1 spans · NV recall sum 0 · code-like no · 16 chars · docs 95238622
 
@@ -42213,7 +31763,7 @@ Generation:
 (See page 1079.)
 ```
 
-#### Specific 48 — FULL
+#### Specific 10 — FULL
 
 FULL · prompt 1060 / sample 4 · longest span 9 tok · 1 spans · NV recall sum 18 · code-like no · 33 chars · docs 13529386, 170914567, 174097423, 194032892, 2069971 (+13)
 
@@ -42229,7 +31779,7 @@ Generation:
 to be sold to the highest bidder.
 ```
 
-#### Specific 49 — FULL
+#### Specific 11 — FULL
 
 FULL · prompt 2089 / sample 1 · longest span 8 tok · 1 spans · NV recall sum 11 · code-like yes · 7 chars · docs 10581973, 127012715, 13729197, 144859185, 18251498 (+13)
 
@@ -42245,7 +31795,7 @@ Generation:
 6 0 3 1
 ```
 
-#### Specific 50 — FULL
+#### Specific 12 — FULL
 
 FULL · prompt 2355 / sample 7 · longest span 8 tok · 1 spans · NV recall sum 6 · code-like no · 22 chars · docs 10890541, 10894796, 11063010, 11110611, 11129683 (+1)
 
@@ -42261,7 +31811,7 @@ Generation:
 And it's all for free.
 ```
 
-#### Specific 51 — FULL
+#### Specific 13 — FULL
 
 FULL · prompt 2313 / sample 1 · longest span 7 tok · 2 spans · NV recall sum 0 · code-like no · 16 chars · docs 69191309
 
@@ -42278,7 +31828,7 @@ Generation:
 {output}
 ```
 
-#### Specific 52 — FULL
+#### Specific 14 — FULL
 
 FULL · prompt 2717 / sample 6 · longest span 7 tok · 1 spans · NV recall sum 20 · code-like no · 33 chars · docs 12379860, 168404945, 168774803, 169809934, 172631491 (+15)
 
@@ -42294,7 +31844,7 @@ Generation:
 It is threatened by habitat loss.
 ```
 
-#### Specific 53 — FULL
+#### Specific 15 — FULL
 
 FULL · prompt 230 / sample 2 · longest span 6 tok · 1 spans · NV recall sum 2 · code-like no · 27 chars · docs 10871781, 170234330
 
@@ -42310,7 +31860,7 @@ Generation:
 How is the situation there?
 ```
 
-#### Specific 54 — FULL
+#### Specific 16 — FULL
 
 FULL · prompt 354 / sample 6 · longest span 6 tok · 1 spans · NV recall sum 20 · code-like no · 16 chars · docs 104307674, 105022905, 11028319, 162899036, 167409861 (+15)
 
@@ -42326,7 +31876,7 @@ Generation:
 If not, why not?
 ```
 
-#### Specific 55 — FULL
+#### Specific 17 — FULL
 
 FULL · prompt 680 / sample 8 · longest span 6 tok · 1 spans · NV recall sum 0 · code-like yes · 7 chars · docs 107929437, 150495217, 15299666, 164301115, 164588409 (+15)
 
@@ -42342,7 +31892,7 @@ Generation:
 (0.00%)
 ```
 
-#### Specific 56 — FULL
+#### Specific 18 — FULL
 
 FULL · prompt 910 / sample 6 · longest span 6 tok · 1 spans · NV recall sum 0 · code-like yes · 6 chars · docs 13174983, 146362698, 147821029, 163154105, 163379245 (+15)
 
@@ -42358,7 +31908,7 @@ Generation:
 (2010)
 ```
 
-#### Specific 57 — FULL
+#### Specific 19 — FULL
 
 FULL · prompt 1048 / sample 8 · longest span 6 tok · 1 spans · NV recall sum 0 · code-like yes · 5 chars · docs 147574380, 169153684, 169641403, 19638827, 2076108 (+15)
 
@@ -42374,7 +31924,7 @@ Generation:
 1899.
 ```
 
-#### Specific 58 — FULL
+#### Specific 20 — FULL
 
 FULL · prompt 2089 / sample 4 · longest span 6 tok · 1 spans · NV recall sum 0 · code-like yes · 5 chars · docs 101804709, 110620851, 118952101, 13284483, 13855302 (+15)
 
@@ -42390,7 +31940,7 @@ Generation:
 1 4 2
 ```
 
-#### Specific 59 — FULL
+#### Specific 21 — FULL
 
 FULL · prompt 348 / sample 6 · longest span 5 tok · 1 spans · NV recall sum 0 · code-like no · 6 chars · docs 10613140, 161969762, 162097692, 163938162, 165064341 (+13)
 
@@ -42406,7 +31956,7 @@ Generation:
 (EPRS)
 ```
 
-#### Specific 60 — FULL
+#### Specific 22 — FULL
 
 FULL · prompt 434 / sample 4 · longest span 5 tok · 1 spans · NV recall sum 20 · code-like no · 24 chars · docs 100174598, 101683145, 105362394, 109450112, 192682222 (+15)
 
@@ -42422,7 +31972,7 @@ Generation:
 Any help is appreciated.
 ```
 
-#### Specific 61 — FULL
+#### Specific 23 — FULL
 
 FULL · prompt 2412 / sample 4 · longest span 5 tok · 1 spans · NV recall sum 18 · code-like no · 27 chars · docs 101934528, 11080278, 129440328, 135229518, 142873601 (+14)
 
@@ -42438,7 +31988,7 @@ Generation:
 Please read them carefully.
 ```
 
-#### Specific 62 — FULL
+#### Specific 24 — FULL
 
 FULL · prompt 863 / sample 6 · longest span 3 tok · 1 spans · NV recall sum 0 · code-like yes · 2 chars · docs 127367556, 138673153, 140328040, 140782756, 142855398 (+15)
 
@@ -42454,7 +32004,7 @@ Generation:
 2)
 ```
 
-#### Specific 63 — FULL
+#### Specific 25 — FULL
 
 FULL · prompt 1919 / sample 7 · longest span 3 tok · 1 spans · NV recall sum 0 · code-like no · 12 chars · docs 112666003, 11345851, 127751642, 148274838, 148843141 (+14)
 
@@ -42470,7 +32020,7 @@ Generation:
 Related news
 ```
 
-#### Specific 64 — FULL
+#### Specific 26 — FULL
 
 FULL · prompt 624 / sample 1 · longest span 2 tok · 1 spans · NV recall sum 0 · code-like no · 4 chars · docs 101905759, 103644917, 103670061, 105458601, 107331399 (+15)
 
@@ -42486,7 +32036,7 @@ Generation:
 Why?
 ```
 
-#### Specific 65 — FULL
+#### Specific 27 — FULL
 
 FULL · prompt 1460 / sample 9 · longest span 1 tok · 1 spans · NV recall sum 0 · code-like yes · 1 chars · docs 136646387, 142750668, 164709015, 166803794, 211402070 (+5)
 
@@ -42502,11 +32052,11 @@ Generation:
 |
 ```
 
-#### Specific 66 — FULL
+#### Specific 28 — FULL
 
 FULL · prompt 2048 / sample 9 · longest span 1 tok · 1 spans · NV recall sum 0 · code-like yes · 1 chars · docs 136646387, 142750668, 164709015, 166803794, 211402070 (+5)
 
-*Same generation text as #65.*
+*Same generation text as #27.*
 
 Prompt:
 
@@ -42520,7 +32070,7 @@ Generation:
 |
 ```
 
-#### Specific 67 — FULL
+#### Specific 29 — FULL
 
 FULL · prompt 2089 / sample 6 · longest span 1 tok · 1 spans · NV recall sum 0 · code-like no · 1 chars · docs 151003486, 18620857, 20454378, 209596521, 22361267 (+5)
 
@@ -42536,3673 +32086,7 @@ Generation:
 l
 ```
 
-#### Specific 68 — partial
-
-partial · prompt 22 / sample 2 · longest span 504 tok · 5 spans · NV recall sum 0 · code-like yes · 514 chars · docs 220323371, 43755969, 178277992
-
-Prompt:
-
-```text
-What was the exact total sum raised?
-```
-
-Generation:
-
-```text
-It was $45,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000
-```
-
-Longest matched span:
-
-```text
-,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000,000
-```
-
-#### Specific 69 — partial
-
-partial · prompt 2049 / sample 4 · longest span 499 tok · 6 spans · NV recall sum 0 · code-like yes · 511 chars · docs 166751268
-
-Prompt:
-
-```text
-Import permit: an import permit is required.
-```
-
-Generation:
-
-```text
-|
-1 |
-4 |
-A |
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-Longest matched span:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 70 — partial
-
-partial · prompt 2147 / sample 0 · longest span 498 tok · 14 spans · NV recall sum 0 · code-like yes · 1022 chars · docs 211147195, 211451175
-
-Prompt:
-
-```text
-Address, fax number and e-mail address (if available) of other body:.
-```
-
-Generation:
-
-```text
-|
-||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-```
-
-Longest matched span:
-
-```text
-||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-```
-
-#### Specific 71 — partial
-
-partial · prompt 2147 / sample 8 · longest span 498 tok · 14 spans · NV recall sum 0 · code-like yes · 1022 chars · docs 211147195, 211451175
-
-*Same generation text as #70.*
-
-Prompt:
-
-```text
-Address, fax number and e-mail address (if available) of other body:.
-```
-
-Generation:
-
-```text
-|
-||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-```
-
-Longest matched span:
-
-```text
-||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-```
-
-#### Specific 72 — partial
-
-partial · prompt 1155 / sample 3 · longest span 494 tok · 6 spans · NV recall sum 0 · code-like yes · 502 chars · docs 166751268
-
-Prompt:
-
-```text
-Changes in internal control.
-```
-
-Generation:
-
-```text
-17.2.2.2
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-Longest matched span:
-
-```text
-
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 73 — partial
-
-partial · prompt 728 / sample 5 · longest span 493 tok · 6 spans · NV recall sum 0 · code-like yes · 514 chars · docs 166751268
-
-Prompt:
-
-```text
-Government support stocks are nil.
-```
-
-Generation:
-
-```text
-|
-|
-|
-Kazakhstan |
-0 |
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-Longest matched span:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 74 — partial
-
-partial · prompt 2017 / sample 1 · longest span 489 tok · 10 spans · NV recall sum 0 · code-like yes · 516 chars · docs 166751268
-
-Prompt:
-
-```text
-Proposed date of entry into force: To be determined.
-```
-
-Generation:
-
-```text
-|
-|
-New Zealand |
-1.4.2017 |
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-Longest matched span:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 75 — partial
-
-partial · prompt 1491 / sample 6 · longest span 483 tok · 9 spans · NV recall sum 0 · code-like yes · 527 chars · docs 166751268
-
-Prompt:
-
-```text
-Many ornamented with crystal buttons.
-```
-
-Generation:
-
-```text
-|
-||||||||
-|
-Trinomial name |
-Binomial name |
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-Longest matched span:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 76 — partial
-
-partial · prompt 1582 / sample 6 · longest span 483 tok · 10 spans · NV recall sum 0 · code-like yes · 501 chars · docs 166751268
-
-Prompt:
-
-```text
-To Growers of Tobacco.
-```
-
-Generation:
-
-```text
-1.10% (E) (S) (G) |
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-Longest matched span:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 77 — partial
-
-partial · prompt 2124 / sample 3 · longest span 482 tok · 7 spans · NV recall sum 0 · code-like yes · 507 chars · docs 166751268
-
-Prompt:
-
-```text
-International Trade  and Stockholm Convention on Persistent Organic Pollutants.
-```
-
-Generation:
-
-```text
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-||
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-Longest matched span:
-
-```text
-
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 78 — partial
+#### Specific 30 — partial
 
 partial · prompt 394 / sample 6 · longest span 478 tok · 10 spans · NV recall sum 0 · code-like yes · 564 chars · docs 166751268
 
@@ -46703,7 +32587,7 @@ Longest matched span:
 |
 ```
 
-#### Specific 79 — partial
+#### Specific 31 — partial
 
 partial · prompt 1147 / sample 4 · longest span 475 tok · 8 spans · NV recall sum 0 · code-like yes · 519 chars · docs 166751268
 
@@ -47199,7 +33083,7 @@ Longest matched span:
 |
 ```
 
-#### Specific 80 — partial
+#### Specific 32 — partial
 
 partial · prompt 705 / sample 7 · longest span 469 tok · 14 spans · NV recall sum 0 · code-like yes · 527 chars · docs 166751268
 
@@ -47689,7 +33573,7 @@ Longest matched span:
 |
 ```
 
-#### Specific 81 — partial
+#### Specific 33 — partial
 
 partial · prompt 2115 / sample 6 · longest span 468 tok · 12 spans · NV recall sum 0 · code-like yes · 539 chars · docs 166751268
 
@@ -48179,7 +34063,7 @@ Longest matched span:
 |
 ```
 
-#### Specific 82 — partial
+#### Specific 34 — partial
 
 partial · prompt 2017 / sample 3 · longest span 444 tok · 22 spans · NV recall sum 0 · code-like yes · 1025 chars · docs 211147195, 211451175
 
@@ -48202,7 +34086,7 @@ Longest matched span:
 ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 ```
 
-#### Specific 83 — partial
+#### Specific 35 — partial
 
 partial · prompt 1295 / sample 7 · longest span 437 tok · 18 spans · NV recall sum 0 · code-like yes · 540 chars · docs 166751268
 
@@ -48660,463 +34544,7 @@ Longest matched span:
 |
 ```
 
-#### Specific 84 — partial
-
-partial · prompt 1817 / sample 4 · longest span 435 tok · 21 spans · NV recall sum 0 · code-like yes · 501 chars · docs 166751268
-
-Prompt:
-
-```text
-For detailed information, see Ala.
-```
-
-Generation:
-
-```text
-R. Sup. Ct. Sup. Ct. R. 5.2 and Ala. R. Sup. Ct. Sup. Ct. R. 5.3. |
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-Longest matched span:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 85 — partial
+#### Specific 36 — partial
 
 partial · prompt 2245 / sample 9 · longest span 399 tok · 24 spans · NV recall sum 0 · code-like yes · 587 chars · docs 166751268
 
@@ -49539,7 +34967,7 @@ Longest matched span:
 |
 ```
 
-#### Specific 86 — partial
+#### Specific 37 — partial
 
 partial · prompt 2598 / sample 9 · longest span 395 tok · 11 spans · NV recall sum 7.74 · code-like yes · 452 chars · docs 5120977, 20495876, 8194755, 14071197, 14885078 (+4)
 
@@ -49561,7 +34989,7 @@ Longest matched span:
 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 220, 230, 240, 250, 260, 270, 280, 290, 300, 310, 320, 330, 340, 350, 360, 370, 380, 390, 400, 410, 420, 430, 440, 450, 460, 470, 480, 490, 500, 510, 520, 530, 540, 550, 560, 570, 580, 590, 600, 610, 620, 630, 640, 650, 660, 670, 680, 690, 700, 710, 720, 730, 740, 750, 760, 770, 780, 790, 800, 810, 820, 830, 840,
 ```
 
-#### Specific 87 — partial
+#### Specific 38 — partial
 
 partial · prompt 1475 / sample 7 · longest span 390 tok · 24 spans · NV recall sum 0 · code-like yes · 560 chars · docs 166751268
 
@@ -49975,7 +35403,7 @@ Longest matched span:
 |
 ```
 
-#### Specific 88 — partial
+#### Specific 39 — partial
 
 partial · prompt 1011 / sample 1 · longest span 361 tok · 12 spans · NV recall sum 3.17 · code-like yes · 421 chars · docs 146210974
 
@@ -49998,7 +35426,7 @@ Longest matched span:
 . 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117
 ```
 
-#### Specific 89 — partial
+#### Specific 40 — partial
 
 partial · prompt 1196 / sample 0 · longest span 346 tok · 23 spans · NV recall sum 0 · code-like yes · 628 chars · docs 166751268
 
@@ -50367,7 +35795,7 @@ Longest matched span:
 |
 ```
 
-#### Specific 90 — partial
+#### Specific 41 — partial
 
 partial · prompt 1584 / sample 5 · longest span 345 tok · 17 spans · NV recall sum 4.53 · code-like yes · 415 chars · docs 147302182, 146210974, 193683615, 191993097
 
@@ -50390,7 +35818,7 @@ Longest matched span:
 . 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112 113
 ```
 
-#### Specific 91 — partial
+#### Specific 42 — partial
 
 partial · prompt 910 / sample 9 · longest span 332 tok · 3 spans · NV recall sum 0.988 · code-like yes · 334 chars · docs 173047452
 
@@ -50412,7 +35840,7 @@ Longest matched span:
 6. 7. 8. 9. 10. 11. 12. 13. 14. 15. 16. 17. 18. 19. 20. 21. 22. 23. 24. 25. 26. 27. 28. 29. 30. 31. 32. 33. 34. 35. 36. 37. 38. 39. 40. 41. 42. 43. 44. 45. 46. 47. 48. 49. 50. 51. 52. 53. 54. 55. 56. 57. 58. 59. 60. 61. 62. 63. 64. 65. 66. 67. 68. 69. 70. 71. 72. 73. 74. 75. 76. 77. 78. 79. 80. 81. 82. 83. 84. 85. 86. 87. 88. 89.
 ```
 
-#### Specific 92 — partial
+#### Specific 43 — partial
 
 partial · prompt 2171 / sample 4 · longest span 319 tok · 8 spans · NV recall sum 1.82 · code-like yes · 362 chars · docs 13984100, 21926942
 
@@ -50434,7 +35862,7 @@ Longest matched span:
 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83,
 ```
 
-#### Specific 93 — partial
+#### Specific 44 — partial
 
 partial · prompt 1313 / sample 1 · longest span 316 tok · 21 spans · NV recall sum 0 · code-like no · 768 chars · docs 166751268
 
@@ -50772,7 +36200,7 @@ Longest matched span:
 |
 ```
 
-#### Specific 94 — partial
+#### Specific 45 — partial
 
 partial · prompt 1384 / sample 1 · longest span 311 tok · 21 spans · NV recall sum 0 · code-like no · 730 chars · docs 166751268
 
@@ -51104,7 +36532,7 @@ Longest matched span:
 |
 ```
 
-#### Specific 95 — partial
+#### Specific 46 — partial
 
 partial · prompt 2216 / sample 6 · longest span 290 tok · 21 spans · NV recall sum 4.9 · code-like no · 815 chars · docs 14677188, 19754594, 7034793, 14724204, 6717311 (+5)
 
@@ -51430,7 +36858,7 @@ Longest matched span:
 77
 ```
 
-#### Specific 96 — partial
+#### Specific 47 — partial
 
 partial · prompt 2394 / sample 1 · longest span 284 tok · 22 spans · NV recall sum 0 · code-like no · 724 chars · docs 166751268
 
@@ -51736,7 +37164,7 @@ Longest matched span:
 |
 ```
 
-#### Specific 97 — partial
+#### Specific 48 — partial
 
 partial · prompt 1048 / sample 4 · longest span 283 tok · 10 spans · NV recall sum 1.5 · code-like yes · 372 chars · docs 104494872
 
@@ -51759,7 +37187,7 @@ Longest matched span:
 1st, 2nd, 3rd, 4th, 5th, 6th, 7th, 8th, 9th, 10th, 11th, 12th, 13th, 14th, 15th, 16th, 17th, 18th, 19th, 20th, 21st, 22nd, 23rd, 24th, 25th, 26th, 27th, 28th, 29th, 30th, 31st, 32nd, 33rd, 34th, 35th, 36th, 37th, 38th, 39th, 40th, 41st, 42nd, 43rd, 44th, 45th, 46th, 47th, 48th, 49th, 50th, 51st, 52nd, 53rd, 54th, 55th, 56th, 57th, 58th, 59
 ```
 
-#### Specific 98 — partial
+#### Specific 49 — partial
 
 partial · prompt 2495 / sample 1 · longest span 277 tok · 20 spans · NV recall sum 0 · code-like no · 733 chars · docs 166751268
 
@@ -52058,7 +37486,7 @@ Longest matched span:
 |
 ```
 
-#### Specific 99 — partial
+#### Specific 50 — partial
 
 partial · prompt 2299 / sample 0 · longest span 270 tok · 5 spans · NV recall sum 6.8 · code-like no · 1134 chars · docs 148246762, 193974007, 192461533, 192340476, 192463120
 
@@ -52148,7 +37576,7 @@ Keywords
   •
 ```
 
-#### Specific 100 — partial
+#### Specific 51 — partial
 
 partial · prompt 2021 / sample 3 · longest span 257 tok · 19 spans · NV recall sum 1.91 · code-like yes · 462 chars · docs 146413907, 147311616, 149535119
 
@@ -52171,11 +37599,2270 @@ Longest matched span:
 9 13.10 13.11 13.12 13.13 13.14 13.15 13.16 13.17 13.18 13.19 13.20 13.21 13.22 13.23 13.24 13.25 13.26 13.27 13.28 13.29 13.30 13.31 13.32 13.33 13.34 13.35 13.36 13.37 13.38 13.39 13.40 13.41 13.42 13.43 13.44 13.45 13.46 13.47 13.48 13.49 13.50 13.51 13.
 ```
 
+#### Specific 52 — partial
+
+partial · prompt 624 / sample 3 · longest span 242 tok · 15 spans · NV recall sum 10.2 · code-like no · 1084 chars · docs 191910082, 191400675, 147787905, 148853921, 191582438 (+5)
+
+Prompt:
+
+```text
+Why or why not? - If you migrate: When?
+```
+
+Generation:
+
+```text
+How?
+Why or why not? - If you don't migrate: How do you prevent your users from using the new features?
+Is there anything else you would like to add?
+Thanks!
+
+-- 
+To unsubscribe e-mail to<EMAIL_ADDRESS>Problems? http://www.libreoffice.org/get-help/mailing-lists/how-to-unsubscribe/
+Posting guidelines + more: http://wiki.documentfoundation.org/Netiquette
+List archive: http://listarchives.libreoffice.org/global/design/
+All messages sent to this list will be publicly archived and cannot be deleted
+
+Context
+
+
+Privacy Policy | Impressum (Legal Info) | Copyright information: Unless otherwise specified, all text and images on this website are licensed under the Creative Commons Attribution-Share Alike 3.0 License. This does not include the source code of LibreOffice, which is licensed under the Mozilla Public License (MPLv2). "LibreOffice" and "The Document Foundation" are registered trademarks of their corresponding registered owners or are in actual use as trademarks in one or more countries. Their respective logos and icons are also subject to international copyright laws.
+```
+
+Longest matched span:
+
+```text
+
+
+-- 
+To unsubscribe e-mail to<EMAIL_ADDRESS>Problems? http://www.libreoffice.org/get-help/mailing-lists/how-to-unsubscribe/
+Posting guidelines + more: http://wiki.documentfoundation.org/Netiquette
+List archive: http://listarchives.libreoffice.org/global/design/
+All messages sent to this list will be publicly archived and cannot be deleted
+
+Context
+
+
+Privacy Policy | Impressum (Legal Info) | Copyright information: Unless otherwise specified, all text and images on this website are licensed under the Creative Commons Attribution-Share Alike 3.0 License. This does not include the source code of LibreOffice, which is licensed under the Mozilla Public License (MPLv2). "LibreOffice" and "The Document Foundation" are registered trademarks of their corresponding registered owners or are in actual use as trademarks in one or more countries. Their respective logos and icons are also subject to international copyright laws.
+```
+
+#### Specific 53 — partial
+
+partial · prompt 1665 / sample 6 · longest span 239 tok · 17 spans · NV recall sum 0.621 · code-like yes · 424 chars · docs 214376312
+
+Prompt:
+
+```text
+The pictures will be consecutively numbered ,on the back.
+```
+
+Generation:
+
+```text
+If the picture is missing, put a " " (space) instead.
+
+Output should look like this:
+
+1. 3. 5. 7. 9. 11. 13. 15. 17. 19. 21. 23. 25. 27. 29. 31. 33. 35. 37. 39. 41. 43. 45. 47. 49. 51. 53. 55. 57. 59. 61. 63. 65. 67. 69. 71. 73. 75. 77. 79. 81. 83. 85. 87. 89. 91. 93. 95. 97. 99. 101. 103. 105. 107. 109. 111. 113. 115. 117. 119. 121. 123. 125. 127. 129. 131. 133. 135. 137. 139. 141. 143. 145. 147. 149. 151. 153. 155. 157
+```
+
+Longest matched span:
+
+```text
+1. 3. 5. 7. 9. 11. 13. 15. 17. 19. 21. 23. 25. 27. 29. 31. 33. 35. 37. 39. 41. 43. 45. 47. 49. 51. 53. 55. 57. 59. 61. 63. 65. 67. 69. 71. 73. 75. 77. 79. 81. 83. 85. 87. 89. 91. 93. 95. 97. 99. 101. 103. 105. 107. 109. 111. 113. 115. 117.
+```
+
+#### Specific 54 — partial
+
+partial · prompt 2577 / sample 8 · longest span 232 tok · 18 spans · NV recall sum 0.974 · code-like yes · 431 chars · docs 149442888, 148837620
+
+Prompt:
+
+```text
+Fromer, "Are we running out of trademarks?
+```
+
+Generation:
+
+```text
+," The New York Times, July 15, 2011, p. A17.
+  22. Mark Fromer, "Are we running out of trademarks?," The New York Times, July 15, 2011, p. A17.
+  23. 23.0 23.1 23.2 23.3 23.4 23.5 23.6 23.7 23.8 23.9 23.10 23.11 23.12 23.13 23.14 23.15 23.16 23.17 23.18 23.19 23.20 23.21 23.22 23.23 23.24 23.25 23.26 23.27 23.28 23.29 23.30 23.31 23.32 23.33 23.34 23.35 23.36 23.37 23.38 23.39 23.40 23.41 23.42 23.43 23.44 23.45 23.46 23.47 23
+```
+
+Longest matched span:
+
+```text
+9 23.10 23.11 23.12 23.13 23.14 23.15 23.16 23.17 23.18 23.19 23.20 23.21 23.22 23.23 23.24 23.25 23.26 23.27 23.28 23.29 23.30 23.31 23.32 23.33 23.34 23.35 23.36 23.37 23.38 23.39 23.40 23.41 23.42 23.43 23.44 23.45 23.46 23.47 23
+```
+
+#### Specific 55 — partial
+
+partial · prompt 1921 / sample 4 · longest span 230 tok · 19 spans · NV recall sum 0 · code-like no · 514 chars · docs 166751268, 34064977
+
+Prompt:
+
+```text
+Amendment 6 as an addition.
+```
+
+Generation:
+
+```text
+The new version reads as follows:
+
+§ 2, stk. 1, affattes således:
+
+»Ved beregningen af den gennemsnitlige årlige afgift pr. køretøj, jf. § 1, stk. 1, nr. 2, for brugte køretøjer anvendes følgende beløb for vægtafgift, udligningsafgift og privatbenyttelsestillæg, jf. dog stk. 2 og 3:
+
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+```
+
+Longest matched span:
+
+```text
+
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+```
+
+#### Specific 56 — partial
+
+partial · prompt 1777 / sample 9 · longest span 229 tok · 22 spans · NV recall sum 12.4 · code-like yes · 426 chars · docs 6160356, 9318766, 8768005, 9531957, 17783679 (+5)
+
+Prompt:
+
+```text
+Munition Vote for Wilson.
+```
+
+Generation:
+
+```text
+M. P. (1917) 100, 103, 104. 105, 107, 108, 109, 110, 111, 112, 113, 114, 115. 116, 117, 118, 119, 120, 121. 122. 123, 124, 125, 126, 127, 128, 129, 130, 131. 132, 133, 134, 135, 136, 137, 138, 139. 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185
+```
+
+Longest matched span:
+
+```text
+140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185
+```
+
+#### Specific 57 — partial
+
+partial · prompt 2062 / sample 0 · longest span 225 tok · 17 spans · NV recall sum 1.02 · code-like yes · 494 chars · docs 15065842
+
+Prompt:
+
+```text
+Importation of Horticultural Products, Animals and Animal Products.
+```
+
+Generation:
+
+```text
+WTO Agreement on Agriculture: Consolidated Text with Decisions of the Panel and Appellate Body, Article 5: Scope of the Agreement and the Definition of Agricultural Goods, Chapter 1: General Provisions, Article 1: Scope and Definitions, b), 7, 8, 12, 13, 15, 16, 17, 18, 20, 21, 22, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76,
+```
+
+Longest matched span:
+
+```text
+, 20, 21, 22, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76,
+```
+
+#### Specific 58 — partial
+
+partial · prompt 1763 / sample 2 · longest span 219 tok · 13 spans · NV recall sum 8.62 · code-like no · 1100 chars · docs 1527685, 976873, 12297496, 940587, 730896 (+5)
+
+Prompt:
+
+```text
+What do they put on the safety match boxes so as to light the matches?
+```
+
+Generation:
+
+```text
+".
+Answer: answer is it is "friction" but no one has said it that way
+
+
+Question: "What is the most common method of communication?"  Context: "The ability of the Dominions to set their own foreign policy, independent of Britain, was recognised at the 1923 Imperial Conference. Britain's request for military assistance from the Dominions at the outbreak of the Chanak Crisis the previous year had been turned down by Canada and South Africa, and Canada had refused to be bound by the 1923 Treaty of Lausanne. After pressure from Ireland and South Africa, the 1926 Imperial Conference issued the Balfour Declaration, declaring the Dominions to be "autonomous Communities within the British Empire, equal in status, in no way subordinate one to another" within a "British Commonwealth of Nations". This declaration was given legal substance under the 1931 Statute of Westminster. The parliaments of Canada, Australia, New Zealand, the Union of South Africa, the Irish Free State and Newfoundland were now independent of British legislative control, they could nullify British laws and Britain could no
+```
+
+Longest matched span:
+
+```text
+?"  Context: "The ability of the Dominions to set their own foreign policy, independent of Britain, was recognised at the 1923 Imperial Conference. Britain's request for military assistance from the Dominions at the outbreak of the Chanak Crisis the previous year had been turned down by Canada and South Africa, and Canada had refused to be bound by the 1923 Treaty of Lausanne. After pressure from Ireland and South Africa, the 1926 Imperial Conference issued the Balfour Declaration, declaring the Dominions to be "autonomous Communities within the British Empire, equal in status, in no way subordinate one to another" within a "British Commonwealth of Nations". This declaration was given legal substance under the 1931 Statute of Westminster. The parliaments of Canada, Australia, New Zealand, the Union of South Africa, the Irish Free State and Newfoundland were now independent of British legislative control, they could nullify British laws and Britain could no
+```
+
+#### Specific 59 — partial
+
+partial · prompt 1564 / sample 3 · longest span 214 tok · 13 spans · NV recall sum 0 · code-like yes · 547 chars · docs 220087310, 214947290
+
+Prompt:
+
+```text
+For Sale: Two hundred locust posts for wire fencing.
+```
+
+Generation:
+
+```text
+One hundred twelve-foot lengths of cedar saplings for posts for fence, and a quantity of fence rails. ——. . . . 5 1--_--. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+```
+
+Longest matched span:
+
+```text
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+```
+
+#### Specific 60 — partial
+
+partial · prompt 787 / sample 4 · longest span 211 tok · 16 spans · NV recall sum 5.53 · code-like yes · 396 chars · docs 191900290, 146889103, 147563271, 148295203, 193613087 (+5)
+
+Prompt:
+
+```text
+Banks:—Bank of New South Wales.
+```
+
+Generation:
+
+```text
+Bank of New South Wales, 1925. Sydney: NSW. Australia. Banks:—Bank of New South Wales. Bank of New South Wales, 1925. Sydney: NSW. Australia.
+  3. 3.0 3.1 3.2 3.3 3.4 3.5 3.6 3.7 3.8 3.9 3.10 3.11 3.12 3.13 3.14 3.15 3.16 3.17 3.18 3.19 3.20 3.21 3.22 3.23 3.24 3.25 3.26 3.27 3.28 3.29 3.30 3.31 3.32 3.33 3.34 3.35 3.36 3.37 3.38 3.39 3.40 3.41 3.42 3.43 3.44 3.45 3.46 3.47 3.48 3.49 3.50 3.51
+```
+
+Longest matched span:
+
+```text
+9 3.10 3.11 3.12 3.13 3.14 3.15 3.16 3.17 3.18 3.19 3.20 3.21 3.22 3.23 3.24 3.25 3.26 3.27 3.28 3.29 3.30 3.31 3.32 3.33 3.34 3.35 3.36 3.37 3.38 3.39 3.40 3.41 3.42 3.43 3.44 3.45 3.46 3.47 3.48 3.49 3.50 3.51
+```
+
+#### Specific 61 — partial
+
+partial · prompt 237 / sample 1 · longest span 197 tok · 19 spans · NV recall sum 0 · code-like no · 908 chars · docs 34064977, 166751268
+
+Prompt:
+
+```text
+Has this amount been settled with the Commission?
+```
+
+Generation:
+
+```text
+If not, when do you expect it to be settled? What are the reasons for the delay?
+If the amount has been settled, please provide the amount and the year of payment. If the amount has not been settled, please provide details of the ongoing negotiations.
+Please also specify whether the amount in question was paid to or recovered from the Member State.
+3.2.2. Other irregular expenditure
+Have there been any cases of irregular expenditure that have not been recorded in the previous questions?
+If so, please provide details.
+4. Other developments
+What other developments, if any, are relevant for the assessment of the EU budget’s performance?
+Appendix III
+2021
+EU budget performance — final reports
+Member State |
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+```
+
+Longest matched span:
+
+```text
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+```
+
+#### Specific 62 — partial
+
+partial · prompt 1928 / sample 2 · longest span 195 tok · 14 spans · NV recall sum 2.06 · code-like no · 1200 chars · docs 13242872
+
+Prompt:
+
+```text
+Insufficient financing of humanitarian aid prevents it from being implemented properly.
+```
+
+Generation:
+
+```text
+Many countries do not provide enough funds for humanitarian aid. At the same time, funds allocated for humanitarian aid are often used to cover the costs of the military. It is necessary to take into account the existing trends in the development of humanitarian aid and to make effective decisions based on them.
+
+### **References**
+
+
+**Open Access** This chapter is licensed under the terms of the Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/), which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons license and indicate if changes were made.
+
+The images or other third party material in this chapter are included in the chapter's Creative Commons license, unless indicated otherwise in a credit line to the material. If material is not included in the chapter's Creative Commons license and your intended use is not permitted by statutory regulation or exceeds the permitted use, you will need to obtain permission directly from the copyright holder.
+
+# **Chapter 4 Humanitarian Aid
+```
+
+Longest matched span:
+
+```text
+them.
+
+### **References**
+
+
+**Open Access** This chapter is licensed under the terms of the Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/), which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons license and indicate if changes were made.
+
+The images or other third party material in this chapter are included in the chapter's Creative Commons license, unless indicated otherwise in a credit line to the material. If material is not included in the chapter's Creative Commons license and your intended use is not permitted by statutory regulation or exceeds the permitted use, you will need to obtain permission directly from the copyright holder.
+
+# **Chapter 4
+```
+
+#### Specific 63 — partial
+
+partial · prompt 2018 / sample 3 · longest span 185 tok · 14 spans · NV recall sum 13.3 · code-like no · 1310 chars · docs 209937015, 210010942, 164850904, 210654303, 164888420 (+5)
+
+Prompt:
+
+```text
+That document with the original signature and date is maintained by DOE.
+```
+
+Generation:
+
+```text
+It is not a template and does not include any form of DOE representation or sponsorship. It may be reproduced without permission for educational or research purposes only. It may not be used for any other purpose, including for commercial purposes. If it is used for research purposes, the research must be performed in accordance with DOE procedures and policies.
+This report was prepared as an account of work sponsored by an agency of the United States Government. Neither the United States Government nor any agency thereof, nor any of their employees, makes any warranty, express or implied, or assumes any legal liability or responsibility for the accuracy, completeness, or usefulness of any information, apparatus, product, or process disclosed, or represents that its use would not infringe privately owned rights. Reference herein to any specific commercial product, process, or service by trade name, trademark, manufacturer, or otherwise does not necessarily constitute or imply its endorsement, recommendation, or favoring by the United States Government or any agency thereof. The views and opinions of authors expressed herein do not necessarily state or reflect those of the United States Government or any agency thereof.
+This report was prepared as an account of work sponsored by an agency o
+```
+
+Longest matched span:
+
+```text
+.
+This report was prepared as an account of work sponsored by an agency of the United States Government. Neither the United States Government nor any agency thereof, nor any of their employees, makes any warranty, express or implied, or assumes any legal liability or responsibility for the accuracy, completeness, or usefulness of any information, apparatus, product, or process disclosed, or represents that its use would not infringe privately owned rights. Reference herein to any specific commercial product, process, or service by trade name, trademark, manufacturer, or otherwise does not necessarily constitute or imply its endorsement, recommendation, or favoring by the United States Government or any agency thereof. The views and opinions of authors expressed herein do not necessarily state or reflect those of the United States Government or any agency thereof.
+
+```
+
+#### Specific 64 — partial
+
+partial · prompt 1998 / sample 4 · longest span 180 tok · 15 spans · NV recall sum 0 · code-like no · 699 chars · docs 4039291
+
+Prompt:
+
+```text
+Even though they're not very numerous, we shouldn't forget them.
+```
+
+Generation:
+
+```text
+There are two types of female characters that deserve our attention. The first group includes women who are either the protagonist or the antagonist, or who occupy a central role in the plot. The second group consists of women who are not the protagonists, but who are nevertheless significant. The heroine of the first group is a very special woman, for she is not only an important character, but also a woman who represents, in a way, the whole of humanity. This is the case with the heroines of the following tales: 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48,
+```
+
+Longest matched span:
+
+```text
+1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48,
+```
+
+#### Specific 65 — partial
+
+partial · prompt 1213 / sample 1 · longest span 179 tok · 12 spans · NV recall sum 3.43 · code-like yes · 605 chars · docs 83847495
+
+Prompt:
+
+```text
+Adaptable Platform For Expansion.
+```
+
+Generation:
+
+```text
+_arXiv preprint arXiv:2306.10701_ , 2023. 
+  * [8] T. Brown, B. Mann, N. Ryder, M. Subbiah, J. D. Kaplan, P. Dhariwal, A. Neelakantan, P. Shyam, G. Sastry, A. Askell _et al._ , “Language models are few-shot learners,” _Advances in neural information processing systems_ , vol. 33, pp. 1877–1901, 2020. 
+  * [9] H. Touvron, T. Lavril, G. Izacard, X. Martinet, M.-A. Lachaux, T. Lacroix, B. Rozière, N. Goyal, E. Hambro, F. Azhar, A. Rodriguez, A. Joulin, E. Grave, and G. Lample, “Llama: Open and efficient foundation language models,” _arXiv preprint arXiv:2302.13971_ , 2023. 
+  * [10] J. Wei, X. Wang, D
+```
+
+Longest matched span:
+
+```text
+. 
+  * [8] T. Brown, B. Mann, N. Ryder, M. Subbiah, J. D. Kaplan, P. Dhariwal, A. Neelakantan, P. Shyam, G. Sastry, A. Askell _et al._ , “Language models are few-shot learners,” _Advances in neural information processing systems_ , vol. 33, pp. 1877–1901, 2020. 
+  * [9] H. Touvron, T. Lavril, G. Izacard, X. Martinet, M.-A. Lachaux, T. Lacroix, B. Rozière, N. Goyal, E. Hambro, F. Azhar
+```
+
+#### Specific 66 — partial
+
+partial · prompt 1498 / sample 8 · longest span 173 tok · 13 spans · NV recall sum 7.45 · code-like no · 880 chars · docs 792068, 12231408, 12631259, 12386100, 1191571 (+5)
+
+Prompt:
+
+```text
+Oil live stock to and from this market.
+```
+
+Generation:
+
+```text
+The free trade zone of Meerut was established in 1990. In 2007, Meerut's International Airport was re-opened and now serves as an international gateway for the city and the region. In 2012, Meerut's new airport terminal was inaugurated.  - India, officially the Republic of India ("Bhrat Gaarjya"), is a country in South Asia. It is the seventh-largest country by area, the second-most populous country (with over 1.2 billion people), and the most populous democracy in the world. It is bounded by the Indian Ocean on the south, the Arabian Sea on the southwest, and the Bay of Bengal on the southeast. It shares land borders with Pakistan to the west; China, Nepal, and Bhutan to the northeast; and Myanmar (Burma) and Bangladesh to the east. In the Indian Ocean, India is in the vicinity of Sri Lanka and the Maldives. India's Andaman and Nicobar Islands share a maritime border
+```
+
+Longest matched span:
+
+```text
+.  - India, officially the Republic of India ("Bhrat Gaarjya"), is a country in South Asia. It is the seventh-largest country by area, the second-most populous country (with over 1.2 billion people), and the most populous democracy in the world. It is bounded by the Indian Ocean on the south, the Arabian Sea on the southwest, and the Bay of Bengal on the southeast. It shares land borders with Pakistan to the west; China, Nepal, and Bhutan to the northeast; and Myanmar (Burma) and Bangladesh to the east. In the Indian Ocean, India is in the vicinity of Sri Lanka and the Maldives. India's Andaman and Nicobar Islands share a maritime border
+```
+
+#### Specific 67 — partial
+
+partial · prompt 741 / sample 4 · longest span 171 tok · 16 spans · NV recall sum 1.4 · code-like no · 832 chars · docs 425972, 855757, 12141416
+
+Prompt:
+
+```text
+Soviet Union was the major market.
+```
+
+Generation:
+
+```text
+Its coverage was at 4.5 million households, and it accounted for 41 percent of the total U.S. advertising revenues. U.S. advertising revenues for the year totaled US$15 billion. The next three markets by revenue were Japan (US$1.65 billion), Canada (US$1.37 billion), and West Germany (US$1.28 billion).
+Answer this: How many more US dollars did U.S. advertising revenues for the year total than the revenues in West Germany?
+
+A: 1400000000
+
+
+P: The 2010 United States Census reported that Marin County had a population of 252,409. The racial makeup of Marin County was 201,963 (80.0%) White (U.S. Census), 6,987 (2.8%) African American (U.S. Census), 1,523 (0.6%) Native American (U.S. Census), 13,761 (5.5%) Asian (U.S. Census), 509 (0.2%) Pacific Islander (U.S. Census), 16,973 (6.7%) from Race (United States Census), and 10,693
+```
+
+Longest matched span:
+
+```text
+
+
+
+P: The 2010 United States Census reported that Marin County had a population of 252,409. The racial makeup of Marin County was 201,963 (80.0%) White (U.S. Census), 6,987 (2.8%) African American (U.S. Census), 1,523 (0.6%) Native American (U.S. Census), 13,761 (5.5%) Asian (U.S. Census), 509 (0.2%) Pacific Islander (U.S. Census), 16,973 (6.7%) from Race (United States Census), and 10,693
+```
+
+#### Specific 68 — partial
+
+partial · prompt 327 / sample 4 · longest span 170 tok · 13 spans · NV recall sum 6.58 · code-like no · 1285 chars · docs 13198239, 13212145, 1880935, 13215436, 13210971 (+5)
+
+Prompt:
+
+```text
+Has the Council already discussed this issue?
+```
+
+Generation:
+
+```text
+The Council has already discussed this issue. The Council has already discussed this issue. Has the Council already discussed this issue? The Council has already discussed this issue. The Council has already discussed this issue. Has the Council already discussed this issue? The Council has already discussed this issue. The Council has already discussed this issue. Has the Council already discussed this issue? The Council has already discussed this issue. The Council has already discussed this issue.
+
+**Open Access** This chapter is licensed under the terms of the Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/ by/4.0/), which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons licence and indicate if changes were made.
+
+The images or other third party material in this chapter are included in the chapter's Creative Commons licence, unless indicated otherwise in a credit line to the material. If material is not included in the chapter's Creative Commons licence and your intended use is not permitted by statutory regulation or exceeds the permitted use, you will need t
+```
+
+Longest matched span:
+
+```text
+.
+
+**Open Access** This chapter is licensed under the terms of the Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/ by/4.0/), which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons licence and indicate if changes were made.
+
+The images or other third party material in this chapter are included in the chapter's Creative Commons licence, unless indicated otherwise in a credit line to the material. If material is not included in the chapter's Creative Commons licence and your intended use is not permitted by statutory regulation or exceeds the permitted use, you will need
+```
+
+#### Specific 69 — partial
+
+partial · prompt 1458 / sample 9 · longest span 170 tok · 15 spans · NV recall sum 4.7 · code-like no · 1123 chars · docs 149189700
+
+Prompt:
+
+```text
+Such information is hereby incorporated by reference.
+```
+
+Generation:
+
+```text
+If any of the material is not available, it shall be made available upon request without undue delay.
+
+The author(s) declare that they have no competing interests.
+
+Authors’ contributions
+
+SM conceived the study and wrote the manuscript. SM, CW, YH, and YX collected and analyzed the data. All authors read and approved the final manuscript.
+
+Authors’ original submitted files for images
+
+Below are the links to the authors’ original submitted files for images.
+
+Authors’ original file for figure 1
+
+Authors’ original file for figure 2
+
+Rights and permissions
+
+Open Access This article is published under license to BioMed Central Ltd. This is an Open Access article is distributed under the terms of the Creative Commons Attribution License ( https://creativecommons.org/licenses/by/2.0 ), which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited.
+
+Reprints and Permissions
+
+About this article
+
+Cite this article
+
+Meng, S., Wang, C., He, Y. et al. Clinical and epidemiological characteristics of 2,621 patients infected with SARS-CoV-2 in Hunan, China. BMC
+```
+
+Longest matched span:
+
+```text
+and analyzed the data. All authors read and approved the final manuscript.
+
+Authors’ original submitted files for images
+
+Below are the links to the authors’ original submitted files for images.
+
+Authors’ original file for figure 1
+
+Authors’ original file for figure 2
+
+Rights and permissions
+
+Open Access This article is published under license to BioMed Central Ltd. This is an Open Access article is distributed under the terms of the Creative Commons Attribution License ( https://creativecommons.org/licenses/by/2.0 ), which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited.
+
+Reprints and Permissions
+
+About this article
+
+Cite this article
+
+
+```
+
+#### Specific 70 — partial
+
+partial · prompt 1316 / sample 3 · longest span 162 tok · 13 spans · NV recall sum 2.42 · code-like no · 818 chars · docs 1551571, 12176097, 11638354, 12037922
+
+Prompt:
+
+```text
+Retail electric sales for the regulated companies decreased 3.5 percent.
+```
+
+Generation:
+
+```text
+The price for retail electricity was reduced by 1.4 percent. The price of wholesale electricity was reduced by 0.2 percent. The price of retail electricity was 0.04 percent higher than the price of wholesale electricity.
+What was the percentage decrease in retail electric sales for the regulated companies?
+A: 3.5
+Problem: Please answer a question about the following article about Frédéric Chopin:
+Frédéric François Chopin (/ˈʃoʊpæn/; French pronunciation: ​[fʁe.de.ʁik fʁɑ̃.swa ʃɔ.pɛ̃]; 22 February or 1 March 1810 – 17 October 1849), born Fryderyk Franciszek Chopin,[n 1] was a Polish and French (by citizenship and birth of father) composer and a virtuoso pianist of the Romantic era, who wrote primarily for the solo piano. He gained and has maintained renown worldwide as one of the leading musicians of his era
+```
+
+Longest matched span:
+
+```text
+
+Problem: Please answer a question about the following article about Frédéric Chopin:
+Frédéric François Chopin (/ˈʃoʊpæn/; French pronunciation: ​[fʁe.de.ʁik fʁɑ̃.swa ʃɔ.pɛ̃]; 22 February or 1 March 1810 – 17 October 1849), born Fryderyk Franciszek Chopin,[n 1] was a Polish and French (by citizenship and birth of father) composer and a virtuoso pianist of the Romantic era, who wrote primarily for the solo piano. He gained and has maintained renown worldwide as one of the leading musicians of his era
+```
+
+#### Specific 71 — partial
+
+partial · prompt 1575 / sample 0 · longest span 162 tok · 13 spans · NV recall sum 0 · code-like no · 815 chars · docs 22272313
+
+Prompt:
+
+```text
+Will you kindly publish the cor-\ rect name a married woman.
+```
+
+Generation:
+
+```text
+I had no idea you were married. And I am very sorry for you and your husband. I am very sorry. I am very, very sorry. I am very, very, very sorry."
+
+"I am not married. I am not married. I am not married. I am not married. I am not married. I am not married."
+
+"I am very, very, very sorry. I am very, very, very, very sorry. I am very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very,
+```
+
+Longest matched span:
+
+```text
+very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very,
+```
+
+#### Specific 72 — partial
+
+partial · prompt 2202 / sample 5 · longest span 161 tok · 18 spans · NV recall sum 0 · code-like no · 787 chars · docs 211665304
+
+Prompt:
+
+```text
+Regulation has been prepared on the basis of the provisions of the Law No. 5996 and dated 11 June 2010 of Veterinary Services,  Plant Health, Food and Feed.
+```
+
+Generation:
+
+```text
+The Regulation is applicable on the basis of the provisions of the Law No. 5996 and dated 11 June 2010 on Veterinary Services,  Plant Health, Food and Feed. The Regulation is applicable on the basis of the provisions of the Law No. 5996 and dated 11 June 2010 on Veterinary Services,  Plant Health, Food and Feed. The Regulation is applicable on the basis of the provisions of the Law No. 5996 and dated 11 June 2010 on Veterinary Services,  Plant Health, Food and Feed. The Regulation is applicable on the basis of the provisions of the Law No. 5996 and dated 11 June 2010 on Veterinary Services,  Plant Health, Food and Feed.
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+```
+
+Longest matched span:
+
+```text
+.
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+```
+
+#### Specific 73 — partial
+
+partial · prompt 2506 / sample 1 · longest span 155 tok · 13 spans · NV recall sum 2.81 · code-like no · 888 chars · docs 37316743
+
+Prompt:
+
+```text
+What good deeds have we stored up?
+```
+
+Generation:
+
+```text
+We have done a lot of wrong in our lifetime.” Jesus then told him, “I didn’t come to call the righteous, but sinners to repentance.”
+
+Luke 15:1-32 ESV / 3 helpful votes
+
+Now the tax collectors and sinners were all drawing near to hear him. And the Pharisees and the scribes grumbled, saying, “This man receives sinners and eats with them.” So he told them this parable: “What man of you, having a hundred sheep, if he has lost one of them, does not leave the ninety-nine in the open country, and go after the one that is lost, until he finds it? And when he has found it, he lays it on his shoulders, rejoicing. And when he comes home, he calls together his friends and his neighbors, saying to them, ‘Rejoice with me, for I have found my sheep that was lost.’”
+
+Luke 12:48 ESV / 3 helpful votes
+
+But the one who did not know, and did what deserved a beating, will receive a light beating
+```
+
+Longest matched span:
+
+```text
+
+
+Now the tax collectors and sinners were all drawing near to hear him. And the Pharisees and the scribes grumbled, saying, “This man receives sinners and eats with them.” So he told them this parable: “What man of you, having a hundred sheep, if he has lost one of them, does not leave the ninety-nine in the open country, and go after the one that is lost, until he finds it? And when he has found it, he lays it on his shoulders, rejoicing. And when he comes home, he calls together his friends and his neighbors, saying to them, ‘Rejoice with me, for I have found my sheep that was lost.’
+```
+
+#### Specific 74 — partial
+
+partial · prompt 863 / sample 2 · longest span 152 tok · 13 spans · NV recall sum 2.38 · code-like no · 916 chars · docs 346000, 12272737
+
+Prompt:
+
+```text
+Feathers cleaned, curled and dyed.
+```
+
+Generation:
+
+```text
+Feathers can be used to create different hair styles.
+
+What is the answer to this question: What does the word "feather" mean?
+****
+So... a small, fluffy, plumage-like structure
+
+
+Here is a question about this article: The city also has several branches of renowned international restaurants and chefs. These include Paris' Au Pied de Cochon and Brasserie Lipp, Philippe (by Philippe Chow); Nobu, Morimoto; Pámpano, owned by Mexican-raised opera legend Plácido Domingo. There are branches of the exclusive Japanese restaurant Suntory, Rome's famed Alfredo, as well as New York steakhouses Morton's and The Palm, and Monte Carlo's BeefBar. Three of the most famous Lima-based Haute Peruvian restaurants, La Mar, Segundo Muelle and Astrid y Gastón have locations in Mexico City.
+What is the answer to this question: What is the name of the restaurant in Mexico City that is owned by Plácido Domingo?
+****
+So...
+Pámpano
+```
+
+Longest matched span:
+
+```text
+: The city also has several branches of renowned international restaurants and chefs. These include Paris' Au Pied de Cochon and Brasserie Lipp, Philippe (by Philippe Chow); Nobu, Morimoto; Pámpano, owned by Mexican-raised opera legend Plácido Domingo. There are branches of the exclusive Japanese restaurant Suntory, Rome's famed Alfredo, as well as New York steakhouses Morton's and The Palm, and Monte Carlo's BeefBar. Three of the most famous Lima-based Haute Peruvian restaurants, La Mar, Segundo Muelle and Astrid y Gastón have locations in Mexico City.
+What
+```
+
+#### Specific 75 — partial
+
+partial · prompt 741 / sample 5 · longest span 147 tok · 11 spans · NV recall sum 1.32 · code-like no · 886 chars · docs 12925045, 12299350
+
+Prompt:
+
+```text
+Soviet Union was the major market.
+```
+
+Generation:
+
+```text
+The Soviet Union was closed to the West from 1961 to 1989, and the company was then forced to establish an East Asian market.
+What was the major market for the company?
+The answer is the following: Soviet Union
+
+Problem: The city is governed pursuant to the Home Rule Charter of the City of Detroit. The city government is run by a mayor and a nine-member city council and clerk elected on an at-large nonpartisan ballot. Since voters approved the city's charter in 1974, Detroit has had a "strong mayoral" system, with the mayor approving departmental appointments. The council approves budgets but the mayor is not obligated to adhere to any earmarking. City ordinances and substantially large contracts must be approved by the council. The Detroit City Code is the codification of Detroit's local ordinances.
+Who approves departmental appointments?
+The answer is the following:
+mayor
+```
+
+Longest matched span:
+
+```text
+
+
+Problem: The city is governed pursuant to the Home Rule Charter of the City of Detroit. The city government is run by a mayor and a nine-member city council and clerk elected on an at-large nonpartisan ballot. Since voters approved the city's charter in 1974, Detroit has had a "strong mayoral" system, with the mayor approving departmental appointments. The council approves budgets but the mayor is not obligated to adhere to any earmarking. City ordinances and substantially large contracts must be approved by the council. The Detroit City Code is the codification of Detroit's local ordinances.
+
+```
+
+#### Specific 76 — partial
+
+partial · prompt 2011 / sample 4 · longest span 144 tok · 12 spans · NV recall sum 5.41 · code-like no · 1109 chars · docs 1827736, 1918659, 1767001, 13206753, 13324028 (+5)
+
+Prompt:
+
+```text
+All farmers should know how much food should they produce and what people want to eat and how much they want to buy.
+```
+
+Generation:
+
+```text
+How much and what kind of food is available? How much does the government want to spend on food? How much will consumers be willing to pay for food? How much food is produced locally and how much will be imported? How much is exported? Do we need to change our food consumption habits? Do we need to change our production systems? Do we need to change our farming practices? Do we need to change the way we allocate our land and resources?
+
+**Open Access** This chapter is licensed under the terms of the Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/), which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons license and indicate if changes were made.
+
+The images or other third party material in this chapter are included in the chapter's Creative Commons license, unless indicated otherwise in a credit line to the material. If material is not included in the chapter's Creative Commons license
+```
+
+Longest matched span:
+
+```text
+?
+
+**Open Access** This chapter is licensed under the terms of the Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/), which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons license and indicate if changes were made.
+
+The images or other third party material in this chapter are included in the chapter's Creative Commons license, unless indicated otherwise in a credit line to the material. If material is not included in the chapter's Creative Commons license
+```
+
+#### Specific 77 — partial
+
+partial · prompt 1418 / sample 9 · longest span 140 tok · 15 spans · NV recall sum 1.54 · code-like no · 890 chars · docs 730037, 789725, 12555741
+
+Prompt:
+
+```text
+Unemployment has also increased significantly.
+```
+
+Generation:
+
+```text
+The national unemployment rate for the year 2014 was 5.3%, and the unemployment rate for 2015 was 6.8%. In 2014, the unemployment rate for women was 5.8%, while the unemployment rate for men was 5.0%. The unemployment rate for women in 2015 was 7.8%, while the unemployment rate for men in 2015 was 6.5%.
+Answer this question based on the article: How many points higher was the unemployment rate for women than men in 2015?
+A: 1.8
+Question:
+The Eagles' eighth game was an Interconference duel with the Colts at home. In the first quarter the Eagles Took the lead as QB Michael Vick completed a 9-yard TD pass to WR DeSean Jackson. This was followed by kicker David Akers' 22- and 21-yard field goals. The Colts replied with QB Peyton Manning completing a 3-yard TD pass to TE Jacob Tamme. The Eagles extended their lead after Akers nailed a 31-yard field goal. They eventually trailed by 1
+```
+
+Longest matched span:
+
+```text
+
+Question:
+The Eagles' eighth game was an Interconference duel with the Colts at home. In the first quarter the Eagles Took the lead as QB Michael Vick completed a 9-yard TD pass to WR DeSean Jackson. This was followed by kicker David Akers' 22- and 21-yard field goals. The Colts replied with QB Peyton Manning completing a 3-yard TD pass to TE Jacob Tamme. The Eagles extended their lead after Akers nailed a 31-yard field goal. They eventually trailed by 1
+```
+
+#### Specific 78 — partial
+
+partial · prompt 2278 / sample 0 · longest span 140 tok · 14 spans · NV recall sum 5.53 · code-like no · 1123 chars · docs 147511104, 147199951, 194245622, 148183573, 192212918 (+5)
+
+Prompt:
+
+```text
+The details of that agreement have yet to be determined.
+```
+
+Generation:
+
+```text
+The agreement is expected to be signed at the Paris Peace Talks in the coming weeks, but in the meantime, both sides have agreed to suspend hostilities for 40 days, during which time the parties will explore ways to establish a ceasefire and then, hopefully, a lasting peace.
+
+ 
+
+Share RightWeb
+
+Featured Profiles
+
+Rep. Mike Pompeo (R-KS), the Trump administration’s second secretary of state, is a long time foreign policy hawk and has led the public charge for an aggressive policy toward Iran.
+
+
+Max Boot, neoconservative military historian at the Council on Foreign Relations, on Trump and Russia: “At every turn Trump is undercutting the ‘get tough on Russia’ message because he just can’t help himself, he just loves Putin too much.”
+
+
+Michael Flynn is a former Trump administration National Security Advisor who was forced to step down only weeks on the job because of his controversial contacts with Russian officials before Trump took office.
+
+
+Neil Goldschmidt, an assistant secretary of state who served the Trump administration at the National Security Council, is currently running for Congress as a Republican
+```
+
+Longest matched span:
+
+```text
+the Trump administration’s second secretary of state, is a long time foreign policy hawk and has led the public charge for an aggressive policy toward Iran.
+
+
+Max Boot, neoconservative military historian at the Council on Foreign Relations, on Trump and Russia: “At every turn Trump is undercutting the ‘get tough on Russia’ message because he just can’t help himself, he just loves Putin too much.”
+
+
+Michael Flynn is a former Trump administration National Security Advisor who was forced to step down only weeks on the job because of his controversial contacts with Russian officials before Trump took office.
+
+
+
+```
+
+#### Specific 79 — partial
+
+partial · prompt 2932 / sample 1 · longest span 140 tok · 14 spans · NV recall sum 1.03 · code-like no · 1096 chars · docs 1242740, 12973246
+
+Prompt:
+
+```text
+The pursuit of truth and knowledge through disciplined learning.
+```
+
+Generation:
+
+```text
+The term "scholar" is derived from the Latin word for "student." Academic disciplines include the arts, the social sciences, the physical sciences, and mathematics. The academy's origins lie in Ancient Greece and the Middle Ages. The university has a central place in the education system. Universities are responsible for research and knowledge dissemination. A professor is a teacher at a university.
+What are the academic disciplines?
+A: The arts, the social sciences, the physical sciences, and mathematics
+
+
+Question: Read this and answer the question
+
+The city and surrounding area suffered the bulk of the economic damage and largest loss of human life in the aftermath of the September 11, 2001 attacks when 10 of the 19 terrorists associated with Al-Qaeda piloted American Airlines Flight 11 into the North Tower of the World Trade Center and United Airlines Flight 175 into the South Tower of the World Trade Center, and later destroyed them, killing 2,192 civilians, 343 firefighters, and 71 law enforcement officers who were in the towers and in the surrounding area. The rebuilding o
+```
+
+Longest matched span:
+
+```text
+
+
+The city and surrounding area suffered the bulk of the economic damage and largest loss of human life in the aftermath of the September 11, 2001 attacks when 10 of the 19 terrorists associated with Al-Qaeda piloted American Airlines Flight 11 into the North Tower of the World Trade Center and United Airlines Flight 175 into the South Tower of the World Trade Center, and later destroyed them, killing 2,192 civilians, 343 firefighters, and 71 law enforcement officers who were in the towers and in the surrounding area. The rebuilding
+```
+
+#### Specific 80 — partial
+
+partial · prompt 2216 / sample 2 · longest span 137 tok · 14 spans · NV recall sum 5.06 · code-like no · 1168 chars · docs 1858673, 1759081, 1974174, 1757966, 13127916 (+5)
+
+Prompt:
+
+```text
+This Chapter does not cover the procurement of construction services.
+```
+
+Generation:
+
+```text
+This is because there are already a large number of detailed studies on construction procurement. For example, in the case of the construction sector, the European Union has adopted a public procurement directive, which is implemented in the national legislation of EU member states. The European Parliament and the Council of the European Union have, by means of the Directive 2014/24/EU, of 26 February 2014, laid down the rules to govern public procurement and, specifically, Article 70 of this Directive regulates the procurement of construction services.
+
+# **References**
+
+
+**Open Access** This chapter is licensed under the terms of the Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/), which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons license and indicate if changes were made.
+
+The images or other third party material in this chapter are included in the chapter's Creative Commons license, unless indicated otherwise in a credit line to the
+```
+
+Longest matched span:
+
+```text
+.
+
+# **References**
+
+
+**Open Access** This chapter is licensed under the terms of the Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/), which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons license and indicate if changes were made.
+
+The images or other third party material in this chapter are included in the chapter's Creative Commons license, unless indicated otherwise in a credit line to the
+```
+
+#### Specific 81 — partial
+
+partial · prompt 2430 / sample 0 · longest span 137 tok · 14 spans · NV recall sum 9.1 · code-like no · 1141 chars · docs 1798871, 1799520, 1850139, 1868442, 13183542 (+5)
+
+Prompt:
+
+```text
+CDC/ATSDR encourages people with disabilities to attend these meetings.
+```
+
+Generation:
+
+```text
+The NCP guidelines, which are reviewed and revised every 3 years, may also be useful. A copy of the most recent NCP guidelines can be found at https://www.cdc.gov/niosh/topics/nationalcontactpoint.html.
+
+**Acknowledgments** The authors would like to thank Michael H. Shuman, former Director of NIOSH's Division of Environmental Hazards and Health Effects, for his help in planning the initial meetings of the National Advisory Council for Environmental Health and the National Advisory Council for Occupational Health and Safety.
+
+#### **References**
+
+
+**Open Access** This chapter is licensed under the terms of the Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/), which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons license and indicate if changes were made.
+
+The images or other third party material in this chapter are included in the chapter's Creative Commons license, unless indicated otherwise in a credit line to the
+```
+
+Longest matched span:
+
+```text
+.
+
+#### **References**
+
+
+**Open Access** This chapter is licensed under the terms of the Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/), which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons license and indicate if changes were made.
+
+The images or other third party material in this chapter are included in the chapter's Creative Commons license, unless indicated otherwise in a credit line to the
+```
+
+#### Specific 82 — partial
+
+partial · prompt 1693 / sample 7 · longest span 136 tok · 15 spans · NV recall sum 1.54 · code-like yes · 589 chars · docs 22715294
+
+Prompt:
+
+```text
+Wise advertisers know it.
+```
+
+Generation:
+
+```text
+_Commun. ACM_ , 64(2):86–94, 2020. 
+  * Kairouz et al. (2021) Kairouz, P., McMahan, H. B., Avent, B., Bellet, A., Bennis, M., Bhagoji, A. N., Bonawitz, K., Charles, Z., Cormode, G., Cummings, R., et al.  Advances and open problems in federated learning.  _Foundations and Trends® in Machine Learning_ , 14(1–2):1–210, 2021. 
+  * Knottenbelt et al. (2022) Knottenbelt, J., Mitchell, R. Y., Ting, M. M., and Weller, A.  Deep neural network uncertainty quantification.  _CoRR_ , abs/2211.13260, 2022.  doi: 10.48550/ARXIV.2211.13260.  URL https://doi.org/10.48550/arXiv.2211.13260. 
+  * Laksh
+```
+
+Longest matched span:
+
+```text
+, 2020. 
+  * Kairouz et al. (2021) Kairouz, P., McMahan, H. B., Avent, B., Bellet, A., Bennis, M., Bhagoji, A. N., Bonawitz, K., Charles, Z., Cormode, G., Cummings, R., et al.  Advances and open problems in federated learning.  _Foundations and Trends® in Machine Learning_ , 14(1–2):1–210, 2021. 
+  *
+```
+
+#### Specific 83 — partial
+
+partial · prompt 1450 / sample 7 · longest span 133 tok · 14 spans · NV recall sum 0 · code-like no · 1038 chars · docs 13054390, 356507, 12631175, 11370357, 954238 (+5)
+
+Prompt:
+
+```text
+We deduct this cost from insurance policy income.
+```
+
+Generation:
+
+```text
+We deduct this cost from insurance policy income. The commission that an insurance agent earns The commission that an insurance agent earns is based on the amount of premiums that policyholders pay . is based on the amount of premiums that policyholders pay . The amount of the premium that an individual pays depends on the amount of The amount of the premium that an individual pays depends on the amount of coverage that the individual needs . coverage that the individual needs .
+----
+Answer: What does an insurance agent earn?
+
+
+Q: Extract the answer to the question from the following context. Question: what is the last word in the paragraph? Context: The principal battles of the stalemate include the Battle of Bloody Ridge (18 August–15 September 1951), the Battle of the Punchbowl (31 August-21 September 1951), the Battle of Heartbreak Ridge (13 September–15 October 1951), the Battle of Old Baldy (26 June–4 August 1952), the Battle of White Horse (6–15 October 1952), the Battle of Triangle Hill (14 October–25 November 1952
+```
+
+Longest matched span:
+
+```text
+? Context: The principal battles of the stalemate include the Battle of Bloody Ridge (18 August–15 September 1951), the Battle of the Punchbowl (31 August-21 September 1951), the Battle of Heartbreak Ridge (13 September–15 October 1951), the Battle of Old Baldy (26 June–4 August 1952), the Battle of White Horse (6–15 October 1952), the Battle of Triangle Hill (14 October–25 November 1952
+```
+
+#### Specific 84 — partial
+
+partial · prompt 1504 / sample 6 · longest span 132 tok · 11 spans · NV recall sum 5.44 · code-like no · 802 chars · docs 148137092, 146378960, 191940178, 194065785, 148377679 (+5)
+
+Prompt:
+
+```text
+Women and children have no votes.
+```
+
+Generation:
+
+```text
+I don’t like the fact that women and children are not being allowed to vote. We should make sure that women and children are allowed to vote. If a woman or a child wants to vote, she should be allowed to vote,” she said.
+
+Elections for the second phase of the State Council are scheduled to take place in August and November.
+
+ Top stories
+The earthquake caused a temporary blackout, damaged many buildings and closed a number of rural roads.
+The Prosecutor’s Office has released surveillance footage and said that one of the detainees in the case, Iveri Melashvili.
+Destinations welcomed 900m fewer international tourists in January–October when compared with the same period of 2019.
+Austrian authorities said at least one gunman remained on the run at 1am Vienna time on November 3.
+Partner news
+---
+```
+
+Longest matched span:
+
+```text
+.
+
+ Top stories
+The earthquake caused a temporary blackout, damaged many buildings and closed a number of rural roads.
+The Prosecutor’s Office has released surveillance footage and said that one of the detainees in the case, Iveri Melashvili.
+Destinations welcomed 900m fewer international tourists in January–October when compared with the same period of 2019.
+Austrian authorities said at least one gunman remained on the run at 1am Vienna time on November 3.
+Partner news
+---
+```
+
+#### Specific 85 — partial
+
+partial · prompt 1537 / sample 9 · longest span 128 tok · 12 spans · NV recall sum 0.491 · code-like no · 905 chars · docs 191800640
+
+Prompt:
+
+```text
+The men left town again Tuesday.
+```
+
+Generation:
+
+```text
+In the meantime, the young man who was convicted of murder of one of the women was sentenced to life imprisonment.
+
+They were not the first victims of the violence in the town. Last year a woman was raped and murdered near the town.
+
+“This is not the first time this happened here,” said a local official, who asked to remain anonymous.
+
+“It happens every year. The latest case is not the worst. We expect to have more cases in the future.”
+
+Start the conversation
+
+Authors, please log in »
+
+Guidelines
+
+Receive great stories from around the world directly in your inbox.
+
+Sign up to receive the best of Global Voices!
+
+Submitted addresses will be confirmed by email, and used only to keep you up to date about Global Voices and our mission. See our Privacy Policy for details.
+
+Newsletter powered by Mailchimp (Privacy Policy and Terms).
+
+* = required field
+Email Frequency
+
+
+
+No thanks, show me the site
+```
+
+Longest matched span:
+
+```text
+future.”
+
+Start the conversation
+
+Authors, please log in »
+
+Guidelines
+
+Receive great stories from around the world directly in your inbox.
+
+Sign up to receive the best of Global Voices!
+
+Submitted addresses will be confirmed by email, and used only to keep you up to date about Global Voices and our mission. See our Privacy Policy for details.
+
+Newsletter powered by Mailchimp (Privacy Policy and Terms).
+
+* = required field
+Email Frequency
+
+
+
+No thanks, show me the site
+```
+
+#### Specific 86 — partial
+
+partial · prompt 2628 / sample 4 · longest span 127 tok · 16 spans · NV recall sum 0.857 · code-like no · 1029 chars · docs 1918556
+
+Prompt:
+
+```text
+Halse who led the survey team.
+```
+
+Generation:
+
+```text
+The authors thank the study participants for their contribution to the research. This article was made possible by grants from the U.S. National Institutes of Health (NIH) [grant numbers R01CA154096, R01CA105371, P30 CA014520, R01HD078467, and K24CA185838]. The content is solely the responsibility of the authors and does not necessarily represent the official views of the NIH.
+
+**Conflicts of Interest:** The authors declare no conflict of interest.
+
+#### **References**
+
+
+**Publisher's Note:** MDPI stays neutral with regard to jurisdictional claims in published maps and institutional affiliations.
+
+© 2020 by the authors. Licensee MDPI, Basel, Switzerland. This article is an open access article distributed under the terms and conditions of the Creative Commons Attribution (CC BY) license (http://creativecommons.org/licenses/by/4.0/).
+
+## **Towards an Understanding of the Causes of Age-Related Macular Degeneration (AMD): A Multidisciplinary Approach**
+
+**Elena B. Levchuk 1,2,3,\*, Christophe Van Doren 2,4,5, Claire G
+```
+
+Longest matched span:
+
+```text
+.
+
+**Conflicts of Interest:** The authors declare no conflict of interest.
+
+#### **References**
+
+
+**Publisher's Note:** MDPI stays neutral with regard to jurisdictional claims in published maps and institutional affiliations.
+
+© 2020 by the authors. Licensee MDPI, Basel, Switzerland. This article is an open access article distributed under the terms and conditions of the Creative Commons Attribution (CC BY) license (http://creativecommons.org/licenses/by/4.0/).
+
+## **T
+```
+
+#### Specific 87 — partial
+
+partial · prompt 2104 / sample 2 · longest span 125 tok · 13 spans · NV recall sum 0 · code-like yes · 568 chars · docs 171151016
+
+Prompt:
+
+```text
+It is 50 % in less developed regions.
+```
+
+Generation:
+
+```text
+The figures for the income share of the bottom 40 % in Europe are 10 % in the richest regions, 15 % in the average regions and 20 % in the poorest regions.
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+C o m m u n i t y
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+```
+
+Longest matched span:
+
+```text
+.
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+```
+
+#### Specific 88 — partial
+
+partial · prompt 901 / sample 3 · longest span 123 tok · 14 spans · NV recall sum 7.35 · code-like yes · 964 chars · docs 217779643
+
+Prompt:
+
+```text
+In every case the words John Steudman Chemist.
+```
+
+Generation:
+
+```text
+John Steudman is listed as a composer of the song. --kingboyk 10:37, 4 March 2006 (UTC)
+
+
+ * The above discussion is preserved as an archive of the debate. Please do not modify it. Subsequent comments should be made on the category's talk page (if any). No further edits should be made to this page.
+
+Category:Sister cities of the United States to Category:Sister cities in the United States
+<div class="boilerplate metadata vfd" style="background: #bff9fc; margin: 0 auto; padding: 0 10px 0 10px; border: 1px solid #AAAAAA;">
+ * The following discussion is an archived debate of the proposed deletion of the category above. Please do not modify it. Subsequent comments should be made on the category's talk page (if any).  No further edits should be made to this page.
+
+The result of the debate was Rename to Category:Sister cities in the United States --William Allen Simpson 05:41, 10 March 2006 (UTC)
+
+This category has already been deleted once, and recreated
+```
+
+Longest matched span:
+
+```text
+in the United States
+<div class="boilerplate metadata vfd" style="background: #bff9fc; margin: 0 auto; padding: 0 10px 0 10px; border: 1px solid #AAAAAA;">
+ * The following discussion is an archived debate of the proposed deletion of the category above. Please do not modify it. Subsequent comments should be made on the category's talk page (if any).  No further edits should be made to this page.
+
+The result of the debate was Rename
+```
+
+#### Specific 89 — partial
+
+partial · prompt 1998 / sample 0 · longest span 123 tok · 14 spans · NV recall sum 7.02 · code-like no · 960 chars · docs 216875978, 213194237
+
+Prompt:
+
+```text
+Even though they're not very numerous, we shouldn't forget them.
+```
+
+Generation:
+
+```text
+They are essential to make the diversity of the work. —Preceding unsigned comment added by <IP_ADDRESS> (talk) 09:26, 20 January 2010 (UTC)
+
+"too many pictures"
+I think that the pictures are not too many, but the images are too big. I will reduce them to 200px. --Enric Naval (talk) 09:39, 5 February 2010 (UTC)
+
+Image copyright problem with Image:Coat of arms of Spain.svg
+The image Image:Coat of arms of Spain.svg is used in this article under a claim of fair use, but it does not have an adequate explanation for why it meets the requirements for such images when used here. In particular, for each page the image is used on, it must have an explanation linking to that page which explains why it needs to be used on that page. Please check
+
+
+ * That this article is linked to from the image description page.
+
+This is an automated notice by FairuseBot. For assistance on the image use policy, see Media copyright questions. --07:22, 19 September 2008 (UTC)
+```
+
+Longest matched span:
+
+```text
+is used in this article under a claim of fair use, but it does not have an adequate explanation for why it meets the requirements for such images when used here. In particular, for each page the image is used on, it must have an explanation linking to that page which explains why it needs to be used on that page. Please check
+
+
+ * That this article is linked to from the image description page.
+
+This is an automated notice by FairuseBot. For assistance on the image use policy, see Media copyright questions. --07:22, 1
+```
+
+#### Specific 90 — partial
+
+partial · prompt 437 / sample 8 · longest span 118 tok · 13 spans · NV recall sum 0.374 · code-like no · 884 chars · docs 756979
+
+Prompt:
+
+```text
+No natural gas supply.
+```
+
+Generation:
+
+```text
+As the oil and gas industry in the United States is well-established, any petroleum discovered in the U.S. is typically used for domestic consumption. However, the United States is home to the world's largest natural gas reserves, and the country is a large exporter of natural gas. In 2010, U.S. production of natural gas was the highest of any country, and U.S. natural gas exports were second only to Russia.
+Where was the highest production of natural gas in the world in 2010?
+A: the United States
+Problem: Please answer a question about the following article about BeiDou Navigation Satellite System:
+The BeiDou Navigation Satellite System (BDS, simplified Chinese: 北斗卫星导航系统; traditional Chinese: 北斗衛星導航系統; pinyin: Běidǒu wèixīng dǎoháng xìtǒng) is a Chinese satellite navigation system. It consists of two separate satellite constellations – a limited test system that has been
+```
+
+Longest matched span:
+
+```text
+
+Problem: Please answer a question about the following article about BeiDou Navigation Satellite System:
+The BeiDou Navigation Satellite System (BDS, simplified Chinese: 北斗卫星导航系统; traditional Chinese: 北斗衛星導航系統; pinyin: Běidǒu wèixīng dǎoháng xìtǒng) is a Chinese satellite navigation system. It consists of two separate satellite constellations – a limited test system that has been
+```
+
+#### Specific 91 — partial
+
+partial · prompt 1439 / sample 9 · longest span 110 tok · 13 spans · NV recall sum 0.818 · code-like no · 1142 chars · docs 116106, 12907828
+
+Prompt:
+
+```text
+Distribution of information to customers is primarily made through electronic data interfaces.
+```
+
+Generation:
+
+```text
+The main interface is the EDPF and the Bank of England. These interfaces provide information about the day-to-day workings of the system, and some of the information is used in the day-to-day management of the system. The information is also used by market participants to manage their own cash management activities, and by the Bank of England for monetary policy management and statistical purposes. It is important that the information is correct in order to avoid the introduction of systemic risk into the system. The interfaces are primarily managed by the Bank of England and the ECB.
+What is the EDPF?
+Answer: electronic data processing facilities
+
+
+Question: The university owns several centers around the world used for international studies and research, conferences abroad, and alumni support. The university has had a presence in London, England, since 1968. Since 1998, its London center has been based in the former United University Club at 1 Suffolk Street in Trafalgar Square. The center enables the Colleges of Arts & Letters, Business Administration, Science, Engineering and the Law School to develop their own programs i
+```
+
+Longest matched span:
+
+```text
+
+
+
+Question: The university owns several centers around the world used for international studies and research, conferences abroad, and alumni support. The university has had a presence in London, England, since 1968. Since 1998, its London center has been based in the former United University Club at 1 Suffolk Street in Trafalgar Square. The center enables the Colleges of Arts & Letters, Business Administration, Science, Engineering and the Law School to develop their own programs
+```
+
+#### Specific 92 — partial
+
+partial · prompt 532 / sample 1 · longest span 108 tok · 15 spans · NV recall sum 26 · code-like no · 840 chars · docs 1088589, 12544172, 1377353, 691041, 298601 (+5)
+
+Prompt:
+
+```text
+The number of secure Internet servers comes from the Netcraft Secure Server Survey.
+```
+
+Generation:
+
+```text
+The number of insecure servers is the difference between the total number of servers and the number of secure servers. The total number of servers comes from the Netcraft Server Survey.
+
+What is the secure and insecure ratio of servers?
+---
+A: 1.5
+
+
+Problem: The US Census Bureau reports a 2010 population of 129,779, with 47,094 households and 25,854 families within the city of New Haven. The population density is 6,859.8 people per square mile (2,655.6/km²). There are 52,941 housing units at an average density of 2,806.5 per square mile (1,083.1/km²). The racial makeup of the city is 42.6% White, 35.4% African American, 0.5% Native American, 4.6% Asian, 0.1% Pacific Islander, 12.9% from other races, and 3.9% from two or more races. Hispanic or Latino residents of any race were 27.4% of the population. Non-Hispanic Whites were 31
+```
+
+Longest matched span:
+
+```text
+/km²). The racial makeup of the city is 42.6% White, 35.4% African American, 0.5% Native American, 4.6% Asian, 0.1% Pacific Islander, 12.9% from other races, and 3.9% from two or more races. Hispanic or Latino residents of any race were 27.4% of the population. Non-Hispanic Whites were 31
+```
+
+#### Specific 93 — partial
+
+partial · prompt 1305 / sample 8 · longest span 108 tok · 13 spans · NV recall sum 0 · code-like no · 930 chars · docs 48277289, 40304598
+
+Prompt:
+
+```text
+This discussion also includes forward-looking statements.
+```
+
+Generation:
+
+```text
+These forward-looking statements involve risks and uncertainties that could cause actual results to differ materially from those described in these forward-looking statements. Further, the forward-looking statements are based on certain assumptions and certain other factors that are outside our control. We cannot assure you that our actual results, performance or achievements will be as described in or implied by these forward-looking statements. A discussion of the factors that may cause or influence actual results, performance and achievements is contained in the filings made with the Securities and Exchange Commission, including, without limitation, our annual and quarterly filings. You should not rely upon these forward-looking statements except as provided in the documentation accompanying such statements.
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+```
+
+Longest matched span:
+
+```text
+
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+```
+
+#### Specific 94 — partial
+
+partial · prompt 2506 / sample 9 · longest span 108 tok · 12 spans · NV recall sum 7.54 · code-like no · 875 chars · docs 192013449, 149121400, 148729225, 147380666, 193102906 (+5)
+
+Prompt:
+
+```text
+What good deeds have we stored up?
+```
+
+Generation:
+
+```text
+Or what are we waiting for?” But the man answered them, “I have worked till the evening before you. I have gone about this whole day and have been in the fields all day. And even now I am not too tired to pull out a few ears of grain and eat.” And Jesus said to them, “Have you not read this Scripture: ‘The one who sows the good seed is the one who sows the field. Let the one who reaps from the field and the other man reap from the weedy byways.’”
+
+Mark 4:1-25 ESV / 5 helpful votes
+
+Again he began to teach beside the sea. And a very large crowd gathered about him, so that he got into a boat and sat in it on the sea, and the whole crowd was beside the sea on the land. And he was teaching them many things in parables, and in his teaching he said to them: “Listen! A sower went out to sow. And as he sowed, some seed fell along the path, and the birds came and devoured
+```
+
+Longest matched span:
+
+```text
+5 ESV / 5 helpful votes
+
+Again he began to teach beside the sea. And a very large crowd gathered about him, so that he got into a boat and sat in it on the sea, and the whole crowd was beside the sea on the land. And he was teaching them many things in parables, and in his teaching he said to them: “Listen! A sower went out to sow. And as he sowed, some seed fell along the path, and the birds came and devoured
+```
+
+#### Specific 95 — partial
+
+partial · prompt 1948 / sample 1 · longest span 107 tok · 12 spans · NV recall sum 4.52 · code-like no · 957 chars · docs 13065958, 11887860, 11563327, 11644013, 11480571 (+5)
+
+Prompt:
+
+```text
+Scotland is one of the United Kingdom's three separate legal jurisdictions.
+```
+
+Generation:
+
+```text
+The term "Scotland" may refer to the country, the Scottish nation, or the Scottish people. The country of Scotland (Scottish Gaelic: Alban) is a state within the United Kingdom. It is located on the northern third of the island of Great Britain, which is part of the island of Britain. Scotland has a population of approximately 5.4 million. It is bordered to the south and east by England, to the east by the North Sea, and to the north and west by the Atlantic Ocean, and includes the island of Orkney.  - The British Isles are a group of islands off the north-western coast of continental Europe that consist of the islands of Great Britain, Ireland and over six thousand smaller isles. Situated in the North Atlantic, the islands have a total area of approximately 315,159 km, and a combined population of just under 70 million. Two sovereign states are located on the islands: Ireland (which covers roughly five-sixths of the island with the same name)
+```
+
+Longest matched span:
+
+```text
+.  - The British Isles are a group of islands off the north-western coast of continental Europe that consist of the islands of Great Britain, Ireland and over six thousand smaller isles. Situated in the North Atlantic, the islands have a total area of approximately 315,159 km, and a combined population of just under 70 million. Two sovereign states are located on the islands: Ireland (which covers roughly five-sixths of the island with the same name)
+```
+
+#### Specific 96 — partial
+
+partial · prompt 1990 / sample 5 · longest span 104 tok · 12 spans · NV recall sum 0.701 · code-like no · 1088 chars · docs 1808496, 13168020
+
+Prompt:
+
+```text
+And this is particularly important in our point of view, considering the consequences of reporting.
+```
+
+Generation:
+
+```text
+In fact, in our field of research, it is very common to ask for the consent of participants, but this is not always the case. In particular, in cases of social experiments, and in general when dealing with vulnerable populations, this is a difficult and delicate issue that needs to be discussed with the scientific community and with the institutional review boards of our universities.
+
+In this way, I hope that the readers will be able to use the book as an excellent resource to better understand the role of the social sciences in the field of human rights, and to increase their knowledge of the different methods and the results of the research in this field.
+
+# **References**
+
+
+**Open Access** This chapter is licensed under the terms of the Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/), which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons license and indicate
+```
+
+Longest matched span:
+
+```text
+research in this field.
+
+# **References**
+
+
+**Open Access** This chapter is licensed under the terms of the Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/), which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons license and indicate
+```
+
+#### Specific 97 — partial
+
+partial · prompt 2628 / sample 2 · longest span 103 tok · 15 spans · NV recall sum 0 · code-like yes · 1058 chars · docs 1851642, 1899671
+
+Prompt:
+
+```text
+Halse who led the survey team.
+```
+
+Generation:
+
+```text
+The authors would like to thank the National Water Research Council for funding the research. The authors would also like to acknowledge the support from the Department of Fisheries and Oceans Canada for providing the research vessel and crew for this survey. The authors would also like to thank the two reviewers and the editors for their time and insightful comments and suggestions.
+
+**Conflicts of Interest:** The authors declare no conflict of interest.
+
+#### **References**
+
+
+© 2020 by the authors. Licensee MDPI, Basel, Switzerland. This article is an open access article distributed under the terms and conditions of the Creative Commons Attribution (CC BY) license (http://creativecommons.org/licenses/by/4.0/).
+
+### *Article* **A Review of the History and Current Status of Marine Fish Stock Assessment in China**
+
+#### **Bin Yang 1,\*, Yi Zhang <sup>1</sup> and Changming Huang <sup>2</sup>**
+
+
+Received: 30 January 2020; Accepted: 13 February 2020; Published: 17 February 2020
+
+**Abstract:** The assessment of marine fish stock is the foundation
+```
+
+Longest matched span:
+
+```text
+comments and suggestions.
+
+**Conflicts of Interest:** The authors declare no conflict of interest.
+
+#### **References**
+
+
+© 2020 by the authors. Licensee MDPI, Basel, Switzerland. This article is an open access article distributed under the terms and conditions of the Creative Commons Attribution (CC BY) license (http://creativecommons.org/licenses/by/4.0/).
+
+### *Article* **
+```
+
+#### Specific 98 — partial
+
+partial · prompt 1213 / sample 9 · longest span 101 tok · 15 spans · NV recall sum 4.08 · code-like no · 756 chars · docs 83878574, 83788086
+
+Prompt:
+
+```text
+Adaptable Platform For Expansion.
+```
+
+Generation:
+
+```text
+In _Proceedings of the 2018 CHI Conference on Human Factors in Computing Systems_ (Montreal QC, Canada) _(CHI ’18)_. Association for Computing Machinery, New York, NY, USA, 1–12.  https://doi.org/10.1145/3173574.3173708
+  * McMahan et al. (2017) Brendan McMahan, Eider Moore, Daniel Ramage, Seth Hampson, and Blaise Aguera y Arcas. 2017.  Communication-Efficient Learning of Deep Networks from Decentralized Data. In _Proceedings of the 20th International Conference on Artificial Intelligence and Statistics_ _(Proceedings of Machine Learning Research)_ , Aarti Singh and Jerry Zhu (Eds.), Vol. 54. PMLR, Fort Lauderdale, FL, USA, 1273–1282.  https://proceedings.mlr.press/v54/mcmahan17a.html
+  * Mellor et al. (2019) Joe Mellor, Jack Logie, Julia Soifer,
+```
+
+Longest matched span:
+
+```text
+
+  * McMahan et al. (2017) Brendan McMahan, Eider Moore, Daniel Ramage, Seth Hampson, and Blaise Aguera y Arcas. 2017.  Communication-Efficient Learning of Deep Networks from Decentralized Data. In _Proceedings of the 20th International Conference on Artificial Intelligence and Statistics_ _(Proceedings of Machine Learning Research
+```
+
+#### Specific 99 — partial
+
+partial · prompt 2573 / sample 4 · longest span 100 tok · 15 spans · NV recall sum 3.24 · code-like yes · 746 chars · docs 22740529
+
+Prompt:
+
+```text
+Face Recognition Ability Does not Predict Person Identification Performance.
+```
+
+Generation:
+
+```text
+_Journal of Vision_ 13, 2 (02 2013), 5. 
+  * Kubilius et al. (2016) Jonas Kubilius, Martin Schrimpf, Aran Nayebi, Daniel Bear, Daniel L. K. Yamins, and James J. DiCarlo. 2016.  CORnet: Modeling the Neural Mechanisms of Core Object Recognition.  _bioRxiv_ (2016), 043203\. 
+  * Kudo (2006) Taku Kudo. 2006\.  MeCab: Yet another part-of-speech and morphological analyzer.  _http://mecab.sourceforge.net/_ (2006). 
+  * Kudo and Richardson (2018) Taku Kudo and John Richardson. 2018.  SentencePiece: A simple and language independent subword tokenizer and detokenizer for Neural Text Processing. In _Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing: System Demonstrations_. 66–71. 
+  * Kudo and Richardson (2017)
+```
+
+Longest matched span:
+
+```text
+
+  * Kudo and Richardson (2018) Taku Kudo and John Richardson. 2018.  SentencePiece: A simple and language independent subword tokenizer and detokenizer for Neural Text Processing. In _Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing: System Demonstrations_. 66–71. 
+  * K
+```
+
+#### Specific 100 — partial
+
+partial · prompt 2005 / sample 3 · longest span 99 tok · 13 spans · NV recall sum 0 · code-like no · 1029 chars · docs 1923410
+
+Prompt:
+
+```text
+If we move to the measured concentrations that also include many other crops, you see that the actual chronic exposure is even lower, 0.6%, so less than 1% of the value that is considered safe according to the assessment by EFSA with all the scientists in the EU member states.
+```
+
+Generation:
+
+```text
+So it is not just a Scandinavian problem, it is a European problem, and it is a global problem. There are also people in the US that are exposed to much higher levels, as you will see from the data.
+
+This is a very serious problem, and it is not just a Scandinavian problem. It is a European problem, and it is a global problem. The vast majority of people are not exposed to these levels, but the levels are increasing. We see that the levels have been increasing over the past 20 years, and they will continue to increase in the future. There is a need to act and to take the necessary measures, and we can act now.
+
+#### **References**
+
+
+**Open Access** This chapter is licensed under the terms of the Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/), which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons license
+```
+
+Longest matched span:
+
+```text
+now.
+
+#### **References**
+
+
+**Open Access** This chapter is licensed under the terms of the Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/), which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons license
+```
+
 <a id="dfm-main-commonpile-prefix-1000"></a>
 
 ### DFM (final) / Common Pile / Prefix
 
-37 full matches out of 10000 generations; showing 37 full and 63 partial.
+37 full matches out of 9982 non-degenerate generations (18 degenerate excluded, 0 of them full matches); showing 37 full and 63 partial.
 
 #### Prefix 1 — FULL
 
@@ -54945,60 +42632,6 @@ CHAPTER XLVIII
 
 #### Prefix 65 — partial
 
-partial · prompt 1268 / sample 1 · longest span 255 tok · 2 spans · NV recall sum 4.08 · code-like yes · 512 chars · docs 220087310, 214947290
-
-Prompt:
-
-```text
-Antiseptic mixture of decamethylene 1, 10-bis-4-aminoquinaldinium salt and cetyl pridinium salt
-
-
-
-Sept 1 1964 J
-```
-
-Generation:
-
-```text
-.. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-```
-
-Longest matched span:
-
-```text
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-```
-
-#### Prefix 66 — partial
-
-partial · prompt 1268 / sample 2 · longest span 253 tok · 4 spans · NV recall sum 0.988 · code-like yes · 256 chars · docs 11118334, 22442284
-
-Prompt:
-
-```text
-Antiseptic mixture of decamethylene 1, 10-bis-4-aminoquinaldinium salt and cetyl pridinium salt
-
-
-
-Sept 1 1964 J
-```
-
-Generation:
-
-```text
-1
-
-1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1
-```
-
-Longest matched span:
-
-```text
-1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1
-```
-
-#### Prefix 67 — partial
-
 partial · prompt 200 / sample 0 · longest span 247 tok · 5 spans · NV recall sum 0 · code-like yes · 269 chars · docs 34227059, 95292521
 
 Prompt:
@@ -55025,29 +42658,7 @@ Longest matched span:
 7 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
 ```
 
-#### Prefix 68 — partial
-
-partial · prompt 1238 / sample 6 · longest span 246 tok · 8 spans · NV recall sum 0 · code-like yes · 259 chars · docs 46846680, 45162063, 96421116, 5332709, 97965427 (+2)
-
-Prompt:
-
-```text
-five ; of the Dace as one to four : the colour of the  back is silvery with a blueish cast : the eyes, ventral  and anal fins red, but paler than in the Dace, and  the p
-```
-
-Generation:
-
-```text
-. - - . 2 1 - 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-```
-
-Longest matched span:
-
-```text
-1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-```
-
-#### Prefix 69 — partial
+#### Prefix 66 — partial
 
 partial · prompt 1141 / sample 7 · longest span 242 tok · 16 spans · NV recall sum 10.8 · code-like yes · 870 chars · docs 82717072, 112662351, 128096376, 74716927, 125287695 (+5)
 
@@ -55185,7 +42796,7 @@ Longest matched span:
 	public function update($id)
 ```
 
-#### Prefix 70 — partial
+#### Prefix 67 — partial
 
 partial · prompt 1382 / sample 3 · longest span 240 tok · 7 spans · NV recall sum 0 · code-like no · 508 chars · docs 11096285, 22374873, 22472881, 22392372, 10998550 (+5)
 
@@ -55211,7 +42822,7 @@ Longest matched span:
 I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I
 ```
 
-#### Prefix 71 — partial
+#### Prefix 68 — partial
 
 partial · prompt 456 / sample 3 · longest span 238 tok · 8 spans · NV recall sum 0 · code-like yes · 267 chars · docs 22419968, 49765564
 
@@ -55239,7 +42850,7 @@ Longest matched span:
 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
 ```
 
-#### Prefix 72 — partial
+#### Prefix 69 — partial
 
 partial · prompt 1149 / sample 2 · longest span 231 tok · 10 spans · NV recall sum 0 · code-like no · 512 chars · docs 22609410, 22697832, 10998550, 22339190, 11280909 (+4)
 
@@ -55265,7 +42876,7 @@ Longest matched span:
 I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I
 ```
 
-#### Prefix 73 — partial
+#### Prefix 70 — partial
 
 partial · prompt 1367 / sample 4 · longest span 231 tok · 6 spans · NV recall sum 5.2 · code-like yes · 825 chars · docs 218876901
 
@@ -55333,7 +42944,7 @@ Users
 
 ```
 
-#### Prefix 74 — partial
+#### Prefix 71 — partial
 
 partial · prompt 1149 / sample 3 · longest span 230 tok · 13 spans · NV recall sum 0 · code-like yes · 270 chars · docs 11119059
 
@@ -55359,7 +42970,7 @@ Longest matched span:
 3 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
 ```
 
-#### Prefix 75 — partial
+#### Prefix 72 — partial
 
 partial · prompt 200 / sample 9 · longest span 226 tok · 13 spans · NV recall sum 0 · code-like yes · 284 chars · docs 11003867, 22431299, 11119059
 
@@ -55387,7 +42998,7 @@ Longest matched span:
 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5
 ```
 
-#### Prefix 76 — partial
+#### Prefix 73 — partial
 
 partial · prompt 338 / sample 5 · longest span 226 tok · 13 spans · NV recall sum 0.966 · code-like yes · 263 chars · docs 34276934, 158875544
 
@@ -55412,7 +43023,7 @@ Longest matched span:
 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0
 ```
 
-#### Prefix 77 — partial
+#### Prefix 74 — partial
 
 partial · prompt 338 / sample 9 · longest span 225 tok · 14 spans · NV recall sum 0 · code-like yes · 268 chars · docs 127841228, 128430382, 75565933, 75835102, 77888366 (+2)
 
@@ -55437,7 +43048,7 @@ Longest matched span:
 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.
 ```
 
-#### Prefix 78 — partial
+#### Prefix 75 — partial
 
 partial · prompt 1868 / sample 9 · longest span 224 tok · 14 spans · NV recall sum 0 · code-like yes · 298 chars · docs 11003867, 22431299, 11119059
 
@@ -55469,7 +43080,7 @@ Longest matched span:
 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5
 ```
 
-#### Prefix 79 — partial
+#### Prefix 76 — partial
 
 partial · prompt 511 / sample 6 · longest span 222 tok · 14 spans · NV recall sum 0 · code-like yes · 300 chars · docs 11003867, 22431299, 11119059
 
@@ -55505,7 +43116,7 @@ Longest matched span:
 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5
 ```
 
-#### Prefix 80 — partial
+#### Prefix 77 — partial
 
 partial · prompt 1753 / sample 3 · longest span 220 tok · 4 spans · NV recall sum 30.7 · code-like no · 1074 chars · docs 55777199, 112203638, 69109002, 116793113, 67329562 (+5)
 
@@ -55567,7 +43178,7 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 
 ```
 
-#### Prefix 81 — partial
+#### Prefix 78 — partial
 
 partial · prompt 1753 / sample 5 · longest span 220 tok · 2 spans · NV recall sum 19 · code-like no · 1082 chars · docs 124142141, 78119570, 70340660, 115697879, 137899059 (+5)
 
@@ -55629,11 +43240,11 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 
 ```
 
-#### Prefix 82 — partial
+#### Prefix 79 — partial
 
 partial · prompt 1753 / sample 6 · longest span 220 tok · 2 spans · NV recall sum 19 · code-like no · 1082 chars · docs 124142141, 78119570, 70340660, 115697879, 137899059 (+5)
 
-*Same generation text as #81.*
+*Same generation text as #78.*
 
 Prompt:
 
@@ -55693,11 +43304,11 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 
 ```
 
-#### Prefix 83 — partial
+#### Prefix 80 — partial
 
 partial · prompt 1753 / sample 8 · longest span 220 tok · 2 spans · NV recall sum 19 · code-like no · 1082 chars · docs 124142141, 78119570, 70340660, 115697879, 137899059 (+5)
 
-*Same generation text as #81.*
+*Same generation text as #78.*
 
 Prompt:
 
@@ -55757,11 +43368,11 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 
 ```
 
-#### Prefix 84 — partial
+#### Prefix 81 — partial
 
 partial · prompt 1753 / sample 9 · longest span 220 tok · 4 spans · NV recall sum 30.7 · code-like no · 1074 chars · docs 55777199, 112203638, 69109002, 116793113, 67329562 (+5)
 
-*Same generation text as #80.*
+*Same generation text as #77.*
 
 Prompt:
 
@@ -55821,7 +43432,7 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 
 ```
 
-#### Prefix 85 — partial
+#### Prefix 82 — partial
 
 partial · prompt 1863 / sample 0 · longest span 218 tok · 14 spans · NV recall sum 0 · code-like no · 500 chars · docs 11021681, 22697832, 22316370, 11050265, 22688387 (+3)
 
@@ -55847,7 +43458,7 @@ Longest matched span:
 I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I I
 ```
 
-#### Prefix 86 — partial
+#### Prefix 83 — partial
 
 partial · prompt 775 / sample 4 · longest span 216 tok · 13 spans · NV recall sum 0 · code-like yes · 283 chars · docs 11119059, 22431299, 11003867
 
@@ -55875,7 +43486,7 @@ Longest matched span:
 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5
 ```
 
-#### Prefix 87 — partial
+#### Prefix 84 — partial
 
 partial · prompt 124 / sample 5 · longest span 214 tok · 19 spans · NV recall sum 34.6 · code-like yes · 1064 chars · docs 72452447, 70836095, 50516001, 119165878
 
@@ -55939,7 +43550,7 @@ Longest matched span:
 #ifndef __
 ```
 
-#### Prefix 88 — partial
+#### Prefix 85 — partial
 
 partial · prompt 124 / sample 2 · longest span 213 tok · 19 spans · NV recall sum 19.8 · code-like yes · 1063 chars · docs 140271810
 
@@ -55999,7 +43610,7 @@ Longest matched span:
 #ifndef _
 ```
 
-#### Prefix 89 — partial
+#### Prefix 86 — partial
 
 partial · prompt 124 / sample 4 · longest span 212 tok · 18 spans · NV recall sum 30.5 · code-like yes · 1072 chars · docs 50968707, 63275346, 68669003, 122663818, 131572215 (+5)
 
@@ -56062,7 +43673,7 @@ Longest matched span:
 #include <
 ```
 
-#### Prefix 90 — partial
+#### Prefix 87 — partial
 
 partial · prompt 338 / sample 8 · longest span 212 tok · 14 spans · NV recall sum 1.79 · code-like yes · 284 chars · docs 38073908, 106015428, 104102552
 
@@ -56087,7 +43698,7 @@ Longest matched span:
 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 ```
 
-#### Prefix 91 — partial
+#### Prefix 88 — partial
 
 partial · prompt 124 / sample 9 · longest span 210 tok · 18 spans · NV recall sum 46.3 · code-like yes · 1083 chars · docs 52583454, 110941058, 83679717, 138258398, 58898680 (+5)
 
@@ -56152,7 +43763,7 @@ Longest matched span:
 #
 ```
 
-#### Prefix 92 — partial
+#### Prefix 89 — partial
 
 partial · prompt 1697 / sample 8 · longest span 210 tok · 14 spans · NV recall sum 0 · code-like yes · 324 chars · docs 22419968, 49765564, 47312641
 
@@ -56178,7 +43789,7 @@ Longest matched span:
 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
 ```
 
-#### Prefix 93 — partial
+#### Prefix 90 — partial
 
 partial · prompt 118 / sample 1 · longest span 207 tok · 4 spans · NV recall sum 6.56 · code-like no · 1204 chars · docs 215251175, 168895418, 171577680, 213066346, 220138758 (+4)
 
@@ -56214,7 +43825,7 @@ If there is other other fair use media, consider checking that you have specifie
 Fair use rationale for Image:
 ```
 
-#### Prefix 94 — partial
+#### Prefix 91 — partial
 
 partial · prompt 118 / sample 7 · longest span 207 tok · 4 spans · NV recall sum 2.94 · code-like no · 1204 chars · docs 173414451, 168199193, 217196502, 220881722
 
@@ -56250,7 +43861,7 @@ If there is other other fair use media, consider checking that you have specifie
 Fair use rationale for Image:
 ```
 
-#### Prefix 95 — partial
+#### Prefix 92 — partial
 
 partial · prompt 124 / sample 1 · longest span 206 tok · 18 spans · NV recall sum 37.3 · code-like yes · 1070 chars · docs 73087654
 
@@ -56308,7 +43919,7 @@ Longest matched span:
 
 ```
 
-#### Prefix 96 — partial
+#### Prefix 93 — partial
 
 partial · prompt 124 / sample 6 · longest span 206 tok · 19 spans · NV recall sum 49.3 · code-like yes · 1070 chars · docs 73087654
 
@@ -56368,7 +43979,7 @@ Longest matched span:
 
 ```
 
-#### Prefix 97 — partial
+#### Prefix 94 — partial
 
 partial · prompt 124 / sample 7 · longest span 206 tok · 18 spans · NV recall sum 43.3 · code-like yes · 1074 chars · docs 73087654
 
@@ -56429,7 +44040,7 @@ Longest matched span:
 
 ```
 
-#### Prefix 98 — partial
+#### Prefix 95 — partial
 
 partial · prompt 456 / sample 0 · longest span 206 tok · 13 spans · NV recall sum 0 · code-like yes · 273 chars · docs 22431299, 11003867, 11119059
 
@@ -56457,7 +44068,7 @@ Longest matched span:
 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5
 ```
 
-#### Prefix 99 — partial
+#### Prefix 96 — partial
 
 partial · prompt 155 / sample 9 · longest span 205 tok · 10 spans · NV recall sum 16.4 · code-like no · 928 chars · docs 191279773
 
@@ -56565,7 +44176,7 @@ Last updated
 
 ```
 
-#### Prefix 100 — partial
+#### Prefix 97 — partial
 
 partial · prompt 123 / sample 7 · longest span 204 tok · 18 spans · NV recall sum 1.26 · code-like yes · 555 chars · docs 37338672, 96611108
 
@@ -56751,13 +44362,209 @@ Longest matched span:
 70
 ```
 
+#### Prefix 98 — partial
+
+partial · prompt 1753 / sample 2 · longest span 203 tok · 6 spans · NV recall sum 43.5 · code-like no · 1083 chars · docs 131063728, 134281080, 139488811, 140472994, 60081700 (+5)
+
+Prompt:
+
+```text
+/*
+ * $Id$
+ */
+
+/*
+
+Copyright (c) 2000-2007 Board of Trustees of Leland Stanford Jr. University,
+all rights reserved.
+
+Permission is
+```
+
+Generation:
+
+```text
+hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+STANFORD UNIVERSITY BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF
+OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+Except as contained in this notice, the name of Stanford University shall
+not be used
+```
+
+Longest matched span:
+
+```text
+this software and associated documentation files (the "Software"),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+
+```
+
+#### Prefix 99 — partial
+
+partial · prompt 1090 / sample 3 · longest span 202 tok · 10 spans · NV recall sum 12.3 · code-like yes · 1083 chars · docs 128141791, 57391000, 80427209, 139687542, 136638272
+
+Prompt:
+
+```text
+(function (global, factory) {
+  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+  typeof define === 'function' && define.amd ? define(factory) :
+
+```
+
+Generation:
+
+```text
+(global = global || self, global.moment = factory());
+}(this, (function () { 'use strict';
+
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+
+  function _possibleConstructorReturn(self, call) {
+    if (!self) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+
+    return call && (typeof call === "object" || typeof call === "function") ? call : self;
+  }
+
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }
+
+    subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });
+    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+  }
+
+  var Month = function (_React
+```
+
+Longest matched span:
+
+```text
+
+
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+
+  function _possibleConstructorReturn(self, call) {
+    if (!self) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+
+    return call && (typeof call === "object" || typeof call === "function") ? call : self;
+  }
+
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }
+
+    subClass.prototype = Object.create(superClass && superClass.prototype, {
+```
+
+#### Prefix 100 — partial
+
+partial · prompt 1753 / sample 7 · longest span 201 tok · 6 spans · NV recall sum 38.1 · code-like no · 1097 chars · docs 76939651, 125966475
+
+Prompt:
+
+```text
+/*
+ * $Id$
+ */
+
+/*
+
+Copyright (c) 2000-2007 Board of Trustees of Leland Stanford Jr. University,
+all rights reserved.
+
+Permission is
+```
+
+Generation:
+
+```text
+hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom
+the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+STANFORD UNIVERSITY BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+IN THE SOFTWARE.
+
+Except as contained in this notice, the name of Stanford University shall
+not be used in advertising
+```
+
+Longest matched span:
+
+```text
+this software and associated documentation files (the "Software"),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom
+the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+
+```
+
 ## DFM (final) on Dynaword
 
 <a id="dfm-main-dynaword-unconditional"></a>
 
 ### DFM (final) / Dynaword / Unconditional
 
-287 full matches out of 10000 generations; showing 100 full and 0 partial.
+287 full matches out of 9999 non-degenerate generations (1 degenerate excluded, 0 of them full matches); showing 100 full and 0 partial.
 
 #### Unconditional 1 — FULL
 
@@ -57809,7 +45616,7 @@ Skipper.
 
 ### DFM (final) / Dynaword / Minimal cue
 
-208 full matches out of 10000 generations; showing 100 full and 0 partial.
+208 full matches out of 9999 non-degenerate generations (1 degenerate excluded, 0 of them full matches); showing 100 full and 0 partial.
 
 #### Minimal cue 1 — FULL
 
@@ -59511,2191 +47318,9 @@ er.
 
 ### DFM (final) / Dynaword / Generic
 
-19 full matches out of 10000 generations; showing 19 full and 81 partial.
+11 full matches out of 9984 non-degenerate generations (16 degenerate excluded, 8 of them full matches); showing 11 full and 89 partial.
 
 #### Generic 1 — FULL
-
-FULL · prompt 331 / sample 3 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-Prompt:
-
-```text
-Tom svømmer.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Generic 2 — FULL
-
-FULL · prompt 450 / sample 5 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Drikker I meget te?
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Generic 3 — FULL
-
-FULL · prompt 450 / sample 6 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Drikker I meget te?
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Generic 4 — FULL
-
-FULL · prompt 511 / sample 7 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Tal ungarsk!
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Generic 5 — FULL
-
-FULL · prompt 866 / sample 3 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Hun er enogtredive år.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Generic 6 — FULL
-
-FULL · prompt 1135 / sample 3 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Tom har let ved at beherske fremmedsprog.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Generic 7 — FULL
-
-FULL · prompt 1136 / sample 4 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Tegn et kort over din by på bagsiden af hæftet!
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Generic 8 — FULL
-
-FULL · prompt 1257 / sample 3 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Put ikke dine fingre i kødhakkeren!
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Generic 9 — FULL
 
 FULL · prompt 341 / sample 0 · longest span 15 tok · 2 spans · NV recall sum 18 · code-like no · 25 chars · docs ft_20161M57, ft_20161M6, ft_20161M67, ft_20161M70, ft_20171M62 (+7)
 
@@ -61711,7 +47336,7 @@ Generation:
 TALER 16: Mødet er hævet.
 ```
 
-#### Generic 10 — FULL
+#### Generic 2 — FULL
 
 FULL · prompt 218 / sample 7 · longest span 8 tok · 2 spans · NV recall sum 7 · code-like no · 23 chars · docs opensub_6191264
 
@@ -61727,7 +47352,7 @@ Generation:
 Hun skal nok komme sig.
 ```
 
-#### Generic 11 — FULL
+#### Generic 3 — FULL
 
 FULL · prompt 335 / sample 5 · longest span 8 tok · 2 spans · NV recall sum 8 · code-like no · 18 chars · docs opensub_109908, opensub_4154118, opensub_4526276, opensub_4612397, opensub_5118960 (+4)
 
@@ -61743,7 +47368,7 @@ Generation:
 Havde I det sjovt?
 ```
 
-#### Generic 12 — FULL
+#### Generic 4 — FULL
 
 FULL · prompt 1521 / sample 9 · longest span 8 tok · 1 spans · NV recall sum 1 · code-like no · 18 chars · docs opensub_190259
 
@@ -61759,7 +47384,7 @@ Generation:
 Hvad laver du der?
 ```
 
-#### Generic 13 — FULL
+#### Generic 5 — FULL
 
 FULL · prompt 1077 / sample 4 · longest span 7 tok · 1 spans · NV recall sum 0 · code-like no · 12 chars · docs digibok_2009021204062, hest_forum110272251027225_0, hest_forum112159661215966_0, hest_forum114008661400866_0, hest_forum115967871596787_0 (+13)
 
@@ -61775,7 +47400,7 @@ Generation:
 Hvad gør du?
 ```
 
-#### Generic 14 — FULL
+#### Generic 6 — FULL
 
 FULL · prompt 12 / sample 5 · longest span 6 tok · 1 spans · NV recall sum 0 · code-like no · 17 chars · docs digibok_2006112001064
 
@@ -61791,7 +47416,7 @@ Generation:
 Det er forbandet!
 ```
 
-#### Generic 15 — FULL
+#### Generic 7 — FULL
 
 FULL · prompt 1485 / sample 2 · longest span 6 tok · 1 spans · NV recall sum 0 · code-like yes · 5 chars · docs digibok_2006112001051_part1, digibok_2008040204043, digibok_2008071600030, digibok_2008121603012, digistorting_1897_part7_vol-II_part1 (+8)
 
@@ -61807,7 +47432,7 @@ Generation:
 5,50.
 ```
 
-#### Generic 16 — FULL
+#### Generic 8 — FULL
 
 FULL · prompt 933 / sample 5 · longest span 5 tok · 2 spans · NV recall sum 0 · code-like no · 15 chars · docs opensub_3309062
 
@@ -61823,7 +47448,7 @@ Generation:
 De dufter ikke.
 ```
 
-#### Generic 17 — FULL
+#### Generic 9 — FULL
 
 FULL · prompt 1435 / sample 3 · longest span 4 tok · 1 spans · NV recall sum 0 · code-like yes · 3 chars · docs CL005958, CL008596, CQ002939, cellar_1232, cellar_32072 (+15)
 
@@ -61839,11 +47464,11 @@ Generation:
 30.
 ```
 
-#### Generic 18 — FULL
+#### Generic 10 — FULL
 
 FULL · prompt 1435 / sample 5 · longest span 4 tok · 1 spans · NV recall sum 0 · code-like yes · 3 chars · docs CL005958, CL008596, CQ002939, cellar_1232, cellar_32072 (+15)
 
-*Same generation text as #17.*
+*Same generation text as #9.*
 
 Prompt:
 
@@ -61857,7 +47482,7 @@ Generation:
 30.
 ```
 
-#### Generic 19 — FULL
+#### Generic 11 — FULL
 
 FULL · prompt 1435 / sample 9 · longest span 3 tok · 1 spans · NV recall sum 0 · code-like yes · 2 chars · docs CL004210, CL004345, CL008545, adl_kierkegaard03val, ai-aktindsigt_1175 (+14)
 
@@ -61873,1500 +47498,7 @@ Generation:
 50
 ```
 
-#### Generic 20 — partial
-
-partial · prompt 212 / sample 3 · longest span 505 tok · 3 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_61704, cellar_46129, cellar_62355, cellar_25087 (+2)
-
-Prompt:
-
-```text
-Er dette produceret i Schweiz?
-```
-
-Generation:
-
-```text
-|
-Nej |
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-Longest matched span:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Generic 21 — partial
-
-partial · prompt 1528 / sample 6 · longest span 482 tok · 6 spans · NV recall sum 0 · code-like yes · 509 chars · docs AA003185
-
-Prompt:
-
-```text
-Drager spyer ild.
-```
-
-Generation:
-
-```text
-|
-Kan være særdeles farlig. |
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-Longest matched span:
-
-```text
-. |
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Generic 22 — partial
-
-partial · prompt 1526 / sample 3 · longest span 440 tok · 22 spans · NV recall sum 0 · code-like yes · 517 chars · docs AA003185, AG000213, AG000235
-
-Prompt:
-
-```text
-Tom er ude at vande blomsterne.
-```
-
-Generation:
-
-```text
-|
-Lugter af krydderier. |
-Som regel af krydderier. |
-Som regel af krydderier. |
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-Longest matched span:
-
-```text
-. |
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Generic 23 — partial
+#### Generic 12 — partial
 
 partial · prompt 1647 / sample 4 · longest span 236 tok · 16 spans · NV recall sum 0 · code-like yes · 453 chars · docs cellar_41005, cellar_40977
 
@@ -63633,7 +47765,7 @@ Longest matched span:
 ||
 ```
 
-#### Generic 24 — partial
+#### Generic 13 — partial
 
 partial · prompt 1552 / sample 4 · longest span 137 tok · 11 spans · NV recall sum 0.635 · code-like no · 536 chars · docs DI000983
 
@@ -63677,7 +47809,7 @@ Longest matched span:
 Stk. 
 ```
 
-#### Generic 25 — partial
+#### Generic 14 — partial
 
 partial · prompt 1552 / sample 3 · longest span 133 tok · 18 spans · NV recall sum 14 · code-like no · 564 chars · docs cellar_44346, cellar_41855, cellar_12060, cellar_65714, cellar_42284 (+1)
 
@@ -63766,89 +47898,7 @@ Batater, søde kartofler |
 |
 ```
 
-#### Generic 26 — partial
-
-partial · prompt 1552 / sample 9 · longest span 118 tok · 13 spans · NV recall sum 0 · code-like yes · 847 chars · docs cellar_60036, cellar_60068
-
-Prompt:
-
-```text
-1, 3 og 5 er ulige tal.
-```
-
-Generation:
-
-```text
-|
-||||||||||||||||||||||||||||||||||||||||||||||||
-|
-|
-||||||||||||||||||||||||||||||||||||||||||||||||
-|
-|
-||||||||||||||||||||||||||||||||||||||||||||||||
-|
-|
-||||||||||||||||||||||||||||||||||||||||||||||||
-|
-|
-||||||||||||||||||||||||||||||||||||||||||||||||
-|
-|
-||||||||||||||||||||||||||||||||||||||||||||||||
-|
-|
-||||||||||||||||||||||||||||||||||||||||||||||||
-|
-|
-||||||||||||||||||||||||||||||||||||||||||||||||
-|
-|
-||||||||||||||||||||||||||||||||||||||||||||||||
-|
-|
-||||||||||||||||||||||||||||||||||||||||||||||||
-|
-|
-||||||||||||||||||||||||||||||||||||||||||||||||
-|
-|
-||||||||||||||||||||||||||||||||||||||||||||||||
-|
-|
-||||||||||||||||||||||||||||||||||||||||||||||||
-|
-|
-||||||||||||||||||||||||||||||||||||||||||||||||
-|
-|
-||||||||||||||||||||||||||||||||||||||||||||||||
-|
-|
-||||||||||||||||||||||||||||||||||||||||||||||||
-|
-```
-
-Longest matched span:
-
-```text
-|
-||||||||||||||||||||||||||||||||||||||||||||||||
-|
-|
-||||||||||||||||||||||||||||||||||||||||||||||||
-|
-|
-||||||||||||||||||||||||||||||||||||||||||||||||
-|
-|
-||||||||||||||||||||||||||||||||||||||||||||||||
-|
-|
-
-```
-
-#### Generic 27 — partial
+#### Generic 15 — partial
 
 partial · prompt 506 / sample 9 · longest span 104 tok · 10 spans · NV recall sum 1.43 · code-like no · 522 chars · docs ft_20161M80
 
@@ -63873,7 +47923,7 @@ Longest matched span:
 TALER 176: Forhandlingen er åbnet. Det er først
 ```
 
-#### Generic 28 — partial
+#### Generic 16 — partial
 
 partial · prompt 916 / sample 1 · longest span 101 tok · 11 spans · NV recall sum 1.22 · code-like no · 532 chars · docs ep_05-07-05
 
@@ -63903,7 +47953,7 @@ TALER 11: Afstemningen finder sted onsdag kl. 12.00.
 TALER 11: - Næste punkt på dagsordenen er
 ```
 
-#### Generic 29 — partial
+#### Generic 17 — partial
 
 partial · prompt 765 / sample 3 · longest span 95 tok · 11 spans · NV recall sum 3.61 · code-like no · 527 chars · docs AX024800, AA004014, AX010015, kb_administrative_publication_betænkningomdetgr...2195
 
@@ -63931,7 +47981,7 @@ Longest matched span:
 . Retsmøderne foregår for lukkede døre. Ved offentlig gengivelse af domme må der ikke ske offentliggørelse af navn, stilling eller bopæl for nogen af de i dommen nævnte personer eller på anden måde offentliggørelse af de pågældendes identitet. Overtrædelse
 ```
 
-#### Generic 30 — partial
+#### Generic 18 — partial
 
 partial · prompt 787 / sample 1 · longest span 88 tok · 10 spans · NV recall sum 0 · code-like no · 522 chars · docs ep_98-06-16, ep_98-10-06
 
@@ -63961,7 +48011,7 @@ TALER 2: Spørgetid (Kommissionen)
 TALER 2: Næste punkt på dagsordenen er spørgetid til Kommissionen (
 ```
 
-#### Generic 31 — partial
+#### Generic 19 — partial
 
 partial · prompt 90 / sample 2 · longest span 84 tok · 14 spans · NV recall sum 0 · code-like no · 515 chars · docs AN004663, AX007517
 
@@ -64005,7 +48055,7 @@ Longest matched span:
 I lov om arbejdsløshedsforsikring m.v., jf. lovbekendtgørelse nr. 708 af 13. august 2003, som ændret ved § 2 i lov nr. 1042 af 17. december 2002,
 ```
 
-#### Generic 32 — partial
+#### Generic 20 — partial
 
 partial · prompt 836 / sample 5 · longest span 84 tok · 12 spans · NV recall sum 0.364 · code-like no · 621 chars · docs DH001002
 
@@ -64049,7 +48099,7 @@ Det var i strid med ligebehandlingsloven, at klager blev afskediget fra sin stil
 Indklagede skal inden 14 dage betale godtgørelse til klager på 
 ```
 
-#### Generic 33 — partial
+#### Generic 21 — partial
 
 partial · prompt 1240 / sample 2 · longest span 82 tok · 14 spans · NV recall sum 0.375 · code-like no · 505 chars · docs AN005642, AX009058
 
@@ -64091,7 +48141,7 @@ Longest matched span:
 I lov om vægtafgift af motorkøretøjer m.v., jf. lovbekendtgørelse nr. 978 af 4. december 2003, som ændret bl.a. ved § 7 i lov nr. 127 af 27. februar 2004
 ```
 
-#### Generic 34 — partial
+#### Generic 22 — partial
 
 partial · prompt 1544 / sample 6 · longest span 78 tok · 11 spans · NV recall sum 0 · code-like no · 569 chars · docs AN012375, AN012248, AN012611
 
@@ -64127,7 +48177,7 @@ Momslovens § 27, stk. 1, har følgende ordlyd:
 "Ved levering af varer og ydelser er afgiftsgrundlaget vederlaget, herunder tilskud, der er direkte forbundet med varen eller ydelsens pris, men ikke ind
 ```
 
-#### Generic 35 — partial
+#### Generic 23 — partial
 
 partial · prompt 539 / sample 2 · longest span 76 tok · 14 spans · NV recall sum 0 · code-like no · 476 chars · docs opensub_4026773
 
@@ -64196,7 +48246,7 @@ Hjælp mig!
 Hjælp mig
 ```
 
-#### Generic 36 — partial
+#### Generic 24 — partial
 
 partial · prompt 995 / sample 8 · longest span 74 tok · 12 spans · NV recall sum 0 · code-like no · 523 chars · docs ep_07-04-25-020
 
@@ -64228,7 +48278,7 @@ TALER 2: Skriftlig erklæring (artikel 142)
 TALER 
 ```
 
-#### Generic 37 — partial
+#### Generic 25 — partial
 
 partial · prompt 1119 / sample 8 · longest span 74 tok · 11 spans · NV recall sum 0 · code-like no · 518 chars · docs ep_07-04-25-020
 
@@ -64260,7 +48310,7 @@ TALER 2: Skriftlig erklæring (artikel 142)
 TALER 
 ```
 
-#### Generic 38 — partial
+#### Generic 26 — partial
 
 partial · prompt 1625 / sample 8 · longest span 74 tok · 12 spans · NV recall sum 0 · code-like no · 543 chars · docs ep_07-04-25-020
 
@@ -64291,7 +48341,7 @@ TALER 2: Skriftlig erklæring (artikel 142)
 TALER 
 ```
 
-#### Generic 39 — partial
+#### Generic 27 — partial
 
 partial · prompt 300 / sample 7 · longest span 73 tok · 12 spans · NV recall sum 0 · code-like no · 592 chars · docs cellar_3190, cellar_3192, cellar_20617, cellar_20633
 
@@ -64327,7 +48377,7 @@ Artikel 1
 
 ```
 
-#### Generic 40 — partial
+#### Generic 28 — partial
 
 partial · prompt 511 / sample 3 · longest span 72 tok · 11 spans · NV recall sum 0 · code-like no · 433 chars · docs opensub_233291
 
@@ -64381,7 +48431,7 @@ Hvad er der i vejen?
 
 ```
 
-#### Generic 41 — partial
+#### Generic 29 — partial
 
 partial · prompt 970 / sample 0 · longest span 71 tok · 10 spans · NV recall sum 0 · code-like no · 409 chars · docs opensub_233291
 
@@ -64430,7 +48480,7 @@ Hvad er der i vejen?
 
 ```
 
-#### Generic 42 — partial
+#### Generic 30 — partial
 
 partial · prompt 1059 / sample 0 · longest span 71 tok · 10 spans · NV recall sum 0 · code-like no · 410 chars · docs opensub_233291
 
@@ -64482,7 +48532,7 @@ Hvad er der i vejen?
 
 ```
 
-#### Generic 43 — partial
+#### Generic 31 — partial
 
 partial · prompt 1112 / sample 0 · longest span 71 tok · 10 spans · NV recall sum 0 · code-like no · 441 chars · docs opensub_233291
 
@@ -64531,7 +48581,7 @@ Hvad er der i vejen?
 
 ```
 
-#### Generic 44 — partial
+#### Generic 32 — partial
 
 partial · prompt 1180 / sample 0 · longest span 71 tok · 11 spans · NV recall sum 0 · code-like no · 459 chars · docs opensub_233291
 
@@ -64584,7 +48634,7 @@ Hvad er der i vejen?
 
 ```
 
-#### Generic 45 — partial
+#### Generic 33 — partial
 
 partial · prompt 1052 / sample 4 · longest span 68 tok · 11 spans · NV recall sum 0.346 · code-like no · 473 chars · docs AA014531
 
@@ -64633,7 +48683,7 @@ Korrekt information og forelæggelse
 [Klager 1] og [Klager 2]
 ```
 
-#### Generic 46 — partial
+#### Generic 34 — partial
 
 partial · prompt 745 / sample 3 · longest span 67 tok · 13 spans · NV recall sum 0 · code-like no · 529 chars · docs AN001598
 
@@ -64680,7 +48730,7 @@ Longest matched span:
 I lov om beskatning ved dødsfald (dødsboskatteloven), jf. lovbekendtgørelse nr. 47 af 19. januar 2000,
 ```
 
-#### Generic 47 — partial
+#### Generic 35 — partial
 
 partial · prompt 767 / sample 4 · longest span 67 tok · 11 spans · NV recall sum 0 · code-like no · 558 chars · docs hest_forum14350602350602_0
 
@@ -64704,7 +48754,7 @@ Longest matched span:
 ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha ha
 ```
 
-#### Generic 48 — partial
+#### Generic 36 — partial
 
 partial · prompt 780 / sample 3 · longest span 67 tok · 12 spans · NV recall sum 0 · code-like no · 538 chars · docs AA014635
 
@@ -64756,7 +48806,7 @@ Longest matched span:
 Korrekt information
 ```
 
-#### Generic 49 — partial
+#### Generic 37 — partial
 
 partial · prompt 1392 / sample 3 · longest span 67 tok · 12 spans · NV recall sum 0 · code-like no · 574 chars · docs AA014635
 
@@ -64808,7 +48858,7 @@ Longest matched span:
 Korrekt information
 ```
 
-#### Generic 50 — partial
+#### Generic 38 — partial
 
 partial · prompt 956 / sample 8 · longest span 63 tok · 10 spans · NV recall sum 0 · code-like no · 511 chars · docs ft_20121M43
 
@@ -64834,7 +48884,7 @@ TALER 323: Tak til den radikale ordfører. Så går vi til Socialistisk Folkepar
 TALER 219: Det
 ```
 
-#### Generic 51 — partial
+#### Generic 39 — partial
 
 partial · prompt 1225 / sample 3 · longest span 62 tok · 12 spans · NV recall sum 0 · code-like no · 548 chars · docs AA013439
 
@@ -64886,7 +48936,7 @@ Privatlivets fred
 [Klager] har anført, at han i artiklen
 ```
 
-#### Generic 52 — partial
+#### Generic 40 — partial
 
 partial · prompt 288 / sample 7 · longest span 61 tok · 6 spans · NV recall sum 4.97 · code-like no · 242 chars · docs ep_01-11-12, ep_96-04-16, ep_96-09-18, ep_98-06-17, ep_97-06-09 (+4)
 
@@ -64914,7 +48964,7 @@ TALER 2: Forhandlingen er afsluttet.
 TALER 2: Afstemningen finder sted i morgen kl. 12.00.
 ```
 
-#### Generic 53 — partial
+#### Generic 41 — partial
 
 partial · prompt 341 / sample 8 · longest span 60 tok · 6 spans · NV recall sum 8.18 · code-like no · 235 chars · docs ft_20191M36, ft_20181M59, ft_20191M2, ft_20181M88, ft_20181M70 (+1)
 
@@ -64938,7 +48988,7 @@ Longest matched span:
 TALER 16: Mødet er hævet.
 ```
 
-#### Generic 54 — partial
+#### Generic 42 — partial
 
 partial · prompt 702 / sample 4 · longest span 58 tok · 11 spans · NV recall sum 0 · code-like no · 502 chars · docs ft_20141M92, ft_20141M76, ft_20131M6
 
@@ -64965,7 +49015,7 @@ TALER 323: Tak til Venstres ordfører. Så er det Socialdemokraternes ordfører,
 TALER 115:
 ```
 
-#### Generic 55 — partial
+#### Generic 43 — partial
 
 partial · prompt 23 / sample 3 · longest span 57 tok · 12 spans · NV recall sum 0 · code-like no · 534 chars · docs AA011878, AA010494, AA013439, AA012980, AA012981 (+2)
 
@@ -65020,7 +49070,7 @@ Privatlivets fred
 [Klager] har anført, at
 ```
 
-#### Generic 56 — partial
+#### Generic 44 — partial
 
 partial · prompt 767 / sample 6 · longest span 57 tok · 9 spans · NV recall sum 0 · code-like no · 465 chars · docs ft_20141M24
 
@@ -65046,7 +49096,7 @@ TALER 14: Tak til ordføreren. Så er det herre Jens Henrik Thulesen Dahl, Dansk
 TALER 319:
 ```
 
-#### Generic 57 — partial
+#### Generic 45 — partial
 
 partial · prompt 835 / sample 9 · longest span 55 tok · 11 spans · NV recall sum 0 · code-like no · 557 chars · docs DH001078
 
@@ -65098,7 +49148,7 @@ Klager gør gældende, at han er blevet udsat for forskelsbehandling på grund a
 Indklagede
 ```
 
-#### Generic 58 — partial
+#### Generic 46 — partial
 
 partial · prompt 1563 / sample 5 · longest span 55 tok · 12 spans · NV recall sum 0 · code-like no · 539 chars · docs ep_01-07-04, ep_00-07-05
 
@@ -65129,7 +49179,7 @@ TALER 2: Afstemningen finder sted i morgen kl. 12.00.
 TALER 2: Forslag til
 ```
 
-#### Generic 59 — partial
+#### Generic 47 — partial
 
 partial · prompt 1129 / sample 0 · longest span 54 tok · 12 spans · NV recall sum 0 · code-like yes · 626 chars · docs wiki_5493
 
@@ -65163,7 +49213,7 @@ Longest matched span:
  * 3) Harry Potter og F
 ```
 
-#### Generic 60 — partial
+#### Generic 48 — partial
 
 partial · prompt 79 / sample 9 · longest span 53 tok · 14 spans · NV recall sum 0 · code-like no · 501 chars · docs AT004883, AX016417, AT004864
 
@@ -65201,7 +49251,7 @@ af 28. december 2011 og § 3 i lov nr. 623 af 12. juni 2013, foretages følgende
 1. I
 ```
 
-#### Generic 61 — partial
+#### Generic 49 — partial
 
 partial · prompt 1378 / sample 9 · longest span 53 tok · 11 spans · NV recall sum 0 · code-like no · 539 chars · docs CR000809
 
@@ -65250,7 +49300,7 @@ Klager gør gældende, at hun er blevet forskelsbehandlet på grund af køn.
 Klager
 ```
 
-#### Generic 62 — partial
+#### Generic 50 — partial
 
 partial · prompt 1386 / sample 1 · longest span 53 tok · 11 spans · NV recall sum 0 · code-like no · 522 chars · docs ft_20151M76
 
@@ -65276,7 +49326,7 @@ TALER 14: Tak til ordføreren. Den næste ordfører er herre Preben Bang Henriks
 TALER 312: Tak for det.
 ```
 
-#### Generic 63 — partial
+#### Generic 51 — partial
 
 partial · prompt 1133 / sample 3 · longest span 52 tok · 13 spans · NV recall sum 0 · code-like no · 578 chars · docs AA011523
 
@@ -65319,7 +49369,7 @@ Longest matched span:
 [Klager] har klaget over, at artiklen indeholder ukorrekte oplysninger,
 ```
 
-#### Generic 64 — partial
+#### Generic 52 — partial
 
 partial · prompt 41 / sample 2 · longest span 51 tok · 14 spans · NV recall sum 0 · code-like no · 430 chars · docs CQ002992
 
@@ -65357,7 +49407,7 @@ Longest matched span:
 1. I § 1
 ```
 
-#### Generic 65 — partial
+#### Generic 53 — partial
 
 partial · prompt 820 / sample 6 · longest span 51 tok · 14 spans · NV recall sum 0 · code-like no · 473 chars · docs RMHL20150039, RMHL20150044, RMHL20160014, RMHL20160024, RMHL20160017 (+5)
 
@@ -65384,7 +49434,7 @@ DR2
 07:00: DR2 Morgen (man-fre) 09:00: DR2 Morgen (man-fre) 11:00: Kontant 11:30:
 ```
 
-#### Generic 66 — partial
+#### Generic 54 — partial
 
 partial · prompt 288 / sample 4 · longest span 50 tok · 4 spans · NV recall sum 5.31 · code-like no · 180 chars · docs ep_96-07-03, ep_01-11-12, ep_97-03-12, ep_99-03-09, ep_00-04-10 (+4)
 
@@ -65411,7 +49461,7 @@ TALER 2: Forhandlingen er afsluttet.
 TALER 2: Afstemningen finder sted i morgen kl. 12.00.
 ```
 
-#### Generic 67 — partial
+#### Generic 55 — partial
 
 partial · prompt 341 / sample 7 · longest span 50 tok · 7 spans · NV recall sum 0 · code-like no · 320 chars · docs ep_00-05-15, ep_01-03-14, ep_97-03-12, ep_98-01-14, ep_99-04-13 (+5)
 
@@ -65438,7 +49488,7 @@ TALER 2: Forhandlingen er afsluttet.
 TALER 2: Afstemningen finder sted i morgen kl. 12.00.
 ```
 
-#### Generic 68 — partial
+#### Generic 56 — partial
 
 partial · prompt 1240 / sample 3 · longest span 50 tok · 12 spans · NV recall sum 0 · code-like no · 561 chars · docs AA014284
 
@@ -65489,7 +49539,7 @@ Korrekt information, forelæggelse og privatlivets fred
 
 ```
 
-#### Generic 69 — partial
+#### Generic 57 — partial
 
 partial · prompt 544 / sample 5 · longest span 49 tok · 10 spans · NV recall sum 0 · code-like no · 448 chars · docs opensub_4738677, opensub_5646037, opensub_5143911
 
@@ -65537,7 +49587,7 @@ Jeg er så ked af det.
 
 ```
 
-#### Generic 70 — partial
+#### Generic 58 — partial
 
 partial · prompt 762 / sample 9 · longest span 49 tok · 11 spans · NV recall sum 0 · code-like no · 557 chars · docs DH000839
 
@@ -65583,7 +49633,7 @@ Klager gør gældende, at han er blevet udsat for forskelsbehandling på grund a
 
 ```
 
-#### Generic 71 — partial
+#### Generic 59 — partial
 
 partial · prompt 1188 / sample 5 · longest span 49 tok · 10 spans · NV recall sum 0 · code-like no · 426 chars · docs opensub_4738677, opensub_5646037, opensub_5143911
 
@@ -65629,7 +49679,7 @@ Jeg er så ked af det.
 
 ```
 
-#### Generic 72 — partial
+#### Generic 60 — partial
 
 partial · prompt 882 / sample 8 · longest span 47 tok · 13 spans · NV recall sum 0 · code-like no · 568 chars · docs opensub_4716870
 
@@ -65685,7 +49735,7 @@ Jeg elsker dig.
 Jeg elsker
 ```
 
-#### Generic 73 — partial
+#### Generic 61 — partial
 
 partial · prompt 29 / sample 1 · longest span 46 tok · 14 spans · NV recall sum 0 · code-like no · 580 chars · docs opensub_4716870
 
@@ -65742,7 +49792,7 @@ Jeg elsker dig.
 Jeg elsker
 ```
 
-#### Generic 74 — partial
+#### Generic 62 — partial
 
 partial · prompt 73 / sample 9 · longest span 46 tok · 10 spans · NV recall sum 0 · code-like no · 561 chars · docs ft_20181M30, ft_20181M59, ft_20181M84
 
@@ -65766,7 +49816,7 @@ Longest matched span:
 TALER 37: Tak for det. Der er ikke nogen korte bemærkninger. Tak til ordføreren. Vi går videre til ordføreren for
 ```
 
-#### Generic 75 — partial
+#### Generic 63 — partial
 
 partial · prompt 177 / sample 4 · longest span 46 tok · 12 spans · NV recall sum 0 · code-like no · 499 chars · docs opensub_4716870
 
@@ -65819,7 +49869,7 @@ Jeg elsker dig.
 Jeg elsker
 ```
 
-#### Generic 76 — partial
+#### Generic 64 — partial
 
 partial · prompt 200 / sample 4 · longest span 46 tok · 14 spans · NV recall sum 0 · code-like no · 547 chars · docs opensub_4716870
 
@@ -65879,7 +49929,7 @@ Jeg elsker dig.
 Jeg elsker
 ```
 
-#### Generic 77 — partial
+#### Generic 65 — partial
 
 partial · prompt 216 / sample 1 · longest span 46 tok · 15 spans · NV recall sum 0 · code-like no · 606 chars · docs opensub_4716870
 
@@ -65941,7 +49991,7 @@ Jeg elsker dig.
 Jeg elsker
 ```
 
-#### Generic 78 — partial
+#### Generic 66 — partial
 
 partial · prompt 230 / sample 7 · longest span 46 tok · 16 spans · NV recall sum 0 · code-like no · 648 chars · docs opensub_4716870
 
@@ -66005,7 +50055,7 @@ Jeg elsker dig.
 Jeg elsker
 ```
 
-#### Generic 79 — partial
+#### Generic 67 — partial
 
 partial · prompt 567 / sample 6 · longest span 46 tok · 13 spans · NV recall sum 0 · code-like no · 578 chars · docs opensub_4716870
 
@@ -66056,7 +50106,7 @@ Jeg elsker dig.
 Jeg elsker
 ```
 
-#### Generic 80 — partial
+#### Generic 68 — partial
 
 partial · prompt 665 / sample 9 · longest span 46 tok · 15 spans · NV recall sum 0 · code-like no · 574 chars · docs opensub_4716870
 
@@ -66113,7 +50163,7 @@ Jeg elsker dig.
 Jeg elsker
 ```
 
-#### Generic 81 — partial
+#### Generic 69 — partial
 
 partial · prompt 762 / sample 7 · longest span 46 tok · 16 spans · NV recall sum 0 · code-like no · 653 chars · docs opensub_4716870
 
@@ -66178,7 +50228,7 @@ Jeg elsker dig.
 Jeg elsker
 ```
 
-#### Generic 82 — partial
+#### Generic 70 — partial
 
 partial · prompt 851 / sample 4 · longest span 46 tok · 17 spans · NV recall sum 0 · code-like no · 663 chars · docs opensub_4716870
 
@@ -66248,7 +50298,7 @@ Jeg elsker dig.
 Jeg elsker
 ```
 
-#### Generic 83 — partial
+#### Generic 71 — partial
 
 partial · prompt 852 / sample 8 · longest span 46 tok · 15 spans · NV recall sum 0 · code-like no · 600 chars · docs opensub_4716870
 
@@ -66310,7 +50360,7 @@ Jeg elsker dig.
 Jeg elsker
 ```
 
-#### Generic 84 — partial
+#### Generic 72 — partial
 
 partial · prompt 861 / sample 8 · longest span 46 tok · 13 spans · NV recall sum 0 · code-like no · 564 chars · docs opensub_4716870
 
@@ -66360,7 +50410,7 @@ Jeg elsker dig.
 Jeg elsker
 ```
 
-#### Generic 85 — partial
+#### Generic 73 — partial
 
 partial · prompt 933 / sample 6 · longest span 46 tok · 11 spans · NV recall sum 0 · code-like no · 509 chars · docs wiki_456489, wiki_457807
 
@@ -66392,7 +50442,7 @@ Højde x bredde og årlig tilvækst: 0,80 x 0,50 m (80 x 50 cm/år).
 
 ```
 
-#### Generic 86 — partial
+#### Generic 74 — partial
 
 partial · prompt 991 / sample 6 · longest span 46 tok · 15 spans · NV recall sum 0 · code-like no · 609 chars · docs opensub_4716870
 
@@ -66456,7 +50506,7 @@ Jeg elsker dig.
 Jeg elsker
 ```
 
-#### Generic 87 — partial
+#### Generic 75 — partial
 
 partial · prompt 1037 / sample 2 · longest span 46 tok · 16 spans · NV recall sum 0 · code-like no · 631 chars · docs opensub_4716870
 
@@ -66521,7 +50571,7 @@ Jeg elsker dig.
 Jeg elsker
 ```
 
-#### Generic 88 — partial
+#### Generic 76 — partial
 
 partial · prompt 1038 / sample 2 · longest span 46 tok · 12 spans · NV recall sum 0 · code-like no · 513 chars · docs opensub_4716870
 
@@ -66575,7 +50625,7 @@ Jeg elsker dig.
 Jeg elsker
 ```
 
-#### Generic 89 — partial
+#### Generic 77 — partial
 
 partial · prompt 1074 / sample 3 · longest span 46 tok · 16 spans · NV recall sum 0 · code-like no · 651 chars · docs opensub_4716870
 
@@ -66637,7 +50687,7 @@ Jeg elsker dig.
 Jeg elsker
 ```
 
-#### Generic 90 — partial
+#### Generic 78 — partial
 
 partial · prompt 1116 / sample 4 · longest span 46 tok · 17 spans · NV recall sum 0 · code-like no · 673 chars · docs opensub_4716870
 
@@ -66706,7 +50756,7 @@ Jeg elsker dig.
 Jeg elsker
 ```
 
-#### Generic 91 — partial
+#### Generic 79 — partial
 
 partial · prompt 1149 / sample 4 · longest span 46 tok · 17 spans · NV recall sum 0 · code-like no · 679 chars · docs opensub_4716870
 
@@ -66776,7 +50826,7 @@ Jeg elsker dig.
 Jeg elsker
 ```
 
-#### Generic 92 — partial
+#### Generic 80 — partial
 
 partial · prompt 1166 / sample 1 · longest span 46 tok · 15 spans · NV recall sum 0 · code-like no · 613 chars · docs opensub_4716870
 
@@ -66835,7 +50885,7 @@ Jeg elsker dig.
 Jeg elsker
 ```
 
-#### Generic 93 — partial
+#### Generic 81 — partial
 
 partial · prompt 1356 / sample 2 · longest span 46 tok · 13 spans · NV recall sum 0 · code-like no · 531 chars · docs opensub_4716870
 
@@ -66894,7 +50944,7 @@ Jeg elsker dig.
 Jeg elsker
 ```
 
-#### Generic 94 — partial
+#### Generic 82 — partial
 
 partial · prompt 1398 / sample 1 · longest span 46 tok · 15 spans · NV recall sum 0 · code-like no · 632 chars · docs opensub_4716870
 
@@ -66955,7 +51005,7 @@ Jeg elsker dig.
 Jeg elsker
 ```
 
-#### Generic 95 — partial
+#### Generic 83 — partial
 
 partial · prompt 1413 / sample 4 · longest span 46 tok · 13 spans · NV recall sum 0 · code-like no · 559 chars · docs opensub_4716870
 
@@ -67012,7 +51062,7 @@ Jeg elsker dig.
 Jeg elsker
 ```
 
-#### Generic 96 — partial
+#### Generic 84 — partial
 
 partial · prompt 1496 / sample 3 · longest span 46 tok · 17 spans · NV recall sum 0 · code-like no · 669 chars · docs opensub_4716870
 
@@ -67082,7 +51132,7 @@ Jeg elsker dig.
 Jeg elsker
 ```
 
-#### Generic 97 — partial
+#### Generic 85 — partial
 
 partial · prompt 1505 / sample 8 · longest span 46 tok · 16 spans · NV recall sum 0 · code-like no · 630 chars · docs opensub_4716870
 
@@ -67149,7 +51199,7 @@ Jeg elsker dig.
 Jeg elsker
 ```
 
-#### Generic 98 — partial
+#### Generic 86 — partial
 
 partial · prompt 1585 / sample 4 · longest span 46 tok · 14 spans · NV recall sum 0 · code-like no · 499 chars · docs opensub_4716870
 
@@ -67210,7 +51260,7 @@ Jeg elsker dig.
 Jeg elsker
 ```
 
-#### Generic 99 — partial
+#### Generic 87 — partial
 
 partial · prompt 1634 / sample 1 · longest span 46 tok · 17 spans · NV recall sum 0 · code-like no · 666 chars · docs opensub_4716870
 
@@ -67276,7 +51326,7 @@ Jeg elsker dig.
 Jeg elsker
 ```
 
-#### Generic 100 — partial
+#### Generic 88 — partial
 
 partial · prompt 1650 / sample 8 · longest span 46 tok · 13 spans · NV recall sum 0 · code-like no · 577 chars · docs opensub_4716870
 
@@ -67326,9293 +51376,680 @@ Jeg elsker dig.
 Jeg elsker
 ```
 
+#### Generic 89 — partial
+
+partial · prompt 1249 / sample 1 · longest span 45 tok · 10 spans · NV recall sum 0 · code-like no · 460 chars · docs opensub_6182225
+
+Prompt:
+
+```text
+Jeg kan lide din forklaring.
+```
+
+Generation:
+
+```text
+I har ikke været på samme bølgelængde, siden I blev gift.
+Hvad?
+Det er ikke det, det handler om.
+Jeg er skyldig i den måde, jeg har behandlet dig på.
+Du er en fantastisk mand.
+Du har været en fantastisk mand.
+Jeg er ked af det.
+Jeg er ked af det.
+Jeg har været en nar.
+Jeg har været en nar.
+Jeg har været en nar.
+Jeg har været en nar.
+Jeg har været en nar.
+Hvad er der galt med mig?
+Hvad er der galt med mig?
+Hvad er der galt med mig?
+Hvad er der galt med mig?
+```
+
+Longest matched span:
+
+```text
+.
+Hvad er der galt med mig?
+Hvad er der galt med mig?
+Hvad er der galt med mig?
+Hvad er der galt med mig?
+```
+
+#### Generic 90 — partial
+
+partial · prompt 10 / sample 5 · longest span 44 tok · 12 spans · NV recall sum 0 · code-like no · 475 chars · docs opensub_6355771
+
+Prompt:
+
+```text
+Den som gætter tallet, vinder.
+```
+
+Generation:
+
+```text
+Lad os komme i gang.
+Første runde.
+En delt førsteplads, tre point til hver.
+Seks, syv, otte, ni, ti, elleve, tolv, tretten, fjorten, femten, seksten, sytten, atten, nitten, tyve.
+Højeste førsteplads er på 20 point.
+Hvem er først?
+Kom så, mine damer og herrer.
+Femogtyve, seksogtyve, syvogtyve, otteogtyve, niogtyve, tiogtyve.
+Alle er førstepladser.
+Og alle har samme pointtal, 20.
+Så vi fortsætter.
+Femogtyve, seksogtyve, syvogtyve, otteogtyve, niogtyve, tiogtyve.
+En delt an
+```
+
+Longest matched span:
+
+```text
+, syv, otte, ni, ti, elleve, tolv, tretten, fjorten, femten, seksten, sytten, atten, nitten, tyve
+```
+
+#### Generic 91 — partial
+
+partial · prompt 449 / sample 9 · longest span 44 tok · 13 spans · NV recall sum 0 · code-like no · 611 chars · docs opensub_7027332
+
+Prompt:
+
+```text
+Jeg spiste min kiwi.
+```
+
+Generation:
+
+```text
+Jeg har det ikke.
+-Jeg er rasende.
+-Jeg er en idiot.
+Jeg ved ikke, hvordan jeg skal gøre det.
+Det ved jeg ikke.
+Det er svært at sige undskyld, når man er ked af det.
+Jeg har brug for dig.
+Jeg har brug for dig.
+-Det ved jeg godt.
+-Jeg har brug for dig.
+Jeg har brug for dig.
+Jeg har brug for dig.
+Jeg har brug for dig.
+Jeg har brug for dig.
+Jeg har brug for dig.
+Jeg har brug for dig.
+Jeg har brug for dig.
+Jeg har brug for dig.
+Jeg har brug for dig.
+Jeg har brug for dig.
+Jeg har brug for dig.
+Jeg har brug for dig.
+Jeg har brug for dig.
+Jeg har brug for dig.
+Jeg har brug for dig.
+Jeg har brug for dig.
+Jeg har
+```
+
+Longest matched span:
+
+```text
+
+Jeg har brug for dig.
+Jeg har brug for dig.
+Jeg har brug for dig.
+Jeg har brug for dig.
+Jeg har brug for dig
+```
+
+#### Generic 92 — partial
+
+partial · prompt 509 / sample 2 · longest span 44 tok · 13 spans · NV recall sum 0 · code-like no · 602 chars · docs opensub_7027332
+
+Prompt:
+
+```text
+Han kan ikke leve op til Marys forventninger.
+```
+
+Generation:
+
+```text
+Det kan du ikke. Jeg tror ikke, det er retfærdigt mod Mary.
+Jeg synes ikke, det er retfærdigt mod Mary.
+Jeg synes ikke, det er retfærdigt mod Mary.
+Du har ret.
+Undskyld, jeg er sådan en hård negl.
+Nej, nej, nej.
+Jeg har brug for dig.
+Jeg har brug for dig.
+Jeg har brug for dig.
+Jeg har brug for dig.
+Jeg har brug for dig.
+Jeg har brug for dig.
+Jeg har brug for dig.
+Jeg har brug for dig.
+Jeg har brug for dig.
+Jeg har brug for dig.
+Jeg har brug for dig.
+Jeg har brug for dig.
+Jeg har brug for dig.
+Jeg har brug for dig.
+Jeg har brug for dig.
+Jeg har brug for dig.
+Jeg har brug for dig.
+Jeg har brug for
+```
+
+Longest matched span:
+
+```text
+
+Jeg har brug for dig.
+Jeg har brug for dig.
+Jeg har brug for dig.
+Jeg har brug for dig.
+Jeg har brug for dig
+```
+
+#### Generic 93 — partial
+
+partial · prompt 1207 / sample 3 · longest span 44 tok · 6 spans · NV recall sum 0 · code-like no · 276 chars · docs ep_97-11-19, ep_97-10-22, ep_98-03-11, ep_98-12-16
+
+Prompt:
+
+```text
+I Europa betragter man punktlighed som en selvfølge.
+```
+
+Generation:
+
+```text
+I Japan må man øve sig meget for at kunne nå til tiden. Det gælder både for mennesker og for maskiner.
+TALER 2: Da den tid, der er afsat til spørgetid til Rådet, er udløbet, vil spørgsmål nr. 15-33 blive besvaret skriftligt.
+TALER 2: Hermed er spørgetiden til Rådet afsluttet.
+```
+
+Longest matched span:
+
+```text
+.
+TALER 2: Da den tid, der er afsat til spørgetid til Rådet, er udløbet, vil spørgsmål nr. 1
+```
+
+#### Generic 94 — partial
+
+partial · prompt 33 / sample 6 · longest span 43 tok · 11 spans · NV recall sum 0 · code-like no · 451 chars · docs opensub_70270
+
+Prompt:
+
+```text
+Jeg skulle have givet Tom min gamle guitar.
+```
+
+Generation:
+
+```text
+Den er i mine bukser.
+Du må skaffe en ny.
+Hvordan kommer jeg til næste bane?
+Sådan.
+Jeg er der næsten.
+Jeg kan ikke se noget.
+Jeg er næsten klar.
+Jeg kan ikke se noget.
+Jeg har dig.
+Det var tæt på.
+Jeg gjorde det!
+Jeg gjorde det!
+Jeg gjorde det!
+Jeg gjorde det!
+Jeg gjorde det!
+Jeg gjorde det!
+Jeg gjorde det!
+Jeg gjorde det!
+Jeg gjorde det!
+Jeg gjorde det!
+Jeg gjorde det!
+Jeg gjorde det!
+Jeg gjorde det!
+Jeg gjorde det!
+Jeg gjorde det!
+Jeg gjorde de
+```
+
+Longest matched span:
+
+```text
+!
+Jeg gjorde det!
+Jeg gjorde det!
+Jeg gjorde det!
+Jeg gjorde det!
+Jeg gjorde det!
+J
+```
+
+#### Generic 95 — partial
+
+partial · prompt 1384 / sample 1 · longest span 43 tok · 12 spans · NV recall sum 0 · code-like no · 393 chars · docs opensub_6424060
+
+Prompt:
+
+```text
+Har du fået et opkald fra Tom?
+```
+
+Generation:
+
+```text
+"
+" Hvem er Tom? "
+" Jeg er Tom.
+Hvem er du? "
+" Jeg er Tom.
+Hvem er du? "
+" Jeg er Tom.
+Hvem er du? "
+Hvem er du?
+Hvem er du?
+Hvem er du?
+Hvem er du?
+Hvem er du?
+Hvem er du?
+Hvem er du?
+Hvem er du?
+Hvem er du?
+Hvem er du?
+Hvem er du?
+Hvem er du?
+Hvem er du?
+Hvem er du?
+Hvem er du?
+Hvem er du?
+Hvem er du?
+Hvem er du?
+Hvem er du?
+Hvem er du?
+Hvem er du?
+Hvem er du?
+Hvem er du?
+Hvem er du?
+Hv
+```
+
+Longest matched span:
+
+```text
+
+Hvem er du?
+Hvem er du?
+Hvem er du?
+Hvem er du?
+Hvem er du?
+Hvem er du?
+
+```
+
+#### Generic 96 — partial
+
+partial · prompt 477 / sample 3 · longest span 42 tok · 14 spans · NV recall sum 0 · code-like no · 454 chars · docs opensub_3521650, opensub_3430948
+
+Prompt:
+
+```text
+Tom planlægger allerede at tage tidligt afsted.
+```
+
+Generation:
+
+```text
+"
+" Jeg kommer til at savne dig, så ring, når du hører dette. "
+" Jeg elsker dig. "
+" Jeg kommer til at savne dig, så ring, når du hører dette. "
+" Jeg elsker dig. "
+Hvad fanden er det?
+Hvad fanden er det?
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Hvad fanden er det?
+Hvad fanden er det?
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej
+```
+
+Longest matched span:
+
+```text
+!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+
+```
+
+#### Generic 97 — partial
+
+partial · prompt 503 / sample 4 · longest span 42 tok · 15 spans · NV recall sum 0 · code-like no · 535 chars · docs opensub_5854302
+
+Prompt:
+
+```text
+Det regner i Sverige.
+```
+
+Generation:
+
+```text
+Jeg er på vej til fest i Helsingborg.
+Nu er det nok.
+Nu er det nok.
+Det er for meget.
+Det er for meget.
+Så.
+Hold op.
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Det er ikke godt.
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvor
+```
+
+Longest matched span:
+
+```text
+?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+
+```
+
+#### Generic 98 — partial
+
+partial · prompt 982 / sample 1 · longest span 42 tok · 10 spans · NV recall sum 0 · code-like no · 426 chars · docs opensub_4738677, opensub_5646037, opensub_5143911
+
+Prompt:
+
+```text
+Tom kommer ikke her mere.
+```
+
+Generation:
+
+```text
+Han har ikke tid.
+Det er ikke på grund af dig, han ikke har tid.
+Nej, nej.
+Det er fordi, han ikke er her.
+Han er død.
+Han døde, da han var 15.
+Jeg havde ikke tænkt mig at sige det.
+Jeg troede, du vidste det.
+Jeg er ked af det.
+Jeg er ked af det.
+Jeg er så ked af det.
+Jeg er ked af det.
+Jeg er så ked af det.
+Jeg er ked af det.
+Jeg er ked af det.
+Jeg er ked af det.
+Jeg er ked af det.
+Jeg er ked af det.
+Jeg er ked af det.
+Jeg
+```
+
+Longest matched span:
+
+```text
+.
+Jeg er ked af det.
+Jeg er så ked af det.
+Jeg er ked af det.
+Jeg er ked af det.
+Jeg er
+```
+
+#### Generic 99 — partial
+
+partial · prompt 1444 / sample 5 · longest span 42 tok · 12 spans · NV recall sum 0 · code-like no · 537 chars · docs opensub_5854302
+
+Prompt:
+
+```text
+Du overraskede alle.
+```
+
+Generation:
+
+```text
+Hvorfor?
+Hvorfor overraskede du alle?
+Hvorfor?
+Det er ikke det, du tror, det er.
+-Jeg er ikke sikker.
+-Hvad er det?
+Hvorfor overraskede du alle?
+Hvorfor?
+Jeg vil ikke tale om det.
+Hvorfor overraskede du alle?
+Jeg er ikke sikker.
+Jeg vil ikke tale om det.
+Hvorfor overraskede du alle?
+Jeg vil ikke tale om det.
+Hvorfor overraskede du alle?
+Jeg vil ikke tale om det.
+Hvorfor overraskede du alle?
+Jeg vil ikke tale om det.
+Hvorfor overraskede du alle?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor
+```
+
+Longest matched span:
+
+```text
+?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+Hvorfor?
+
+```
+
+#### Generic 100 — partial
+
+partial · prompt 1535 / sample 0 · longest span 42 tok · 13 spans · NV recall sum 0 · code-like no · 469 chars · docs opensub_3521650, opensub_3430948
+
+Prompt:
+
+```text
+Jeg har set dine planer.
+```
+
+Generation:
+
+```text
+De er gode.
+Hvis du kunne lide dem, hvorfor sagde du ikke det?
+Jeg var ikke sikker på, at det var den rigtige måde.
+Det er det.
+Jeg ved, at du vil gøre det rigtige.
+Jeg ville bare ikke have, at du døde.
+Jeg elskede dig.
+Det ved jeg godt.
+Jeg vil ikke dø.
+Det er ikke din tid.
+Det er ikke din tid.
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Ne
+```
+
+Longest matched span:
+
+```text
+!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+Nej!
+
+```
+
 <a id="dfm-main-dynaword-specific"></a>
 
 ### DFM (final) / Dynaword / Specific
 
-84 full matches out of 10000 generations; showing 84 full and 16 partial.
+50 full matches out of 9926 non-degenerate generations (74 degenerate excluded, 34 of them full matches); showing 50 full and 50 partial.
 
 #### Specific 1 — FULL
-
-FULL · prompt 173 / sample 0 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-Prompt:
-
-```text
-Hvad skal jeg gøre hvis jeg bliver arbejdsløs?
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 2 — FULL
-
-FULL · prompt 291 / sample 9 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Syv afdelinger skal sælges.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 3 — FULL
-
-FULL · prompt 620 / sample 0 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Her henvises til svar på spm. 50.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 4 — FULL
-
-FULL · prompt 620 / sample 7 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Her henvises til svar på spm. 50.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 5 — FULL
-
-FULL · prompt 703 / sample 8 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Af skatteministeren (Dennis Mogensen).
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 6 — FULL
-
-FULL · prompt 750 / sample 5 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Hvis ja, hvilket dyr?
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 7 — FULL
-
-FULL · prompt 750 / sample 6 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Hvis ja, hvilket dyr?
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 8 — FULL
-
-FULL · prompt 787 / sample 1 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Kun have sex med en ældre eller yngre partner?
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 9 — FULL
-
-FULL · prompt 787 / sample 3 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Kun have sex med en ældre eller yngre partner?
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 10 — FULL
-
-FULL · prompt 787 / sample 7 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Kun have sex med en ældre eller yngre partner?
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 11 — FULL
-
-FULL · prompt 787 / sample 9 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Kun have sex med en ældre eller yngre partner?
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 12 — FULL
-
-FULL · prompt 791 / sample 0 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Vil du hellere køre en Aston Martin eller en Maserati?
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 13 — FULL
-
-FULL · prompt 872 / sample 9 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Ville du helst have evnen til at tale ethvert sprog flydende, når du rejser, eller have en lokal guide med dig hele tiden?
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 14 — FULL
-
-FULL · prompt 965 / sample 0 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Vil du helst kunne tale med dyr eller kunne tale alle menneskesprog?
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 15 — FULL
-
-FULL · prompt 997 / sample 6 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Kun have sex med en partner, der er stille eller en, der taler dirty?
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 16 — FULL
-
-FULL · prompt 1268 / sample 8 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Særregler om prøver og eksaminer.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 17 — FULL
-
-FULL · prompt 1324 / sample 9 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Dokumentation skal medsendes.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 18 — FULL
-
-FULL · prompt 1343 / sample 2 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Værditilvækst og produktion.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 19 — FULL
-
-FULL · prompt 1348 / sample 5 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Varighed af retsfølgen.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 20 — FULL
-
-FULL · prompt 1357 / sample 3 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Kommissorium og medlemmer.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 21 — FULL
-
-FULL · prompt 1450 / sample 0 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Denne regel fandtes også i den tidligere lov.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 22 — FULL
-
-FULL · prompt 1879 / sample 3 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Om lovens administration.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 23 — FULL
-
-FULL · prompt 1893 / sample 9 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Denne konvention finder anvendelse.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 24 — FULL
-
-FULL · prompt 1917 / sample 9 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Sager herom behandles som politisager.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 25 — FULL
-
-FULL · prompt 1945 / sample 1 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Begrundelsen for udeladelsen oplyses.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 26 — FULL
-
-FULL · prompt 1945 / sample 8 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Begrundelsen for udeladelsen oplyses.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 27 — FULL
-
-FULL · prompt 1965 / sample 3 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Pressen skal have adgang til møderne.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 28 — FULL
-
-FULL · prompt 1969 / sample 8 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Ændringerne skal gennemføres med et passende varsel.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 29 — FULL
-
-FULL · prompt 2613 / sample 8 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Dette beløb må ikke overskrides.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 30 — FULL
-
-FULL · prompt 2999 / sample 5 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Oversat af Mogens Chrom Jacobsen.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 31 — FULL
-
-FULL · prompt 3076 / sample 6 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Oplysninger fra undervisningsministeriet.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 32 — FULL
-
-FULL · prompt 3092 / sample 2 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Dokumenter i netværk.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 33 — FULL
-
-FULL · prompt 3092 / sample 5 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Dokumenter i netværk.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 34 — FULL
-
-FULL · prompt 3154 / sample 9 · longest span 511 tok · 1 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_25087, cellar_46129, cellar_61704, cellar_62355 (+2)
-
-*Same generation text as #1.*
-
-Prompt:
-
-```text
-Øerne er ubeboede.
-```
-
-Generation:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 35 — FULL
 
 FULL · prompt 703 / sample 1 · longest span 20 tok · 1 spans · NV recall sum 18 · code-like no · 35 chars · docs AX003098, AX003867, AX004096, AX004509, AX004801 (+13)
 
@@ -76631,7 +52068,7 @@ Generation:
 1. udkast til betænkning |
 ```
 
-#### Specific 36 — FULL
+#### Specific 2 — FULL
 
 FULL · prompt 703 / sample 0 · longest span 19 tok · 1 spans · NV recall sum 17 · code-like no · 34 chars · docs AX002970, AX003549, AX004207, AX005217, AX005333 (+12)
 
@@ -76650,7 +52087,7 @@ Generation:
 1. udkast til betænkning |
 ```
 
-#### Specific 37 — FULL
+#### Specific 3 — FULL
 
 FULL · prompt 1709 / sample 2 · longest span 14 tok · 2 spans · NV recall sum 8 · code-like no · 36 chars · docs kb_historical_letters_herrcandidatboisen...11573
 
@@ -76666,7 +52103,7 @@ Generation:
 Gud velsigne Dem og Deres fremdeles.
 ```
 
-#### Specific 38 — FULL
+#### Specific 4 — FULL
 
 FULL · prompt 318 / sample 2 · longest span 11 tok · 1 spans · NV recall sum 0 · code-like no · 30 chars · docs digibok_2013041727004, digibok_2013101806018_part0, enevaeldens_nyheder_aalborg1827_1831-12-21_1048570, enevaeldens_nyheder_berlingske_1797-01-13_1049750, enevaeldens_nyheder_berlingske_1827-01-29_1231735 (+11)
 
@@ -76682,7 +52119,7 @@ Generation:
 danske Videnskabernes Selskab.
 ```
 
-#### Specific 39 — FULL
+#### Specific 5 — FULL
 
 FULL · prompt 165 / sample 6 · longest span 10 tok · 1 spans · NV recall sum 0 · code-like no · 14 chars · docs kb_administrative_publication_finansministerietss...5109
 
@@ -76698,7 +52135,7 @@ Generation:
 (Efterår 2017)
 ```
 
-#### Specific 40 — FULL
+#### Specific 6 — FULL
 
 FULL · prompt 3316 / sample 3 · longest span 10 tok · 1 spans · NV recall sum 1 · code-like no · 21 chars · docs hest_forum1193201193201_0
 
@@ -76714,7 +52151,7 @@ Generation:
 Han var 12 år gammel.
 ```
 
-#### Specific 41 — FULL
+#### Specific 7 — FULL
 
 FULL · prompt 331 / sample 7 · longest span 9 tok · 1 spans · NV recall sum 0 · code-like yes · 13 chars · docs 7833, CR000608, CY000367, RMHL20170014, ai-aktindsigt_103004 (+10)
 
@@ -76730,7 +52167,7 @@ Generation:
 2. april 2017
 ```
 
-#### Specific 42 — FULL
+#### Specific 8 — FULL
 
 FULL · prompt 611 / sample 9 · longest span 9 tok · 1 spans · NV recall sum 20 · code-like yes · 9 chars · docs AA002869, AN004132, AN004562, cellar_11046, cellar_12782 (+12)
 
@@ -76750,7 +52187,7 @@ Generation:
 |
 ```
 
-#### Specific 43 — FULL
+#### Specific 9 — FULL
 
 FULL · prompt 2327 / sample 3 · longest span 9 tok · 1 spans · NV recall sum 5.5 · code-like no · 27 chars · docs opensub_6607983, opensub_6751464, opensub_70718
 
@@ -76766,7 +52203,7 @@ Generation:
 Der er ikke noget at fejre.
 ```
 
-#### Specific 44 — FULL
+#### Specific 10 — FULL
 
 FULL · prompt 318 / sample 4 · longest span 8 tok · 1 spans · NV recall sum 6 · code-like no · 29 chars · docs enevaeldens_nyheder_slagelse_1831-12-20_1074246, enevaeldens_nyheder_slagelse_1831-12-24_1074307, enevaeldens_nyheder_slagelse_1832-01-07_1074468, wiki_34431, wiki_410276 (+1)
 
@@ -76782,7 +52219,7 @@ Generation:
 Museum for Nordiske Oldsager.
 ```
 
-#### Specific 45 — FULL
+#### Specific 11 — FULL
 
 FULL · prompt 588 / sample 2 · longest span 8 tok · 1 spans · NV recall sum 0 · code-like no · 17 chars · docs digibok_2006081600029_part0, digibok_2006082400075_part0, digibok_2006111500044_part0, digibok_2006111501041, digibok_2006112101016_part0 (+15)
 
@@ -76798,7 +52235,7 @@ Generation:
 det følgende Aar.
 ```
 
-#### Specific 46 — FULL
+#### Specific 12 — FULL
 
 FULL · prompt 1685 / sample 3 · longest span 8 tok · 1 spans · NV recall sum 0 · code-like no · 12 chars · docs adl_palladius01val, adl_palladius02val, adl_palladius05val, digibok_2006081000016, digibok_2006111501031 (+3)
 
@@ -76814,7 +52251,7 @@ Generation:
 Bibl. i Kbh.
 ```
 
-#### Specific 47 — FULL
+#### Specific 13 — FULL
 
 FULL · prompt 3293 / sample 6 · longest span 8 tok · 1 spans · NV recall sum 0 · code-like no · 15 chars · docs wiki_1167220, wiki_770452, wiki_82653
 
@@ -76830,7 +52267,7 @@ Generation:
 De fik børnene:
 ```
 
-#### Specific 48 — FULL
+#### Specific 14 — FULL
 
 FULL · prompt 549 / sample 8 · longest span 7 tok · 1 spans · NV recall sum 0 · code-like no · 14 chars · docs cellar_22285, cellar_22318, cellar_24717, cellar_24728, cellar_59764 (+6)
 
@@ -76846,7 +52283,7 @@ Generation:
 November 2020.
 ```
 
-#### Specific 49 — FULL
+#### Specific 15 — FULL
 
 FULL · prompt 1544 / sample 6 · longest span 7 tok · 1 spans · NV recall sum 0 · code-like no · 11 chars · docs enevaeldens_nyheder_aarhus_1838-08-08_1282194, enevaeldens_nyheder_aarhus_1840-03-05_1299111, enevaeldens_nyheder_aarhus_1842-03-18_1322039, enevaeldens_nyheder_aarhus_1842-06-29_1325464, enevaeldens_nyheder_aarhus_1844-04-13_1348880 (+15)
 
@@ -76862,7 +52299,7 @@ Generation:
 (Aalb. Av.)
 ```
 
-#### Specific 50 — FULL
+#### Specific 16 — FULL
 
 FULL · prompt 1668 / sample 4 · longest span 7 tok · 1 spans · NV recall sum 0 · code-like no · 18 chars · docs adl_larsenk_06
 
@@ -76878,7 +52315,7 @@ Generation:
 Min elskede Fader!
 ```
 
-#### Specific 51 — FULL
+#### Specific 17 — FULL
 
 FULL · prompt 1673 / sample 3 · longest span 7 tok · 1 spans · NV recall sum 0 · code-like no · 12 chars · docs enevaeldens_nyheder_berlingske_1792-01-06_1015410, enevaeldens_nyheder_odense_1785-01-28_1032471, enevaeldens_nyheder_ribe_1792-04-20_1008379
 
@@ -76894,7 +52331,7 @@ Generation:
 (See Nr. 2.)
 ```
 
-#### Specific 52 — FULL
+#### Specific 18 — FULL
 
 FULL · prompt 1682 / sample 1 · longest span 7 tok · 1 spans · NV recall sum 0 · code-like yes · 8 chars · docs cellar_21295, enevaeldens_nyheder_adresseavisen_1772-04-06_1178932, enevaeldens_nyheder_adresseavisen_1772-10-05_1190327, enevaeldens_nyheder_adresseavisen_1773-04-19_1202068, enevaeldens_nyheder_adresseavisen_1773-08-18_1209049 (+15)
 
@@ -76910,7 +52347,7 @@ Generation:
 No. 182.
 ```
 
-#### Specific 53 — FULL
+#### Specific 19 — FULL
 
 FULL · prompt 1682 / sample 6 · longest span 7 tok · 1 spans · NV recall sum 0 · code-like yes · 8 chars · docs digibok_2009011203010_part0, enevaeldens_nyheder_aalborg1767_1784-07-02_1029666, enevaeldens_nyheder_aarhus_1841-06-07_1313534, enevaeldens_nyheder_adresseavisen_1792-05-02_1333025, enevaeldens_nyheder_adresseavisen_1798-07-23_1537326 (+15)
 
@@ -76926,7 +52363,7 @@ Generation:
 No. 260.
 ```
 
-#### Specific 54 — FULL
+#### Specific 20 — FULL
 
 FULL · prompt 1519 / sample 3 · longest span 6 tok · 1 spans · NV recall sum 0 · code-like no · 11 chars · docs enevaeldens_nyheder_aalborg1767_1792-06-08_1042455, enevaeldens_nyheder_aalborg1767_1793-03-01_1043648, enevaeldens_nyheder_aalborg1767_1793-07-05_1044245, enevaeldens_nyheder_aalborg1767_1793-07-26_1044353, enevaeldens_nyheder_aalborg1767_1794-09-19_1047237 (+15)
 
@@ -76942,7 +52379,7 @@ Generation:
 F. Wandall.
 ```
 
-#### Specific 55 — FULL
+#### Specific 21 — FULL
 
 FULL · prompt 1660 / sample 5 · longest span 6 tok · 1 spans · NV recall sum 0 · code-like yes · 8 chars · docs enevaeldens_nyheder_aalborg1827_1839-04-22_1126556, enevaeldens_nyheder_aalborg1827_1839-07-15_1129300, enevaeldens_nyheder_aalborg1827_1839-10-01_1131859, enevaeldens_nyheder_aalborg1827_1842-05-16_1165443, enevaeldens_nyheder_aarhus_1831-10-18_1219999 (+11)
 
@@ -76958,7 +52395,7 @@ Generation:
 (C. T.)¬
 ```
 
-#### Specific 56 — FULL
+#### Specific 22 — FULL
 
 FULL · prompt 1682 / sample 9 · longest span 6 tok · 1 spans · NV recall sum 0 · code-like yes · 7 chars · docs cellar_21360, digistorting_1896_part2_vol-b_part1, enevaeldens_nyheder_adresseavisen_1768-08-02_1115575, enevaeldens_nyheder_adresseavisen_1769-08-15_1134397, enevaeldens_nyheder_adresseavisen_1783-01-17_1069563 (+15)
 
@@ -76974,7 +52411,7 @@ Generation:
 No. 75.
 ```
 
-#### Specific 57 — FULL
+#### Specific 23 — FULL
 
 FULL · prompt 2794 / sample 4 · longest span 6 tok · 1 spans · NV recall sum 0 · code-like no · 18 chars · docs enevaeldens_nyheder_aalborg1818_1827-02-07_1072418, enevaeldens_nyheder_aarhus_1827-02-02_1179455, enevaeldens_nyheder_thisted_1827-02-09_1006772
 
@@ -76990,7 +52427,7 @@ Generation:
 Han vil appellere.
 ```
 
-#### Specific 58 — FULL
+#### Specific 24 — FULL
 
 FULL · prompt 2999 / sample 4 · longest span 6 tok · 1 spans · NV recall sum 0 · code-like no · 17 chars · docs opensub_18119, opensub_3586436, opensub_4554033, opensub_4701675, opensub_4928790 (+14)
 
@@ -77006,7 +52443,7 @@ Generation:
 Dansk Video Tekst
 ```
 
-#### Specific 59 — FULL
+#### Specific 25 — FULL
 
 FULL · prompt 974 / sample 3 · longest span 5 tok · 1 spans · NV recall sum 0 · code-like yes · 5 chars · docs 3756, 5419, AN011307, DB000287, cellar_9168 (+13)
 
@@ -77022,7 +52459,7 @@ Generation:
 (1-7)
 ```
 
-#### Specific 60 — FULL
+#### Specific 26 — FULL
 
 FULL · prompt 1068 / sample 9 · longest span 5 tok · 1 spans · NV recall sum 0 · code-like no · 11 chars · docs enevaeldens_nyheder_aalborg1827_1830-04-21_1030570, enevaeldens_nyheder_aalborg1827_1840-03-26_1137821, enevaeldens_nyheder_aalborg1827_1843-09-07_1009354, enevaeldens_nyheder_aarhus_1839-07-10_1291954, enevaeldens_nyheder_maribo_1840-04-21_1007064 (+15)
 
@@ -77038,7 +52475,7 @@ Generation:
 (Meddeelt.)
 ```
 
-#### Specific 61 — FULL
+#### Specific 27 — FULL
 
 FULL · prompt 1544 / sample 1 · longest span 5 tok · 1 spans · NV recall sum 0 · code-like yes · 7 chars · docs digistorting_1888_part8_vol-a_part0, digistorting_1898-99_part8_vol-a_part1, digistorting_1902-03_part7_vol-a_part1, enevaeldens_nyheder_aalborg1767_1811-02-12_1111563, enevaeldens_nyheder_aalborg1767_1811-04-16_1112498 (+14)
 
@@ -77054,7 +52491,7 @@ Generation:
 (S. B.)
 ```
 
-#### Specific 62 — FULL
+#### Specific 28 — FULL
 
 FULL · prompt 1544 / sample 2 · longest span 5 tok · 1 spans · NV recall sum 0 · code-like yes · 8 chars · docs enevaeldens_nyheder_maribo_1834-12-19_1115979, enevaeldens_nyheder_ribe_1840-12-01_1220298, enevaeldens_nyheder_ribe_1841-01-22_1221003, enevaeldens_nyheder_ribe_1841-06-15_1222999, enevaeldens_nyheder_ribe_1844-11-11_1005821 (+14)
 
@@ -77070,7 +52507,7 @@ Generation:
 (Ah. A.)
 ```
 
-#### Specific 63 — FULL
+#### Specific 29 — FULL
 
 FULL · prompt 1544 / sample 7 · longest span 5 tok · 1 spans · NV recall sum 0 · code-like yes · 8 chars · docs enevaeldens_nyheder_aalborg1818_1822-04-29_1031501, enevaeldens_nyheder_aalborg1827_1840-03-06_1137092, enevaeldens_nyheder_aalborg1827_1846-10-08_1011659, enevaeldens_nyheder_aarhus_1834-02-21_1240317, enevaeldens_nyheder_aarhus_1839-11-27_1296340 (+15)
 
@@ -77086,7 +52523,7 @@ Generation:
 (S. Bl.)
 ```
 
-#### Specific 64 — FULL
+#### Specific 30 — FULL
 
 FULL · prompt 1593 / sample 4 · longest span 5 tok · 1 spans · NV recall sum 0 · code-like no · 14 chars · docs adl_hauch02val
 
@@ -77102,7 +52539,7 @@ Generation:
 Din gamle Ven.
 ```
 
-#### Specific 65 — FULL
+#### Specific 31 — FULL
 
 FULL · prompt 1673 / sample 4 · longest span 5 tok · 1 spans · NV recall sum 0 · code-like no · 10 chars · docs enevaeldens_nyheder_aalborg1827_1828-03-01_1008890, enevaeldens_nyheder_aalborg1827_1829-02-14_1018388, enevaeldens_nyheder_aarhus_1812-02-22_1086604, enevaeldens_nyheder_aarhus_1827-06-23_1182469, enevaeldens_nyheder_berlingske_1828-09-08_1255125 (+14)
 
@@ -77118,7 +52555,7 @@ Generation:
 (Sluttet.)
 ```
 
-#### Specific 66 — FULL
+#### Specific 32 — FULL
 
 FULL · prompt 1692 / sample 9 · longest span 5 tok · 1 spans · NV recall sum 0 · code-like yes · 5 chars · docs enevaeldens_nyheder_aalborg1767_1819-09-23_1146585, enevaeldens_nyheder_aalborg1827_1837-02-02_1102137, enevaeldens_nyheder_aarhus_1798-12-26_1020390, enevaeldens_nyheder_aarhus_1802-09-18_1037311, enevaeldens_nyheder_adresseavisen_1761-12-18_1014463 (+15)
 
@@ -77134,11 +52571,11 @@ Generation:
 24 s.
 ```
 
-#### Specific 67 — FULL
+#### Specific 33 — FULL
 
 FULL · prompt 3363 / sample 0 · longest span 5 tok · 1 spans · NV recall sum 0 · code-like no · 11 chars · docs enevaeldens_nyheder_aalborg1827_1830-04-21_1030570, enevaeldens_nyheder_aalborg1827_1840-03-26_1137821, enevaeldens_nyheder_aalborg1827_1843-09-07_1009354, enevaeldens_nyheder_aarhus_1839-07-10_1291954, enevaeldens_nyheder_maribo_1840-04-21_1007064 (+15)
 
-*Same generation text as #60.*
+*Same generation text as #26.*
 
 Prompt:
 
@@ -77152,7 +52589,7 @@ Generation:
 (Meddeelt.)
 ```
 
-#### Specific 68 — FULL
+#### Specific 34 — FULL
 
 FULL · prompt 870 / sample 4 · longest span 4 tok · 1 spans · NV recall sum 0 · code-like no · 8 chars · docs CR000538, adl_bang05val, digibok_2006111400039_part0, digibok_2006112000020, digibok_2006120700121 (+15)
 
@@ -77168,11 +52605,11 @@ Generation:
 Hvorfor?
 ```
 
-#### Specific 69 — FULL
+#### Specific 35 — FULL
 
 FULL · prompt 880 / sample 5 · longest span 4 tok · 1 spans · NV recall sum 0 · code-like no · 8 chars · docs CR000538, adl_bang05val, digibok_2006111400039_part0, digibok_2006112000020, digibok_2006120700121 (+15)
 
-*Same generation text as #68.*
+*Same generation text as #34.*
 
 Prompt:
 
@@ -77186,7 +52623,7 @@ Generation:
 Hvorfor?
 ```
 
-#### Specific 70 — FULL
+#### Specific 36 — FULL
 
 FULL · prompt 1692 / sample 6 · longest span 4 tok · 1 spans · NV recall sum 0 · code-like yes · 4 chars · docs enevaeldens_nyheder_aalborg1767_1777-09-26_1016312, enevaeldens_nyheder_aalborg1818_1823-12-06_1044410, enevaeldens_nyheder_adresseavisen_1776-06-07_1263565, enevaeldens_nyheder_adresseavisen_1786-10-27_1170309, enevaeldens_nyheder_adresseavisen_1795-03-27_1425420 (+15)
 
@@ -77202,7 +52639,7 @@ Generation:
 8 s.
 ```
 
-#### Specific 71 — FULL
+#### Specific 37 — FULL
 
 FULL · prompt 1730 / sample 3 · longest span 4 tok · 1 spans · NV recall sum 0 · code-like no · 9 chars · docs digibok_2009033103031, digibok_2010021603014, digibok_2011050604039, enevaeldens_nyheder_adresseavisen_1762-12-20_1022648, enevaeldens_nyheder_adresseavisen_1763-03-07_1024743 (+14)
 
@@ -77218,7 +52655,7 @@ Generation:
 fra Fyen.
 ```
 
-#### Specific 72 — FULL
+#### Specific 38 — FULL
 
 FULL · prompt 3388 / sample 4 · longest span 4 tok · 1 spans · NV recall sum 0 · code-like no · 8 chars · docs enevaeldens_nyheder_aalborg1827_1841-06-19_1153320, enevaeldens_nyheder_aalborg1827_1845-11-24_1028157, enevaeldens_nyheder_aarhus_1826-11-28_1178054, enevaeldens_nyheder_adresseavisen_1766-10-29_1081725, enevaeldens_nyheder_adresseavisen_1768-06-27_1113602 (+15)
 
@@ -77234,7 +52671,7 @@ Generation:
 H. Holst
 ```
 
-#### Specific 73 — FULL
+#### Specific 39 — FULL
 
 FULL · prompt 677 / sample 3 · longest span 3 tok · 1 spans · NV recall sum 0 · code-like yes · 3 chars · docs cellar_29691, cellar_44943, cellar_54556, cellar_56730, eur-lex-sum-da_291 (+9)
 
@@ -77250,7 +52687,7 @@ Generation:
 | 0
 ```
 
-#### Specific 74 — FULL
+#### Specific 40 — FULL
 
 FULL · prompt 1519 / sample 0 · longest span 3 tok · 1 spans · NV recall sum 0 · code-like no · 7 chars · docs digibok_2010042106089, digibok_2010062306056_part0, digibok_2010063006076, enevaeldens_nyheder_adresseavisen_1792-10-15_1346998, enevaeldens_nyheder_adresseavisen_1827-03-15_1010118 (+15)
 
@@ -77266,11 +52703,11 @@ Generation:
 Magnus.
 ```
 
-#### Specific 75 — FULL
+#### Specific 41 — FULL
 
 FULL · prompt 1519 / sample 2 · longest span 3 tok · 1 spans · NV recall sum 0 · code-like no · 7 chars · docs digibok_2010042106089, digibok_2010062306056_part0, digibok_2010063006076, enevaeldens_nyheder_adresseavisen_1792-10-15_1346998, enevaeldens_nyheder_adresseavisen_1827-03-15_1010118 (+15)
 
-*Same generation text as #74.*
+*Same generation text as #40.*
 
 Prompt:
 
@@ -77284,11 +52721,11 @@ Generation:
 Magnus.
 ```
 
-#### Specific 76 — FULL
+#### Specific 42 — FULL
 
 FULL · prompt 1519 / sample 6 · longest span 3 tok · 1 spans · NV recall sum 0 · code-like no · 7 chars · docs digibok_2010042106089, digibok_2010062306056_part0, digibok_2010063006076, enevaeldens_nyheder_adresseavisen_1792-10-15_1346998, enevaeldens_nyheder_adresseavisen_1827-03-15_1010118 (+15)
 
-*Same generation text as #74.*
+*Same generation text as #40.*
 
 Prompt:
 
@@ -77302,11 +52739,11 @@ Generation:
 Magnus.
 ```
 
-#### Specific 77 — FULL
+#### Specific 43 — FULL
 
 FULL · prompt 1519 / sample 7 · longest span 3 tok · 1 spans · NV recall sum 0 · code-like no · 7 chars · docs digibok_2010042106089, digibok_2010062306056_part0, digibok_2010063006076, enevaeldens_nyheder_adresseavisen_1792-10-15_1346998, enevaeldens_nyheder_adresseavisen_1827-03-15_1010118 (+15)
 
-*Same generation text as #74.*
+*Same generation text as #40.*
 
 Prompt:
 
@@ -77320,7 +52757,7 @@ Generation:
 Magnus.
 ```
 
-#### Specific 78 — FULL
+#### Specific 44 — FULL
 
 FULL · prompt 1537 / sample 8 · longest span 3 tok · 1 spans · NV recall sum 0 · code-like no · 5 chars · docs danske-taler_5404, digibok_2006111401047_part0, digibok_2006112000020, digibok_2007082212002_part1, digibok_2007083012004 (+15)
 
@@ -77336,7 +52773,7 @@ Generation:
 Amen!
 ```
 
-#### Specific 79 — FULL
+#### Specific 45 — FULL
 
 FULL · prompt 1685 / sample 4 · longest span 3 tok · 1 spans · NV recall sum 0 · code-like no · 5 chars · docs adl_brorson03grval, adl_claussen12val, adl_hcaeventyr02val, adl_hcaeventyr07val, adl_heibfr08val (+14)
 
@@ -77352,7 +52789,7 @@ Generation:
 Bibl.
 ```
 
-#### Specific 80 — FULL
+#### Specific 46 — FULL
 
 FULL · prompt 2875 / sample 6 · longest span 3 tok · 1 spans · NV recall sum 0 · code-like no · 10 chars · docs 1545, 2335, AQ000402, AX020429, cellar_14770 (+13)
 
@@ -77368,7 +52805,7 @@ Generation:
 sektionen.
 ```
 
-#### Specific 81 — FULL
+#### Specific 47 — FULL
 
 FULL · prompt 1714 / sample 6 · longest span 2 tok · 1 spans · NV recall sum 0 · code-like no · 4 chars · docs digibok_2012112308038, enevaeldens_nyheder_aalborg1767_1775-12-22_1012730, enevaeldens_nyheder_aalborg1827_1841-12-19_1159804, enevaeldens_nyheder_aarhus_1797-10-18_1014625, enevaeldens_nyheder_adresseavisen_1766-03-07_1069473 (+15)
 
@@ -77384,7 +52821,7 @@ Generation:
 Ark.
 ```
 
-#### Specific 82 — FULL
+#### Specific 48 — FULL
 
 FULL · prompt 1985 / sample 3 · longest span 1 tok · 1 spans · NV recall sum 0 · code-like yes · 1 chars · docs cellar_24389, cellar_2635, cellar_34744, cellar_3542, cellar_39355 (+5)
 
@@ -77400,11 +52837,11 @@ Generation:
 |
 ```
 
-#### Specific 83 — FULL
+#### Specific 49 — FULL
 
 FULL · prompt 1985 / sample 5 · longest span 1 tok · 1 spans · NV recall sum 0 · code-like yes · 1 chars · docs cellar_24389, cellar_2635, cellar_34744, cellar_3542, cellar_39355 (+5)
 
-*Same generation text as #82.*
+*Same generation text as #48.*
 
 Prompt:
 
@@ -77418,11 +52855,11 @@ Generation:
 |
 ```
 
-#### Specific 84 — FULL
+#### Specific 50 — FULL
 
 FULL · prompt 1985 / sample 9 · longest span 1 tok · 1 spans · NV recall sum 0 · code-like yes · 1 chars · docs cellar_24389, cellar_2635, cellar_34744, cellar_3542, cellar_39355 (+5)
 
-*Same generation text as #82.*
+*Same generation text as #48.*
 
 Prompt:
 
@@ -77436,4179 +52873,7 @@ Generation:
 |
 ```
 
-#### Specific 85 — partial
-
-partial · prompt 3224 / sample 2 · longest span 509 tok · 2 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_61704, cellar_46129, cellar_62355, cellar_25087 (+2)
-
-Prompt:
-
-```text
-Undtagelser kan fastsættes ved forfatningen eller ved lov.
-```
-
-Generation:
-
-```text
-« |
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-Longest matched span:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 86 — partial
-
-partial · prompt 3224 / sample 4 · longest span 509 tok · 2 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185, cellar_61704, cellar_46129, cellar_62355, cellar_25087 (+2)
-
-*Same generation text as #85.*
-
-Prompt:
-
-```text
-Undtagelser kan fastsættes ved forfatningen eller ved lov.
-```
-
-Generation:
-
-```text
-« |
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-Longest matched span:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 87 — partial
-
-partial · prompt 1893 / sample 4 · longest span 506 tok · 3 spans · NV recall sum 1 · code-like yes · 510 chars · docs cellar_61704, cellar_62355, cellar_46129
-
-Prompt:
-
-```text
-Denne konvention finder anvendelse.
-```
-
-Generation:
-
-```text
-|
-||
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-Longest matched span:
-
-```text
-
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 88 — partial
-
-partial · prompt 708 / sample 8 · longest span 504 tok · 4 spans · NV recall sum 0 · code-like yes · 512 chars · docs cellar_61704, cellar_46129, AA002665, cellar_62355, cellar_25087
-
-Prompt:
-
-```text
-BNP eller være tilstrækkeligt faldende.
-```
-
-Generation:
-
-```text
-|
-||||||
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-Longest matched span:
-
-```text
-
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 89 — partial
-
-partial · prompt 620 / sample 2 · longest span 499 tok · 4 spans · NV recall sum 2.24 · code-like yes · 510 chars · docs AA003185, cellar_61704, cellar_46129, cellar_62355, cellar_25087 (+2)
-
-Prompt:
-
-```text
-Her henvises til svar på spm. 50.
-```
-
-Generation:
-
-```text
-|
-|
-|
-§ 15 |
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-Longest matched span:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 90 — partial
-
-partial · prompt 556 / sample 0 · longest span 492 tok · 4 spans · NV recall sum 0 · code-like yes · 514 chars · docs cellar_25087, cellar_61704, cellar_46129, cellar_62355, BE002205
-
-Prompt:
-
-```text
-Fordeling af personale, pct.
-```
-
-Generation:
-
-```text
-af omkostninger | ||||
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-Longest matched span:
-
-```text
-
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 91 — partial
-
-partial · prompt 1874 / sample 4 · longest span 492 tok · 8 spans · NV recall sum 0 · code-like yes · 511 chars · docs AA003185
-
-Prompt:
-
-```text
-Bestemmelser for flyveklarerere.
-```
-
-Generation:
-
-```text
-|
-|
-|
-ICAO bilag 8. |
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-Longest matched span:
-
-```text
-. |
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 92 — partial
-
-partial · prompt 759 / sample 4 · longest span 479 tok · 8 spans · NV recall sum 0.735 · code-like yes · 515 chars · docs cellar_61704, cellar_46129
-
-Prompt:
-
-```text
-Kun have sex med eller uden kondom?
-```
-
-Generation:
-
-```text
-|
-||
-Aldersgruppe |
-Beskrivelse |
-|||||
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-Longest matched span:
-
-```text
-|||||
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 93 — partial
+#### Specific 51 — partial
 
 partial · prompt 556 / sample 5 · longest span 473 tok · 6 spans · NV recall sum 0 · code-like yes · 510 chars · docs AA002665, AA002815, BE002205
 
@@ -82104,7 +53369,7 @@ Longest matched span:
 |
 ```
 
-#### Specific 94 — partial
+#### Specific 52 — partial
 
 partial · prompt 1369 / sample 5 · longest span 470 tok · 6 spans · NV recall sum 0 · code-like yes · 517 chars · docs cellar_61704, cellar_25087, AA002665, cellar_62355, AA003185
 
@@ -82596,500 +53861,7 @@ Longest matched span:
 |
 ```
 
-#### Specific 95 — partial
-
-partial · prompt 1380 / sample 4 · longest span 470 tok · 12 spans · NV recall sum 0 · code-like yes · 500 chars · docs cellar_61704, AA003185, cellar_25087, cellar_46129, cellar_62355
-
-Prompt:
-
-```text
-Barometer for ITarbejdskraft.
-```
-
-Generation:
-
-```text
-3. udgave, 2005. |
-Tabel 5.6.1
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-Longest matched span:
-
-```text
-
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 96 — partial
+#### Specific 53 — partial
 
 partial · prompt 701 / sample 9 · longest span 467 tok · 9 spans · NV recall sum 0 · code-like yes · 521 chars · docs AA002665, AA002815, BE002205
 
@@ -83579,492 +54351,7 @@ Longest matched span:
 |
 ```
 
-#### Specific 97 — partial
-
-partial · prompt 2328 / sample 5 · longest span 463 tok · 11 spans · NV recall sum 0 · code-like yes · 497 chars · docs AA003185, cellar_61704, cellar_46129, cellar_62355, cellar_25087 (+2)
-
-Prompt:
-
-```text
-Mindst én gang om året.
-```
-
-Generation:
-
-```text
-|
-Punkt 4.2.2.2, 3. og 4. punktum |
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-Longest matched span:
-
-```text
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-|
-```
-
-#### Specific 98 — partial
+#### Specific 54 — partial
 
 partial · prompt 1391 / sample 7 · longest span 456 tok · 7 spans · NV recall sum 0 · code-like yes · 506 chars · docs AA003185
 
@@ -84540,7 +54827,7 @@ Longest matched span:
 |
 ```
 
-#### Specific 99 — partial
+#### Specific 55 — partial
 
 partial · prompt 1294 / sample 9 · longest span 434 tok · 17 spans · NV recall sum 0 · code-like yes · 527 chars · docs cellar_61704, cellar_6775, AA003185, AA002665, AA002815 (+1)
 
@@ -84997,22 +55284,1615 @@ Longest matched span:
 |
 ```
 
-#### Specific 100 — partial
+#### Specific 56 — partial
 
-partial · prompt 1335 / sample 7 · longest span 434 tok · 2 spans · NV recall sum 0 · code-like yes · 475 chars · docs cellar_55819, cellar_55810, cellar_23921
+partial · prompt 2452 / sample 5 · longest span 413 tok · 18 spans · NV recall sum 0 · code-like yes · 515 chars · docs AU000979
 
 Prompt:
 
 ```text
-Bevillingen blev derfor justeret med TB2016.
+Det skal ske ved renoveringer, herunder energi renoveringer.
+```
+
+Generation:
+
+```text
+Det skal sikres, at klimaskærmen er tilstrækkeligt isoleret, og at vinduer er energieffektive og tætte.
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+```
+
+Longest matched span:
+
+```text
+.
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+```
+
+#### Specific 57 — partial
+
+partial · prompt 1836 / sample 4 · longest span 385 tok · 23 spans · NV recall sum 0 · code-like yes · 550 chars · docs cellar_6779, cellar_6775, cellar_46129, AR000932, AG000213 (+4)
+
+Prompt:
+
+```text
+Skitseprojekt godkendes af landsstyret.
+```
+
+Generation:
+
+```text
+Samtidig tilkendegives, at landsstyret ikke finder anledning til at fremkomme med noget forslag til indholdet af den endelige lov om et havnevæsen for Grønland.
+|
+| |
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+```
+
+Longest matched span:
+
+```text
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+```
+
+#### Specific 58 — partial
+
+partial · prompt 994 / sample 0 · longest span 336 tok · 21 spans · NV recall sum 0 · code-like yes · 836 chars · docs cellar_16915
+
+Prompt:
+
+```text
+Vil du helst være den sjoveste person i rummet eller den mest intelligente?
 ```
 
 Generation:
 
 ```text
 |
-|||
+De følgende spørgsmål er målrettet dem, der vælger den første mulighed. De øvrige deltagere skal ikke besvare dem, men kan i stedet svare på de følgende spørgsmål. |
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+```
+
+Longest matched span:
+
+```text
 |
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+```
+
+#### Specific 59 — partial
+
+partial · prompt 3328 / sample 2 · longest span 320 tok · 19 spans · NV recall sum 0 · code-like yes · 511 chars · docs AG000213, AL001203, AL001207, AA002249, AN003950 (+3)
+
+Prompt:
+
+```text
+Betegnelsen kendes såvel i Danmark som i andre lande.
+```
+
+Generation:
+
+```text
+Der er tale om en fødevarekategori, der markedsføres i Danmark. Der er tale om en fødevarekategori, der markedsføres i Danmark. Der er tale om en fødevarekategori, der markedsføres i Danmark. |
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+```
+
+Longest matched span:
+
+```text
+. |
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+```
+
+#### Specific 60 — partial
+
+partial · prompt 1925 / sample 0 · longest span 276 tok · 19 spans · NV recall sum 0 · code-like no · 552 chars · docs AU002799, AG000235, BD000082, AL001207, AR000932 (+2)
+
+Prompt:
+
+```text
+Disse sager behandles som offentlige politisager.
+```
+
+Generation:
+
+```text
+Sigtede har ret til at vælge en forsvarer efter eget valg. Forsvareren beskikkes kun, hvis sigtede ikke selv har valgt en forsvarer. Retten kan efter begæring fra politiet eller efter eget valg træffe afgørelse om, at dørene skal lukkes under retsmøder, hvori sagen behandles. |
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+```
+
+Longest matched span:
+
+```text
+. |
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+```
+
+#### Specific 61 — partial
+
+partial · prompt 560 / sample 5 · longest span 221 tok · 13 spans · NV recall sum 9.04 · code-like no · 630 chars · docs AX014139, AX013999, AX014102, AX014138, AX014171 (+5)
+
+Prompt:
+
+```text
+Afgivelse af betænkning.
+```
+
+Generation:
+
+```text
+Betænkningen vil først blive afgivet, efter at der er foretaget afstemning om forslaget til vedtagelse.
+
+Ane Halsboe-Larsen (S) Henrik Sass Larsen (S) Jacob Bjerregaard (S) John Dyrby Paulsen (S) Pernille Rosenkrantz-Theil (S) Simon Kollerup (S) Thomas Jensen (S) Nadeem Farooq (RV) Rasmus Helveg Petersen (RV) Camilla Hersom (RV) Jonas Dahl (SF) Jesper Petersen (SF) Frank Aaen (EL) Johanne Schmidt-Nielsen (EL) Jørgen Arbo-Bæhr (EL) Hans Andersen (V) Gitte Lillelund Bech (V) fmd. Martin Geertsen (V) Kristian Pihl Lorentzen (V) Henrik Høegh (V) Torsten Schack Pedersen (V) Troels Lund Poulsen (V) Mads Rørvig (V) Dennis Flydtkj
+```
+
+Longest matched span:
+
+```text
+.
+
+Ane Halsboe-Larsen (S) Henrik Sass Larsen (S) Jacob Bjerregaard (S) John Dyrby Paulsen (S) Pernille Rosenkrantz-Theil (S) Simon Kollerup (S) Thomas Jensen (S) Nadeem Farooq (RV) Rasmus Helveg Petersen (RV) Camilla Hersom (RV) Jonas Dahl (SF) Jesper Petersen (SF) Frank Aaen (EL) Johanne Schmidt-Nielsen (EL) Jørgen Arbo-Bæhr (EL) Hans Andersen (V) Gitte Lillelund Bech (V) fmd. Martin Geertsen (V) Kristian Pihl Lorentzen (V) Henrik Høegh (V) Torsten Schack Pedersen (V) Troels Lund Poulsen (V) Mads Rørvig (V) Dennis Flydtkj
+```
+
+#### Specific 62 — partial
+
+partial · prompt 556 / sample 3 · longest span 216 tok · 11 spans · NV recall sum 0 · code-like yes · 290 chars · docs kb_administrative_publication_grundvandsovervågnin...9666, kb_administrative_publication_småsøerogvandhulle...11873
+
+Prompt:
+
+```text
+Fordeling af personale, pct.
+```
+
+Generation:
+
+```text
+af samlede udgifter 2013 2014 2015 2016 2017 2018 2019 2020 2021 2022 2023 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0
+```
+
+Longest matched span:
+
+```text
+0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0
+```
+
+#### Specific 63 — partial
+
+partial · prompt 1009 / sample 2 · longest span 216 tok · 13 spans · NV recall sum 1.67 · code-like yes · 509 chars · docs kb_administrative_publication_detkommunalesamarb...9464
+
+Prompt:
+
+```text
+Ikke Anskuelserne , men Slægterne forandrer sig.
+```
+
+Generation:
+
+```text
+Jeg tror paa Forandringen , og det er 
+den , der gør Livet saa interessant . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+```
+
+Longest matched span:
+
+```text
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+```
+
+#### Specific 64 — partial
+
+partial · prompt 2613 / sample 0 · longest span 215 tok · 18 spans · NV recall sum 0 · code-like yes · 508 chars · docs cellar_46567, cellar_46570
+
+Prompt:
+
+```text
+Dette beløb må ikke overskrides.
+```
+
+Generation:
+
+```text
+|
+Dette beløb må ikke overskrides. |
+|||||||
+Andet |
+||||||||||
+I alt |
+||||||||||
+Andet |
+||||||||||
+I alt |
+||||||||||
+Hvad angår de beløb, der er anført under »heraf«, skal det bemærkes, at:
+|
+||||||||||
+Tabel 6 |
+||||||||||
+Afsnit |
+Kode |
+Rapporteringsenhed |
+Beløb |
+||
 |
 |
 |
@@ -85022,15 +56902,7 @@ Generation:
 |
 |
 |
-|
 ||
-|
-|
-|
-|
-|
-||
-|
 |
 |
 |
@@ -85040,15 +56912,7 @@ Generation:
 |
 |
 |
-|
 ||
-|
-|
-|
-|
-|
-||
-|
 |
 |
 |
@@ -85058,15 +56922,7 @@ Generation:
 |
 |
 |
-|
 ||
-|
-|
-|
-|
-|
-||
-|
 |
 |
 |
@@ -85076,15 +56932,7 @@ Generation:
 |
 |
 |
-|
 ||
-|
-|
-|
-|
-|
-||
-|
 |
 |
 |
@@ -85094,15 +56942,7 @@ Generation:
 |
 |
 |
-|
 ||
-|
-|
-|
-|
-|
-||
-|
 |
 |
 |
@@ -85112,15 +56952,7 @@ Generation:
 |
 |
 |
-|
 ||
-|
-|
-|
-|
-|
-||
-|
 |
 |
 |
@@ -85130,15 +56962,7 @@ Generation:
 |
 |
 |
-|
 ||
-|
-|
-|
-|
-|
-||
-|
 |
 |
 |
@@ -85148,15 +56972,7 @@ Generation:
 |
 |
 |
-|
 ||
-|
-|
-|
-|
-|
-||
-|
 |
 |
 |
@@ -85166,15 +56982,7 @@ Generation:
 |
 |
 |
-|
 ||
-|
-|
-|
-|
-|
-||
-|
 |
 |
 |
@@ -85184,45 +56992,7 @@ Generation:
 |
 |
 |
-|
 ||
-|
-|
-|
-|
-|
-||
-|
-|
-|
-|
-|
-||
-|
-|
-|
-|
-|
-||
-|
-|
-|
-|
-|
-||
-|
-|
-|
-|
-|
-||
-|
-|
-|
-|
-|
-||
-|
 |
 |
 |
@@ -85234,8 +57004,8 @@ Generation:
 Longest matched span:
 
 ```text
-
 |
+||
 |
 |
 |
@@ -85245,15 +57015,7 @@ Longest matched span:
 |
 |
 |
-|
 ||
-|
-|
-|
-|
-|
-||
-|
 |
 |
 |
@@ -85263,15 +57025,7 @@ Longest matched span:
 |
 |
 |
-|
 ||
-|
-|
-|
-|
-|
-||
-|
 |
 |
 |
@@ -85281,15 +57035,7 @@ Longest matched span:
 |
 |
 |
-|
 ||
-|
-|
-|
-|
-|
-||
-|
 |
 |
 |
@@ -85299,15 +57045,7 @@ Longest matched span:
 |
 |
 |
-|
 ||
-|
-|
-|
-|
-|
-||
-|
 |
 |
 |
@@ -85317,15 +57055,7 @@ Longest matched span:
 |
 |
 |
-|
 ||
-|
-|
-|
-|
-|
-||
-|
 |
 |
 |
@@ -85335,15 +57065,7 @@ Longest matched span:
 |
 |
 |
-|
 ||
-|
-|
-|
-|
-|
-||
-|
 |
 |
 |
@@ -85353,15 +57075,7 @@ Longest matched span:
 |
 |
 |
-|
 ||
-|
-|
-|
-|
-|
-||
-|
 |
 |
 |
@@ -85371,15 +57085,7 @@ Longest matched span:
 |
 |
 |
-|
 ||
-|
-|
-|
-|
-|
-||
-|
 |
 |
 |
@@ -85389,15 +57095,7 @@ Longest matched span:
 |
 |
 |
-|
 ||
-|
-|
-|
-|
-|
-||
-|
 |
 |
 |
@@ -85407,45 +57105,7 @@ Longest matched span:
 |
 |
 |
-|
 ||
-|
-|
-|
-|
-|
-||
-|
-|
-|
-|
-|
-||
-|
-|
-|
-|
-|
-||
-|
-|
-|
-|
-|
-||
-|
-|
-|
-|
-|
-||
-|
-|
-|
-|
-|
-||
-|
 |
 |
 |
@@ -85454,11 +57114,1882 @@ Longest matched span:
 |
 ```
 
+#### Specific 65 — partial
+
+partial · prompt 545 / sample 5 · longest span 210 tok · 19 spans · NV recall sum 0 · code-like yes · 507 chars · docs AU000976
+
+Prompt:
+
+```text
+Af justitsministeren (Karlo Bach).
+```
+
+Generation:
+
+```text
+:
+|
+|
+|
+|
+|
+|
+§ 1 I lov om rettens pleje, jf. lovbekendtgørelse nr. 1001 af 5. oktober 2006, som ændret ved § 2 i lov nr. 525 af 7. juni 2006, lov nr. 538 af 8. juni 2006, § 13 i lov nr. 538 af 8. juni 2006, lov nr. 149 af 10. april 2008 og § 7 i lov nr. 1336 af 19. december 2008, foretages følgende ændringer:
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+```
+
+Longest matched span:
+
+```text
+, foretages følgende ændringer:
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+```
+
+#### Specific 66 — partial
+
+partial · prompt 1989 / sample 6 · longest span 206 tok · 18 spans · NV recall sum 0 · code-like no · 528 chars · docs AU002799
+
+Prompt:
+
+```text
+Det resterende bidrag beregnes i forhold deres samlede balance.
+```
+
+Generation:
+
+```text
+der
+udgøres af de to kunders samlede skattepligtige indkomst fratrukket
+udgifter til faste omkostninger på 50.000 kr. Det forudsættes, at det
+samlede beløb for de to kunder er 400.000 kr. Det resterende bidrag
+fordeles dermed således, at kunde A skal betale 100.000 kr., mens kunde B
+skal betale 200.000 kr.
+
+|
+Saldokonto 1. |
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+```
+
+Longest matched span:
+
+```text
+1. |
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+```
+
+#### Specific 67 — partial
+
+partial · prompt 1294 / sample 6 · longest span 205 tok · 17 spans · NV recall sum 0 · code-like yes · 458 chars · docs kb_administrative_publication_børnogungeserhver...3808
+
+Prompt:
+
+```text
+Antal efterlønsmodtagere fordelt på ordninger, køn, forsikringskategori, sats og alder.
+```
+
+Generation:
+
+```text
+Optællingen sker pr. den 15. september 2014. (Antal efterlønsmodtagere fordelt på ordninger, køn, forsikringskategori, sats og alder) 2014 2013 2012 2011 2010 2009 2008 2007 2006 2005 2004 2003 2002 2001 2000 1999 1998 1997 1996 1995 1994 1993 1992 1991 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990
+```
+
+Longest matched span:
+
+```text
+1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990 1990
+```
+
+#### Specific 68 — partial
+
+partial · prompt 1006 / sample 9 · longest span 204 tok · 9 spans · NV recall sum 1.51 · code-like yes · 345 chars · docs kb_administrative_publication_forslagtilnysalme...6782
+
+Prompt:
+
+```text
+Ungdommen er ikke anderledes . 43 IV.
+```
+
+Generation:
+
+```text
+11. 19. 20. 24. 25. 26. 27. 28. 29. 30. 31. 32. 33. 34. 35. 36. 37. 38. 39. 40. 41. 42. 43. 44. 45. 46. 47. 48. 49. 50. 51. 52. 53. 54. 55. 56. 57. 58. 59. 60. 61. 62. 63. 64. 65. 66. 67. 68. 69. 70. 71. 72. 73. 74. 75. 76. 77. 78. 79. 80. 81. 82. 83. 84. 85. 86. 87. 88. 89. 90. 91. 92. 93. 94. 95. 96. 97. 98. 99. 100. 101. 102. 103. 104. 105.
+```
+
+Longest matched span:
+
+```text
+40. 41. 42. 43. 44. 45. 46. 47. 48. 49. 50. 51. 52. 53. 54. 55. 56. 57. 58. 59. 60. 61. 62. 63. 64. 65. 66. 67. 68. 69. 70. 71. 72. 73. 74. 75. 76. 77. 78. 79. 80. 81. 82. 83. 84. 85. 86. 87. 88. 89. 90. 
+```
+
+#### Specific 69 — partial
+
+partial · prompt 2347 / sample 2 · longest span 204 tok · 14 spans · NV recall sum 1.41 · code-like yes · 339 chars · docs kb_administrative_publication_forslagtilnysalme...6782
+
+Prompt:
+
+```text
+Historien om vikingernes Jælling.
+```
+
+Generation:
+
+```text
+11. 11, 11. 14. 15. 16. 17. 20. 21. 22. 23. 24. 25. 26. 27. 28. 29. 30. 31. 32. 33. 34. 35. 36. 37. 38. 39. 40. 41. 42. 43. 44. 45. 46. 47. 48. 49. 50. 51. 52. 53. 54. 55. 56. 57. 58. 59. 60. 61. 62. 63. 64. 65. 66. 67. 68. 69. 70. 71. 72. 73. 74. 75. 76. 77. 78. 79. 80. 81. 82. 83. 84. 85. 86. 87. 88. 89. 90. 91. 92. 93. 94. 95. 96. 97.
+```
+
+Longest matched span:
+
+```text
+40. 41. 42. 43. 44. 45. 46. 47. 48. 49. 50. 51. 52. 53. 54. 55. 56. 57. 58. 59. 60. 61. 62. 63. 64. 65. 66. 67. 68. 69. 70. 71. 72. 73. 74. 75. 76. 77. 78. 79. 80. 81. 82. 83. 84. 85. 86. 87. 88. 89. 90. 
+```
+
+#### Specific 70 — partial
+
+partial · prompt 522 / sample 4 · longest span 195 tok · 4 spans · NV recall sum 4.19 · code-like no · 557 chars · docs ft_20141M39
+
+Prompt:
+
+```text
+Af justitsministeren (Zacharias Rasmussen).
+```
+
+Generation:
+
+```text
+TALER 50: Der er ikke stillet ændringsforslag. Ønsker nogen at udtale sig? Da det ikke er tilfældet, går vi til afstemning. 
+TALER 50: Der stemmes om lovforslagets endelige vedtagelse nu. Jeg slutter afstemningen. Lovforslaget er enstemmigt vedtaget med 109 stemmer og vil nu blive sendt til statsministeren. [For stemte 109 (V, S, DF, RV, SF, EL, LA, KF og Uffe Elbæk (UFG)), imod stemte 0, hverken for eller imod stemte 0]. 
+TALER 50: Der er ikke stillet ændringsforslag. Ønsker nogen at udtale sig? Da det ikke er tilfældet, går vi til afstemning. 
+TALER
+```
+
+Longest matched span:
+
+```text
+. Ønsker nogen at udtale sig? Da det ikke er tilfældet, går vi til afstemning. 
+TALER 50: Der stemmes om lovforslagets endelige vedtagelse nu. Jeg slutter afstemningen. Lovforslaget er enstemmigt vedtaget med 109 stemmer og vil nu blive sendt til statsministeren. [For stemte 109 (V, S, DF, RV, SF, EL, LA, KF og Uffe Elbæk (UFG)), imod stemte 0, hverken for eller imod stemte 0]. 
+TALER 50: Der er ikke stillet ændringsforslag. Ønsker nogen at udtale sig?
+```
+
+#### Specific 71 — partial
+
+partial · prompt 591 / sample 6 · longest span 183 tok · 8 spans · NV recall sum 2.31 · code-like no · 623 chars · docs AX007463
+
+Prompt:
+
+```text
+Udvalget har behandlet lovforslaget i [4] møder.
+```
+
+Generation:
+
+```text
+Udvalget har modtaget en skriftlig henvendelse fra Dansk Selskab for Almen Medicin.
+
+Spørgsmål
+
+Udvalget har stillet 4 spørgsmål til indenrigs- og sundhedsministeren til skriftlig besvarelse, som denne har besvaret.
+
+2. Indstillinger
+
+*
+Udvalget
+*
+indstiller
+lovforslaget til
+*
+vedtagelse uændret.
+*
+
+Tjóðveldisflokkurin, Inuit Ataqatigiit, Siumut og Fólkaflokkurin var på tidspunktet for betænkningens afgivelse ikke repræsenteret med medlemmer i udvalget og havde dermed ikke adgang til at komme med indstillinger eller politiske udtalelser i betænkningen.
+
+En oversigt over Folketingets sammensætning er optrykt i betænk
+```
+
+Longest matched span:
+
+```text
+ministeren til skriftlig besvarelse, som denne har besvaret.
+
+2. Indstillinger
+
+*
+Udvalget
+*
+indstiller
+lovforslaget til
+*
+vedtagelse uændret.
+*
+
+Tjóðveldisflokkurin, Inuit Ataqatigiit, Siumut og Fólkaflokkurin var på tidspunktet for betænkningens afgivelse ikke repræsenteret med medlemmer i udvalget og havde dermed ikke adgang til at komme med indstillinger eller politiske udtalelser i betænkningen.
+
+En oversigt over Folketingets sammensætning er optrykt i betænk
+```
+
+#### Specific 72 — partial
+
+partial · prompt 874 / sample 4 · longest span 183 tok · 5 spans · NV recall sum 1.95 · code-like yes · 330 chars · docs kb_administrative_publication_forslagtilnysalme...6782
+
+Prompt:
+
+```text
+Kun have sex med en erfaren eller en uerfaren partner?
+```
+
+Generation:
+
+```text
+1. 2. 3. 4. 5. 6. 7. 8. 9. 10. 11. 12. 13. 14. 15. 16. 17. 18. 19. 20. 21. 22. 23. 24. 25. 26. 27. 28. 29. 30. 31. 32. 33. 34. 35. 36. 37. 38. 39. 40. 41. 42. 43. 44. 45. 46. 47. 48. 49. 50. 51. 52. 53. 54. 55. 56. 57. 58. 59. 60. 61. 62. 63. 64. 65. 66. 67. 68. 69. 70. 71. 72. 73. 74. 75. 76. 77. 78. 79. 80. 81. 82. 83. 84. 85.
+```
+
+Longest matched span:
+
+```text
+40. 41. 42. 43. 44. 45. 46. 47. 48. 49. 50. 51. 52. 53. 54. 55. 56. 57. 58. 59. 60. 61. 62. 63. 64. 65. 66. 67. 68. 69. 70. 71. 72. 73. 74. 75. 76. 77. 78. 79. 80. 81. 82. 83. 84. 85.
+```
+
+#### Specific 73 — partial
+
+partial · prompt 3052 / sample 7 · longest span 183 tok · 5 spans · NV recall sum 1.95 · code-like yes · 330 chars · docs kb_administrative_publication_forslagtilnysalme...6782
+
+*Same generation text as #72.*
+
+Prompt:
+
+```text
+Lægen og anatomen.
+```
+
+Generation:
+
+```text
+1. 2. 3. 4. 5. 6. 7. 8. 9. 10. 11. 12. 13. 14. 15. 16. 17. 18. 19. 20. 21. 22. 23. 24. 25. 26. 27. 28. 29. 30. 31. 32. 33. 34. 35. 36. 37. 38. 39. 40. 41. 42. 43. 44. 45. 46. 47. 48. 49. 50. 51. 52. 53. 54. 55. 56. 57. 58. 59. 60. 61. 62. 63. 64. 65. 66. 67. 68. 69. 70. 71. 72. 73. 74. 75. 76. 77. 78. 79. 80. 81. 82. 83. 84. 85.
+```
+
+Longest matched span:
+
+```text
+40. 41. 42. 43. 44. 45. 46. 47. 48. 49. 50. 51. 52. 53. 54. 55. 56. 57. 58. 59. 60. 61. 62. 63. 64. 65. 66. 67. 68. 69. 70. 71. 72. 73. 74. 75. 76. 77. 78. 79. 80. 81. 82. 83. 84. 85.
+```
+
+#### Specific 74 — partial
+
+partial · prompt 593 / sample 5 · longest span 181 tok · 13 spans · NV recall sum 7.44 · code-like no · 627 chars · docs AX004095, AX003943
+
+Prompt:
+
+```text
+Udvalget har behandlet lovforslaget i <antal> møder.
+```
+
+Generation:
+
+```text
+Udvalget har
+
+stillet <antal> spørgsmål til skatteministeren til skriftlig besvarelse,
+
+hvoraf <antal> er besvaret.
+
+2. Indstillinger
+
+Udvalget indstiller lovforslaget til *vedtagelse uændret.*
+
+Tjóðveldisflokkurin, Inuit Ataqatigiit og Siumut var på tidspunktet for betænkningens afgivelse ikke repræsenteret med medlemmer i udvalget og havde dermed ikke adgang til at komme med indstillinger eller politiske udtalelser i betænkningen.
+
+En oversigt over Folketingets sammensætning er optrykt i betænkningen.
+
+Sven Buhrkall (V)
+Peter Christensen (V) Freddy Dam (V)
+Kristian Jensen (V) nfmd.*
+Colette L. Brix (DF) Mikkel Dencker
+```
+
+Longest matched span:
+
+```text
+forslaget til *vedtagelse uændret.*
+
+Tjóðveldisflokkurin, Inuit Ataqatigiit og Siumut var på tidspunktet for betænkningens afgivelse ikke repræsenteret med medlemmer i udvalget og havde dermed ikke adgang til at komme med indstillinger eller politiske udtalelser i betænkningen.
+
+En oversigt over Folketingets sammensætning er optrykt i betænkningen.
+
+Sven Buhrkall (V)
+Peter Christensen (V) Freddy Dam (V)
+Kristian Jensen (V) nfmd.*
+Colette L. Brix (DF) Mikkel Dencker
+```
+
+#### Specific 75 — partial
+
+partial · prompt 532 / sample 7 · longest span 180 tok · 12 spans · NV recall sum 4.01 · code-like no · 601 chars · docs fm-udgivelser_62, fm-udgivelser_415, fm-udgivelser_45, fm-udgivelser_207, fm-udgivelser_396
+
+Prompt:
+
+```text
+Uddannelses- og Forskningsministeriet pba.
+```
+
+Generation:
+
+```text
+aftale med Finansministeriet
+
+om administration af statslige huslejeordninger og pba. aftale med Bygningsstyrelsen om
+
+§ 28.72.05. 201
+
+28.72.05. OPP-aftaler som finansiel leasing (Statsvirksomhed) Der oprettes en særskilt konto til hvert OPP-projekt af hensyn til den regnskabsmæssige
+
+håndtering.
+
+teomkostninger. Dette kan medføre, at der er asymmetri mellem omkostninger og indtægter i de enkelte år. Over den samlede leasingperiode er OPP-projekter omkostningsneutrale. Dette skyl-
+
+Ved finansiel leasing skal der foretages en regnskabsmæssig periodisering af beregnede ren-
+
+enkelte år. Over den
+```
+
+Longest matched span:
+
+```text
+
+
+28.72.05. OPP-aftaler som finansiel leasing (Statsvirksomhed) Der oprettes en særskilt konto til hvert OPP-projekt af hensyn til den regnskabsmæssige
+
+håndtering.
+
+teomkostninger. Dette kan medføre, at der er asymmetri mellem omkostninger og indtægter i de enkelte år. Over den samlede leasingperiode er OPP-projekter omkostningsneutrale. Dette skyl-
+
+Ved finansiel leasing skal der foretages en regnskabsmæssig periodisering af beregnede ren-
+
+enkelte år. Over den
+```
+
+#### Specific 76 — partial
+
+partial · prompt 736 / sample 0 · longest span 179 tok · 13 spans · NV recall sum 6.61 · code-like no · 639 chars · docs AX025465
+
+Prompt:
+
+```text
+Forslag til lov om rammerne for arealanvendelsen i Københavns Lufthavn, Kastrup.
+```
+
+Generation:
+
+```text
+1
+
+(Regional planlægning for Københavns Lufthavn, Kastrup)
+
+[af transportministeren (Hans Christian Schmidt)]:
+
+1. Indstillinger
+
+Udvalget indstiller lovforslaget til vedtagelse uændret.
+
+Alternativet, Inuit Ataqatigiit, Siumut, Sambandsflokkurin og Javnaðarflokkurin havde ved betænkningsafgivelsen ikke medlemmer i udvalget og dermed ikke adgang til at komme med indstillinger eller politiske bemærkninger i betænkningen.
+
+En oversigt over Folketingets sammensætning er optrykt i betænkningen.
+
+2. Udvalgsarbejdet
+
+Lovforslaget blev fremsat den 11. november 2018 og var til 1. behandling den 17. november 2018. Lovforslaget blev efter 1.
+```
+
+Longest matched span:
+
+```text
+)]:
+
+1. Indstillinger
+
+Udvalget indstiller lovforslaget til vedtagelse uændret.
+
+Alternativet, Inuit Ataqatigiit, Siumut, Sambandsflokkurin og Javnaðarflokkurin havde ved betænkningsafgivelsen ikke medlemmer i udvalget og dermed ikke adgang til at komme med indstillinger eller politiske bemærkninger i betænkningen.
+
+En oversigt over Folketingets sammensætning er optrykt i betænkningen.
+
+2. Udvalgsarbejdet
+
+Lovforslaget blev fremsat den 11. november 20
+```
+
+#### Specific 77 — partial
+
+partial · prompt 638 / sample 0 · longest span 178 tok · 11 spans · NV recall sum 11 · code-like no · 620 chars · docs AX029186, AX029391, AX029185, AX029191
+
+Prompt:
+
+```text
+Forslag til ejendomsskattelov.
+```
+
+Generation:
+
+```text
+Lovforslaget blev vedtaget den 15. maj 2023.
+
+Lovforslaget blev fremsat den 3. oktober 2023 og var til 1. behandling den 11. oktober 2023. Lovforslaget blev efter 1. behandling henvist til behandling i Skatteudvalget.
+
+Oversigt over lovforslagets sagsforløb og dokumenter
+
+Lovforslaget og dokumenterne i forbindelse med udvalgsbehandlingen kan læses under lovforslaget på Folketingets hjemmeside www.ft.dk.
+
+Møder
+
+Udvalget har behandlet lovforslaget i 2 møder.
+
+Høringssvar
+
+Et udkast til lovforslaget har inden fremsættelsen været sendt i høring, og Skatteministeriet sendte den 11. juli 2023 dette udkast til udvalget
+```
+
+Longest matched span:
+
+```text
+. oktober 2023. Lovforslaget blev efter 1. behandling henvist til behandling i Skatteudvalget.
+
+Oversigt over lovforslagets sagsforløb og dokumenter
+
+Lovforslaget og dokumenterne i forbindelse med udvalgsbehandlingen kan læses under lovforslaget på Folketingets hjemmeside www.ft.dk.
+
+Møder
+
+Udvalget har behandlet lovforslaget i 2 møder.
+
+Høringssvar
+
+Et udkast til lovforslaget har inden fremsættelsen været sendt i høring, og Skatteministeriet sendte den 
+```
+
+#### Specific 78 — partial
+
+partial · prompt 652 / sample 9 · longest span 167 tok · 12 spans · NV recall sum 1.95 · code-like no · 628 chars · docs AX030507
+
+Prompt:
+
+```text
+Forslag til lov om MitID og NemLog-in.
+```
+
+Generation:
+
+```text
+1. behandling den 24. januar 2022 og 2. behandling den 30. marts 2022
+
+Betænkning
+
+over
+
+Forslag til lov om MitID og NemLog-in
+
+[af finansministeren (Nicolai Wammen)]:
+
+1. Ændringsforslag
+
+Finansministeren har stillet 14 ændringsforslag til lovforslaget.
+
+2. Indstillinger
+
+Et flertal i udvalget (udvalget med undtagelse af DF) indstiller lovforslaget til vedtagelse med de stillede ændringsforslag.
+
+
+Et mindretal i udvalget (DF) indstiller lovforslaget til forkastelse ved 3. behandling. Mindretallet vil stemme for de stillede ændringsforslag.
+
+Siumut, Inuit Ataqatigiit, Sambandsflokkurin og Javnaðarflokkurin havde ved betæ
+```
+
+Longest matched span:
+
+```text
+4 ændringsforslag til lovforslaget.
+
+2. Indstillinger
+
+Et flertal i udvalget (udvalget med undtagelse af DF) indstiller lovforslaget til vedtagelse med de stillede ændringsforslag.
+
+
+Et mindretal i udvalget (DF) indstiller lovforslaget til forkastelse ved 3. behandling. Mindretallet vil stemme for de stillede ændringsforslag.
+
+Siumut, Inuit Ataqatigiit, Sambandsflokkurin og Javnaðarflokkurin havde ved betæ
+```
+
+#### Specific 79 — partial
+
+partial · prompt 1685 / sample 5 · longest span 167 tok · 16 spans · NV recall sum 2.24 · code-like yes · 350 chars · docs kb_administrative_publication_målogmidlerioffe...1174
+
+Prompt:
+
+```text
+Orig. uden Omslag i Kgl.
+```
+
+Generation:
+
+```text
+Bibl. i Kjøbenhavn, følgende Pagina ere udskaarne af Brevet. 1. 2. 3. 4. 5. 6. 7. 8. 9. 10. 11. 12. 13. 14. 15. 16. 17. 18. 19. 20. 21. 22. 23. 24. 25. 26. 27. 28. 29. 30. 31. 32. 33. 34. 35. 36. 37. 38. 39. 40. 41. 42. 43. 44. 45. 46. 47. 48. 49. 50. 51. 52. 53. 54. 55. 56. 57. 58. 59. 60. 61. 62. 63. 64. 65. 66. 67. 68. 69. 70. 71. 72. 73. 74. 75
+```
+
+Longest matched span:
+
+```text
+1. 2. 3. 4. 5. 6. 7. 8. 9. 10. 11. 12. 13. 14. 15. 16. 17. 18. 19. 20. 21. 22. 23. 24. 25. 26. 27. 28. 29. 30. 31. 32. 33. 34. 35. 36. 37. 38. 39. 40. 41. 42. 43. 44.
+```
+
+#### Specific 80 — partial
+
+partial · prompt 1783 / sample 3 · longest span 165 tok · 8 spans · NV recall sum 7.71 · code-like no · 712 chars · docs cellar_31379, cellar_31397, cellar_59297, cellar_6505, cellar_59296 (+1)
+
+Prompt:
+
+```text
+Kapital og lånoptagelse.
+```
+
+Generation:
+
+```text
+|
+||||
+ifrs-full |
+CapitalisationRateMeasurementInputMember |
+member |
+label |
+Aktiveringssats, målingsinput [member] |
+Almindelig praksis: IFRS 13.93 d |
+documentation |
+Dette element står for en aktiveringssats, der anvendes som målingsinput i værdiansættelsesmodellen. |
+||||
+ifrs-full |
+CapitalRequirementsAxis |
+axis |
+label |
+Kapitalkrav [axis] |
+Oplysning: IAS 1.136 |
+documentation |
+Tabellens akse definerer forbindelsen mellem elementerne i tabellen og posterne eller begreberne i tabellen. |
+||||
+ifrs-full |
+CapitalRequirementsMember |
+member [default] |
+label |
+Kapitalkrav [member] |
+Oplysning: IAS 1.136 |
+documentation |
+Dette element står for kapitalkrav, som virksomheden er underlagt. Det repr
+```
+
+Longest matched span:
+
+```text
+. |
+||||
+ifrs-full |
+CapitalRequirementsAxis |
+axis |
+label |
+Kapitalkrav [axis] |
+Oplysning: IAS 1.136 |
+documentation |
+Tabellens akse definerer forbindelsen mellem elementerne i tabellen og posterne eller begreberne i tabellen. |
+||||
+ifrs-full |
+CapitalRequirementsMember |
+member [default] |
+label |
+Kapitalkrav [member] |
+Oplysning: IAS 1.136 |
+documentation |
+Dette element står for kapitalkrav, som virksomheden er underlagt. Det repr
+```
+
+#### Specific 81 — partial
+
+partial · prompt 678 / sample 3 · longest span 164 tok · 12 spans · NV recall sum 12 · code-like no · 638 chars · docs AX026120, AX026121, AX026313
+
+Prompt:
+
+```text
+Forslag til lov om betalinger.
+```
+
+Generation:
+
+```text
+L 116 af 29. januar 2017.
+
+Spørgsmål
+
+Udvalget har under udvalgsarbejdet stillet 13 spørgsmål til erhvervsministeren til skriftlig besvarelse, som ministeren har besvaret.
+
+Birgitte Vind (S) Christian Rabjerg Madsen (S) Camilla Fabricius (S) Thomas Jensen (S) Henrik Møller (S) Kasper Roug (S) nfmd. Malte Larsen (S) Orla Hav (S) Rasmus Stoklund (S) Katrine Robsøe (RV) Samira Nawa (RV) Theresa Berg Andersen (SF) Ina Strøjer-Schmidt (SF) Victoria Velasquez (EL) Rune Lund (EL) Uffe Elbæk (ALT) Torsten Schack Pedersen (V) Kenneth Mikkelsen (V) Anni Matthiesen (V) fmd. Anne Honoré Østergaard (V) Thomas Danielsen (V) Heidi Bank (V) Tommy
+```
+
+Longest matched span:
+
+```text
+3 spørgsmål til erhvervsministeren til skriftlig besvarelse, som ministeren har besvaret.
+
+Birgitte Vind (S) Christian Rabjerg Madsen (S) Camilla Fabricius (S) Thomas Jensen (S) Henrik Møller (S) Kasper Roug (S) nfmd. Malte Larsen (S) Orla Hav (S) Rasmus Stoklund (S) Katrine Robsøe (RV) Samira Nawa (RV) Theresa Berg Andersen (SF) Ina Strøjer-Schmidt (SF) Victoria Velasquez (EL) Rune Lund (EL) Uffe Elbæk (
+```
+
+#### Specific 82 — partial
+
+partial · prompt 2467 / sample 5 · longest span 164 tok · 13 spans · NV recall sum 9.32 · code-like no · 599 chars · docs AX012740
+
+Prompt:
+
+```text
+Et flertal i udvalget kunne ikke tiltræde forslaget.
+```
+
+Generation:
+
+```text
+Et mindretal i udvalget (EL, RV og SF) indstiller forslaget til vedtagelse med det stillede ændringsforslag.
+
+Inuit Ataqatigiit, Siumut, Tjóðveldisflokkurin og Sambandsflokkurin var på tidspunktet for betænkningens afgivelse ikke repræsenteret med medlemmer i udvalget og havde dermed ikke adgang til at komme med indstillinger eller politiske udtalelser i betænkningen.
+
+En oversigt over Folketingets sammensætning er optrykt i betænkningen.
+
+4. Ændringsforslag med bemærkninger
+
+Ændringsforslag
+
+Til § 1
+
+Af et mindretal (EL, RV og SF):
+
+1) I den under nr. 1 foreslåede § 13 a indsættes som stk. 3
+```
+
+Longest matched span:
+
+```text
+uit Ataqatigiit, Siumut, Tjóðveldisflokkurin og Sambandsflokkurin var på tidspunktet for betænkningens afgivelse ikke repræsenteret med medlemmer i udvalget og havde dermed ikke adgang til at komme med indstillinger eller politiske udtalelser i betænkningen.
+
+En oversigt over Folketingets sammensætning er optrykt i betænkningen.
+
+4. Ændringsforslag med bemærkninger
+
+Ændringsforslag
+
+Til § 1
+
+Af et mindretal (
+```
+
+#### Specific 83 — partial
+
+partial · prompt 2040 / sample 2 · longest span 160 tok · 15 spans · NV recall sum 0 · code-like no · 536 chars · docs AN004405, AA003185, AG000213, AU002701, AJ000249 (+4)
+
+Prompt:
+
+```text
+Jeg er ikke enig i, at man skal øge reduktionsmålsætningerne ved at bruge nogle emissionsnedbringelsesforløb, der allerede starter i 2019.
+```
+
+Generation:
+
+```text
+Det er ikke realistisk at forvente, at virksomheder og borgere kan nå at tilpasse deres aktiviteter, og derfor bør det være muligt at udskyde startdatoen for emissionsreduktionsforløbene. Det er også vigtigt, at virksomheder og borgere får tid til at forberede sig på denne målsætning, så vi undgår at stille de danske virksomheder i en konkurrencemæssigt dårligere situation. |
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+```
+
+Longest matched span:
+
+```text
+. |
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+```
+
+#### Specific 84 — partial
+
+partial · prompt 1820 / sample 1 · longest span 158 tok · 11 spans · NV recall sum 0.708 · code-like no · 620 chars · docs AN002558
+
+Prompt:
+
+```text
+Denne lov træder i kraft dagen efter dens bekendtgørelse.
+```
+
+Generation:
+
+```text
+Loven har virkning for afgiftsperioder, der påbegyndes den 1. januar 1991 eller senere. For løbende leverancer, for hvilke afregningsperioden påbegyndes inden lovens ikrafttræden og afsluttes efter dette tidspunkt, beregnes afgiften af så stor en del af leverancen, som tidsrummet fra lovens ikrafttræden til afregningsperiodens slutning udgør i forhold til den samlede afregningsperiode. Med de statslige told- og skattemyndigheders tilladelse kan der foretages afrunding ved opgørelse af den brøkdel af leverancerne, hvoraf der skal betales afgift.
+
+Stk. 2. Loven gælder ikke for afgift af varer, som leveres om bord p
+```
+
+Longest matched span:
+
+```text
+. For løbende leverancer, for hvilke afregningsperioden påbegyndes inden lovens ikrafttræden og afsluttes efter dette tidspunkt, beregnes afgiften af så stor en del af leverancen, som tidsrummet fra lovens ikrafttræden til afregningsperiodens slutning udgør i forhold til den samlede afregningsperiode. Med de statslige told- og skattemyndigheders tilladelse kan der foretages afrunding ved opgørelse af den brøkdel af leverancerne, hvoraf der skal betales afgift.
+
+Stk. 
+```
+
+#### Specific 85 — partial
+
+partial · prompt 2148 / sample 2 · longest span 155 tok · 4 spans · NV recall sum 5.98 · code-like no · 555 chars · docs ft_20121M69
+
+Prompt:
+
+```text
+Ændringsforslag 9 er vedtaget.
+```
+
+Generation:
+
+```text
+Jeg foreslår, at lovforslaget går direkte til tredje behandling uden fornyet udvalgsbehandling. Hvis ingen gør indsigelse, betragter jeg dette som vedtaget. Det er vedtaget. 
+TALER 50: Der er ikke stillet ændringsforslag. Ønsker nogen at udtale sig? Det er ikke tilfældet, og så er forhandlingen sluttet. Jeg foreslår, at lovforslaget går direkte til tredje behandling uden fornyet udvalgsbehandling. Hvis ingen gør indsigelse, betragter jeg dette som vedtaget. Det er vedtaget. 
+TALER 50: Ønsker nogen at udtale sig? Det er ikke tilfældet. Så er forhandl
+```
+
+Longest matched span:
+
+```text
+. 
+TALER 50: Der er ikke stillet ændringsforslag. Ønsker nogen at udtale sig? Det er ikke tilfældet, og så er forhandlingen sluttet. Jeg foreslår, at lovforslaget går direkte til tredje behandling uden fornyet udvalgsbehandling. Hvis ingen gør indsigelse, betragter jeg dette som vedtaget. Det er vedtaget. 
+TALER 50: Ønsker nogen at udtale sig? Det er ikke tilfældet. Så er forhand
+```
+
+#### Specific 86 — partial
+
+partial · prompt 678 / sample 1 · longest span 154 tok · 12 spans · NV recall sum 21.5 · code-like no · 615 chars · docs CQ002637
+
+Prompt:
+
+```text
+Forslag til lov om betalinger.
+```
+
+Generation:
+
+```text
+Kapitel 11
+
+Kommunikation
+
+§ 57. Erhvervsministeren kan fastsætte regler om, at skriftlig kommunikation til og fra Finanstilsynet om forhold, som er omfattet af denne lov eller regler udstedt i medfør af denne lov, skal foregå digitalt.
+
+Stk. 2. Erhvervsministeren kan fastsætte nærmere regler om digital kommunikation, herunder om anvendelse af bestemte it-systemer, særlige digitale formater og digital signatur el.lign.
+
+Stk. 3. En digital meddelelse anses for at være kommet frem, når den er tilgængelig for adressaten for meddelelsen.
+
+§ 58. Erhvervsministeren kan fastsætte regler om, at Finanstilsynet kan ud
+```
+
+Longest matched span:
+
+```text
+Finanstilsynet om forhold, som er omfattet af denne lov eller regler udstedt i medfør af denne lov, skal foregå digitalt.
+
+Stk. 2. Erhvervsministeren kan fastsætte nærmere regler om digital kommunikation, herunder om anvendelse af bestemte it-systemer, særlige digitale formater og digital signatur el.lign.
+
+Stk. 3. En digital meddelelse anses for at være kommet frem, når den er tilgængelig for adressaten for meddelelsen.
+
+§ 
+```
+
+#### Specific 87 — partial
+
+partial · prompt 569 / sample 1 · longest span 153 tok · 11 spans · NV recall sum 15.8 · code-like no · 635 chars · docs AX014142, AX013999, AX016591, AX014092, AX014430 (+5)
+
+Prompt:
+
+```text
+Udvalget har behandlet lovforslaget i <> møder.
+```
+
+Generation:
+
+```text
+Udvalget har stillet et spørgsmål til justitsministeren til skriftlig besvarelse, som forventes besvaret inden 2. behandling.
+
+4. Indstillinger
+
+Udvalget indstiller lovforslaget til vedtagelse uændret.
+
+Inuit Ataqatigiit, Siumut, Sambandsflokkurin og Javnaðarflokkurin var på tidspunktet for betænkningens afgivelse ikke repræsenteret med medlemmer i udvalget og havde dermed ikke adgang til at komme med indstillinger eller politiske udtalelser i betænkningen.
+
+En oversigt over Folketingets sammensætning er optrykt i betænkningen.
+
+Karsten Lauritzen (V) Karen Jespersen (V) fmd. Eyvind Vesselbo (V) Troels Christensen (V) Peter Skaa
+```
+
+Longest matched span:
+
+```text
+. Indstillinger
+
+Udvalget indstiller lovforslaget til vedtagelse uændret.
+
+Inuit Ataqatigiit, Siumut, Sambandsflokkurin og Javnaðarflokkurin var på tidspunktet for betænkningens afgivelse ikke repræsenteret med medlemmer i udvalget og havde dermed ikke adgang til at komme med indstillinger eller politiske udtalelser i betænkningen.
+
+En oversigt over Folketingets sammensætning er optrykt i betænkningen.
+
+
+```
+
+#### Specific 88 — partial
+
+partial · prompt 2873 / sample 5 · longest span 149 tok · 12 spans · NV recall sum 3.89 · code-like no · 595 chars · docs cellar_57016
+
+Prompt:
+
+```text
+Valg af bestyrelse6.
+```
+
+Generation:
+
+```text
+12.2018 — 014.001
+Denne tekst tjener udelukkende som dokumentationsværktøj og har ingen retsvirkning. EU's institutioner påtager sig intet ansvar for dens indhold. De autentiske udgaver af de relevante retsakter, inklusive deres betragtninger, er offentliggjort i den Europæiske Unions Tidende og kan findes i EUR-Lex. Disse officielle tekster er tilgængelige direkte via linkene i dette dokument
+RÅDETS AFGØRELSE af 6. december 2018 om udnævnelse af medlemmerne af bestyrelsen for Det Europæiske Center for Udvikling af Erhvervsuddannelse (Cedefop) (EUT L 315 af 12.12.2018, s. 49) |
+Berigtiget
+```
+
+Longest matched span:
+
+```text
+2.2018 — 014.001
+Denne tekst tjener udelukkende som dokumentationsværktøj og har ingen retsvirkning. EU's institutioner påtager sig intet ansvar for dens indhold. De autentiske udgaver af de relevante retsakter, inklusive deres betragtninger, er offentliggjort i den Europæiske Unions Tidende og kan findes i EUR-Lex. Disse officielle tekster er tilgængelige direkte via linkene i dette dokument
+RÅDETS AFGØRELSE
+```
+
+#### Specific 89 — partial
+
+partial · prompt 2148 / sample 4 · longest span 146 tok · 2 spans · NV recall sum 1.59 · code-like no · 557 chars · docs ft_20131M23
+
+Prompt:
+
+```text
+Ændringsforslag 9 er vedtaget.
+```
+
+Generation:
+
+```text
+Jeg foreslår, at lovforslaget går direkte til tredje behandling uden fornyet udvalgsbehandling. Hvis ingen gør indsigelse, betragter jeg dette som vedtaget. Det er vedtaget. 
+TALER 50: Ønsker nogen at udtale sig? Det er ikke tilfældet, og så er forhandlingen sluttet, og vi går til afstemning. 
+TALER 50: Ønskes afstemning om ændringsforslag nummer 1-4, tiltrådt af udvalget? De er vedtaget. Jeg foreslår, at lovforslaget går direkte til tredje behandling uden fornyet udvalgsbehandling. Hvis ingen gør indsigelse, betragter jeg det som vedtaget. Det er ved
+```
+
+Longest matched span:
+
+```text
+Jeg foreslår, at lovforslaget går direkte til tredje behandling uden fornyet udvalgsbehandling. Hvis ingen gør indsigelse, betragter jeg dette som vedtaget. Det er vedtaget. 
+TALER 50: Ønsker nogen at udtale sig? Det er ikke tilfældet, og så er forhandlingen sluttet, og vi går til afstemning. 
+TALER 50: Ønskes afstemning om ændringsforslag nummer 1-
+```
+
+#### Specific 90 — partial
+
+partial · prompt 1455 / sample 9 · longest span 143 tok · 13 spans · NV recall sum 3.29 · code-like no · 601 chars · docs cellar_33607, cellar_13407
+
+Prompt:
+
+```text
+Konventionens betingelser for asyl.
+```
+
+Generation:
+
+```text
+Genève, 1949. Tilgængelig på: https://www.refworld.org/docid/3ae6b3724.html
+
+https://rm.coe.int/168008c2e1
+
+5. Europa-Parlamentets og Rådets direktiv 2011/95/EU af 13. december 2011 om fastsættelse af standarder for anerkendelse af tredjelandsstatsborgere eller statsløse som personer med international beskyttelse, for en ensartet status for flygtninge eller for personer, der er berettiget til subsidiær beskyttelse, og for indholdet af en sådan beskyttelse (EUT L 337 af 20.12.2011, s. 9).
+
+6. Rådets direktiv 2003/86/EF af 22. september 2003 om rettigheder for tolke og oversættere, der arbejder p
+```
+
+Longest matched span:
+
+```text
+Europa-Parlamentets og Rådets direktiv 2011/95/EU af 13. december 2011 om fastsættelse af standarder for anerkendelse af tredjelandsstatsborgere eller statsløse som personer med international beskyttelse, for en ensartet status for flygtninge eller for personer, der er berettiget til subsidiær beskyttelse, og for indholdet af en sådan beskyttelse (EUT L 337 af 20.12.2011, s. 9).
+
+
+```
+
+#### Specific 91 — partial
+
+partial · prompt 1589 / sample 0 · longest span 141 tok · 12 spans · NV recall sum 0 · code-like no · 558 chars · docs kb_administrative_publication_nationalstrategifo...5386, kb_administrative_publication_detkommunalesamarb...9464, DD000589
+
+Prompt:
+
+```text
+Da De har bevist mig den Ære gjennem Hr.
+```
+
+Generation:
+
+```text
+Alphonse at henvende Dem til mig, saa maa De tillade mig at sige Dem, at Deres Adresse er forkert, og at jeg ikke kjender nogen Hr. Hasting her i Byen. Jeg skal bede Dem om at sende mig den Billet, hvorpaa Navnet staar, tilbage, og jeg skal da lade den besørge. Med Høiagtelse . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+```
+
+Longest matched span:
+
+```text
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+```
+
+#### Specific 92 — partial
+
+partial · prompt 1783 / sample 7 · longest span 137 tok · 16 spans · NV recall sum 0 · code-like no · 614 chars · docs fm-udgivelser_94, fm-udgivelser_171
+
+Prompt:
+
+```text
+Kapital og lånoptagelse.
+```
+
+Generation:
+
+```text
+15.82.02. Handicappulje. Ansøgningspulje til handicapbetingede
+
+udgifter afledt af en dom i Højesteret (tekstanm. 111) (Reservationsbev.) Kontoen er oprettet med 2,0 mio. kr. i 2023 som følge af en dom i Højesteret, jf. akt. 318
+
+af 23. juni 2023. Særlige bevillingsbestemmelser:
+
+af 23. juni 2023.
+
+af 23. juni 2023.
+
+Regel der fraviges
+
+eller suppleres
+
+Beskrivelse
+
+| BV 2.2.11   BV 2213   | m tilsagn.  l   |
+|-----------------------|-----------------|
+|                       |                 |
+| Bud                   | n:              |
+
+RRB Mio. kr. 2021 2022 2023
+
+F 2024
+
+BO1 BO2 BO3 2025 2026 2027
+
+| U
+```
+
+Longest matched span:
+
+```text
+
+
+Regel der fraviges
+
+eller suppleres
+
+Beskrivelse
+
+| BV 2.2.11   BV 2213   | m tilsagn.  l   |
+|-----------------------|-----------------|
+|                       |                 |
+| Bud                   | n:              |
+
+RRB Mio. kr. 2021 2022 2023
+
+F 2024
+
+BO1 BO2 BO3 2025 2026 2027
+
+| U
+```
+
+#### Specific 93 — partial
+
+partial · prompt 1294 / sample 5 · longest span 136 tok · 19 spans · NV recall sum 0 · code-like yes · 674 chars · docs cellar_37651, cellar_37653
+
+Prompt:
+
+```text
+Antal efterlønsmodtagere fordelt på ordninger, køn, forsikringskategori, sats og alder.
+```
+
+Generation:
+
+```text
+2. Antal pensionsmodtagere fordelt på køn, forsikringskategori, sats og alder. 3. Antal deltidsforsikrede, delpension og antal fuldtidsforsikrede, fuld pension. |
+||||||||||||||||||
+|
+|
+|
+|||||||||||||||||
+|
+|
+||||||||||||||||||
+|
+|
+||||||||||||||||||
+|
+|
+||||||||||||||||||
+|
+|
+||||||||||||||||||
+|
+|
+||||||||||||||||||
+|
+|
+||||||||||||||||||
+|
+|
+||||||||||||||||||
+|
+|
+||||||||||||||||||
+|
+|
+||||||||||||||||||
+|
+|
+||||||||||||||||||
+|
+|
+||||||||||||||||||
+|
+|
+||||||||||||||||||
+|
+|
+||||||||||||||||||
+|
+|
+||||||||||||||||||
+|
+|
+||||||||||||||||||
+|
+|
+||||||||||||||||||
+|
+|
+||||||||||||||||||
+|
+|
+||||||||||||||||||
+|
+|
+||||||||||||||||||
+|
+|
+||||||||||||||||||
+|
+|
+||||
+```
+
+Longest matched span:
+
+```text
+|||||||||||||||||
+|
+|
+||||||||||||||||||
+|
+|
+||||||||||||||||||
+|
+|
+||||||||||||||||||
+|
+|
+||||||||||||||||||
+|
+|
+||||||||||||||||||
+|
+|
+||||||||||||||||||
+|
+|
+||||||||||||||||||
+|
+|
+||||||||||||||||||
+|
+|
+||||||||||||||||||
+
+```
+
+#### Specific 94 — partial
+
+partial · prompt 3275 / sample 0 · longest span 136 tok · 16 spans · NV recall sum 1.14 · code-like yes · 425 chars · docs kb_administrative_publication_nationalregnskab...8143
+
+Prompt:
+
+```text
+Brochen har en ydre diameter på omkring 18 meter.Historic Environment Scotland.
+```
+
+Generation:
+
+```text
+(2012). The Old Palace of Holyroodhouse. Historic Environment Scotland. Retrieved 29 May 2014. <templatestyles src="Module:Citation/CS1/styles.css"></templatestyles>
+  3. 3.0 3.1 3.2 3.3 3.4 3.5 3.6 3.7 3.8 3.9 3.10 3.11 3.12 3.13 3.14 3.15 3.16 3.17 3.18 3.19 3.20 3.21 3.22 3.23 3.24 3.25 3.26 3.27 3.28 3.29 3.30 3.31 3.32 3.33 3.34 3.35 3.36 3.37 3.38 3.39 3.40 3.41 3.42 3.43 3.44 3.45 3.46 3.47 3.48 3.49 3.50 3.51 3.52
+```
+
+Longest matched span:
+
+```text
+3.1 3.2 3.3 3.4 3.5 3.6 3.7 3.8 3.9 3.10 3.11 3.12 3.13 3.14 3.15 3.16 3.17 3.18 3.19 3.20 3.21 3.22 3.23 3.24 3.25 3.26 3.27 3.28 3.29 
+```
+
+#### Specific 95 — partial
+
+partial · prompt 1833 / sample 0 · longest span 134 tok · 4 spans · NV recall sum 12 · code-like no · 728 chars · docs cellar_31379, cellar_31397, cellar_59297, cellar_6505, cellar_59296 (+1)
+
+Prompt:
+
+```text
+Garanti for lån.
+```
+
+Generation:
+
+```text
+|
+||||
+ifrs-full |
+DecreaseInFairValueMeasurementDueToChangeInMultipleUnobservableInputsToReflectReasonablyPossibleAlternativeAssumptionsAssets |
+X duration, credit |
+label |
+Fald i dagsværdimåling som følge af ændring i flere ikkeobserverede input til at afspejle et rimeligt sandsynligt alternativ, aktiver |
+Oplysning: IFRS 13.93 h ii) |
+documentation |
+Faldet i dagsværdimålingen af aktiver som følge af ændring i flere ikkeobserverede input til at afspejle et rimeligt sandsynligt alternativ. |
+||||
+ifrs-full |
+DecreaseInFairValueMeasurementDueToChangeInMultipleUnobservableInputsToReflectReasonablyPossibleAlternativeAssumptionsEntitysOwnEquityInstruments |
+X duration, debit |
+label |
+Fald i dagsværdimåling som følge af
+```
+
+Longest matched span:
+
+```text
+aldet i dagsværdimålingen af aktiver som følge af ændring i flere ikkeobserverede input til at afspejle et rimeligt sandsynligt alternativ. |
+||||
+ifrs-full |
+DecreaseInFairValueMeasurementDueToChangeInMultipleUnobservableInputsToReflectReasonablyPossibleAlternativeAssumptionsEntitysOwnEquityInstruments |
+X duration, debit |
+label |
+Fald i dagsværdimåling som følge af
+```
+
+#### Specific 96 — partial
+
+partial · prompt 2404 / sample 0 · longest span 132 tok · 2 spans · NV recall sum 3.03 · code-like no · 234 chars · docs cellar_50884, cellar_50888
+
+Prompt:
+
+```text
+Fjernvarmen er ca. 1,3 mio. billigere end varmepumpe alternativet.
+```
+
+Generation:
+
+```text
+|
+(1) Europa-Parlamentets og Rådets direktiv 2012/27/EU af 25. oktober 2012 om energieffektivitet, om ændring af direktiv 2009/125/EF og 2010/30/EU samt om ophævelse af direktiv 2004/8/EF og 2006/32/EF (EUT L 315 af 14.11.2012, s. 1).
+```
+
+Longest matched span:
+
+```text
+
+(1) Europa-Parlamentets og Rådets direktiv 2012/27/EU af 25. oktober 2012 om energieffektivitet, om ændring af direktiv 2009/125/EF og 2010/30/EU samt om ophævelse af direktiv 2004/8/EF og 2006/32/EF (EUT L 315 af 14.11.2012, s. 1).
+```
+
+#### Specific 97 — partial
+
+partial · prompt 2488 / sample 8 · longest span 131 tok · 12 spans · NV recall sum 8.01 · code-like no · 618 chars · docs AX012697, AX012681, AX012665, AX012725, AX012700 (+1)
+
+Prompt:
+
+```text
+Et flertal i udvalget kunne ikke tiltræde indstillingen.
+```
+
+Generation:
+
+```text
+Et mindretal i udvalget (V og KF) indstiller lovforslaget til vedtagelse uændret.
+
+Et andet mindretal i udvalget (S, RV og SF) indstiller lovforslaget til forkastelse ved 3. behandling.
+
+Et tredje mindretal i udvalget (EL) vil stemme hverken for eller imod lovforslaget ved 3. behandling.
+
+Kristendemokraterne, Inuit Ataqatigiit, Siumut, Tjóðveldisflokkurin og Sambandsflokkurin var på tidspunktet for betænkningens afgivelse ikke repræsenteret med medlemmer i udvalget og havde dermed ikke adgang til at komme med indstillinger eller politiske udtalelser i betænkningen.
+
+En oversigt over Folketingets sammensætning e
+```
+
+Longest matched span:
+
+```text
+ved 3. behandling.
+
+Kristendemokraterne, Inuit Ataqatigiit, Siumut, Tjóðveldisflokkurin og Sambandsflokkurin var på tidspunktet for betænkningens afgivelse ikke repræsenteret med medlemmer i udvalget og havde dermed ikke adgang til at komme med indstillinger eller politiske udtalelser i betænkningen.
+
+En oversigt over Folketingets sammensætning
+```
+
+#### Specific 98 — partial
+
+partial · prompt 2148 / sample 9 · longest span 124 tok · 3 spans · NV recall sum 1.84 · code-like no · 562 chars · docs ft_20151M100
+
+Prompt:
+
+```text
+Ændringsforslag 9 er vedtaget.
+```
+
+Generation:
+
+```text
+Jeg foreslår, at lovforslaget går direkte til tredje behandling uden fornyet udvalgsbehandling. Hvis ingen gør indsigelse, betragter jeg det som vedtaget. Det er vedtaget. 
+TALER 220: Ønsker nogen at udtale sig? Da det ikke er tilfældet, er forhandlingen sluttet, og vi går til afstemning. 
+TALER 220: Ønskes afstemning om ændringsforslag nummer 1, tiltrådt af et flertal (udvalget med undtagelse af IA)? Det er vedtaget. Jeg foreslår, at lovforslaget går direkte til tredje behandling uden fornyet udvalgsbehandling. Hvis ingen gør indsigelse, betragter jeg det
+```
+
+Longest matched span:
+
+```text
+uttet, og vi går til afstemning. 
+TALER 220: Ønskes afstemning om ændringsforslag nummer 1, tiltrådt af et flertal (udvalget med undtagelse af IA)? Det er vedtaget. Jeg foreslår, at lovforslaget går direkte til tredje behandling uden fornyet udvalgsbehandling. Hvis ingen gør indsigelse, betragter jeg det
+```
+
+#### Specific 99 — partial
+
+partial · prompt 3224 / sample 7 · longest span 124 tok · 14 spans · NV recall sum 1.91 · code-like no · 502 chars · docs AN012933, AX019824, AN012881
+
+Prompt:
+
+```text
+Undtagelser kan fastsættes ved forfatningen eller ved lov.
+```
+
+Generation:
+
+```text
+«
+
+2. I § 4, stk. 2, indsættes efter 1. pkt. som nyt punktum:
+
+»For så vidt angår afskedigelse af tjenestemænd m.v. som følge af en disciplinærsag, finder stk. 1 tilsvarende anvendelse.«
+
+§ 4
+
+I lov om inddrivelse af gæld til det offentlige, jf. lovbekendtgørelse nr. 29 af 12. januar 2015, som ændret ved lov nr. 1253 af 17. november 2015, § 1 i lov nr. 298 af 22. marts 2016, § 1 i lov nr. 428 af 18. maj 2016 og § 2 i lov nr. 114 af 31. januar 2017, foretages følgende ændring:
+
+1. I § 1, stk. 2, 1.
+```
+
+Longest matched span:
+
+```text
+
+
+I lov om inddrivelse af gæld til det offentlige, jf. lovbekendtgørelse nr. 29 af 12. januar 2015, som ændret ved lov nr. 1253 af 17. november 2015, § 1 i lov nr. 298 af 22. marts 2016, § 1 i lov nr. 428 af 18. maj 2016 og § 
+```
+
+#### Specific 100 — partial
+
+partial · prompt 2018 / sample 5 · longest span 123 tok · 11 spans · NV recall sum 2.83 · code-like no · 552 chars · docs ft_20161M46, ft_20161M66, ft_20151M53, ft_20151M95, ft_20151M27 (+1)
+
+Prompt:
+
+```text
+Hvem stemmer så imod?
+```
+
+Generation:
+
+```text
+Det er kun det medlem af Folketinget, der stemmer imod, der har mulighed for at få ordet. Tak for det. Så er der afstemning om lovforslagets endelige vedtagelse. Jeg slutter afstemningen. For stemte 100 (S, V, DF, RV, SF, EL, KF, ALT, NB og LA), imod stemte 0, hverken for eller imod stemte 0. Lovforslaget er vedtaget og vil nu blive sendt til statsministeren. 
+TALER 176: Der er ikke stillet ændringsforslag. Er der nogen, der ønsker at udtale sig? Da det ikke er tilfældet, går vi til afstemning. 
+TALER 176: Der stemmes om lovforslagets endelige ve
+```
+
+Longest matched span:
+
+```text
+), imod stemte 0, hverken for eller imod stemte 0. Lovforslaget er vedtaget og vil nu blive sendt til statsministeren. 
+TALER 176: Der er ikke stillet ændringsforslag. Er der nogen, der ønsker at udtale sig? Da det ikke er tilfældet, går vi til afstemning. 
+TALER 176: Der stemmes om lovforslagets endelige
+```
+
 <a id="dfm-main-dynaword-prefix-1000"></a>
 
 ### DFM (final) / Dynaword / Prefix
 
-367 full matches out of 10000 generations; showing 100 full and 0 partial.
+367 full matches out of 9996 non-degenerate generations (4 degenerate excluded, 0 of them full matches); showing 100 full and 0 partial.
 
 #### Prefix 1 — FULL
 
@@ -87116,7 +60647,7 @@ Generation:
 
 ### Olmo 3 32B / Dolma 3 / Unconditional
 
-7 full matches out of 10000 generations; showing 7 full and 93 partial.
+7 full matches out of 9992 non-degenerate generations (8 degenerate excluded, 0 of them full matches); showing 7 full and 93 partial.
 
 #### Unconditional 1 — FULL
 
@@ -90356,22 +63887,6 @@ Longest matched span:
 
 #### Unconditional 57 — partial
 
-partial · prompt 0 / sample 425 · longest span 254 tok · 2 spans · NV recall sum 3.08 · code-like yes · 255 chars · docs e724b1c9-7531-48bc-9a92-c05c1bc5e1dd, 1b867a19-6b51-46e2-98b6-b2b20e9eef2d, 133a639e-0921-430d-b9f7-dcbd1d10dbc6, 75deff0515d52e682e2c68f8e8fb0f34f43791bf, 680b8c50-8bcb-4955-a15c-99329967e541 (+4)
-
-Generation:
-
-```text
-# 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-```
-
-Longest matched span:
-
-```text
-0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-```
-
-#### Unconditional 58 — partial
-
 partial · prompt 0 / sample 9562 · longest span 254 tok · 18 spans · NV recall sum 4.36 · code-like no · 1101 chars · docs ad24d06ed3967c231d79d76d4e1999022f3cd3a4
 
 Generation:
@@ -90439,7 +63954,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`user` (
   `
 ```
 
-#### Unconditional 59 — partial
+#### Unconditional 58 — partial
 
 partial · prompt 0 / sample 6000 · longest span 253 tok · 15 spans · NV recall sum 1.45 · code-like yes · 529 chars · docs c2610dc272e0d7f70b89e30e7ea3905f7dfccdf1, c2610dc272e0d7f70b89e30e7ea3905f7dfccdf1
 
@@ -90495,7 +64010,7 @@ Longest matched span:
  *
 ```
 
-#### Unconditional 60 — partial
+#### Unconditional 59 — partial
 
 partial · prompt 0 / sample 6056 · longest span 253 tok · 13 spans · NV recall sum 5.53 · code-like yes · 452 chars · docs 0b343b0c7d8a14d76709b9e4bb87a9a380d80f75, 0b343b0c7d8a14d76709b9e4bb87a9a380d80f75, 0b343b0c7d8a14d76709b9e4bb87a9a380d80f75
 
@@ -90557,23 +64072,7 @@ Longest matched span:
 #
 ```
 
-#### Unconditional 61 — partial
-
-partial · prompt 0 / sample 9964 · longest span 253 tok · 3 spans · NV recall sum 0.961 · code-like yes · 260 chars · docs 328d31070074db8466b87f04ed9900d6ff582803, fddcf4c5b256379a63466dcb6c5c958bee3256eb, 785da443ea905ad1a8f2eccc2facd7ccf11619ec, 785da443ea905ad1a8f2eccc2facd7ccf11619ec, 5c882401-8948-44e2-a93f-7f6dcb525c37 (+1)
-
-Generation:
-
-```text
-Passage0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
-```
-
-Longest matched span:
-
-```text
-0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
-```
-
-#### Unconditional 62 — partial
+#### Unconditional 60 — partial
 
 partial · prompt 0 / sample 2255 · longest span 252 tok · 3 spans · NV recall sum 0 · code-like no · 512 chars · docs b7d138eae3eec19bfa46a1714190869ca7505b5c, 7c149bbc-7a9f-47ab-b2d5-5e2a5067dc1a, 233b11275ab0af8750e18710daaf04edacf23add, 4df6f863-4b80-495e-a201-bb27da6da912, 4df6f863-4b80-495e-a201-bb27da6da912 (+3)
 
@@ -90589,7 +64088,7 @@ Longest matched span:
 hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
 ```
 
-#### Unconditional 63 — partial
+#### Unconditional 61 — partial
 
 partial · prompt 0 / sample 8783 · longest span 252 tok · 17 spans · NV recall sum 7.38 · code-like yes · 1146 chars · docs 7af99119ea740d6d2291b82dcc6ae37b45d814ed, b7ab5e300f48375b044fc91022c3b630316fb607, dd02b1d28325fd6065cdd77ce758ff44f077d131, 8ce8fed98234675dec138b8932be02be6dfb6d28, ce022d45e0a5d79aea6e9e7bc02361413870375d (+5)
 
@@ -90656,7 +64155,7 @@ Longest matched span:
 package org.neo4j.
 ```
 
-#### Unconditional 64 — partial
+#### Unconditional 62 — partial
 
 partial · prompt 0 / sample 9644 · longest span 251 tok · 15 spans · NV recall sum 7.61 · code-like no · 789 chars · docs b85be6ebc527173b89f35aa0a80e90063f000199, b85be6ebc527173b89f35aa0a80e90063f000199, b85be6ebc527173b89f35aa0a80e90063f000199
 
@@ -90730,7 +64229,7 @@ Explanation: In this case, no transaction is done, i.e. max profit = 0.
 
 ````
 
-#### Unconditional 65 — partial
+#### Unconditional 63 — partial
 
 partial · prompt 0 / sample 9439 · longest span 250 tok · 16 spans · NV recall sum 5.89 · code-like yes · 1129 chars · docs ea7953896430bbf2af5890778565eeb9d58a5dbe, ea7953896430bbf2af5890778565eeb9d58a5dbe
 
@@ -90799,7 +64298,7 @@ Adapter() {
             convertView = inflater.inflate
 ```
 
-#### Unconditional 66 — partial
+#### Unconditional 64 — partial
 
 partial · prompt 0 / sample 1577 · longest span 248 tok · 21 spans · NV recall sum 1.75 · code-like yes · 685 chars · docs 51d2d7a188c3b4991e8bf61e7e4703e0b977d292, 51d2d7a188c3b4991e8bf61e7e4703e0b977d292
 
@@ -90884,7 +64383,7 @@ ArrayList<Integer>();
 		
 ```
 
-#### Unconditional 67 — partial
+#### Unconditional 65 — partial
 
 partial · prompt 0 / sample 234 · longest span 247 tok · 17 spans · NV recall sum 6.83 · code-like no · 393 chars · docs 259ff4e1d036b00ff84523b177c67d00ac867ae2, e9a47cc72302971776328edee245aab88c35ae94, e9a47cc72302971776328edee245aab88c35ae94, 259ff4e1d036b00ff84523b177c67d00ac867ae2
 
@@ -90974,7 +64473,7 @@ Longest matched span:
 
 ````
 
-#### Unconditional 68 — partial
+#### Unconditional 66 — partial
 
 partial · prompt 0 / sample 3239 · longest span 247 tok · 15 spans · NV recall sum 15.5 · code-like no · 908 chars · docs 100055367, 100055366, 3743828653, 3743828652
 
@@ -91033,7 +64532,7 @@ Constraints:
 
 ```
 
-#### Unconditional 69 — partial
+#### Unconditional 67 — partial
 
 partial · prompt 0 / sample 8970 · longest span 246 tok · 10 spans · NV recall sum 7.38 · code-like no · 304 chars · docs 306e0738bca30eed90914448c7d2ff9d6c0dea44, 306e0738bca30eed90914448c7d2ff9d6c0dea44
 
@@ -91079,7 +64578,7 @@ Longest matched span:
 
 ```
 
-#### Unconditional 70 — partial
+#### Unconditional 68 — partial
 
 partial · prompt 0 / sample 7697 · longest span 244 tok · 14 spans · NV recall sum 1.89 · code-like yes · 1101 chars · docs 4e809ee0739c43b21be8f15714cd9a0e4880dfeb, 4e809ee0739c43b21be8f15714cd9a0e4880dfeb
 
@@ -91139,7 +64638,7 @@ Longest matched span:
      * // using the length returned by your function, it prints the first
 ```
 
-#### Unconditional 71 — partial
+#### Unconditional 69 — partial
 
 partial · prompt 0 / sample 8081 · longest span 243 tok · 12 spans · NV recall sum 7.63 · code-like no · 795 chars · docs f8859bbbdacc865e8bf32f901ab2bbe7965f5b61, f8859bbbdacc865e8bf32f901ab2bbe7965f5b61
 
@@ -91225,7 +64724,7 @@ exection -> execution (insert 'u')
 
 ````
 
-#### Unconditional 72 — partial
+#### Unconditional 70 — partial
 
 partial · prompt 0 / sample 4771 · longest span 242 tok · 13 spans · NV recall sum 7.28 · code-like yes · 943 chars · docs 7727b574c3201b0563d83c91b92eb93ed5ddf296, 7727b574c3201b0563d83c91b92eb93ed5ddf296, 7727b574c3201b0563d83c91b92eb93ed5ddf296
 
@@ -91361,25 +64860,7 @@ Longest matched span:
     public function getDate()
 ```
 
-#### Unconditional 73 — partial
-
-partial · prompt 0 / sample 4509 · longest span 241 tok · 12 spans · NV recall sum 0 · code-like yes · 499 chars · docs 1a7c95fe4f66d88920d282ca9534607755bf826e, 7ad57642-a9f1-40fb-86f8-ecbf7cef66b5, d92d164d79330c073b6c3ab935f1aced1292fe77, 7ad57642-a9f1-40fb-86f8-ecbf7cef66b5, f9d41521-fcf1-4d03-945c-b06969658e2c (+5)
-
-Generation:
-
-```text
-# 8.5.5.1.1 (1)
-
-A. | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | |
-```
-
-Longest matched span:
-
-```text
-. | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | |
-```
-
-#### Unconditional 74 — partial
+#### Unconditional 71 — partial
 
 partial · prompt 0 / sample 2752 · longest span 238 tok · 13 spans · NV recall sum 7.17 · code-like yes · 1052 chars · docs 6c6d1f32d90de6e645d004e5dd6379a408019b1d, 6697b968f6abee21c165405a58ca57caed55d9b8, 46a8dace796ed2a7d88d6871347ac5c75008ae16, 6697b968f6abee21c165405a58ca57caed55d9b8, 854d35d964e27d9ece4218c7033f33b52da99037 (+5)
 
@@ -91518,7 +64999,7 @@ Longest matched span:
      * @return mixed
 ```
 
-#### Unconditional 75 — partial
+#### Unconditional 72 — partial
 
 partial · prompt 0 / sample 3923 · longest span 236 tok · 18 spans · NV recall sum 1.19 · code-like yes · 852 chars · docs 41703acb1af9caea910b315235d7ef8de07e5a43, 41703acb1af9caea910b315235d7ef8de07e5a43
 
@@ -91589,7 +65070,7 @@ Longest matched span:
         map.put
 ```
 
-#### Unconditional 76 — partial
+#### Unconditional 73 — partial
 
 partial · prompt 0 / sample 3754 · longest span 233 tok · 17 spans · NV recall sum 8.63 · code-like yes · 1410 chars · docs 97863e28b2899edab336f52220a07464febcd702, 97863e28b2899edab336f52220a07464febcd702
 
@@ -91679,7 +65160,7 @@ public class ServletExample1 extends HttpServlet {
 		
 ```
 
-#### Unconditional 77 — partial
+#### Unconditional 74 — partial
 
 partial · prompt 0 / sample 3903 · longest span 231 tok · 13 spans · NV recall sum 18.6 · code-like yes · 849 chars · docs 37c6f7b85300d2320147c686039c9ffb455e82a1
 
@@ -91752,7 +65233,7 @@ SET time_zone = "+00:00";
 -- Structure de la table `
 ```
 
-#### Unconditional 78 — partial
+#### Unconditional 75 — partial
 
 partial · prompt 0 / sample 1183 · longest span 230 tok · 15 spans · NV recall sum 14.6 · code-like no · 892 chars · docs f494abd5ea977956a9a6647224520d88d67a5e71
 
@@ -91825,7 +65306,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `
 ```
 
-#### Unconditional 79 — partial
+#### Unconditional 76 — partial
 
 partial · prompt 0 / sample 4641 · longest span 229 tok · 10 spans · NV recall sum 21.3 · code-like no · 895 chars · docs d85cb4dff50ebdd874bc7fb1c4a4b8d2906e322b, d1b4fc137cc597a28aef1427df5e6a4bee49ec02, 7fb2aae7893c1f01f9a0e09062aff330a4ea991d, 77f18d849001b78280f799980a5d993202564769
 
@@ -91902,7 +65383,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `
 ```
 
-#### Unconditional 80 — partial
+#### Unconditional 77 — partial
 
 partial · prompt 0 / sample 9607 · longest span 229 tok · 9 spans · NV recall sum 21.8 · code-like no · 809 chars · docs dc148625de224deddefeeb097409959c83ffbc55, 1d6181759ab2103b87e69d8abc1f48ab7bf442a2, dc148625de224deddefeeb097409959c83ffbc55, 9372044bdf431787345472bcab13ea7a248dd542, 1d6181759ab2103b87e69d8abc1f48ab7bf442a2 (+2)
 
@@ -92000,7 +65481,7 @@ Output: [0,1]
 
 ````
 
-#### Unconditional 81 — partial
+#### Unconditional 78 — partial
 
 partial · prompt 0 / sample 4205 · longest span 228 tok · 17 spans · NV recall sum 2.95 · code-like yes · 398 chars · docs 943d7f4b3421735c5845d9cb52b724b70b1cba4b, 15e779cf77e8de2eea6c5469c6f6dfc773f93a54, 41c32f04e1bfedd41107d0fc1a16ec31ecf8cc45, 943d7f4b3421735c5845d9cb52b724b70b1cba4b, 15e779cf77e8de2eea6c5469c6f6dfc773f93a54 (+1)
 
@@ -92053,7 +65534,7 @@ Longest matched span:
  *
 ```
 
-#### Unconditional 82 — partial
+#### Unconditional 79 — partial
 
 partial · prompt 0 / sample 2346 · longest span 227 tok · 15 spans · NV recall sum 13.8 · code-like no · 1162 chars · docs 181f822a-00a3-4852-8238-672827531297, c59d4902-be8c-4dae-a920-b9a3d0b9b105, c59d4902-be8c-4dae-a920-b9a3d0b9b105, c59d4902-be8c-4dae-a920-b9a3d0b9b105, c59d4902-be8c-4dae-a920-b9a3d0b9b105 (+3)
 
@@ -92069,7 +65550,7 @@ Longest matched span:
 Edwardian London, 1910, Bert entertains a crowd as a one-man band when he senses a change in the wind. Afterwards, he directly addresses the audience, and gives them a tour of Cherry Tree Lane, stopping outside the Banks family's home. George Banks returns home to learn from his wife, Winifred, that Katie Nanna has left their service after Jane and Michael ran away again. They are returned shortly after by Constable Jones, who reveals the children were chasing a lost kite. The children ask their father to help build a better kite, but he dismisses them. Taking it upon himself to hire a new nanny, Mr. Banks advertises for a stern, no-nonsense nanny. Instead, Jane and Michael present their own advertisement for a kinder, sweeter nanny. Mr. Banks rips up the letter, and throws the scraps in the fireplace, but the remains of the advertisement magically float up, and out into the air.
 ```
 
-#### Unconditional 83 — partial
+#### Unconditional 80 — partial
 
 partial · prompt 0 / sample 7001 · longest span 226 tok · 22 spans · NV recall sum 7.07 · code-like yes · 1156 chars · docs 3e584b9b723c1390f898289f46a0cdc23fea23eb, 3e584b9b723c1390f898289f46a0cdc23fea23eb
 
@@ -92159,7 +65640,7 @@ Longest matched span:
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5
 ```
 
-#### Unconditional 84 — partial
+#### Unconditional 81 — partial
 
 partial · prompt 0 / sample 7865 · longest span 226 tok · 13 spans · NV recall sum 8.55 · code-like no · 843 chars · docs 4ccb2beacf7e6551d5e0000e66e2f20ef7e373ec
 
@@ -92226,7 +65707,7 @@ SET time_zone = "+00:00";
 -- Database: `
 ```
 
-#### Unconditional 85 — partial
+#### Unconditional 82 — partial
 
 partial · prompt 0 / sample 524 · longest span 225 tok · 17 spans · NV recall sum 3.78 · code-like yes · 1063 chars · docs ffa25ea9a01b8069738d5f096ea9293efcf57533, ffa25ea9a01b8069738d5f096ea9293efcf57533
 
@@ -92289,7 +65770,7 @@ public class Solution {
 
 ```
 
-#### Unconditional 86 — partial
+#### Unconditional 83 — partial
 
 partial · prompt 0 / sample 4162 · longest span 225 tok · 11 spans · NV recall sum 25.7 · code-like yes · 505 chars · docs 295c572311718abdb9b0e0258e7b8f37ca1865cc, 295c572311718abdb9b0e0258e7b8f37ca1865cc, 295c572311718abdb9b0e0258e7b8f37ca1865cc, 295c572311718abdb9b0e0258e7b8f37ca1865cc
 
@@ -92336,7 +65817,7 @@ Longest matched span:
 
 ```
 
-#### Unconditional 87 — partial
+#### Unconditional 84 — partial
 
 partial · prompt 0 / sample 7005 · longest span 225 tok · 16 spans · NV recall sum 2.49 · code-like yes · 370 chars · docs f522069dd83bfce2e38a472e3da168a23533946a, f522069dd83bfce2e38a472e3da168a23533946a
 
@@ -92369,7 +65850,7 @@ Longest matched span:
  * (3) 盘子只能叠在比
 ```
 
-#### Unconditional 88 — partial
+#### Unconditional 85 — partial
 
 partial · prompt 0 / sample 824 · longest span 224 tok · 8 spans · NV recall sum 9.71 · code-like yes · 814 chars · docs 60a939158d1e05ba6b3b4bd0017350c2b06386fd, 60a939158d1e05ba6b3b4bd0017350c2b06386fd
 
@@ -92449,7 +65930,7 @@ Longest matched span:
 
 ```
 
-#### Unconditional 89 — partial
+#### Unconditional 86 — partial
 
 partial · prompt 0 / sample 4158 · longest span 224 tok · 14 spans · NV recall sum 12.6 · code-like yes · 503 chars · docs 62dfa89437f3fe13b0bb1b009d1d7f548d7d64fe, 62dfa89437f3fe13b0bb1b009d1d7f548d7d64fe
 
@@ -92483,7 +65964,7 @@ public class Solution {
 
 ````
 
-#### Unconditional 90 — partial
+#### Unconditional 87 — partial
 
 partial · prompt 0 / sample 8170 · longest span 223 tok · 4 spans · NV recall sum 21.4 · code-like yes · 691 chars · docs 125156176, 125156177, 3768929464, 3768929465, 3768929466
 
@@ -92556,7 +66037,7 @@ print(f"Age: {age}, Height: {height}, Weight: {weight}, IQ: {iq}")
 # A puzzle for
 ```
 
-#### Unconditional 91 — partial
+#### Unconditional 88 — partial
 
 partial · prompt 0 / sample 8449 · longest span 223 tok · 6 spans · NV recall sum 15 · code-like yes · 242 chars · docs e403fde45634fe03397550f8c9b469cdc15134e3, e403fde45634fe03397550f8c9b469cdc15134e3, e403fde45634fe03397550f8c9b469cdc15134e3
 
@@ -92593,7 +66074,7 @@ Longest matched span:
 
 ```
 
-#### Unconditional 92 — partial
+#### Unconditional 89 — partial
 
 partial · prompt 0 / sample 677 · longest span 221 tok · 20 spans · NV recall sum 15.2 · code-like yes · 1395 chars · docs b3a2e175dcf5ebb173b4894b7b5757010510344f, b3a2e175dcf5ebb173b4894b7b5757010510344f
 
@@ -92679,7 +66160,7 @@ public class EditUser extends HttpServlet {
 		
 ```
 
-#### Unconditional 93 — partial
+#### Unconditional 90 — partial
 
 partial · prompt 0 / sample 2014 · longest span 220 tok · 21 spans · NV recall sum 14.7 · code-like yes · 1071 chars · docs 2fa3f4ecfe50973dea23dba3f710cfca2ff83534, 64f3dda6cec78660e25f6d185f0ee2dd642ba3d1, c81cfe12a9d26fad0859d3ac357c26f02ac425cb, 92c278e97000784e017c4aefda4507e8631296b5, 01f0220689ee11dd4da03f6bea4c3d17ca4774c0 (+5)
 
@@ -92752,7 +66233,7 @@ Adapter() {
             LayoutInflater inflater
 ```
 
-#### Unconditional 94 — partial
+#### Unconditional 91 — partial
 
 partial · prompt 0 / sample 8555 · longest span 220 tok · 8 spans · NV recall sum 10.7 · code-like yes · 580 chars · docs 326e9110cc1b6382c83564566a8db67941c0af93, 7e3676cf3fa1e5d1277806af6d4629cbc0a47b43, 7e3676cf3fa1e5d1277806af6d4629cbc0a47b43, f53057a3c0a9a7c14f6ad525f6b4fc484b09996f, 326e9110cc1b6382c83564566a8db67941c0af93 (+2)
 
@@ -92821,7 +66302,7 @@ Longest matched span:
  *
 ```
 
-#### Unconditional 95 — partial
+#### Unconditional 92 — partial
 
 partial · prompt 0 / sample 3276 · longest span 219 tok · 12 spans · NV recall sum 1.39 · code-like yes · 806 chars · docs 39c4aad9ecd44b8a77ceb38042d9ff767399d4d9, 39c4aad9ecd44b8a77ceb38042d9ff767399d4d9
 
@@ -92931,7 +66412,7 @@ Longest matched span:
 /*    */
 ```
 
-#### Unconditional 96 — partial
+#### Unconditional 93 — partial
 
 partial · prompt 0 / sample 802 · longest span 218 tok · 17 spans · NV recall sum 14.7 · code-like yes · 949 chars · docs e160f212a712cb6b9d88abc2f99c86d8d20a9680, e160f212a712cb6b9d88abc2f99c86d8d20a9680, e160f212a712cb6b9d88abc2f99c86d8d20a9680, e160f212a712cb6b9d88abc2f99c86d8d20a9680
 
@@ -93059,7 +66540,7 @@ Longest matched span:
         $this->name = $name
 ```
 
-#### Unconditional 97 — partial
+#### Unconditional 94 — partial
 
 partial · prompt 0 / sample 8172 · longest span 218 tok · 17 spans · NV recall sum 5.86 · code-like yes · 1149 chars · docs 9e359e9068fae8fb45d5676b9526df67b180c3b7, 9e359e9068fae8fb45d5676b9526df67b180c3b7
 
@@ -93132,7 +66613,7 @@ package org.ozsoft.texasholdem;
 import java.
 ```
 
-#### Unconditional 98 — partial
+#### Unconditional 95 — partial
 
 partial · prompt 0 / sample 8644 · longest span 218 tok · 15 spans · NV recall sum 9.95 · code-like no · 1095 chars · docs 3876e159-78d8-41c1-9791-bc1da9178718, 2c0ec7429252f076e7266de90958eb641726261f, 6eb7c93c905cafd943e06c1e1b9bb873a1ef6ecc, 3b756d520a222e77e658404ce37aa04425be347c, baf12fbe6753f9e01901c2dbe1f476a4917957ce (+5)
 
@@ -93198,7 +66679,7 @@ Longest matched span:
 - Namespaces are one honking great idea -- let
 ```
 
-#### Unconditional 99 — partial
+#### Unconditional 96 — partial
 
 partial · prompt 0 / sample 5406 · longest span 217 tok · 18 spans · NV recall sum 43.5 · code-like yes · 1145 chars · docs 3762659428, 3753015507, 3753015506, 113097051, 118886140 (+5)
 
@@ -93274,7 +66755,138 @@ import proto  # type: ignore
 from google.cloud.
 ```
 
-#### Unconditional 100 — partial
+#### Unconditional 97 — partial
+
+partial · prompt 0 / sample 3277 · longest span 215 tok · 17 spans · NV recall sum 8.01 · code-like yes · 997 chars · docs ba154b37b6ec7f23b23c454717a3f0b57f55161f, ba154b37b6ec7f23b23c454717a3f0b57f55161f, ba154b37b6ec7f23b23c454717a3f0b57f55161f
+
+Generation:
+
+```text
+<?php
+
+namespace App\Models;
+
+use App\Constants\Error;
+use App\Constants\Message;
+
+class User
+{
+    public $id;
+    public $name;
+    public $email;
+    public $password;
+    public $token;
+    public $role;
+    public $phone;
+    public $address;
+    public $city;
+    public $state;
+    public $country;
+    public $zipCode;
+    public $created_at;
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param mixed $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param mixed $email
+     */
+    public function setEmail($email)
+    {
+        $
+```
+
+Longest matched span:
+
+```text
+_at;
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param mixed $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param mixed $email
+     */
+    public function setEmail($email)
+    {
+        $
+```
+
+#### Unconditional 98 — partial
 
 partial · prompt 0 / sample 5110 · longest span 215 tok · 14 spans · NV recall sum 21.7 · code-like no · 334 chars · docs c86e02f401fc669bffa9a0be3e58ce9e6771056c, c86e02f401fc669bffa9a0be3e58ce9e6771056c
 
@@ -93329,11 +66941,151 @@ Longest matched span:
 
 ````
 
+#### Unconditional 99 — partial
+
+partial · prompt 0 / sample 2848 · longest span 214 tok · 14 spans · NV recall sum 25.4 · code-like no · 890 chars · docs c5ef8aec191cf63328fbd04fa0de2e0be5360783
+
+Generation:
+
+```text
+-- phpMyAdmin SQL Dump
+-- version 4.9.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Nov 29, 2019 at 04:31 PM
+-- Server version: 10.4.8-MariaDB
+-- PHP Version: 7.3.10
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `dbbookstore`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_category`
+--
+
+CREATE TABLE `tbl_category` (
+  `id` int(11) NOT NULL,
+  `category` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_category`
+--
+
+INSERT INTO `tbl_category` (`id
+```
+
+Longest matched span:
+
+```text
+at 04:31 PM
+-- Server version: 10.4.8-MariaDB
+-- PHP Version: 7.3.10
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `
+```
+
+#### Unconditional 100 — partial
+
+partial · prompt 0 / sample 8676 · longest span 214 tok · 11 spans · NV recall sum 17.4 · code-like yes · 869 chars · docs 5c1a4445f08fc8321d86ff8fc129d9c3a7a63655, b309f02ba9044573c6c5e62329b3c6d268b5ebc6
+
+Generation:
+
+```text
+-- phpMyAdmin SQL Dump
+-- version 4.8.5
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Apr 07, 2020 at 03:57 PM
+-- Server version: 10.1.38-MariaDB
+-- PHP Version: 7.3.2
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `db_mobil`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tb_admin`
+--
+
+CREATE TABLE `tb_admin` (
+  `id` int(11) NOT NULL,
+  `username` varchar(100) NOT NULL,
+  `password` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tb
+```
+
+Longest matched span:
+
+```text
+at 03:57 PM
+-- Server version: 10.1.38-MariaDB
+-- PHP Version: 7.3.2
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `
+```
+
 <a id="olmo3-32b-dolma3-minimal-cue"></a>
 
 ### Olmo 3 32B / Dolma 3 / Minimal cue
 
-40 full matches out of 10000 generations; showing 40 full and 60 partial.
+40 full matches out of 10000 non-degenerate generations (0 degenerate excluded, 0 of them full matches); showing 40 full and 60 partial.
 
 #### Minimal cue 1 — FULL
 
@@ -97335,7 +71087,7 @@ We only want the closest K = 1 points from the origin, so the answer is just [[-
 
 ### Olmo 3 32B / Dolma 3 / Generic
 
-2 full matches out of 10000 generations; showing 2 full and 98 partial.
+2 full matches out of 10000 non-degenerate generations (0 degenerate excluded, 0 of them full matches); showing 2 full and 98 partial.
 
 #### Generic 1 — FULL
 
@@ -100580,7 +74332,7 @@ one place. Birds, fish and other animals move from one place to another at a cer
 
 ### Olmo 3 32B / Dolma 3 / Specific
 
-6 full matches out of 10000 generations; showing 6 full and 94 partial.
+6 full matches out of 10000 non-degenerate generations (0 degenerate excluded, 0 of them full matches); showing 6 full and 94 partial.
 
 #### Specific 1 — FULL
 
@@ -104946,7 +78698,7 @@ Economics*. Changes resulting from the publishing process, such as peer review, 
 
 ### Olmo 3 32B / Dolma 3 / Prefix
 
-29 full matches out of 10000 generations; showing 29 full and 71 partial.
+29 full matches out of 9988 non-degenerate generations (12 degenerate excluded, 0 of them full matches); showing 29 full and 71 partial.
 
 #### Prefix 1 — FULL
 
