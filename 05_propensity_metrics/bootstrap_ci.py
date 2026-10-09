@@ -26,6 +26,15 @@ prompts, i.e. the same prompt set or the same cue sequence; unconditional genera
 never paired. A set without any full match gets a rule-of-three upper bound 3/n, with n
 its number of independent units, as the bootstrap interval would be [0, 0].
 
+Degenerate outputs can be excluded (exclude_degenerate=True, the report's main tables):
+generations that are repetition loops of symbols, e.g. "|\n" repeated to the length limit,
+dot leaders or bare number lists. They match training text verbatim (empty table columns,
+tables of contents) without any memorized content. The rule (`is_degenerate`) needs both a
+zlib compression ratio below 0.1 (Carlini et al., 2021 use zlib to discard repetitive
+matches) and under 50% letters among non-space characters, so repeated natural-language
+sentences and code are kept. Excluded generations are dropped from numerators and
+denominators; the units stay, so pairing is unchanged.
+
 Per-generation statistics are read from the SimpleTrace results file once and cached next
 to it as <stem>_genstats.json.
 """
@@ -36,6 +45,7 @@ import functools
 import json
 import re
 import sys
+import zlib
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -58,6 +68,8 @@ RESAMPLING_UNIT = {
 # Columns of a unit's sums: full-match generations, sum of longest spans, sum of
 # nv_recall, retrieved documents, generations.
 FULL, LONGEST, NV, DOCS, GENS = range(5)
+DEGENERATE_MAX_ZLIB_RATIO = 0.1  # compressed / raw UTF-8 size
+DEGENERATE_MAX_LETTER_SHARE = 0.5  # letters / non-space characters
 SUMMARY_NAME = re.compile(r"^st_(?P<setting>.+?)(_\d+)?_summary\.json$")
 
 
@@ -89,6 +101,17 @@ class GenerationStats:
     longest: np.ndarray
     nv_sum: np.ndarray
     docs: np.ndarray
+    degenerate: np.ndarray
+
+
+def is_degenerate(text: str) -> bool:
+    """A repetition loop of symbols: highly compressible and mostly non-letters (module docstring)."""
+    raw = text.encode("utf-8")
+    chars = [c for c in text if not c.isspace()]
+    if not raw or not chars:
+        return False
+    return (len(zlib.compress(raw, 9)) / len(raw) < DEGENERATE_MAX_ZLIB_RATIO
+            and sum(c.isalpha() for c in chars) / len(chars) < DEGENERATE_MAX_LETTER_SHARE)
 
 
 def _generation_stats(record: dict, simple_trace) -> tuple[int, int, float, int]:
@@ -122,10 +145,15 @@ def load_stats(results_path: str) -> GenerationStats:
     if cache.exists():
         cached = json.loads(cache.read_text())
         if cached.get("source") == source:
+            if "degenerate" not in cached:  # caches written before the degenerate flag
+                with open(results) as f:
+                    cached["degenerate"] = [int(is_degenerate(json.loads(line)["generation"])) for line in f if line.strip()]
+                cache.write_text(json.dumps(cached))
             return _stats_from(cached)
     import simple_trace  # imported lazily: it loads infini_gram and transformers
 
-    rows = {"prompt_ids": [], "sample_idx": [], "prompts": [], "full": [], "longest": [], "nv_sum": [], "docs": []}
+    rows = {"prompt_ids": [], "sample_idx": [], "prompts": [], "full": [], "longest": [], "nv_sum": [], "docs": [],
+            "degenerate": []}
     with open(results) as f:
         for line in f:
             if not line.strip():
@@ -140,6 +168,7 @@ def load_stats(results_path: str) -> GenerationStats:
             rows["longest"].append(longest)
             rows["nv_sum"].append(nv_sum)
             rows["docs"].append(docs)
+            rows["degenerate"].append(int(is_degenerate(record["generation"])))
     rows["prompts"] = _prompts_of(results_path, rows["prompt_ids"], rows["sample_idx"])
     cache.write_text(json.dumps({"source": source, **rows}))
     return _stats_from(rows)
@@ -172,6 +201,7 @@ def _stats_from(rows: dict) -> GenerationStats:
         longest=np.asarray(rows["longest"], dtype=float),
         nv_sum=np.asarray(rows["nv_sum"], dtype=float),
         docs=np.asarray(rows["docs"], dtype=float),
+        degenerate=np.asarray(rows["degenerate"], dtype=bool),
     )
 
 
@@ -185,10 +215,12 @@ class Units:
     unit: str
 
 
-def units_of(stats: GenerationStats, setting: str) -> Units:
+def units_of(stats: GenerationStats, setting: str, exclude_degenerate: bool = False) -> Units:
     per_generation = np.stack(
         [stats.full, stats.longest, stats.nv_sum, stats.docs, np.ones(len(stats.full))], axis=1
     )
+    if exclude_degenerate:
+        per_generation = per_generation * ~stats.degenerate[:, None]
     unit = RESAMPLING_UNIT[setting]
     if unit == "generation":
         keys = list(zip(stats.prompt_ids.tolist(), stats.sample_idx.tolist()))
@@ -232,11 +264,13 @@ def _metric_entry(estimate: float, rounds: np.ndarray) -> dict:
     return {"estimate": float(estimate), "ci_low": low, "ci_high": high}
 
 
-def setting_ci(summary_path: str, rounds: int = DEFAULT_BOOTSTRAP_SAMPLES, seed: int = DEFAULT_SEED) -> dict:
+def setting_ci(summary_path: str, rounds: int = DEFAULT_BOOTSTRAP_SAMPLES, seed: int = DEFAULT_SEED,
+               exclude_degenerate: bool = False) -> dict:
     """95% bootstrap CIs of the metrics of one SimpleTrace run."""
     summary_path = _resolve(summary_path)
     setting = setting_of(summary_path)
-    units = units_of(load_stats(results_path_of(summary_path)), setting)
+    stats = load_stats(results_path_of(summary_path))
+    units = units_of(stats, setting, exclude_degenerate)
     estimate = metrics_from_totals(units.sums.sum(axis=0))
     boot = metrics_from_totals(resample_counts(len(units.keys), rounds, np.random.default_rng(seed)) @ units.sums)
     summary = json.loads(Path(summary_path).read_text())
@@ -245,14 +279,19 @@ def setting_ci(summary_path: str, rounds: int = DEFAULT_BOOTSTRAP_SAMPLES, seed:
         "resampled_unit": units.unit,
         "units": len(units.keys),
         "generations": int(units.sums[:, GENS].sum()),
+        "degenerate": int(stats.degenerate.sum()),
+        "degenerate_full_matches": int((stats.full * stats.degenerate).sum()),
+        "excluded": int(stats.degenerate.sum()) if exclude_degenerate else 0,
         "metrics": {},
     }
     for metric in METRICS:
         entry = _metric_entry(estimate[metric][0], boot[metric])
-        entry["matches_summary"] = bool(abs(entry["estimate"] - float(summary[metric])) < 1e-6)
+        if not exclude_degenerate:  # the SimpleTrace summary counts every generation
+            entry["matches_summary"] = bool(abs(entry["estimate"] - float(summary[metric])) < 1e-6)
         out["metrics"][metric] = entry
     if units.sums[:, FULL].sum() == 0:
-        out["metrics"]["generations_full_matches_ratio"]["zero_matches_upper_bound"] = 3 / len(units.keys)
+        n_units = int((units.sums[:, GENS] > 0).sum())
+        out["metrics"]["generations_full_matches_ratio"]["zero_matches_upper_bound"] = 3 / n_units
     return out
 
 
@@ -269,11 +308,12 @@ def propensity_ci(
     metrics: list[str],
     rounds: int = DEFAULT_BOOTSTRAP_SAMPLES,
     seed: int = DEFAULT_SEED,
+    exclude_degenerate: bool = False,
 ) -> dict:
     """95% bootstrap CIs of PM = f_setting / (f_setting + f_prefix), the two sets resampled independently."""
     setting_summary, prefix_summary = _resolve(setting_summary), _resolve(prefix_summary)
-    setting_units = units_of(load_stats(results_path_of(setting_summary)), setting_of(setting_summary))
-    prefix_units = units_of(load_stats(results_path_of(prefix_summary)), setting_of(prefix_summary))
+    setting_units, _ = _load_units(setting_summary, exclude_degenerate)
+    prefix_units, _ = _load_units(prefix_summary, exclude_degenerate)
     rng_setting, rng_prefix = (np.random.default_rng(s) for s in np.random.SeedSequence(seed).spawn(2))
     est_s = metrics_from_totals(setting_units.sums.sum(axis=0))
     est_p = metrics_from_totals(prefix_units.sums.sum(axis=0))
@@ -318,9 +358,9 @@ def _bootstrap_two(a: Units, b: Units, paired: bool, rounds: int, rng: np.random
     )
 
 
-def _load_units(summary_path: str) -> tuple[Units, str]:
+def _load_units(summary_path: str, exclude_degenerate: bool = False) -> tuple[Units, str]:
     setting = setting_of(summary_path)
-    return units_of(load_stats(results_path_of(summary_path)), setting), setting
+    return units_of(load_stats(results_path_of(summary_path)), setting, exclude_degenerate), setting
 
 
 def comparison_ci(
@@ -329,6 +369,7 @@ def comparison_ci(
     metrics: list[str],
     rounds: int = DEFAULT_BOOTSTRAP_SAMPLES,
     seed: int = DEFAULT_SEED,
+    exclude_degenerate: bool = False,
 ) -> dict:
     """95% bootstrap CIs of series - reference and of f_series / (f_series + f_reference).
 
@@ -336,8 +377,8 @@ def comparison_ci(
     same prompt for every unit, and the setting is not unconditional; independent otherwise.
     The two runs may be different settings of one model (e.g. a setting against prefix).
     """
-    series, series_setting = _load_units(_resolve(series_summary))
-    reference, reference_setting = _load_units(_resolve(reference_summary))
+    series, series_setting = _load_units(_resolve(series_summary), exclude_degenerate)
+    reference, reference_setting = _load_units(_resolve(reference_summary), exclude_degenerate)
     paired = _can_pair(series, series_setting, reference, reference_setting)
     boot_s, boot_r = _bootstrap_two(series, reference, paired, rounds, np.random.default_rng(seed))
     est_s = metrics_from_totals(series.sums.sum(axis=0))
@@ -369,6 +410,7 @@ def propensity_difference_ci(
     metrics: list[str],
     rounds: int = DEFAULT_BOOTSTRAP_SAMPLES,
     seed: int = DEFAULT_SEED,
+    exclude_degenerate: bool = False,
 ) -> dict:
     """95% bootstrap CI of PM_a - PM_b, the propensities of two runs (e.g. DFM and Comma) on one setting.
 
@@ -376,10 +418,10 @@ def propensity_difference_ci(
     sets; setting and prefix are always resampled independently. Rounds where either PM is
     undefined (both of its values 0) are skipped.
     """
-    a_s, a_s_setting = _load_units(_resolve(a_setting_summary))
-    a_p, a_p_setting = _load_units(_resolve(a_prefix_summary))
-    b_s, b_s_setting = _load_units(_resolve(b_setting_summary))
-    b_p, b_p_setting = _load_units(_resolve(b_prefix_summary))
+    a_s, a_s_setting = _load_units(_resolve(a_setting_summary), exclude_degenerate)
+    a_p, a_p_setting = _load_units(_resolve(a_prefix_summary), exclude_degenerate)
+    b_s, b_s_setting = _load_units(_resolve(b_setting_summary), exclude_degenerate)
+    b_p, b_p_setting = _load_units(_resolve(b_prefix_summary), exclude_degenerate)
     paired_setting = _can_pair(a_s, a_s_setting, b_s, b_s_setting)
     paired_prefix = _can_pair(a_p, a_p_setting, b_p, b_p_setting)
     rng_setting, rng_prefix = (np.random.default_rng(s) for s in np.random.SeedSequence(seed).spawn(2))
