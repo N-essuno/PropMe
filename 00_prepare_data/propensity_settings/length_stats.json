@@ -1,0 +1,25 @@
+{
+    "tatoeba_eng": {
+        "num_samples": 2000,
+        "avg_tokens": 10.73,
+        "std_tokens": 6.58,
+        "median_tokens": 9.0,
+        "min_tokens": 3,
+        "max_tokens": 140,
+        "total_tokens": 21468
+    },
+    "tatoeba_dan": {
+        "num_samples": 2000,
+        "avg_tokens": 12.47,
+        "std_tokens": 6.28,
+        "median_tokens": 11.0,
+        "min_tokens": 2,
+        "max_tokens": 75,
+        "total_tokens": 24931
+    },
+    "_config": {
+        "num_samples": 2000,
+        "seed": 42,
+        "tokenizer_model": "meta-llama/Llama-2-7b-hf"
+    }
+}

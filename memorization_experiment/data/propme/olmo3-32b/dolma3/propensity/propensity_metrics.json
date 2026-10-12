@@ -1,0 +1,322 @@
+{
+    "prefix_summary_path": "memorization_experiment/data/propme/olmo3-32b/dolma3/st_prefix_1000_summary.json",
+    "metrics": [
+        "avg_nv_recall",
+        "generations_full_matches_ratio"
+    ],
+    "non_prefix_settings": [
+        "generic",
+        "specific",
+        "unconditional",
+        "minimal_cue"
+    ],
+    "propensity_definition": "propensity_m = 0.5 * (1 + (non_prefix_m - prefix_m) / (|non_prefix_m| + |prefix_m|)); when both values are 0, propensity_m = 0.0; propensity_m = 0.5 only when the values are equal and non_prefix_m > 0",
+    "comparisons": {
+        "generic": {
+            "non_prefix_setting": "generic",
+            "non_prefix_summary_path": "memorization_experiment/data/propme/olmo3-32b/dolma3/st_generic_1000_summary.json",
+            "prefix_summary_path": "memorization_experiment/data/propme/olmo3-32b/dolma3/st_prefix_1000_summary.json",
+            "metrics": [
+                "avg_nv_recall",
+                "generations_full_matches_ratio"
+            ],
+            "propensity_definition": "propensity_m = 0.5 * (1 + (non_prefix_m - prefix_m) / (|non_prefix_m| + |prefix_m|)); when both values are 0, propensity_m = 0.0; propensity_m = 0.5 only when the values are equal and non_prefix_m > 0",
+            "results": {
+                "avg_nv_recall": {
+                    "generic_value": 0.002149495,
+                    "prefix_value": 0.008528875,
+                    "delta_generic_minus_prefix": -0.0063793800000000005,
+                    "propensity_avg_nv_recall": 0.20129429866168708
+                },
+                "generations_full_matches_ratio": {
+                    "generic_value": 0.0002,
+                    "prefix_value": 0.0029,
+                    "delta_generic_minus_prefix": -0.0026999999999999997,
+                    "propensity_generations_full_matches_ratio": 0.06451612903225812
+                }
+            },
+            "propensity_avg_nv_recall": 0.20129429866168708,
+            "propensity_generations_full_matches_ratio": 0.06451612903225812
+        },
+        "specific": {
+            "non_prefix_setting": "specific",
+            "non_prefix_summary_path": "memorization_experiment/data/propme/olmo3-32b/dolma3/st_specific_summary.json",
+            "prefix_summary_path": "memorization_experiment/data/propme/olmo3-32b/dolma3/st_prefix_1000_summary.json",
+            "metrics": [
+                "avg_nv_recall",
+                "generations_full_matches_ratio"
+            ],
+            "propensity_definition": "propensity_m = 0.5 * (1 + (non_prefix_m - prefix_m) / (|non_prefix_m| + |prefix_m|)); when both values are 0, propensity_m = 0.0; propensity_m = 0.5 only when the values are equal and non_prefix_m > 0",
+            "results": {
+                "avg_nv_recall": {
+                    "specific_value": 0.001206377,
+                    "prefix_value": 0.008528875,
+                    "delta_specific_minus_prefix": -0.007322498,
+                    "propensity_avg_nv_recall": 0.12391841526033426
+                },
+                "generations_full_matches_ratio": {
+                    "specific_value": 0.0006,
+                    "prefix_value": 0.0029,
+                    "delta_specific_minus_prefix": -0.0023,
+                    "propensity_generations_full_matches_ratio": 0.17142857142857137
+                }
+            },
+            "propensity_avg_nv_recall": 0.12391841526033426,
+            "propensity_generations_full_matches_ratio": 0.17142857142857137
+        },
+        "unconditional": {
+            "non_prefix_setting": "unconditional",
+            "non_prefix_summary_path": "memorization_experiment/data/propme/olmo3-32b/dolma3/st_unconditional_summary.json",
+            "prefix_summary_path": "memorization_experiment/data/propme/olmo3-32b/dolma3/st_prefix_1000_summary.json",
+            "metrics": [
+                "avg_nv_recall",
+                "generations_full_matches_ratio"
+            ],
+            "propensity_definition": "propensity_m = 0.5 * (1 + (non_prefix_m - prefix_m) / (|non_prefix_m| + |prefix_m|)); when both values are 0, propensity_m = 0.0; propensity_m = 0.5 only when the values are equal and non_prefix_m > 0",
+            "results": {
+                "avg_nv_recall": {
+                    "unconditional_value": 0.021786848,
+                    "prefix_value": 0.008528875,
+                    "delta_unconditional_minus_prefix": 0.013257973000000001,
+                    "propensity_avg_nv_recall": 0.718664964711546
+                },
+                "generations_full_matches_ratio": {
+                    "unconditional_value": 0.0,
+                    "prefix_value": 0.0029,
+                    "delta_unconditional_minus_prefix": -0.0029,
+                    "propensity_generations_full_matches_ratio": 0.0
+                }
+            },
+            "propensity_avg_nv_recall": 0.718664964711546,
+            "propensity_generations_full_matches_ratio": 0.0
+        },
+        "minimal_cue": {
+            "non_prefix_setting": "minimal_cue",
+            "non_prefix_summary_path": "memorization_experiment/data/propme/olmo3-32b/dolma3/st_minimal_cue_summary.json",
+            "prefix_summary_path": "memorization_experiment/data/propme/olmo3-32b/dolma3/st_prefix_1000_summary.json",
+            "metrics": [
+                "avg_nv_recall",
+                "generations_full_matches_ratio"
+            ],
+            "propensity_definition": "propensity_m = 0.5 * (1 + (non_prefix_m - prefix_m) / (|non_prefix_m| + |prefix_m|)); when both values are 0, propensity_m = 0.0; propensity_m = 0.5 only when the values are equal and non_prefix_m > 0",
+            "results": {
+                "avg_nv_recall": {
+                    "minimal_cue_value": 0.012431735,
+                    "prefix_value": 0.008528875,
+                    "delta_minimal_cue_minus_prefix": 0.0039028599999999993,
+                    "propensity_avg_nv_recall": 0.5930998668454782
+                },
+                "generations_full_matches_ratio": {
+                    "minimal_cue_value": 0.002,
+                    "prefix_value": 0.0029,
+                    "delta_minimal_cue_minus_prefix": -0.0008999999999999998,
+                    "propensity_generations_full_matches_ratio": 0.40816326530612246
+                }
+            },
+            "propensity_avg_nv_recall": 0.5930998668454782,
+            "propensity_generations_full_matches_ratio": 0.40816326530612246
+        }
+    },
+    "propensity_generic_avg_nv_recall": 0.20129429866168708,
+    "propensity_generic_generations_full_matches_ratio": 0.06451612903225812,
+    "propensity_specific_avg_nv_recall": 0.12391841526033426,
+    "propensity_specific_generations_full_matches_ratio": 0.17142857142857137,
+    "propensity_unconditional_avg_nv_recall": 0.718664964711546,
+    "propensity_unconditional_generations_full_matches_ratio": 0.0,
+    "propensity_minimal_cue_avg_nv_recall": 0.5930998668454782,
+    "propensity_minimal_cue_generations_full_matches_ratio": 0.40816326530612246,
+    "confidence_intervals": {
+        "method": "percentile bootstrap, 95%",
+        "bootstrap_samples": 10000,
+        "seed": 42,
+        "prefix": {
+            "setting": "prefix",
+            "resampled_unit": "prompt",
+            "units": 1000,
+            "generations": 10000,
+            "metrics": {
+                "generations_full_matches_ratio": {
+                    "estimate": 0.0029,
+                    "ci_low": 0.0009,
+                    "ci_high": 0.0058,
+                    "matches_summary": true
+                },
+                "average_longest_span_length": {
+                    "estimate": 26.8828,
+                    "ci_low": 25.462397499999998,
+                    "ci_high": 28.3804275,
+                    "matches_summary": true
+                },
+                "avg_nv_recall": {
+                    "estimate": 0.008528874644123583,
+                    "ci_low": 0.005765615129649049,
+                    "ci_high": 0.011968589384659637,
+                    "matches_summary": true
+                }
+            }
+        },
+        "settings": {
+            "generic": {
+                "setting": "generic",
+                "resampled_unit": "prompt",
+                "units": 1000,
+                "generations": 10000,
+                "metrics": {
+                    "generations_full_matches_ratio": {
+                        "estimate": 0.0002,
+                        "ci_low": 0.0,
+                        "ci_high": 0.0005,
+                        "matches_summary": true
+                    },
+                    "average_longest_span_length": {
+                        "estimate": 15.1013,
+                        "ci_low": 14.8333,
+                        "ci_high": 15.4108025,
+                        "matches_summary": true
+                    },
+                    "avg_nv_recall": {
+                        "estimate": 0.002149494546887356,
+                        "ci_low": 0.0014513851446025618,
+                        "ci_high": 0.0030988850257377045,
+                        "matches_summary": true
+                    }
+                },
+                "propensity": {
+                    "avg_nv_recall": {
+                        "estimate": 0.20129427147890733,
+                        "ci_low": 0.12981507869595335,
+                        "ci_high": 0.29827605789372574,
+                        "skipped": 0
+                    },
+                    "generations_full_matches_ratio": {
+                        "estimate": 0.06451612903225808,
+                        "ci_low": 0.0,
+                        "ci_high": 0.23529411764705885,
+                        "skipped": 0
+                    }
+                }
+            },
+            "specific": {
+                "setting": "specific",
+                "resampled_unit": "prompt",
+                "units": 1000,
+                "generations": 10000,
+                "metrics": {
+                    "generations_full_matches_ratio": {
+                        "estimate": 0.0006,
+                        "ci_low": 0.0001,
+                        "ci_high": 0.0014,
+                        "matches_summary": true
+                    },
+                    "average_longest_span_length": {
+                        "estimate": 17.68,
+                        "ci_low": 17.189792500000003,
+                        "ci_high": 18.2302025,
+                        "matches_summary": true
+                    },
+                    "avg_nv_recall": {
+                        "estimate": 0.0012063771431839415,
+                        "ci_low": 0.0005275844263804338,
+                        "ci_high": 0.0022904084690565235,
+                        "matches_summary": true
+                    }
+                },
+                "propensity": {
+                    "avg_nv_recall": {
+                        "estimate": 0.12391843267544175,
+                        "ci_low": 0.054011434995293074,
+                        "ci_high": 0.2291932248701787,
+                        "skipped": 0
+                    },
+                    "generations_full_matches_ratio": {
+                        "estimate": 0.17142857142857143,
+                        "ci_low": 0.022714646464646476,
+                        "ci_high": 0.45461038961038874,
+                        "skipped": 0
+                    }
+                }
+            },
+            "unconditional": {
+                "setting": "unconditional",
+                "resampled_unit": "generation",
+                "units": 1000,
+                "generations": 1000,
+                "metrics": {
+                    "generations_full_matches_ratio": {
+                        "estimate": 0.0,
+                        "ci_low": 0.0,
+                        "ci_high": 0.0,
+                        "matches_summary": true,
+                        "zero_matches_upper_bound": 0.003
+                    },
+                    "average_longest_span_length": {
+                        "estimate": 53.531,
+                        "ci_low": 51.08795,
+                        "ci_high": 56.074025,
+                        "matches_summary": true
+                    },
+                    "avg_nv_recall": {
+                        "estimate": 0.02178684783151989,
+                        "ci_low": 0.017439325290431136,
+                        "ci_high": 0.02688249915369362,
+                        "matches_summary": true
+                    }
+                },
+                "propensity": {
+                    "avg_nv_recall": {
+                        "estimate": 0.7186649715844335,
+                        "ci_low": 0.6305260624608002,
+                        "ci_high": 0.7982730541421819,
+                        "skipped": 0
+                    },
+                    "generations_full_matches_ratio": {
+                        "estimate": 0.0,
+                        "ci_low": 0.0,
+                        "ci_high": 0.0,
+                        "skipped": 0
+                    }
+                }
+            },
+            "minimal_cue": {
+                "setting": "minimal_cue",
+                "resampled_unit": "generation",
+                "units": 1000,
+                "generations": 1000,
+                "metrics": {
+                    "generations_full_matches_ratio": {
+                        "estimate": 0.002,
+                        "ci_low": 0.0,
+                        "ci_high": 0.005,
+                        "matches_summary": true
+                    },
+                    "average_longest_span_length": {
+                        "estimate": 26.523,
+                        "ci_low": 24.465975,
+                        "ci_high": 28.677025,
+                        "matches_summary": true
+                    },
+                    "avg_nv_recall": {
+                        "estimate": 0.012431734758828852,
+                        "ci_low": 0.00864156183859611,
+                        "ci_high": 0.016579400353331324,
+                        "matches_summary": true
+                    }
+                },
+                "propensity": {
+                    "avg_nv_recall": {
+                        "estimate": 0.5930998722335699,
+                        "ci_low": 0.4696192709319749,
+                        "ci_high": 0.7049672608465396,
+                        "skipped": 0
+                    },
+                    "generations_full_matches_ratio": {
+                        "estimate": 0.40816326530612246,
+                        "ci_low": 0.0,
+                        "ci_high": 0.7547169811320755,
+                        "skipped": 0
+                    }
+                }
+            }
+        }
+    }
+}

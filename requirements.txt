@@ -8,3 +8,4 @@ matplotlib
 accelerate
 PyStemmer
 tqdm
+wordfreq

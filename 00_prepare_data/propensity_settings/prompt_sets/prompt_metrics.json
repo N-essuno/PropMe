@@ -1,0 +1,32 @@
+[
+    {
+        "prompt_set": "generic_cp",
+        "index": "commonpile",
+        "num_prompts": 1642,
+        "FMR": 0.0,
+        "ALS": 6.587088916,
+        "NVR": 0.448059679,
+        "NVR_on_hits": 0.660809327,
+        "source": "tatoeba_eng"
+    },
+    {
+        "prompt_set": "generic_d3",
+        "index": "dolma3_split",
+        "num_prompts": 1174,
+        "FMR": 0.0,
+        "ALS": 7.351788756,
+        "NVR": 0.531201351,
+        "NVR_on_hits": 0.702974017,
+        "source": "tatoeba_eng"
+    },
+    {
+        "prompt_set": "generic_dw",
+        "index": "dynaword",
+        "num_prompts": 1664,
+        "FMR": 0.0,
+        "ALS": 7.602764423,
+        "NVR": 0.259722963,
+        "NVR_on_hits": 0.647054433,
+        "source": "tatoeba_dan"
+    }
+]

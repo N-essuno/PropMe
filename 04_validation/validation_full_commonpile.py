@@ -8,6 +8,7 @@ import random
 import statistics
 import sys
 import time
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
@@ -17,11 +18,13 @@ from tqdm import tqdm
 from transformers import AutoTokenizer
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+# Root of the large data (indexes/, raw/), outside the repository by default.
+INDEXES_ROOT = Path(os.environ.get("PROPME_DATA_ROOT", REPO_ROOT / "propme_data")) / "indexes"
 VALIDATION_OUTPUT_DIR = REPO_ROOT / "04_validation" / "output"
 if str(REPO_ROOT) not in sys.path:
 	sys.path.insert(0, str(REPO_ROOT))
 
-from memorization_experiment.sample_docs import parse_metadata
+from memorization_experiment.extract_prefixes.sample_docs import parse_metadata
 
 simple_trace = importlib.import_module("03_tracing.simple_trace")
 trace_generation = simple_trace.trace_generation
@@ -392,10 +395,22 @@ def validate_one_result(
 		and target_doc_retrieved == 0
 		and partial_span_exact_query_match == 1
 	)
+	# Duplicated corpora: the query text can occur in more documents than
+	# --docs-per-span, so the source copy may not be among those retrieved.
+	# Accept the query if every retrieved document contains it exactly.
+	retrieved_docs = [doc for span in final_spans for doc in span.get("docs", [])]
+	all_retrieved_docs_contain_query = int(
+		bool(retrieved_docs)
+		and all(sample.query_text in doc.get("text", "") for doc in retrieved_docs)
+	)
+	query_rescued_by_all_docs_exact = int(
+		target_doc_retrieved == 0 and all_retrieved_docs_contain_query == 1
+	)
+	rescued = partial_query_rescued_by_span_match == 1 or query_rescued_by_all_docs_exact == 1
 	failed_checks: list[str] = []
-	if target_doc_retrieved == 0 and partial_query_rescued_by_span_match == 0:
+	if target_doc_retrieved == 0 and not rescued:
 		failed_checks.append("target_doc_not_retrieved")
-	if is_exact_text_query and exact_text_match == 0 and partial_query_rescued_by_span_match == 0:
+	if is_exact_text_query and exact_text_match == 0 and not rescued:
 		failed_checks.append("exact_text_not_matched")
 	passed = int(not failed_checks)
 
@@ -415,6 +430,8 @@ def validate_one_result(
 		"exact_text_match": exact_text_match,
 		"partial_span_exact_query_match": partial_span_exact_query_match,
 		"partial_query_rescued_by_span_match": partial_query_rescued_by_span_match,
+		"all_retrieved_docs_contain_query": all_retrieved_docs_contain_query,
+		"query_rescued_by_all_docs_exact": query_rescued_by_all_docs_exact,
 		"failed_checks": failed_checks,
 		"passed": passed,
 	}
@@ -441,6 +458,9 @@ def summarize_validation(rows: list[dict[str, Any]]) -> dict[str, Any]:
 		"failed_examples": sum(1 for row in rows if row["passed"] == 0),
 		"partial_query_doc_id_not_retrieved_but_span_exact_match_count": sum(
 			1 for row in rows if row.get("partial_query_rescued_by_span_match") == 1
+		),
+		"doc_id_not_retrieved_but_all_docs_contain_query_count": sum(
+			1 for row in rows if row.get("query_rescued_by_all_docs_exact") == 1
 		),
 	}
 
@@ -635,19 +655,26 @@ def write_json(payload: dict[str, Any], output_path: str) -> None:
 		json.dump(payload, f, indent=2, ensure_ascii=False)
 
 
-def build_arg_parser() -> argparse.ArgumentParser:
+def build_arg_parser(
+	*,
+	corpus_name: str = "CommonPile",
+	default_index_dir: str = str(INDEXES_ROOT / "commonpile_index" / "common_pile_train_index"),
+	default_unigram_probs_path: str = str(REPO_ROOT / "02_unigram_probs" / "unigram_probs_common_pile_train.json"),
+	output_suffix: str = "commonpile",
+) -> argparse.ArgumentParser:
+	"""Argument parser; the keyword arguments let other corpora reuse this validator."""
 	parser = argparse.ArgumentParser(
-		description="Sample CommonPile index documents and validate SimpleTrace retrieval."
+		description=f"Sample {corpus_name} index documents and validate SimpleTrace retrieval."
 	)
 	parser.add_argument(
 		"--index-dir",
-		default="/work/olmotrace/common_pile_train/indexes/common_pile_train_index",
-		help="Path to the CommonPile InfiniGram index directory.",
+		default=default_index_dir,
+		help=f"Path to the {corpus_name} InfiniGram index directory.",
 	)
 	parser.add_argument(
 		"--unigram-probs-path",
-		default=str(REPO_ROOT / "02_unigram_probs" / "unigram_probs_common_pile_train.json"),
-		help="Path to CommonPile unigram probabilities JSON.",
+		default=default_unigram_probs_path,
+		help=f"Path to {corpus_name} unigram probabilities JSON.",
 	)
 	parser.add_argument(
 		"--num-samples",
@@ -696,6 +723,24 @@ def build_arg_parser() -> argparse.ArgumentParser:
 		include_partials=True,
 	)
 	parser.add_argument(
+		"--max-page-table-gb",
+		type=float,
+		default=simple_trace.DEFAULT_MAX_PAGE_TABLE_GB,
+		help=(
+			"Reopen the index once this process's page tables exceed this many GB "
+			"(checked after each index call). Bounds memory on huge indexes; does not change results."
+		),
+	)
+	parser.add_argument(
+		"--find-threads",
+		type=int,
+		default=4,
+		help=(
+			"Threads running the index queries of one query concurrently "
+			"(as in simple_trace.py). Does not change results."
+		),
+	)
+	parser.add_argument(
 		"--docs-per-span",
 		type=int,
 		default=10,
@@ -720,41 +765,45 @@ def build_arg_parser() -> argparse.ArgumentParser:
 	)
 	parser.add_argument(
 		"--sample-output",
-		default=str(VALIDATION_OUTPUT_DIR / "validation_full_samples_commonpile.jsonl"),
+		default=str(VALIDATION_OUTPUT_DIR / f"validation_full_samples_{output_suffix}.jsonl"),
 		help="JSONL output path for sampled source queries.",
 	)
 	parser.add_argument(
 		"--trace-output",
-		default=str(VALIDATION_OUTPUT_DIR / "validation_full_traces_commonpile.jsonl"),
+		default=str(VALIDATION_OUTPUT_DIR / f"validation_full_traces_{output_suffix}.jsonl"),
 		help="JSONL output path for raw SimpleTrace results.",
 	)
 	parser.add_argument(
 		"--per-query-output",
-		default=str(VALIDATION_OUTPUT_DIR / "validation_full_per_query_commonpile.jsonl"),
+		default=str(VALIDATION_OUTPUT_DIR / f"validation_full_per_query_{output_suffix}.jsonl"),
 		help="JSONL output path for per-query validation metrics.",
 	)
 	parser.add_argument(
 		"--summary-output",
-		default=str(VALIDATION_OUTPUT_DIR / "validation_full_summary_commonpile.json"),
+		default=str(VALIDATION_OUTPUT_DIR / f"validation_full_summary_{output_suffix}.json"),
 		help="JSON output path for aggregate validation metrics.",
 	)
 	parser.add_argument(
 		"--failed-log-output",
 		"--missing-log-output",
 		dest="failed_log_output",
-		default=str(VALIDATION_OUTPUT_DIR / "validation_full_failed_examples_commonpile.txt"),
+		default=str(VALIDATION_OUTPUT_DIR / f"validation_full_failed_examples_{output_suffix}.txt"),
 		help="Text log path for SimpleTrace-style details for validation examples that failed.",
 	)
 	return parser
 
 
-def main() -> None:
-	args = build_arg_parser().parse_args()
+def main(parser: argparse.ArgumentParser | None = None) -> None:
+	args = (parser or build_arg_parser()).parse_args()
 
 	if args.num_samples < 1:
 		raise ValueError("--num-samples must be >= 1")
 	if args.docs_per_span < 1:
 		raise ValueError("--docs-per-span must be >= 1")
+	if args.find_threads < 1:
+		raise ValueError("--find-threads must be >= 1")
+	if args.max_page_table_gb <= 0:
+		raise ValueError("--max-page-table-gb must be > 0")
 	if args.query_token_len is not None and args.query_token_len < 1:
 		raise ValueError("--query-token-len must be >= 1 or None")
 	if args.partial_query_tokens < 1:
@@ -773,10 +822,8 @@ def main() -> None:
 		add_bos_token=False,
 		add_eos_token=False,
 	)
-	engine = InfiniGramEngine(
-		index_dir=args.index_dir,
-		eos_token_id=tokenizer.eos_token_id,
-		precompute_unigram_logprobs=False,
+	engine = simple_trace.PageTableBoundedEngine(
+		args.index_dir, tokenizer.eos_token_id, args.max_page_table_gb * 1e9
 	)
 	unigram_probs = _load_unigram_probs(args.unigram_probs_path)
 
@@ -796,6 +843,7 @@ def main() -> None:
 
 	trace_rows: list[tuple[QuerySample, dict[str, Any], float]] = []
 	validation_rows: list[dict[str, Any]] = []
+	executor = ThreadPoolExecutor(args.find_threads) if args.find_threads > 1 else None
 	for sample in tqdm(samples, desc="Validating", unit="query"):
 		start_time = time.perf_counter()
 		result = trace_generation(
@@ -804,6 +852,7 @@ def main() -> None:
 			enc=tokenizer,
 			unigram_probs=unigram_probs,
 			docs_per_span=args.docs_per_span,
+			executor=executor,
 			match_mode="mixed"
 		)
 		runtime_seconds = time.perf_counter() - start_time
@@ -835,6 +884,8 @@ def main() -> None:
 		"include_full": args.include_full,
 		"include_partials": args.include_partials,
 		"docs_per_span": args.docs_per_span,
+		"find_threads": args.find_threads,
+		"max_page_table_gb": args.max_page_table_gb,
 		"tokenizer_model": args.tokenizer_model,
 		"seed": args.seed,
 	}
@@ -866,6 +917,11 @@ def main() -> None:
 	print(
 		f"With {args.docs_per_span} docs-per-span, {rescued_partial_queries} partial query "
 		"doc ids were not retrieved but the spans matched exactly the full text of the query."
+	)
+	rescued_all_docs = summary.get("doc_id_not_retrieved_but_all_docs_contain_query_count", 0)
+	print(
+		f"{rescued_all_docs} queries passed without their source doc id because every "
+		"retrieved document contains the query text exactly."
 	)
 
 

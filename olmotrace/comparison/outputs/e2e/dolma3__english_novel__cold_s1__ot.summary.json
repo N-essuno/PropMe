@@ -1,0 +1,98 @@
+{
+    "total_generations": 33,
+    "generations_with_spans": 33,
+    "generations_with_prompt": 0,
+    "avg_response_tokens": 32.72727272727273,
+    "total_maximal_spans": 377,
+    "total_filtered_spans": 72,
+    "total_spans": 46,
+    "filtered_span_length_mean": 9.972222222222221,
+    "filtered_span_length_median": 9.0,
+    "min_span_length": 3,
+    "max_span_length": 18,
+    "merged_span_length_mean": 11.869565217391305,
+    "max_merged_span_length": 27,
+    "spans_length_counts_distribution": {
+        "(1, 3)": 1,
+        "(4, 6)": 3,
+        "(7, 10)": 44,
+        "(11, 20)": 24,
+        "(21, 30)": 0,
+        "(31, 40)": 0,
+        "(41, 50)": 0,
+        "(51, 100)": 0,
+        "(101, inf)": 0
+    },
+    "spans_length_distribution": {
+        "(1, 3)": 0.013888888888888888,
+        "(4, 6)": 0.041666666666666664,
+        "(7, 10)": 0.6111111111111112,
+        "(11, 20)": 0.3333333333333333,
+        "(21, 30)": 0.0,
+        "(31, 40)": 0.0,
+        "(41, 50)": 0.0,
+        "(51, 100)": 0.0,
+        "(101, inf)": 0.0
+    },
+    "spans_length_counts_exact": {
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 6,
+        "8": 14,
+        "9": 13,
+        "10": 11,
+        "11": 8,
+        "12": 3,
+        "13": 2,
+        "14": 4,
+        "15": 2,
+        "16": 3,
+        "17": 1,
+        "18": 1
+    },
+    "filtered_spans_count_le_docs_per_span_ratio": 0.6111111111111112,
+    "total_docs": 475,
+    "unique_total_docs": 475,
+    "avg_docs_per_generation": 14.393939393939394,
+    "doc_relevance_counts": {
+        "high": 3,
+        "medium": 43,
+        "low": 429
+    },
+    "doc_relevance_distribution": {
+        "high": 0.00631578947368421,
+        "medium": 0.09052631578947369,
+        "low": 0.9031578947368422
+    },
+    "span_relevance_counts": {
+        "high": 3,
+        "medium": 9,
+        "low": 34
+    },
+    "span_relevance_distribution": {
+        "high": 0.06521739130434782,
+        "medium": 0.1956521739130435,
+        "low": 0.7391304347826086
+    },
+    "avg_doc_relevance_score": 0.26730275004568316,
+    "avg_max_bm25_per_response_char": 0.05707253993753266,
+    "max_max_bm25_per_response_char": 0.17344209393536378,
+    "avg_latency_steps_1_3_seconds": 0.6145247323156307,
+    "avg_latency_seconds": 0.6168738290893309,
+    "median_latency_seconds": 0.6514236368238926,
+    "config": {
+        "docs_per_span": 10,
+        "span_fraction": 0.05,
+        "snippet_context_tokens": 80,
+        "document_context_tokens": 500,
+        "seed": 0,
+        "bm25_backend": "builtin_rank_bm25_port",
+        "bm25_normalization_coef": 0.18,
+        "relevance_thresholds": {
+            "high": 0.7,
+            "medium": 0.5
+        }
+    }
+}

@@ -187,11 +187,12 @@ def load_jsonl_dataset(path: str, text_field: str = 'text', limit: int = None) -
     result = [item[text_field] for item in data if text_field in item]
     return result[:limit] if limit is not None else result
 
-def load_generation_dataset(path: str, text_field: str = 'completion', limit: int = None) -> list[str]:
+def load_generation_records(path: str, text_field: str = 'completion', limit: int = None) -> list[dict]:
+    """Every dict in a generation JSON file that has a string `text_field`, in file order."""
     with open(path, 'r') as f:
         data = json.load(f)
 
-    result: list[str] = []
+    result: list[dict] = []
 
     def _collect(node) -> None:
         if limit is not None and len(result) >= limit:
@@ -200,7 +201,7 @@ def load_generation_dataset(path: str, text_field: str = 'completion', limit: in
         if isinstance(node, dict):
             value = node.get(text_field)
             if isinstance(value, str):
-                result.append(value)
+                result.append(node)
                 if limit is not None and len(result) >= limit:
                     return
             for child in node.values():
@@ -217,3 +218,7 @@ def load_generation_dataset(path: str, text_field: str = 'completion', limit: in
         raise ValueError(f"No '{text_field}' fields found in generation dataset: {path}")
 
     return result
+
+
+def load_generation_dataset(path: str, text_field: str = 'completion', limit: int = None) -> list[str]:
+    return [record[text_field] for record in load_generation_records(path, text_field, limit)]

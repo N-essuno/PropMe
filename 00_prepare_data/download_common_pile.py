@@ -1,9 +1,12 @@
+import os
 from pathlib import Path
 from huggingface_hub import hf_hub_download, list_repo_files
 from tqdm import tqdm
 
 repo_id = "common-pile/comma_v0.1_training_dataset"
-out_dir = Path("/work/olmotrace/common_pile_train/compressed")
+# Root of the large data (indexes/, raw/), outside the repository by default.
+data_root = Path(os.environ.get("PROPME_DATA_ROOT", Path(__file__).resolve().parents[1] / "propme_data"))
+out_dir = data_root / "raw" / "common_pile_train" / "compressed"
 out_dir.mkdir(parents=True, exist_ok=True)
 
 all_files = list_repo_files(

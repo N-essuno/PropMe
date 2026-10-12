@@ -3,35 +3,55 @@
 from __future__ import annotations
 
 import argparse
+import os
 import shlex
 import subprocess
 import sys
 from dataclasses import dataclass
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent / "generation"))
+from generation_runs import (  # noqa: E402
+    SETTINGS,
+    Corpus,
+    Model,
+    generation_path,
+    results_path,
+    run_name,
+    runs,
+    setting_tag,
+    summary_path,
+)
+
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SIMPLE_TRACE_PATH = REPO_ROOT / "03_tracing" / "simple_trace.py"
+# Root of the large data (indexes/, raw/), outside the repository by default.
+INDEXES_ROOT = str(Path(os.environ.get("PROPME_DATA_ROOT", REPO_ROOT / "propme_data")) / "indexes")
+# Indexes of the DFM9 category experiments.
+DFM9_INDEXES_ROOT = str(Path(os.environ.get("PROPME_DFM9_ROOT", REPO_ROOT / "dfm9_data")) / "indexes")
 
 DEFAULT_LENGTH_BUCKETS = "1-3,4-6,7-10,11-20,21-49,50-75,76-99,100-150,151-inf"
 DEFAULT_K_EIDETIC_VALUES = "1,5,10"
 
 INDEX_DEFAULTS = {
-    "commonpile": "/work/olmotrace/common_pile_train/indexes/common_pile_train_index",
-    "dynaword": "00_data/dynaword_index",
-    "dfm9-a": "/work/olmotrace/mimir_propme/indexes/A",
-    "dfm9-b": "/work/olmotrace/mimir_propme/indexes/B",
-    "dfm9-c": "/work/olmotrace/mimir_propme/indexes/C",
-    "dfm9-d": "/work/olmotrace/mimir_propme/indexes/D",
+    "commonpile": f"{INDEXES_ROOT}/commonpile_index/common_pile_train_index",
+    "dynaword": f"{INDEXES_ROOT}/dynaword_index",
+    "dolma3": f"{INDEXES_ROOT}/dolma3_index_link",
+    "dfm9-a": f"{DFM9_INDEXES_ROOT}/A",
+    "dfm9-b": f"{DFM9_INDEXES_ROOT}/B",
+    "dfm9-c": f"{DFM9_INDEXES_ROOT}/C",
+    "dfm9-d": f"{DFM9_INDEXES_ROOT}/D",
     "dfm9-ab": (
-        "/work/olmotrace/mimir_propme/indexes/A",
-        "/work/olmotrace/mimir_propme/indexes/B",
+        f"{DFM9_INDEXES_ROOT}/A",
+        f"{DFM9_INDEXES_ROOT}/B",
     ),
 }
 
 UNIGRAM_DEFAULTS = {
     "commonpile": "02_unigram_probs/unigram_probs_common_pile_train.json",
     "dynaword": "02_unigram_probs/unigram_probs_dynaword.json",
+    "dolma3": "02_unigram_probs/unigram_probs_dolma3_link.json",
     "dfm9-a": "02_unigram_probs/unigram_probs_dfm9_A.json",
     "dfm9-b": "02_unigram_probs/unigram_probs_dfm9_B.json",
     "dfm9-c": "02_unigram_probs/unigram_probs_dfm9_C.json",
@@ -56,9 +76,12 @@ class Experiment:
     tags: tuple[str, ...]
     length_buckets: str = DEFAULT_LENGTH_BUCKETS
     k_eidetic_values: str = DEFAULT_K_EIDETIC_VALUES
+    # Forwarded to simple_trace.py when set; otherwise its defaults apply.
+    find_threads: int | None = None
+    max_page_table_gb: float | None = None
 
 
-EXPERIMENTS = (
+DFM9_EXPERIMENTS = (
     Experiment(
         name="dfm9-generations-generic-en-a",
         dataset="memorization_experiment/data/dfm9/generic/dfm9_generic_en_generations.json",
@@ -227,551 +250,63 @@ EXPERIMENTS = (
         match_mode="mixed",
         tags=("dfm9", "dfm9-d", "generations", "prefix", "prefix-50"),
     ),
-    Experiment(
-        name="commonpile-dfm-generations-generic",
-        dataset="memorization_experiment/data/commonpile_dfm/generic/generic_generations.json",
+
+)
+
+
+# simple_trace.py --max-page-table-gb per corpus index (per worker; 32 workers).
+MAX_PAGE_TABLE_GB = {"dynaword": 10, "commonpile": 10, "dolma3": 4}
+
+
+def _generation_experiment(model: Model, corpus: Corpus, setting: str) -> Experiment:
+    """Trace one setting of a generation run (see generation_runs.py) against the run's corpus index."""
+    return Experiment(
+        name=f"{run_name(model, corpus)}-{setting_tag(setting)}",
+        dataset=generation_path(model, corpus, setting),
         dataset_flag="--is-generation-json",
-        index_key="commonpile",
-        unigram_key="commonpile",
-        num_workers=4,
+        index_key=corpus.name,
+        unigram_key=corpus.name,
+        num_workers=32,
         docs_per_span=10,
-        results_output="memorization_experiment/data/commonpile_dfm/generic/st_cp_generic_results.json",
-        summary_output="memorization_experiment/data/commonpile_dfm/generic/st_cp_generic_summary.json",
+        results_output=results_path(model, corpus, setting),
+        summary_output=summary_path(model, corpus, setting),
         n_token_span_ratio=50,
         match_mode="mixed",
-        tags=("commonpile-dfm", "generations", "generic"),
-    ),
-    Experiment(
-        name="commonpile-dfm-generations-specific",
-        dataset="memorization_experiment/data/commonpile_dfm/specific/specific_generations.json",
-        dataset_flag="--is-generation-json",
-        index_key="commonpile",
-        unigram_key="commonpile",
-        num_workers=4,
-        docs_per_span=10,
-        results_output="memorization_experiment/data/commonpile_dfm/specific/st_cp_specific_results.json",
-        summary_output="memorization_experiment/data/commonpile_dfm/specific/st_cp_specific_summary.json",
-        n_token_span_ratio=70,
-        match_mode="mixed",
-        tags=("commonpile-dfm", "generations", "specific"),
-    ),
-    Experiment(
-        name="commonpile-dfm-generations-prefix",
-        dataset="memorization_experiment/data/commonpile_dfm/prefix/prefix_generations.json",
-        dataset_flag="--is-generation-json",
-        index_key="commonpile",
-        unigram_key="commonpile",
-        num_workers=4,
-        docs_per_span=10,
-        results_output="memorization_experiment/data/commonpile_dfm/prefix/st_cp_prefix_results.json",
-        summary_output="memorization_experiment/data/commonpile_dfm/prefix/st_cp_prefix_summary.json",
-        n_token_span_ratio=70,
-        match_mode="mixed",
-        tags=("commonpile-dfm", "generations", "prefix"),
-    ),
-    Experiment(
-        name="commonpile-dfm-stage1-generations-generic",
-        dataset="memorization_experiment/data/commonpile_dfm_stage1/generic/generic_generations.json",
-        dataset_flag="--is-generation-json",
-        index_key="commonpile",
-        unigram_key="commonpile",
-        num_workers=4,
-        docs_per_span=10,
-        results_output="memorization_experiment/data/commonpile_dfm_stage1/generic/st_cp_generic_results.json",
-        summary_output="memorization_experiment/data/commonpile_dfm_stage1/generic/st_cp_generic_summary.json",
-        n_token_span_ratio=70,
-        match_mode="mixed",
-        tags=("commonpile-dfm-stage1", "generations", "generic"),
-    ),
-    Experiment(
-        name="commonpile-dfm-stage1-generations-specific",
-        dataset="memorization_experiment/data/commonpile_dfm_stage1/specific/specific_generations.json",
-        dataset_flag="--is-generation-json",
-        index_key="commonpile",
-        unigram_key="commonpile",
-        num_workers=4,
-        docs_per_span=10,
-        results_output="memorization_experiment/data/commonpile_dfm_stage1/specific/st_cp_specific_results.json",
-        summary_output="memorization_experiment/data/commonpile_dfm_stage1/specific/st_cp_specific_summary.json",
-        n_token_span_ratio=70,
-        match_mode="mixed",
-        tags=("commonpile-dfm-stage1", "generations", "specific"),
-    ),
-    Experiment(
-        name="commonpile-dfm-stage1-generations-prefix",
-        dataset="memorization_experiment/data/commonpile_dfm_stage1/prefix/prefix_generations.json",
-        dataset_flag="--is-generation-json",
-        index_key="commonpile",
-        unigram_key="commonpile",
-        num_workers=4,
-        docs_per_span=10,
-        results_output="memorization_experiment/data/commonpile_dfm_stage1/prefix/st_cp_prefix_results.json",
-        summary_output="memorization_experiment/data/commonpile_dfm_stage1/prefix/st_cp_prefix_summary.json",
-        n_token_span_ratio=70,
-        match_mode="mixed",
-        tags=("commonpile-dfm-stage1", "generations", "prefix"),
-    ),
-    Experiment(
-        name="commonpile-dfm-stage2-generations-generic",
-        dataset="memorization_experiment/data/commonpile_dfm_stage2/generic/generic_generations.json",
-        dataset_flag="--is-generation-json",
-        index_key="commonpile",
-        unigram_key="commonpile",
-        num_workers=4,
-        docs_per_span=10,
-        results_output="memorization_experiment/data/commonpile_dfm_stage2/generic/st_cp_generic_results.json",
-        summary_output="memorization_experiment/data/commonpile_dfm_stage2/generic/st_cp_generic_summary.json",
-        n_token_span_ratio=70,
-        match_mode="mixed",
-        tags=("commonpile-dfm-stage2", "generations", "generic"),
-    ),
-    Experiment(
-        name="commonpile-dfm-stage2-generations-specific",
-        dataset="memorization_experiment/data/commonpile_dfm_stage2/specific/specific_generations.json",
-        dataset_flag="--is-generation-json",
-        index_key="commonpile",
-        unigram_key="commonpile",
-        num_workers=4,
-        docs_per_span=10,
-        results_output="memorization_experiment/data/commonpile_dfm_stage2/specific/st_cp_specific_results.json",
-        summary_output="memorization_experiment/data/commonpile_dfm_stage2/specific/st_cp_specific_summary.json",
-        n_token_span_ratio=70,
-        match_mode="mixed",
-        tags=("commonpile-dfm-stage2", "generations", "specific"),
-    ),
-    Experiment(
-        name="commonpile-dfm-stage2-generations-prefix",
-        dataset="memorization_experiment/data/commonpile_dfm_stage2/prefix/prefix_generations.json",
-        dataset_flag="--is-generation-json",
-        index_key="commonpile",
-        unigram_key="commonpile",
-        num_workers=4,
-        docs_per_span=10,
-        results_output="memorization_experiment/data/commonpile_dfm_stage2/prefix/st_cp_prefix_results.json",
-        summary_output="memorization_experiment/data/commonpile_dfm_stage2/prefix/st_cp_prefix_summary.json",
-        n_token_span_ratio=70,
-        match_mode="mixed",
-        tags=("commonpile-dfm-stage2", "generations", "prefix"),
-    ),
-    Experiment(
-        name="commonpile-generations-generic",
-        dataset="memorization_experiment/data/commonpile/generic/generic_generations.json",
-        dataset_flag="--is-generation-json",
-        index_key="commonpile",
-        unigram_key="commonpile",
-        num_workers=4,
-        docs_per_span=10,
-        results_output="memorization_experiment/data/commonpile/generic/st_cp_generic_results.json",
-        summary_output="memorization_experiment/data/commonpile/generic/st_cp_generic_summary.json",
-        n_token_span_ratio=70,
-        match_mode="mixed",
-        tags=("commonpile", "generations", "generic"),
-    ),
-    Experiment(
-        name="commonpile-generations-specific",
-        dataset="memorization_experiment/data/commonpile/specific/specific_generations.json",
-        dataset_flag="--is-generation-json",
-        index_key="commonpile",
-        unigram_key="commonpile",
-        num_workers=4,
-        docs_per_span=10,
-        results_output="memorization_experiment/data/commonpile/specific/st_cp_specific_results.json",
-        summary_output="memorization_experiment/data/commonpile/specific/st_cp_specific_summary.json",
-        n_token_span_ratio=70,
-        match_mode="mixed",
-        tags=("commonpile", "generations", "specific"),
-    ),
-    Experiment(
-        name="commonpile-generations-prefix",
-        dataset="memorization_experiment/data/commonpile/prefix/prefix_generations.json",
-        dataset_flag="--is-generation-json",
-        index_key="commonpile",
-        unigram_key="commonpile",
-        num_workers=4,
-        docs_per_span=10,
-        results_output="memorization_experiment/data/commonpile/prefix/st_cp_prefix_results.json",
-        summary_output="memorization_experiment/data/commonpile/prefix/st_cp_prefix_summary.json",
-        n_token_span_ratio=70,
-        match_mode="mixed",
-        tags=("commonpile", "generations", "prefix"),
-    ),
-    Experiment(
-        name="dynaword-generations-generic",
-        dataset="memorization_experiment/data/dynaword/generic/generic_generations.json",
-        dataset_flag="--is-generation-json",
-        index_key="dynaword",
-        unigram_key="dynaword",
-        num_workers=10,
-        docs_per_span=10,
-        results_output="memorization_experiment/data/dynaword/generic/st_dyna_generic_results.json",
-        summary_output="memorization_experiment/data/dynaword/generic/st_dyna_generic_summary.json",
-        n_token_span_ratio=119,
-        match_mode=None,
-        tags=("dynaword", "generations", "generic"),
-    ),
-    Experiment(
-        name="dynaword-generations-specific",
-        dataset="memorization_experiment/data/dynaword/specific/specific_generations.json",
-        dataset_flag="--is-generation-json",
-        index_key="dynaword",
-        unigram_key="dynaword",
-        num_workers=10,
-        docs_per_span=10,
-        results_output="memorization_experiment/data/dynaword/specific/st_dyna_specific_results.json",
-        summary_output="memorization_experiment/data/dynaword/specific/st_dyna_specific_summary.json",
-        n_token_span_ratio=119,
-        match_mode=None,
-        tags=("dynaword", "generations", "specific"),
-    ),
-    Experiment(
-        name="dynaword-generations-prefix",
-        dataset="memorization_experiment/data/dynaword/prefix/dynaword_prefix_generations.json",
-        dataset_flag="--is-generation-json",
-        index_key="dynaword",
-        unigram_key="dynaword",
-        num_workers=10,
-        docs_per_span=10,
-        results_output="memorization_experiment/data/dynaword/prefix/st_dyna_prefix_results.json",
-        summary_output="memorization_experiment/data/dynaword/prefix/st_dyna_prefix_summary.json",
-        n_token_span_ratio=119,
-        match_mode=None,
-        tags=("dynaword", "generations", "prefix"),
-    ),
-    Experiment(
-        name="dynaword-stage1-generations-generic",
-        dataset="memorization_experiment/data/dynaword_stage1/generic/generic_generations.json",
-        dataset_flag="--is-generation-json",
-        index_key="dynaword",
-        unigram_key="dynaword",
-        num_workers=10,
-        docs_per_span=10,
-        results_output="memorization_experiment/data/dynaword_stage1/generic/st_dyna_generic_results.json",
-        summary_output="memorization_experiment/data/dynaword_stage1/generic/st_dyna_generic_summary.json",
-        n_token_span_ratio=119,
-        match_mode=None,
-        tags=("dynaword-stage1", "generations", "generic"),
-    ),
-    Experiment(
-        name="dynaword-stage1-generations-specific",
-        dataset="memorization_experiment/data/dynaword_stage1/specific/specific_generations.json",
-        dataset_flag="--is-generation-json",
-        index_key="dynaword",
-        unigram_key="dynaword",
-        num_workers=10,
-        docs_per_span=10,
-        results_output="memorization_experiment/data/dynaword_stage1/specific/st_dyna_specific_results.json",
-        summary_output="memorization_experiment/data/dynaword_stage1/specific/st_dyna_specific_summary.json",
-        n_token_span_ratio=119,
-        match_mode=None,
-        tags=("dynaword-stage1", "generations", "specific"),
-    ),
-    Experiment(
-        name="dynaword-stage1-generations-prefix",
-        dataset="memorization_experiment/data/dynaword_stage1/prefix/prefix_generations.json",
-        dataset_flag="--is-generation-json",
-        index_key="dynaword",
-        unigram_key="dynaword",
-        num_workers=10,
-        docs_per_span=10,
-        results_output="memorization_experiment/data/dynaword_stage1/prefix/st_dyna_prefix_results.json",
-        summary_output="memorization_experiment/data/dynaword_stage1/prefix/st_dyna_prefix_summary.json",
-        n_token_span_ratio=119,
-        match_mode=None,
-        tags=("dynaword-stage1", "generations", "prefix"),
-    ),
-    Experiment(
-        name="dynaword-stage2-generations-generic",
-        dataset="memorization_experiment/data/dynaword_stage2/generic/generic_generations.json",
-        dataset_flag="--is-generation-json",
-        index_key="dynaword",
-        unigram_key="dynaword",
-        num_workers=10,
-        docs_per_span=10,
-        results_output="memorization_experiment/data/dynaword_stage2/generic/st_dyna_generic_results.json",
-        summary_output="memorization_experiment/data/dynaword_stage2/generic/st_dyna_generic_summary.json",
-        n_token_span_ratio=119,
-        match_mode=None,
-        tags=("dynaword-stage2", "generations", "generic"),
-    ),
-    Experiment(
-        name="dynaword-stage2-generations-specific",
-        dataset="memorization_experiment/data/dynaword_stage2/specific/specific_generations.json",
-        dataset_flag="--is-generation-json",
-        index_key="dynaword",
-        unigram_key="dynaword",
-        num_workers=10,
-        docs_per_span=10,
-        results_output="memorization_experiment/data/dynaword_stage2/specific/st_dyna_specific_results.json",
-        summary_output="memorization_experiment/data/dynaword_stage2/specific/st_dyna_specific_summary.json",
-        n_token_span_ratio=119,
-        match_mode=None,
-        tags=("dynaword-stage2", "generations", "specific"),
-    ),
-    Experiment(
-        name="dynaword-stage2-generations-prefix",
-        dataset="memorization_experiment/data/dynaword_stage2/prefix/prefix_generations.json",
-        dataset_flag="--is-generation-json",
-        index_key="dynaword",
-        unigram_key="dynaword",
-        num_workers=10,
-        docs_per_span=10,
-        results_output="memorization_experiment/data/dynaword_stage2/prefix/st_dyna_prefix_results.json",
-        summary_output="memorization_experiment/data/dynaword_stage2/prefix/st_dyna_prefix_summary.json",
-        n_token_span_ratio=119,
-        match_mode=None,
-        tags=("dynaword-stage2", "generations", "prefix"),
-    ),
-    Experiment(
-        name="dynaword-prompts-generic",
-        dataset="memorization_experiment/data/dynaword/generic/generic_prompts.jsonl",
-        dataset_flag="--is-jsonl",
-        index_key="dynaword",
-        unigram_key="dynaword",
-        num_workers=10,
-        docs_per_span=10,
-        results_output="memorization_experiment/data/dynaword/generic/st_dyna_prompts_results.json",
-        summary_output="memorization_experiment/data/dynaword/generic/st_dyna_prompts_summary.json",
-        n_token_span_ratio=119,
-        match_mode=None,
-        tags=("dynaword", "prompts", "generic"),
-    ),
-    Experiment(
-        name="dynaword-prompts-specific",
-        dataset="memorization_experiment/data/dynaword/specific/specific_prompts.jsonl",
-        dataset_flag="--is-jsonl",
-        index_key="dynaword",
-        unigram_key="dynaword",
-        num_workers=10,
-        docs_per_span=10,
-        results_output="memorization_experiment/data/dynaword/specific/st_dyna_prompts_results.json",
-        summary_output="memorization_experiment/data/dynaword/specific/st_dyna_prompts_summary.json",
-        n_token_span_ratio=119,
-        match_mode=None,
-        tags=("dynaword", "prompts", "specific"),
-    ),
-    Experiment(
-        name="dynaword-prompts-prefix",
-        dataset="memorization_experiment/data/dynaword/prefix/dynaword_prefix_prompts.jsonl",
-        dataset_flag="--is-jsonl",
-        index_key="dynaword",
-        unigram_key="dynaword",
-        num_workers=10,
-        docs_per_span=10,
-        results_output="memorization_experiment/data/dynaword/prefix/st_dyna_prompts_results.json",
-        summary_output="memorization_experiment/data/dynaword/prefix/st_dyna_prompts_summary.json",
-        n_token_span_ratio=119,
-        match_mode=None,
-        tags=("dynaword", "prompts", "prefix"),
-    ),
-    Experiment(
-        name="dynaword-stage1-prompts-generic",
-        dataset="memorization_experiment/data/dynaword_stage1/generic/generic_prompts.jsonl",
-        dataset_flag="--is-jsonl",
-        index_key="dynaword",
-        unigram_key="dynaword",
-        num_workers=10,
-        docs_per_span=10,
-        results_output="memorization_experiment/data/dynaword_stage1/generic/st_dyna_prompts_results.json",
-        summary_output="memorization_experiment/data/dynaword_stage1/generic/st_dyna_prompts_summary.json",
-        n_token_span_ratio=119,
-        match_mode=None,
-        tags=("dynaword-stage1", "prompts", "generic"),
-    ),
-    Experiment(
-        name="dynaword-stage1-prompts-specific",
-        dataset="memorization_experiment/data/dynaword_stage1/specific/specific_prompts.jsonl",
-        dataset_flag="--is-jsonl",
-        index_key="dynaword",
-        unigram_key="dynaword",
-        num_workers=10,
-        docs_per_span=10,
-        results_output="memorization_experiment/data/dynaword_stage1/specific/st_dyna_prompts_results.json",
-        summary_output="memorization_experiment/data/dynaword_stage1/specific/st_dyna_prompts_summary.json",
-        n_token_span_ratio=119,
-        match_mode=None,
-        tags=("dynaword-stage1", "prompts", "specific"),
-    ),
-    Experiment(
-        name="dynaword-stage1-prompts-prefix",
-        dataset="memorization_experiment/data/dynaword_stage1/prefix/dynaword_prefix_prompts.jsonl",
-        dataset_flag="--is-jsonl",
-        index_key="dynaword",
-        unigram_key="dynaword",
-        num_workers=10,
-        docs_per_span=10,
-        results_output="memorization_experiment/data/dynaword_stage1/prefix/st_dyna_prompts_results.json",
-        summary_output="memorization_experiment/data/dynaword_stage1/prefix/st_dyna_prompts_summary.json",
-        n_token_span_ratio=119,
-        match_mode=None,
-        tags=("dynaword-stage1", "prompts", "prefix"),
-    ),
-    Experiment(
-        name="dynaword-stage2-prompts-generic",
-        dataset="memorization_experiment/data/dynaword_stage2/generic/generic_prompts.jsonl",
-        dataset_flag="--is-jsonl",
-        index_key="dynaword",
-        unigram_key="dynaword",
-        num_workers=10,
-        docs_per_span=10,
-        results_output="memorization_experiment/data/dynaword_stage2/generic/st_dyna_prompts_results.json",
-        summary_output="memorization_experiment/data/dynaword_stage2/generic/st_dyna_prompts_summary.json",
-        n_token_span_ratio=119,
-        match_mode=None,
-        tags=("dynaword-stage2", "prompts", "generic"),
-    ),
-    Experiment(
-        name="dynaword-stage2-prompts-specific",
-        dataset="memorization_experiment/data/dynaword_stage2/specific/specific_prompts.jsonl",
-        dataset_flag="--is-jsonl",
-        index_key="dynaword",
-        unigram_key="dynaword",
-        num_workers=10,
-        docs_per_span=10,
-        results_output="memorization_experiment/data/dynaword_stage2/specific/st_dyna_prompts_results.json",
-        summary_output="memorization_experiment/data/dynaword_stage2/specific/st_dyna_prompts_summary.json",
-        n_token_span_ratio=119,
-        match_mode=None,
-        tags=("dynaword-stage2", "prompts", "specific"),
-    ),
-    Experiment(
-        name="dynaword-stage2-prompts-prefix",
-        dataset="memorization_experiment/data/dynaword_stage2/prefix/dynaword_prefix_prompts.jsonl",
-        dataset_flag="--is-jsonl",
-        index_key="dynaword",
-        unigram_key="dynaword",
-        num_workers=10,
-        docs_per_span=10,
-        results_output="memorization_experiment/data/dynaword_stage2/prefix/st_dyna_prompts_results.json",
-        summary_output="memorization_experiment/data/dynaword_stage2/prefix/st_dyna_prompts_summary.json",
-        n_token_span_ratio=119,
-        match_mode=None,
-        tags=("dynaword-stage2", "prompts", "prefix"),
-    ),
-    Experiment(
-        name="commonpile-prompts-generic",
-        dataset="memorization_experiment/data/commonpile/generic/generic_prompts.jsonl",
-        dataset_flag="--is-jsonl",
-        index_key="commonpile",
-        unigram_key="commonpile",
-        num_workers=4,
-        docs_per_span=10,
-        results_output="memorization_experiment/data/commonpile/generic/st_cp_prompts_results.json",
-        summary_output="memorization_experiment/data/commonpile/generic/st_cp_prompts_summary.json",
-        n_token_span_ratio=119,
-        match_mode="mixed",
-        tags=("commonpile", "prompts", "generic"),
-    ),
-    Experiment(
-        name="commonpile-prompts-specific",
-        dataset="memorization_experiment/data/commonpile/specific/specific_prompts.jsonl",
-        dataset_flag="--is-jsonl",
-        index_key="commonpile",
-        unigram_key="commonpile",
-        num_workers=4,
-        docs_per_span=10,
-        results_output="memorization_experiment/data/commonpile/specific/st_cp_prompts_results.json",
-        summary_output="memorization_experiment/data/commonpile/specific/st_cp_prompts_summary.json",
-        n_token_span_ratio=119,
-        match_mode="mixed",
-        tags=("commonpile", "prompts", "specific"),
-    ),
-    Experiment(
-        name="commonpile-prompts-prefix",
-        dataset="memorization_experiment/data/commonpile/prefix/commonpile_prefix_prompts.jsonl",
-        dataset_flag="--is-jsonl",
-        index_key="commonpile",
-        unigram_key="commonpile",
-        num_workers=1,
-        docs_per_span=10,
-        results_output="memorization_experiment/data/commonpile/prefix/st_cp_prompts_results.json",
-        summary_output="memorization_experiment/data/commonpile/prefix/st_cp_prompts_summary.json",
-        n_token_span_ratio=119,
-        match_mode="mixed",
-        tags=("commonpile", "prompts", "prefix"),
-    ),
+        find_threads=64,
+        max_page_table_gb=MAX_PAGE_TABLE_GB[corpus.name],
+        tags=(
+            model.family,
+            model.key,
+            run_name(model, corpus),
+            corpus.name,
+            "generations",
+            setting_tag(setting),
+        ),
+    )
+
+
+EXPERIMENTS = DFM9_EXPERIMENTS + tuple(
+    _generation_experiment(model, corpus, setting)
+    for model, corpus in runs()
+    for setting in SETTINGS
 )
 
 EXPERIMENTS_BY_NAME = {experiment.name: experiment for experiment in EXPERIMENTS}
 
+# One group per tag: a model family (dfm), model (dfm-main), run (dfm-main-dynaword),
+# corpus (dynaword), setting (minimal-cue), or a DFM9 tag.
 GROUPS = {
     "all": [experiment.name for experiment in EXPERIMENTS],
     "all-generations": [experiment.name for experiment in EXPERIMENTS if "generations" in experiment.tags],
-    "all-prompts": [experiment.name for experiment in EXPERIMENTS if "prompts" in experiment.tags],
-    "dfm9": [experiment.name for experiment in EXPERIMENTS if "dfm9" in experiment.tags],
     "dfm9-generations": [
         experiment.name
         for experiment in EXPERIMENTS
         if "dfm9" in experiment.tags and "generations" in experiment.tags
     ],
-    "commonpile": [experiment.name for experiment in EXPERIMENTS if "commonpile" in experiment.tags],
-    "commonpile-generations": [
-        experiment.name
-        for experiment in EXPERIMENTS
-        if "commonpile" in experiment.tags and "generations" in experiment.tags
-    ],
-    "commonpile-prompts": [
-        experiment.name
-        for experiment in EXPERIMENTS
-        if "commonpile" in experiment.tags and "prompts" in experiment.tags
-    ],
-    "commonpile-dfm": [experiment.name for experiment in EXPERIMENTS if "commonpile-dfm" in experiment.tags],
-    "commonpile-dfm-generations": [
-        experiment.name
-        for experiment in EXPERIMENTS
-        if "commonpile-dfm" in experiment.tags and "generations" in experiment.tags
-    ],
-    "commonpile-dfm-stage1": [
-        experiment.name for experiment in EXPERIMENTS if "commonpile-dfm-stage1" in experiment.tags
-    ],
-    "commonpile-dfm-stage1-generations": [
-        experiment.name
-        for experiment in EXPERIMENTS
-        if "commonpile-dfm-stage1" in experiment.tags and "generations" in experiment.tags
-    ],
-    "commonpile-dfm-stage2": [
-        experiment.name for experiment in EXPERIMENTS if "commonpile-dfm-stage2" in experiment.tags
-    ],
-    "commonpile-dfm-stage2-generations": [
-        experiment.name
-        for experiment in EXPERIMENTS
-        if "commonpile-dfm-stage2" in experiment.tags and "generations" in experiment.tags
-    ],
-    "dynaword": [experiment.name for experiment in EXPERIMENTS if "dynaword" in experiment.tags],
-    "dynaword-generations": [
-        experiment.name
-        for experiment in EXPERIMENTS
-        if "dynaword" in experiment.tags and "generations" in experiment.tags
-    ],
-    "dynaword-prompts": [
-        experiment.name
-        for experiment in EXPERIMENTS
-        if "dynaword" in experiment.tags and "prompts" in experiment.tags
-    ],
-    "dynaword-stage1": [experiment.name for experiment in EXPERIMENTS if "dynaword-stage1" in experiment.tags],
-    "dynaword-stage1-generations": [
-        experiment.name
-        for experiment in EXPERIMENTS
-        if "dynaword-stage1" in experiment.tags and "generations" in experiment.tags
-    ],
-    "dynaword-stage1-prompts": [
-        experiment.name
-        for experiment in EXPERIMENTS
-        if "dynaword-stage1" in experiment.tags and "prompts" in experiment.tags
-    ],
-    "dynaword-stage2": [experiment.name for experiment in EXPERIMENTS if "dynaword-stage2" in experiment.tags],
-    "dynaword-stage2-generations": [
-        experiment.name
-        for experiment in EXPERIMENTS
-        if "dynaword-stage2" in experiment.tags and "generations" in experiment.tags
-    ],
-    "dynaword-stage2-prompts": [
-        experiment.name
-        for experiment in EXPERIMENTS
-        if "dynaword-stage2" in experiment.tags and "prompts" in experiment.tags
-    ],
-    "generic": [experiment.name for experiment in EXPERIMENTS if "generic" in experiment.tags],
-    "specific": [experiment.name for experiment in EXPERIMENTS if "specific" in experiment.tags],
-    "prefix": [experiment.name for experiment in EXPERIMENTS if "prefix" in experiment.tags],
+    **{
+        tag: [experiment.name for experiment in EXPERIMENTS if tag in experiment.tags]
+        for tag in dict.fromkeys(tag for experiment in EXPERIMENTS for tag in experiment.tags)
+    },
 }
 
 
@@ -811,6 +346,11 @@ def parse_args() -> argparse.Namespace:
         help="Override the Dynaword index directory.",
     )
     parser.add_argument(
+        "--dolma3-index-dir",
+        default=INDEX_DEFAULTS["dolma3"],
+        help="Override the Dolma3 index directory.",
+    )
+    parser.add_argument(
         "--dfm9-a-index-dir",
         default=INDEX_DEFAULTS["dfm9-a"],
         help="Override the DFM9 A index directory.",
@@ -847,6 +387,11 @@ def parse_args() -> argparse.Namespace:
         help="Override the Dynaword unigram probabilities JSON path.",
     )
     parser.add_argument(
+        "--dolma3-unigram-probs-path",
+        default=UNIGRAM_DEFAULTS["dolma3"],
+        help="Override the Dolma3 unigram probabilities JSON path.",
+    )
+    parser.add_argument(
         "--dfm9-a-unigram-probs-path",
         default=UNIGRAM_DEFAULTS["dfm9-a"],
         help="Override the DFM9 A unigram probabilities JSON path.",
@@ -872,6 +417,34 @@ def parse_args() -> argparse.Namespace:
         help="Override the combined A+B unigram probabilities JSON path.",
     )
     parser.add_argument(
+        "--shard",
+        default=None,
+        metavar="K/N",
+        help=(
+            "Trace only shard K of N of every selected run (every N-th generation, starting with the "
+            "K-th), into <output>_shardKofN files. Run the N shards (e.g. on N servers), then --merge-shards N."
+        ),
+    )
+    parser.add_argument(
+        "--output-root",
+        default=None,
+        metavar="DIR",
+        help=(
+            "Write results and summaries under DIR instead of memorization_experiment/data, keeping the "
+            "layout below it (e.g. DIR/propme/<model>/<corpus>/...), so other runs are not overwritten."
+        ),
+    )
+    parser.add_argument(
+        "--merge-shards",
+        type=int,
+        default=None,
+        metavar="N",
+        help=(
+            "Combine the N --shard runs of every selected run into its usual results and summary "
+            "(no tracing; the k-eidetic statistics still query the index)."
+        ),
+    )
+    parser.add_argument(
         "--limit",
         type=int,
         default=None,
@@ -882,6 +455,18 @@ def parse_args() -> argparse.Namespace:
         type=int,
         default=None,
         help="Override --num-workers for every selected run.",
+    )
+    parser.add_argument(
+        "--find-threads",
+        type=int,
+        default=None,
+        help="Override --find-threads (index query threads per worker) for every selected run.",
+    )
+    parser.add_argument(
+        "--max-page-table-gb",
+        type=float,
+        default=None,
+        help="Override --max-page-table-gb (per-worker page-table cap) for every selected run.",
     )
     parser.add_argument(
         "--docs-per-span",
@@ -918,6 +503,8 @@ def resolve_index_dir(index_key: str, args: argparse.Namespace) -> str | list[st
         return args.commonpile_index_dir
     if index_key == "dynaword":
         return args.dynaword_index_dir
+    if index_key == "dolma3":
+        return args.dolma3_index_dir
     if index_key == "dfm9-a":
         return args.dfm9_a_index_dir
     if index_key == "dfm9-b":
@@ -936,6 +523,8 @@ def resolve_unigram_path(unigram_key: str, args: argparse.Namespace) -> str:
         return args.commonpile_unigram_probs_path
     if unigram_key == "dynaword":
         return args.dynaword_unigram_probs_path
+    if unigram_key == "dolma3":
+        return args.dolma3_unigram_probs_path
     if unigram_key == "dfm9-a":
         return args.dfm9_a_unigram_probs_path
     if unigram_key == "dfm9-b":
@@ -971,6 +560,34 @@ def expand_targets(raw_targets: list[str]) -> list[Experiment]:
     return [EXPERIMENTS_BY_NAME[name] for name in names]
 
 
+DATA_PREFIX = "memorization_experiment/data/"
+
+
+def experiment_outputs(experiment: Experiment, args: argparse.Namespace) -> tuple[str, str]:
+    """Results and summary paths of an experiment, moved under --output-root when given."""
+    paths = (experiment.results_output, experiment.summary_output)
+    if not args.output_root:
+        return paths
+    root = args.output_root.rstrip("/")
+    return tuple(f"{root}/{p.removeprefix(DATA_PREFIX)}" for p in paths)
+
+
+def shard_output_path(path: str, k: int, n: int) -> str:
+    """st_generic_1000_results.json -> st_generic_1000_shard1of4_results.json."""
+    base, suffix = path.rsplit("_", 1)
+    return f"{base}_shard{k}of{n}_{suffix}"
+
+
+def parse_shard(raw: str) -> tuple[int, int]:
+    try:
+        k, n = (int(part) for part in raw.split("/"))
+    except ValueError:
+        raise SystemExit(f"--shard must look like K/N, got {raw!r}") from None
+    if not 1 <= k <= n:
+        raise SystemExit(f"--shard needs 1 <= K <= N, got {raw!r}")
+    return k, n
+
+
 def build_command(experiment: Experiment, args: argparse.Namespace) -> list[str]:
     resolved_index_dirs = resolve_index_dir(experiment.index_key, args)
     index_dirs = (
@@ -982,6 +599,15 @@ def build_command(experiment: Experiment, args: argparse.Namespace) -> list[str]
     num_workers = args.num_workers if args.num_workers is not None else experiment.num_workers
     docs_per_span = args.docs_per_span if args.docs_per_span is not None else experiment.docs_per_span
     match_mode = args.match_mode if args.match_mode is not None else experiment.match_mode
+    find_threads = args.find_threads if args.find_threads is not None else experiment.find_threads
+    max_page_table_gb = (
+        args.max_page_table_gb if args.max_page_table_gb is not None else experiment.max_page_table_gb
+    )
+    results_output, summary_output = experiment_outputs(experiment, args)
+    if args.shard:
+        k, n = parse_shard(args.shard)
+        results_output = shard_output_path(results_output, k, n)
+        summary_output = shard_output_path(summary_output, k, n)
 
     command = [
         args.python,
@@ -998,9 +624,9 @@ def build_command(experiment: Experiment, args: argparse.Namespace) -> list[str]
         "--docs-per-span",
         str(docs_per_span),
         "--results-output",
-        experiment.results_output,
+        results_output,
         "--summary-output",
-        experiment.summary_output,
+        summary_output,
         "--length-buckets",
         experiment.length_buckets,
         "--k-eidetic-values",
@@ -1011,6 +637,18 @@ def build_command(experiment: Experiment, args: argparse.Namespace) -> list[str]
 
     if match_mode:
         command.extend(["--match-mode", match_mode])
+    if find_threads is not None:
+        command.extend(["--find-threads", str(find_threads)])
+    if max_page_table_gb is not None:
+        command.extend(["--max-page-table-gb", f"{max_page_table_gb:g}"])
+    if args.shard:
+        command.extend(["--shard", args.shard])
+    if args.merge_shards:
+        command.extend([
+            "--merge-results",
+            *(shard_output_path(experiment_outputs(experiment, args)[0], k, args.merge_shards)
+              for k in range(1, args.merge_shards + 1)),
+        ])
     if args.limit is not None:
         command.extend(["--limit", str(args.limit)])
     if args.enable_print:
@@ -1045,7 +683,13 @@ def ensure_inputs_exist(experiment: Experiment, args: argparse.Namespace) -> Non
     if not unigram_path.exists():
         raise FileNotFoundError(f"Missing unigram file for {experiment.name}: {unigram_path}")
 
-    for output_path in (experiment.results_output, experiment.summary_output):
+    if args.merge_shards:
+        for k in range(1, args.merge_shards + 1):
+            shard_results = REPO_ROOT / shard_output_path(experiment_outputs(experiment, args)[0], k, args.merge_shards)
+            if not shard_results.exists():
+                raise FileNotFoundError(f"Missing shard results for {experiment.name}: {shard_results}")
+
+    for output_path in experiment_outputs(experiment, args):
         (REPO_ROOT / output_path).parent.mkdir(parents=True, exist_ok=True)
 
 
@@ -1069,6 +713,12 @@ def main() -> int:
 
     if not args.targets:
         raise SystemExit("No targets provided. Use --list to inspect the available groups and experiment names.")
+    if args.shard and args.merge_shards:
+        raise SystemExit("--shard and --merge-shards are mutually exclusive")
+    if args.shard:
+        parse_shard(args.shard)
+    if args.merge_shards is not None and args.merge_shards < 1:
+        raise SystemExit("--merge-shards must be >= 1")
 
     experiments = expand_targets(args.targets)
     if not experiments:

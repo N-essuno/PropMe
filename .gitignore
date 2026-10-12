@@ -6,5 +6,25 @@ __pycache__
 
 old/
 
-00_data/dynaword
-00_data/dynaword_index
+# Large data kept outside version control (see README.md: PROPME_DATA_ROOT)
+propme_data/
+dfm9_data/
+00_prepare_data/dynaword
+00_prepare_data/dynaword_index
+# Per-generation SimpleTrace results (GBs each; the summaries are kept) and embedding caches
+memorization_experiment/data/propme/**/st_*_results.json
+00_prepare_data/propensity_settings/embedding_similarity/embeddings/
+# Model generations (outputs of memorization_experiment/generation)
+memorization_experiment/data/**/*_generations*.json
+
+# Run logs
+logs/
+
+envs.env
+check_index_storage_wait.py
+
+_notes
+tracing_jobs
+logs
+make_propme_report.py
+olmotrace/OLMOTRACE_REPORT.md

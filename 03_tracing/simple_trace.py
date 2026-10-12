@@ -1,7 +1,7 @@
 """
 python 03_tracing/simple_trace.py \
     --dataset dummy \
-    --index-dir 00_data/dummy_index \
+    --index-dir 00_prepare_data/dummy_index \
     --unigram-probs-path 02_unigram_probs/unigram_probs_dummy.json \
     --num-workers 8 \
     --docs-per-span 10 \
@@ -12,6 +12,8 @@ python 03_tracing/simple_trace.py \
 
 import ast
 import argparse
+import bisect
+from collections.abc import Sequence
 from decimal import Decimal, ROUND_HALF_UP
 import math
 import random
@@ -23,7 +25,7 @@ import signal
 import threading
 import unicodedata
 from collections import defaultdict
-from concurrent.futures import ProcessPoolExecutor, wait, FIRST_COMPLETED, CancelledError
+from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, wait, FIRST_COMPLETED, CancelledError
 from difflib import SequenceMatcher
 
 from infini_gram.engine import InfiniGramEngine
@@ -43,7 +45,9 @@ FULL_RAW_MATCH_TIER = "exact_full_raw"
 FULL_NORMALIZED_MATCH_TIER = "exact_full_normalized"
 PARTIAL_MATCH_TIER = "partial"
 MIXED_MIN_SPAN_TOKENS = 4
+TEXT_MODE_BOUNDARY_CHARS = "!.?\n"  # sentence boundaries in text mode
 DEFAULT_METRIC_DECIMALS = 9
+DEFAULT_SEED = 42  # seeds the per-generation document sampling in trace_generation
 _metric_decimals = DEFAULT_METRIC_DECIMALS
 
 # Lock that serializes print() calls across threads so output lines
@@ -333,6 +337,88 @@ def compute_longest_prefix(query, doc):
     return longest
 
 
+def longest_indexed_prefix_len(engine: InfiniGramEngine, suffix: list[int], max_doc_toks: int) -> int:
+    """Length of the longest prefix of `suffix` that occurs in the index.
+
+    - cnt > 0: the full suffix exists, so the entire suffix is a match.
+    - cnt == 0: find() returns the empty rank range [l, l) where the suffix
+      would sit in the sorted suffix array. The indexed suffix sharing the
+      longest prefix with it is one of its two neighbours, rank l-1 (just
+      before) or rank l (just after), so both are checked in every shard.
+      Each neighbour's document window (up to max_doc_toks tokens) is
+      searched for the prefix anywhere with compute_longest_prefix(), and
+      the longest match across neighbours and shards is kept. All windows
+      are fetched in one batch.
+    """
+    res = engine.find(input_ids=suffix)
+    if res['cnt'] > 0:
+        return len(suffix)
+
+    ranks = []
+    for s, (rank_start, _) in enumerate(res['segment_by_shard']):
+        if rank_start > 0:
+            ranks.append((s, rank_start - 1))
+        ranks.append((s, rank_start))
+    docs = _get_docs_by_ranks(engine, ranks, max_doc_toks)
+    return max(
+        (compute_longest_prefix(suffix, doc['token_ids']) for doc in docs),
+        default=0,
+    )
+
+
+STEP1_BLOCK_SIZE = 4
+
+
+def longest_prefix_lens(
+    engine: InfiniGramEngine,
+    gen_ids: list[int],
+    starts,
+    max_doc_toks: int,
+    executor: ThreadPoolExecutor | None = None,
+    stop_event: threading.Event | None = None,
+) -> list[int] | None:
+    """longest_indexed_prefix_len(engine, gen_ids[b:], max_doc_toks) for every b in `starts`.
+
+    Same results with fewer index reads. If the suffix at an earlier start b'
+    matched k tokens, gen_ids[b':b'+k] occurs in the index, so gen_ids[b:b'+k]
+    does too and the suffix at b matches at least lb = k - (b - b') tokens.
+    If lb covers the whole suffix, that is the answer. Otherwise one find() of
+    the (lb + 1)-token prefix tells whether the answer is exactly lb; only if
+    that prefix also occurs is the full lookup (with its neighbour document
+    fetches in every shard) needed.
+
+    Starts are processed left to right in blocks of STEP1_BLOCK_SIZE so each
+    start can use the previous one's result; blocks run concurrently on
+    `executor`. Returns None if `stop_event` is set.
+    """
+    def block_lens(block) -> list[int] | None:
+        lens = []
+        prev = None
+        for b in block:
+            if stop_event is not None and stop_event.is_set():
+                return None
+            suffix = gen_ids[b:]
+            lower_bound = 0 if prev is None else max(0, prev[1] - (b - prev[0]))
+            if lower_bound >= len(suffix):
+                n = len(suffix)
+            elif lower_bound > 0 and engine.find(input_ids=suffix[: lower_bound + 1])['cnt'] == 0:
+                n = lower_bound
+            else:
+                n = longest_indexed_prefix_len(engine, suffix, max_doc_toks)
+            lens.append(n)
+            prev = (b, n)
+        return lens
+
+    blocks = [starts[i : i + STEP1_BLOCK_SIZE] for i in range(0, len(starts), STEP1_BLOCK_SIZE)]
+    mapper = executor.map if executor is not None else map
+    lens = []
+    for block_result in mapper(block_lens, blocks):
+        if block_result is None:
+            return None
+        lens.extend(block_result)
+    return lens
+
+
 def _normalize_mixed_text(text: str) -> str:
     """Light normalization for structure-aware full-document matching."""
     norm = unicodedata.normalize("NFKC", text)
@@ -364,12 +450,72 @@ def _classify_match_tier(
     return PARTIAL_MATCH_TIER
 
 
-def _flatten_ranks(find_res: dict) -> list[tuple[int, int]]:
+class _RankSequence(Sequence):
+    """(shard, rank) pairs of a find() result, in shard-then-rank order.
+
+    Indexed lazily so frequent spans (millions of hits) are never
+    materialized. random.sample() picks the same positions from any sequence
+    of the same length, so sampling results match those of a flat list.
+    """
+
+    def __init__(self, segment_by_shard):
+        self._segments = []
+        self._offsets = []
+        total = 0
+        for s, (rank_start, rank_end) in enumerate(segment_by_shard):
+            if rank_end > rank_start:
+                self._segments.append((s, rank_start))
+                self._offsets.append(total)
+                total += rank_end - rank_start
+        self._len = total
+
+    def __len__(self) -> int:
+        return self._len
+
+    def __getitem__(self, i):
+        if isinstance(i, slice):
+            return [self[j] for j in range(*i.indices(self._len))]
+        if i < 0:
+            i += self._len
+        if not 0 <= i < self._len:
+            raise IndexError(i)
+        seg = bisect.bisect_right(self._offsets, i) - 1
+        s, rank_start = self._segments[seg]
+        return (s, rank_start + i - self._offsets[seg])
+
+
+def _flatten_ranks(find_res: dict) -> Sequence:
     """Flatten a find() result into (shard, rank) pairs."""
+    return _RankSequence(find_res["segment_by_shard"])
+
+
+def _get_docs_by_ranks(engine: InfiniGramEngine, ranks: list[tuple[int, int]], max_disp_len: int) -> list[dict]:
+    """Batched get_doc_by_rank(); the engine fetches the documents in parallel.
+
+    Calls the C++ binding directly: InfiniGramEngine.get_docs_by_ranks() in
+    infini-gram 2.6.0 calls a misspelled method and raises AttributeError.
+    """
+    ranks = list(ranks)
+    cpp = engine.engine
+    num_shards = cpp.get_num_shards()
+    valid = max_disp_len > 0 and all(
+        0 <= s < num_shards and 0 <= r < cpp.get_tok_cnt(s=s) for s, r in ranks
+    )
+    if not valid:
+        # Fall back to per-rank calls, which report errors as before.
+        return [engine.get_doc_by_rank(s=s, rank=r, max_disp_len=max_disp_len) for s, r in ranks]
+    results = cpp.get_docs_by_ranks(list_of_s_and_rank=ranks, max_disp_len=max_disp_len)
     return [
-        (s, r)
-        for s, (rank_start, rank_end) in enumerate(find_res["segment_by_shard"])
-        for r in range(rank_start, rank_end)
+        {
+            'doc_ix': res.doc_ix,
+            'doc_len': res.doc_len,
+            'disp_len': res.disp_len,
+            'needle_offset': res.needle_offset,
+            'metadata': res.metadata,
+            'token_ids': res.token_ids,
+            'blocked': res.blocked,
+        }
+        for res in results
     ]
 
 
@@ -415,8 +561,13 @@ def _retrieve_docs_for_ranks(
     match_mode: str,
     limit: int,
     deterministic: bool = False,
+    rng: random.Random | None = None,
 ) -> list[dict]:
-    """Fetch document records for rank hits and annotate their match tier."""
+    """Fetch document records for rank hits and annotate their match tier.
+
+    With more hits than `limit`, picks evenly spread hits if `deterministic`,
+    otherwise a random sample drawn from `rng` (the global RNG if None).
+    """
     if limit < 1 or not ranks:
         return []
 
@@ -424,7 +575,7 @@ def _retrieve_docs_for_ranks(
         if deterministic:
             selected_ranks = _sample_evenly(ranks, limit)
         else:
-            selected_ranks = random.sample(ranks, limit)
+            selected_ranks = (rng or random).sample(ranks, limit)
     else:
         selected_ranks = list(ranks)
 
@@ -435,8 +586,8 @@ def _retrieve_docs_for_ranks(
     docs = []
     seen_examples: set[tuple[int, int]] = set()
 
-    for s, r in selected_ranks:
-        raw_doc = engine.get_doc_by_rank(s=s, rank=r, max_disp_len=max_doc_toks)
+    raw_docs = _get_docs_by_ranks(engine, selected_ranks, max_doc_toks)
+    for (s, r), raw_doc in zip(selected_ranks, raw_docs):
         doc_ix = raw_doc.get("doc_ix")
         example_key = (s, int(doc_ix)) if doc_ix is not None else (s, int(r))
         if example_key in seen_examples:
@@ -486,6 +637,7 @@ def _retrieve_docs_for_find_result(
     match_mode: str,
     limit: int,
     deterministic: bool = False,
+    rng: random.Random | None = None,
 ) -> list[dict]:
     """Fetch document records for an InfiniGram find() result."""
     return _retrieve_docs_for_ranks(
@@ -497,6 +649,7 @@ def _retrieve_docs_for_find_result(
         match_mode=match_mode,
         limit=limit,
         deterministic=deterministic,
+        rng=rng,
     )
 
 
@@ -520,8 +673,7 @@ def _keep_span(
             return False
         return any(not ch.isspace() for ch in span_text)
 
-    punc_chars = "!.?\n"
-    if any(ch in punc_chars for ch in span_text[:-1]):
+    if any(ch in TEXT_MODE_BOUNDARY_CHARS for ch in span_text[:-1]):
         return False
     first_tok = enc.convert_ids_to_tokens(span_ids[0])
     if first_tok[0] != '▁':
@@ -529,6 +681,47 @@ def _keep_span(
     if end < total_tokens and enc.convert_ids_to_tokens(gen_ids[end])[0] != '▁':
         return False
     return True
+
+
+def _trim_to_sentence_boundary(
+    start: int,
+    end: int,
+    gen_ids: list[int],
+    enc,
+    has_boundary_char: list[bool],
+) -> int:
+    """Shrink a text-mode span so it stops at the first sentence boundary.
+
+    Returns the largest `new_end <= end` such that gen_ids[start:new_end]
+    passes text-mode filters (a) and (c) of _keep_span: no sentence-boundary
+    character except as the last character of the span text, and a
+    word-initial token (or the end of the generation) right after the span.
+    Every prefix of a matched span also occurs in the index, so the trimmed
+    span is still a verbatim match. `has_boundary_char[i]` says whether
+    token i decodes to text containing a boundary character.
+    """
+    def _no_inner_boundary(e: int) -> bool:
+        text = enc.decode(gen_ids[start:e])
+        return not any(ch in TEXT_MODE_BOUNDARY_CHARS for ch in text[:-1])
+
+    first = next((i for i in range(start, end) if has_boundary_char[i]), None)
+    if first is not None:
+        # Spans ending before the first boundary token contain no boundary
+        # character, and filter (a) only gets stricter as the span grows, so
+        # binary-search the longest valid end in [first, end].
+        lo, hi = first, end
+        while lo < hi:
+            mid = (lo + hi + 1) // 2
+            if _no_inner_boundary(mid):
+                lo = mid
+            else:
+                hi = mid - 1
+        end = lo
+
+    total_tokens = len(gen_ids)
+    while start < end < total_tokens and enc.convert_ids_to_tokens(gen_ids[end])[0] != '▁':
+        end -= 1
+    return end
 
 
 def _build_mixed_anchor_spans(
@@ -708,9 +901,19 @@ def trace_generation(
     docs_per_span: int = 10,
     match_mode: str = TEXT_MATCH_MODE,
     stop_event: threading.Event = None,
+    executor: ThreadPoolExecutor | None = None,
+    seed: int | None = DEFAULT_SEED,
 ) -> dict:
     """
     Run the full SimpleTrace pipeline for a single generation string.
+
+    If `executor` is given, the Step 1 index queries of different suffixes
+    run concurrently on its threads; results are identical either way.
+
+    Spans found in more than `docs_per_span` documents get a random sample of
+    them. The sample is drawn from an RNG seeded with (`seed`, generation), so
+    results do not depend on worker scheduling or on which other generations
+    are traced; `seed=None` uses the unseeded global RNG.
 
     Returns a dict with keys:
         "generation"  - original text
@@ -719,6 +922,8 @@ def trace_generation(
     """
     gen_ids = enc.encode(generation)
     L = len(gen_ids)
+    # String seeds are hashed with SHA-512, so they are stable across processes.
+    rng = None if seed is None else random.Random(f"{seed}:{generation}")
     max_doc_toks = L * 5 # retrieved docs can be 10 times as long as the generation
     full_span_docs: list[dict] = []
 
@@ -743,46 +948,36 @@ def trace_generation(
     # query the InfiniGram index to find how much of it appears verbatim
     # in the training corpus:
     #   - cnt > 0: the full suffix exists → the entire suffix is a match.
-    #   - cnt == 0: no exact match → the engine returns the rank of the
-    #     nearest neighbour in the sorted suffix array. We fetch that
-    #     neighbour document and walk both sequences token-by-token with
+    #   - cnt == 0: no exact match → the engine returns the position where
+    #     the suffix would sit in the sorted suffix array. We fetch the
+    #     documents of both neighbouring entries (just before and just
+    #     after) and walk both sequences token-by-token with
     #     compute_longest_prefix() to find the longest prefix of the
-    #     suffix that does appear somewhere in that document.
+    #     suffix that does appear somewhere in those documents.
     # Each suffix produces a candidate span (start, start + matched_toks).
+    #
+    # Suffixes are independent, so their queries may run concurrently on
+    # `executor` threads (the engine releases the GIL). In text mode a span
+    # must start with a word-initial token (filter pass 1b below), so the
+    # other start positions are not queried at all.
     # ------------------------------------------------------------------
-    spans = []
-    for start in range(L - 1):
-        # Cooperatively check for stop request between index queries.
-        if stop_event is not None and stop_event.is_set():
-            print(f"[INFO] Stop requested - aborting '{generation[:40]}...'", flush=True)
-            return {
-                "generation": generation,
-                "gen_ids": gen_ids,
-                "match_mode": match_mode,
-                "final_spans": [],
-            }
+    starts = range(L - 1)
+    if match_mode == TEXT_MATCH_MODE:
+        starts = [
+            start for start in starts
+            if enc.convert_ids_to_tokens(gen_ids[start])[0] == '▁'
+        ]
 
-        _suffix = gen_ids[start:]
-        _res = engine.find(input_ids=_suffix)
-
-        if _res['cnt'] == 0:
-            # No verbatim hit: fall back to the nearest-neighbour document
-            # returned by the index to find the longest matching prefix.
-            # Each shard contributes one nearest-neighbour rank; we check
-            # all of them and keep the longest match found across shards.
-            _shards = _res['segment_by_shard']
-            matched_toks = 0
-            for s, (rank_start, _) in enumerate(_shards):
-                _doc_ids = engine.get_doc_by_rank(
-                    s=s,
-                    rank=rank_start,
-                    max_disp_len=max_doc_toks,
-                )['token_ids']
-                matched_toks = max(matched_toks, compute_longest_prefix(_suffix, _doc_ids))
-        else:
-            # Verbatim hit: the entire suffix is a match.
-            matched_toks = len(_suffix)
-        spans.append((start, start + matched_toks))
+    lens = longest_prefix_lens(engine, gen_ids, starts, max_doc_toks, executor, stop_event)
+    if lens is None:
+        print(f"[INFO] Stop requested - aborting '{generation[:40]}...'", flush=True)
+        return {
+            "generation": generation,
+            "gen_ids": gen_ids,
+            "match_mode": match_mode,
+            "final_spans": [],
+        }
+    spans = [(start, start + matched_toks) for start, matched_toks in zip(starts, lens)]
 
     # Filter pass 1 - retain only "clean", self-contained spans:
     #   a) No sentence-ending punctuation (! . ? newline) in the interior
@@ -793,8 +988,19 @@ def trace_generation(
     #      boundary rather than mid-word.
     #   c) The token immediately after the span (if any) must also be
     #      word-initial, so the span ends at a clean word boundary.
+    # In text mode, a span violating (a) or (c) is first trimmed back to the
+    # sentence boundary (and then to a word boundary) instead of being
+    # discarded, so a match running across sentences keeps its first sentence.
+    has_boundary_char = None
+    if match_mode == TEXT_MATCH_MODE:
+        has_boundary_char = [
+            any(ch in TEXT_MODE_BOUNDARY_CHARS for ch in enc.decode([tok]))
+            for tok in gen_ids
+        ]
     full_spans = []
     for start, end in spans:
+        if match_mode == TEXT_MATCH_MODE:
+            end = _trim_to_sentence_boundary(start, end, gen_ids, enc, has_boundary_char)
         if start >= end:
             continue
         span_ids = gen_ids[start:end]
@@ -880,6 +1086,7 @@ def trace_generation(
                 match_mode=match_mode,
                 limit=docs_per_span,
                 deterministic=False,
+                rng=rng,
             )
         )
 
@@ -951,6 +1158,7 @@ def trace_generation(
                 match_mode=match_mode,
                 limit=docs_per_span,
                 deterministic=False,
+                rng=rng,
             )
         final_spans.append({
             "start": seg_start,
@@ -1012,9 +1220,11 @@ def evaluate_results(
 
     Parameters
     ----------
-    results : dict[str, dict]
-        Output of launch_simpletrace - maps generation text to its trace dict
-        (keys: "generation", "gen_ids", "final_spans").
+    results : dict
+        Output of launch_simpletrace - maps a key (the generation text unless
+        launch_simpletrace got explicit keys) to its trace dict (keys:
+        "generation", "gen_ids", "final_spans"). The text is taken from
+        "generation", falling back to the key.
     length_buckets : list of (lo, hi) int pairs, inclusive on both ends.
         Token-length ranges for the distribution table.
         Defaults to [(1,3), (4,6), (7,10), (11,20), (21, inf)].
@@ -1135,7 +1345,8 @@ def evaluate_results(
     spans_length_counts_distribution: dict[str, int] = {label: 0 for label in bucket_labels}
     spans_length_counts_exact: dict[int, int] = {}
 
-    for generation, result in results.items():
+    for key, result in results.items():
+        generation = result.get("generation", key)
         final_spans = result.get("final_spans", [])
         largest_span_len_for_generation = 0
         generation_has_n_token_span = False
@@ -1361,8 +1572,15 @@ def evaluate_results(
 
     return results
 
-def save_results(results: dict[str, dict], output_path: str) -> None:
+def save_results(
+    results: dict,
+    output_path: str,
+    record_fields: dict | None = None,
+) -> None:
     """Save tracing results to a JSONL file, one line per generation.
+
+    `record_fields` optionally maps a results key to extra fields written
+    after "generation" (e.g. the prompt_id and sample_idx of the generation).
 
     Each line is a JSON object with:
         "generation" - the query text
@@ -1375,14 +1593,15 @@ def save_results(results: dict[str, dict], output_path: str) -> None:
     import os
     os.makedirs(os.path.dirname(output_path) or ".", exist_ok=True)
     with open(output_path, "w") as f:
-        for generation, result in results.items():
+        for key, result in results.items():
             sorted_spans = sorted(
                 result["final_spans"],
                 key=lambda sp: (sp["end"] - sp["start"]),
                 reverse=True,
             )
             record = {
-                "generation": generation,
+                "generation": result.get("generation", key),
+                **(record_fields or {}).get(key, {}),
                 "match_mode": result.get("match_mode", TEXT_MATCH_MODE),
                 "spans": [
                     {
@@ -1418,30 +1637,160 @@ def save_results(results: dict[str, dict], output_path: str) -> None:
 _worker_engine = None
 _worker_enc = None
 _worker_unigram_probs = None
+_worker_executor = None
 
-def _worker_init(index_dir: str, unigram_probs_path: str, metric_decimals: int):
+DEFAULT_MAX_PAGE_TABLE_GB = 1.0
+
+def load_engine(index_dir, eos_token_id: int) -> InfiniGramEngine:
+    """Open the InfiniGram index with disk prefetching turned off.
+
+    Prefetching only issues speculative reads and does not change any query
+    result. Turning it off made tracing ~8x faster on the Dolma3 indexes
+    (see also OLMoTrace, arXiv:2504.07096, App. B).
+    """
+    return InfiniGramEngine(
+        index_dir=index_dir,
+        eos_token_id=eos_token_id,
+        precompute_unigram_logprobs=False,
+        ds_prefetch_depth=0,
+        sa_prefetch_depth=0,
+        od_prefetch_depth=0,
+    )
+
+
+def page_table_bytes() -> int:
+    """Size of this process's page tables (VmPTE in /proc/self/status), or 0."""
+    try:
+        with open("/proc/self/status") as f:
+            for line in f:
+                if line.startswith("VmPTE:"):
+                    return int(line.split()[1]) * 1024
+    except OSError:
+        pass
+    return 0
+
+
+class PageTableBoundedEngine:
+    """InfiniGramEngine that reopens its index when page tables grow too large.
+
+    The index files are memory-mapped, and every 2 MB region a lookup touches
+    costs a 4 KB page-table page that the kernel cannot reclaim while the files
+    stay mapped. A lookup binary-searches every shard, so on a multi-TB index
+    such as Dolma3 (65 shards) one uncached find() can add ~20 MB of page
+    tables, and a long run grows them until the container runs out of memory.
+
+    After each call this wrapper checks the process's page tables and, above
+    `max_page_table_bytes`, replaces the engine with a fresh one, which unmaps
+    the files and frees the tables. The C++ engine crashes if an engine is
+    created or destroyed while other threads are inside it, so the swap waits
+    until no call is in flight and holds new calls back meanwhile. Calls made
+    on the C++ engine through the `engine` attribute are tracked the same way.
+    The engine holds no query state and cached index pages stay in the OS page
+    cache, so results are unchanged and reopening is cheap.
+    """
+
+    _MIN_CALLS_BETWEEN_REOPENS = 32
+
+    def __init__(self, index_dir, eos_token_id: int, max_page_table_bytes: float | None):
+        self._index_dir = index_dir
+        self._eos_token_id = eos_token_id
+        self._max_page_table_bytes = max_page_table_bytes
+        self._engine = load_engine(index_dir, eos_token_id)
+        self._cond = threading.Condition()
+        self._in_flight = 0
+        self._reopening = False
+        self._calls_since_reopen = 0
+        self.reopen_count = 0
+
+    @property
+    def engine(self):
+        """Tracked view of the underlying C++ engine (used by _get_docs_by_ranks)."""
+        return _TrackedCppEngine(self)
+
+    def __getattr__(self, name):
+        if callable(getattr(InfiniGramEngine, name, None)):
+            return lambda *args, **kwargs: self._call(lambda eng: eng, name, args, kwargs)
+        with self._cond:
+            while self._reopening:
+                self._cond.wait()
+            return getattr(self._engine, name)
+
+    def _call(self, resolve, name: str, args, kwargs):
+        with self._cond:
+            while self._reopening:
+                self._cond.wait()
+            self._in_flight += 1
+            engine = self._engine
+        try:
+            return getattr(resolve(engine), name)(*args, **kwargs)
+        finally:
+            with self._cond:
+                self._in_flight -= 1
+                self._calls_since_reopen += 1
+                self._cond.notify_all()
+            self._maybe_reopen()
+
+    def _maybe_reopen(self) -> None:
+        if self._max_page_table_bytes is None:
+            return
+        with self._cond:
+            if self._reopening or self._calls_since_reopen < self._MIN_CALLS_BETWEEN_REOPENS:
+                return
+            if page_table_bytes() <= self._max_page_table_bytes:
+                return
+            self._reopening = True
+            while self._in_flight:
+                self._cond.wait()
+            old_engine, self._engine = self._engine, None
+            del old_engine
+            self._engine = load_engine(self._index_dir, self._eos_token_id)
+            self._calls_since_reopen = 0
+            self.reopen_count += 1
+            self._reopening = False
+            self._cond.notify_all()
+
+
+class _TrackedCppEngine:
+    """Forwards calls to the current C++ engine of a PageTableBoundedEngine."""
+
+    def __init__(self, owner: PageTableBoundedEngine):
+        self._owner = owner
+
+    def __getattr__(self, name):
+        return lambda *args, **kwargs: self._owner._call(lambda eng: eng.engine, name, args, kwargs)
+
+
+def _worker_init(
+    index_dir: str,
+    unigram_probs_path: str,
+    metric_decimals: int,
+    find_threads: int = 1,
+    max_page_table_gb: float | None = DEFAULT_MAX_PAGE_TABLE_GB,
+):
     """Called once in each worker process before any tasks are dispatched."""
-    global _worker_engine, _worker_enc, _worker_unigram_probs
+    global _worker_engine, _worker_enc, _worker_unigram_probs, _worker_executor
     _set_metric_decimals(metric_decimals)
+    _worker_executor = ThreadPoolExecutor(find_threads) if find_threads > 1 else None
     _worker_enc = AutoTokenizer.from_pretrained(
         "meta-llama/Llama-2-7b-hf", add_bos_token=False, add_eos_token=False
     )
-    _worker_engine = InfiniGramEngine(
-        index_dir=index_dir,
-        eos_token_id=_worker_enc.eos_token_id,
-        precompute_unigram_logprobs=False,
+    _worker_engine = PageTableBoundedEngine(
+        index_dir,
+        _worker_enc.eos_token_id,
+        None if max_page_table_gb is None else max_page_table_gb * 1e9,
     )
     with open(unigram_probs_path) as f:
         _worker_unigram_probs = {int(k): v['prob'] for k, v in json.load(f).items()}
 
 
-def _worker_trace(generation: str, docs_per_span: int, match_mode: str) -> dict:
+def _worker_trace(generation: str, docs_per_span: int, match_mode: str, seed: int | None) -> dict:
     """Thin wrapper that calls trace_generation using worker-local globals.    stop_event is not passed - worker processes receive SIGINT directly from
     the OS when Ctrl+C is pressed, which raises KeyboardInterrupt naturally.
     """
     return trace_generation(
         generation, _worker_engine, _worker_enc, _worker_unigram_probs,
         docs_per_span=docs_per_span, match_mode=match_mode, stop_event=None,
+        executor=_worker_executor, seed=seed,
     )
 
 
@@ -1454,7 +1803,23 @@ def launch_simpletrace(
     match_mode: str = TEXT_MATCH_MODE,
     metric_decimals: int = DEFAULT_METRIC_DECIMALS,
     enable_print: bool = False,
-) -> dict[str, dict]:
+    find_threads: int = 4,
+    max_page_table_gb: float | None = DEFAULT_MAX_PAGE_TABLE_GB,
+    seed: int | None = DEFAULT_SEED,
+    keys: list | None = None,
+) -> dict:
+    """Trace `generations` in worker processes; returns {key: trace dict} in input order.
+
+    `keys` gives each generation a unique results key. By default the key is
+    the generation text, so identical generations share a single result.
+    """
+    if keys is None:
+        keys = generations
+    elif len(keys) != len(generations):
+        raise ValueError(f"Got {len(keys)} keys for {len(generations)} generations")
+    elif len(set(keys)) != len(keys):
+        raise ValueError("keys must be unique")
+
     # ---------------------------------------------------------------------------
     # Setup – engine and tokenizer are initialised inside each worker process
     # via _worker_init(), so they don't need to be pickled or sent over IPC.
@@ -1473,19 +1838,19 @@ def launch_simpletrace(
     def _sigint_handler(sig, frame):
         _stop_event.set()
 
-    signal.signal(signal.SIGINT, _sigint_handler)
+    previous_sigint_handler = signal.signal(signal.SIGINT, _sigint_handler)
 
     results: dict[str, dict] = {}
 
     executor = ProcessPoolExecutor(
         max_workers=num_workers,
         initializer=_worker_init,
-        initargs=(index_dir, unigram_probs_path, metric_decimals),
+        initargs=(index_dir, unigram_probs_path, metric_decimals, find_threads, max_page_table_gb),
     )
 
     futures = {
-        executor.submit(_worker_trace, gen, docs_per_span, match_mode): gen
-        for gen in generations
+        executor.submit(_worker_trace, gen, docs_per_span, match_mode, seed): key
+        for key, gen in zip(keys, generations)
     }
     pending = set(futures)
     try:
@@ -1495,9 +1860,9 @@ def launch_simpletrace(
                 # _stop_event, making Ctrl+C feel near-instant.
                 done, pending = wait(pending, timeout=0.5, return_when=FIRST_COMPLETED)
                 for future in done:
-                    gen = futures[future]
+                    key = futures[future]
                     try:
-                        results[gen] = future.result()
+                        results[key] = future.result()
                     except CancelledError:
                         pass
                     pbar.update(1)
@@ -1509,17 +1874,24 @@ def launch_simpletrace(
             tprint("\n[INFO] Ctrl+C received - requesting stop...")
             for f in pending:
                 f.cancel()
+            # Workers still inside a trace would otherwise keep running, and
+            # the interpreter joins them at exit, so the script would hang.
+            for process in list((executor._processes or {}).values()):
+                process.terminate()
         executor.shutdown(wait=False, cancel_futures=True)
+        # Restore the caller's handler so a later Ctrl+C interrupts normally.
+        signal.signal(signal.SIGINT, previous_sigint_handler)
 
     end_time = time.time()
-    print(f"\nElapsed Time: {end_time - start_time_local:.2f} seconds  ({len(generations)} generation(s), {num_workers} workers)")
+    print(f"\nElapsed Time: {end_time - start_time_local:.2f} seconds  ({len(generations)} generation(s), {num_workers} workers, {find_threads} find threads each)")
 
-    # Print in original submission order
+    # Return (and print) in submission order rather than completion order, so
+    # the results file and the doc-id lists in the summary are reproducible.
+    results = {key: results[key] for key in dict.fromkeys(keys) if key in results}
     if enable_print:
-        for gen in generations:
-            if gen in results:
-                print_results(results[gen])
-    
+        for result in results.values():
+            print_results(result)
+
     return results
 
 
@@ -1590,6 +1962,39 @@ def load_generations(
         return load_jsonl_dataset(dataset_name, limit=limit, text_field=text_field)
 
     raise ValueError(f"Unsupported dataset: {dataset_name}")
+
+
+def load_trace_inputs(args: argparse.Namespace) -> tuple[list[str], list, dict]:
+    """Generations to trace, a unique results key for each, and per-key fields for the results file.
+
+    Generation JSON records that carry prompt_id and sample_idx (as written by
+    generate_vllm.py and generate_vllm_free.py) are keyed "<prompt_id>:<sample_idx>";
+    everything else is keyed by its position. Keying by text instead would merge
+    identical generations, e.g. two samples of one prompt that came out the same.
+    """
+    if args.is_generation_json and args.dataset not in ("laerebogen", "dummy", "generic"):
+        records = load_generation_records(args.dataset, args.generation_text_field, args.limit)
+        strings = [record[args.generation_text_field] for record in records]
+        if all("prompt_id" in r and "sample_idx" in r for r in records):
+            keys = [f"{r['prompt_id']}:{r['sample_idx']}" for r in records]
+            if len(set(keys)) == len(keys):
+                fields = {
+                    key: {"prompt_id": r["prompt_id"], "sample_idx": r["sample_idx"]}
+                    for key, r in zip(keys, records)
+                }
+                return strings, keys, fields
+            print("[WARN] prompt_id:sample_idx pairs are not unique; keying generations by position", flush=True)
+    else:
+        strings = load_generations(
+            args.dataset,
+            args.limit,
+            is_jsonl=args.is_jsonl,
+            text_field=args.text_field,
+            is_generation_json=args.is_generation_json,
+            generation_text_field=args.generation_text_field,
+        )
+    keys = list(range(len(strings)))
+    return strings, keys, {key: {"index": key} for key in keys}
 
 
 def parse_k_values(raw: str | None) -> list[int]:
@@ -1761,6 +2166,25 @@ def build_arg_parser() -> argparse.ArgumentParser:
         help="Optional cap on number of generations to process.",
     )
     parser.add_argument(
+        "--shard",
+        default=None,
+        metavar="K/N",
+        help=(
+            "Trace only shard K of N (1 <= K <= N): every N-th generation, starting with the K-th. "
+            "Run all N shards, then combine their results files with --merge-results."
+        ),
+    )
+    parser.add_argument(
+        "--merge-results",
+        nargs="+",
+        default=None,
+        metavar="RESULTS",
+        help=(
+            "Skip tracing: rebuild the results of --dataset from these results files (e.g. the "
+            "--shard runs), then evaluate and save them as a single run would."
+        ),
+    )
+    parser.add_argument(
         "--index-dir",
         nargs="+",
         required=True,
@@ -1787,10 +2211,42 @@ def build_arg_parser() -> argparse.ArgumentParser:
         help="Number of worker processes.",
     )
     parser.add_argument(
+        "--max-page-table-gb",
+        type=float,
+        default=DEFAULT_MAX_PAGE_TABLE_GB,
+        help=(
+            "Reopen a worker's index once its page tables exceed this many GB "
+            "(checked after each index call). Bounds memory on huge indexes "
+            "such as Dolma3; does not change results. Total is about "
+            "--num-workers times this value."
+        ),
+    )
+    parser.add_argument(
+        "--find-threads",
+        type=int,
+        default=4,
+        help=(
+            "Threads per worker process running the index queries of one "
+            "generation concurrently. Does not change results. Helps most when "
+            "the index is not yet in the OS page cache; use 1 for repeated runs "
+            "over the same generations."
+        ),
+    )
+    parser.add_argument(
         "--docs-per-span",
         type=int,
         default=10,
         help="Maximum number of retrieved documents per span.",
+    )
+    parser.add_argument(
+        "--seed",
+        type=int,
+        default=DEFAULT_SEED,
+        help=(
+            "Seed for sampling --docs-per-span documents from spans with more "
+            "matches. Each generation gets its own RNG seeded with (seed, text), "
+            "so results are reproducible regardless of workers or threads."
+        ),
     )
     parser.add_argument(
         "--match-mode",
@@ -1868,12 +2324,62 @@ def build_arg_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def parse_shard(raw: str) -> tuple[int, int]:
+    """'K/N' -> (K, N), with 1 <= K <= N."""
+    try:
+        k, n = (int(part) for part in raw.split("/"))
+    except ValueError:
+        raise ValueError(f"--shard must look like K/N, got {raw!r}") from None
+    if not 1 <= k <= n:
+        raise ValueError(f"--shard needs 1 <= K <= N, got {raw!r}")
+    return k, n
+
+
+def load_results_files(paths: list[str], keys: list, record_fields: dict) -> dict:
+    """Results of `keys`, in that order, rebuilt from save_results files (e.g. one per --shard).
+
+    A record is matched to its key by the fields save_results wrote for it (prompt_id and
+    sample_idx, or index). Each key must appear exactly once across the files.
+    """
+    key_of_fields = {json.dumps(fields, sort_keys=True): key for key, fields in record_fields.items()}
+    loaded: dict = {}
+    for path in paths:
+        with open(path) as f:
+            for line in f:
+                if not line.strip():
+                    continue
+                record = json.loads(line)
+                fields = {name: record[name] for name in next(iter(record_fields.values()))}
+                key = key_of_fields.get(json.dumps(fields, sort_keys=True))
+                if key is None:
+                    raise ValueError(f"{path}: result {fields} is not a generation of --dataset")
+                if key in loaded:
+                    raise ValueError(f"{path}: result {fields} appears more than once")
+                loaded[key] = {
+                    "generation": record["generation"],
+                    "match_mode": record["match_mode"],
+                    # save_results orders spans by length; tracing yields them by position.
+                    "final_spans": [
+                        {"start": sp["start"], "end": sp["end"], "text": sp["text"], "docs": sp["docs"]}
+                        for sp in sorted(record["spans"], key=lambda sp: sp["start"])
+                    ],
+                }
+    missing = [key for key in keys if key not in loaded]
+    if missing:
+        raise ValueError(f"{len(missing)} generations of --dataset have no result in --merge-results, e.g. {missing[:3]}")
+    return {key: loaded[key] for key in keys}
+
+
 def main() -> None:
     parser = build_arg_parser()
     args = parser.parse_args()
 
     if args.num_workers < 1:
         raise ValueError("--num-workers must be >= 1")
+    if args.find_threads < 1:
+        raise ValueError("--find-threads must be >= 1")
+    if args.max_page_table_gb <= 0:
+        raise ValueError("--max-page-table-gb must be > 0")
     if args.metric_decimals < 0:
         raise ValueError("--metric-decimals must be >= 0")
     if args.docs_per_span < 1:
@@ -1890,15 +2396,17 @@ def main() -> None:
         raise ValueError("--k-eidetic-min-generation-tokens must be >= 1")
     if args.is_jsonl and args.is_generation_json:
         raise ValueError("--is-jsonl and --is-generation-json are mutually exclusive")
+    if args.shard and args.merge_results:
+        raise ValueError("--shard and --merge-results are mutually exclusive")
 
-    strings = load_generations(
-        args.dataset,
-        args.limit,
-        is_jsonl=args.is_jsonl,
-        text_field=args.text_field,
-        is_generation_json=args.is_generation_json,
-        generation_text_field=args.generation_text_field,
-    )
+    strings, keys, record_fields = load_trace_inputs(args)
+    if args.shard:
+        k, n = parse_shard(args.shard)
+        picked = range(k - 1, len(strings), n)
+        strings = [strings[i] for i in picked]
+        keys = [keys[i] for i in picked]
+        record_fields = {key: record_fields[key] for key in keys}
+        print(f"[INFO] Shard {k}/{n}: {len(strings)} generations", flush=True)
     _set_metric_decimals(args.metric_decimals)
     length_buckets = parse_length_buckets(args.length_buckets)
     k_values = parse_k_values(args.k_eidetic_values)
@@ -1912,16 +2420,24 @@ def main() -> None:
 
     index_dir = args.index_dir[0] if len(args.index_dir) == 1 else args.index_dir
 
-    results = launch_simpletrace(
-        index_dir=index_dir,
-        generations=strings,
-        unigram_probs_path=args.unigram_probs_path,
-        num_workers=args.num_workers,
-        docs_per_span=args.docs_per_span,
-        match_mode=args.match_mode,
-        metric_decimals=args.metric_decimals,
-        enable_print=args.enable_print,
-    )
+    if args.merge_results:
+        results = load_results_files(args.merge_results, keys, record_fields)
+        print(f"[INFO] Merged {len(results)} results from {len(args.merge_results)} files", flush=True)
+    else:
+        results = launch_simpletrace(
+            index_dir=index_dir,
+            generations=strings,
+            unigram_probs_path=args.unigram_probs_path,
+            num_workers=args.num_workers,
+            docs_per_span=args.docs_per_span,
+            match_mode=args.match_mode,
+            metric_decimals=args.metric_decimals,
+            enable_print=args.enable_print,
+            find_threads=args.find_threads,
+            max_page_table_gb=args.max_page_table_gb,
+            seed=args.seed,
+            keys=keys,
+        )
 
     eval_stats = evaluate_results(
         results,
@@ -1940,10 +2456,8 @@ def main() -> None:
             add_bos_token=False,
             add_eos_token=False,
         )
-        eidetic_engine = InfiniGramEngine(
-            index_dir=index_dir,
-            eos_token_id=eidetic_enc.eos_token_id,
-            precompute_unigram_logprobs=False,
+        eidetic_engine = PageTableBoundedEngine(
+            index_dir, eidetic_enc.eos_token_id, args.max_page_table_gb * 1e9
         )
         eidetic_stats = evaluate_k_eidetic_memorization(
             strings,
@@ -1964,7 +2478,7 @@ def main() -> None:
     for k, v in eval_stats.items():
         print(f"{k}: {v}")
 
-    save_results(results, results_output_path)
+    save_results(results, results_output_path, record_fields)
         
 
 if __name__ == "__main__":

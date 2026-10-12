@@ -1,0 +1,52 @@
+{
+    "k": 100,
+    "group_labels": {
+        "1": "longest span < 25%",
+        "3": "longest span 25-50%",
+        "4": "longest span 50-75%",
+        "5": "longest span >= 75%, not full",
+        "6": "full match, > k docs",
+        "7": "full match, <= k docs"
+    },
+    "pairs": [
+        {
+            "set": "tatoeba_eng",
+            "index": "commonpile",
+            "num_samples": 2000,
+            "counts": {
+                "1": 19,
+                "3": 241,
+                "4": 877,
+                "5": 505,
+                "6": 37,
+                "7": 321
+            }
+        },
+        {
+            "set": "tatoeba_eng",
+            "index": "dolma3_split",
+            "num_samples": 2000,
+            "counts": {
+                "1": 7,
+                "3": 109,
+                "4": 589,
+                "5": 469,
+                "6": 278,
+                "7": 548
+            }
+        },
+        {
+            "set": "tatoeba_dan",
+            "index": "dynaword",
+            "num_samples": 2000,
+            "counts": {
+                "1": 17,
+                "3": 307,
+                "4": 872,
+                "5": 468,
+                "6": 37,
+                "7": 299
+            }
+        }
+    ]
+}
